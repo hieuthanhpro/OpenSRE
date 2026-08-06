@@ -752,16 +752,18 @@ class InteractiveAgentSession:
             # Build subagents: reachability over sub_agents edges (KI-1 fix).
             # resolve_registered_agents already excludes the root and any agent
             # that is disabled, unreachable, or has no system prompt.
-            for name, agent_cfg in resolve_registered_agents(self.team_config).items():
-                sub_prompt = agent_cfg.prompt.system or ""
-                if ctx_block:
-                    sub_prompt = sub_prompt + ctx_block
-                subagents[name] = AgentDefinition(
-                    description=agent_cfg.prompt.prefix or f"{name} specialist",
-                    prompt=sub_prompt,
-                    model=resolve_model(agent_cfg.model.name),
-                    tools=resolve_agent_tools(agent_cfg.tools),
-                )
+            subagents = {}
+            if os.environ.get("DISABLE_SUBAGENTS") != "true":
+                for name, agent_cfg in resolve_registered_agents(self.team_config).items():
+                    sub_prompt = agent_cfg.prompt.system or ""
+                    if ctx_block:
+                        sub_prompt = sub_prompt + ctx_block
+                    subagents[name] = AgentDefinition(
+                        description=agent_cfg.prompt.prefix or f"{name} specialist",
+                        prompt=sub_prompt,
+                        model=resolve_model(agent_cfg.model.name),
+                        tools=resolve_agent_tools(agent_cfg.tools),
+                    )
 
             # Authoritative delegation list: overrides any stale static
             # sub-agent table in the root prompt.

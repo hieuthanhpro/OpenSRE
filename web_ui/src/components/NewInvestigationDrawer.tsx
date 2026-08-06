@@ -24,9 +24,10 @@ type Props = {
   // Called when the streaming run finishes so the host page can refresh
   // its own data (run list, dashboard stats, onboarding state, etc.).
   onComplete?: () => void;
+  initialPrompt?: string;
 };
 
-export function NewInvestigationDrawer({ open, onClose, onComplete }: Props) {
+export function NewInvestigationDrawer({ open, onClose, onComplete, initialPrompt }: Props) {
   const router = useRouter();
   const { timeline, runId, isStreaming, backgroundWaiting, sendMessage, queueMessage, queuedMessages, stop, reset } = useAgentStream({
     // useAgentStream passes the final output text; callers here only need a
@@ -50,7 +51,7 @@ export function NewInvestigationDrawer({ open, onClose, onComplete }: Props) {
         <div className="flex items-center justify-between px-6 py-4 border-b border-stone-200 dark:border-stone-700">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg bg-forest-light/15 dark:bg-forest/30 flex items-center justify-center"><Sparkles className="w-5 h-5 text-forest" /></div>
-            <div><h2 className="font-semibold text-stone-900 dark:text-white">Ask OpenSRE</h2><p className="text-xs text-stone-500">AI-powered incident investigation</p></div>
+            <div><h2 className="font-semibold text-stone-900 dark:text-white font-mono">Chẩn đoán Database AWR - OpenSRE Agent</h2><p className="text-xs text-stone-500">AI-powered database incident & SQL tuning</p></div>
           </div>
           <div className="flex items-center gap-2">
             {runId && !isStreaming && (
@@ -63,8 +64,8 @@ export function NewInvestigationDrawer({ open, onClose, onComplete }: Props) {
           {timeline.length === 0 && !isStreaming ? (
             <div className="text-center py-12">
               <Bot className="w-12 h-12 mx-auto text-stone-300 dark:text-stone-600 mb-4" />
-              <p className="text-stone-500 mb-2">Start an investigation</p>
-              <p className="text-sm text-stone-400">Describe the issue and the AI will analyze your systems.</p>
+              <p className="text-stone-500 mb-2">Bắt đầu chẩn đoán Database AWR</p>
+              <p className="text-sm text-stone-400">Bấm Gửi bên dưới để AI Agent tự động đọc folder & file AWR.</p>
             </div>
           ) : (
             <ConversationTranscript turns={timelineToTurns(timeline)} isRunning={isStreaming} backgroundWaiting={backgroundWaiting} />
@@ -77,6 +78,7 @@ export function NewInvestigationDrawer({ open, onClose, onComplete }: Props) {
             queuedMessages={queuedMessages}
             onStop={stop}
             busy={isStreaming}
+            initialValue={initialPrompt}
             placeholder="Describe the issue to investigate..."
           />
         </div>

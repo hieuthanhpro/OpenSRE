@@ -75,8 +75,9 @@ team_id: default
 #     # Full list: https://openrouter.ai/models
 #
 ai_model:
-  provider: anthropic        # see options above
-  model_id: claude-sonnet-4-6
+  provider: openrouter        # see options above
+  model_id: qwen/qwen-2.5-72b-instruct
+  max_tokens: 4096
   # Optional: Override base URL (required for ollama, azure, bedrock)
   # base_url: http://host.docker.internal:11434
 
@@ -215,52 +216,11 @@ prompts:
 # Skills and Tools
 # Enable or disable specific capabilities
 skills:
-  # All skills enabled by default (wildcard). To restrict the agent to a
-  # subset, either list specific skills under `enabled` instead of '*',
-  # or keep '*' here and add the ones you don't want under `disabled`.
+  # Restrict agent capabilities to Oracle Database AWR skill only
   enabled:
-  - '*'
+  - database-oracle-awr
   disabled:
-  - observability
-  - remediation
-  - metrics-analysis
-  - metrics-victoriametrics
-  - observability-coralogix
-  - observability-datadog
-  - observability-elasticsearch
-  - observability-grafana
-  - observability-honeycomb
-  - observability-jaeger
-  - observability-loki
-  - observability-newrelic
-  - observability-sentry
-  - observability-splunk
-  - observability-victorialogs
-  - infrastructure-azure
-  - infrastructure-docker
-  - infrastructure-gcp
-  - database-bigquery
-  - database-mysql
-  - database-postgresql
-  - database-snowflake
-  - incident-blameless
-  - incident-comms
-  - incident-firehydrant
-  - incident-incidentio
-  - alerting-context
-  - alerting-opsgenie
-  - project-clickup
-  - project-linear
-  - vcs-gitlab
-  - vcs-sourcegraph
-  - docs-google
-  - docs-notion
-  - knowledge-base
-  - knowledge-raptor
-  - analytics-amplitude
-  - platform-vercel
-  - runtime-config-flagd
-  - streaming-kafka
+  - '*'
 security:
   # Allowed actions - restrict what the agent can do
   # allowed_actions:

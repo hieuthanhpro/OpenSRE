@@ -16,6 +16,7 @@ import {
   Cog,
   LayoutDashboard,
   Key,
+  Database,
 } from 'lucide-react';
 import { clsx } from 'clsx';
 import { LogoFull } from './Logo';
@@ -27,6 +28,7 @@ import { AccountMenu } from './AccountMenu';
 const teamNavigation = [
   { name: 'Dashboard', href: '/team', icon: LayoutDashboard },
   { name: 'Agent Runs', href: '/team/agent-runs', icon: Bot },
+  { name: 'Database Hub', href: '/team/databases', icon: Database },
   { name: 'Agent Topology', href: '/team/agents', icon: Bot },
   { name: 'Tools & MCPs', href: '/team/tools', icon: Server },
   { name: 'Knowledge Base', href: '/team/knowledge', icon: BookOpen },

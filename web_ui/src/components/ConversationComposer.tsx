@@ -12,6 +12,7 @@ interface Props {
   disabled?: boolean;
   disabledReason?: string;
   placeholder?: string;
+  initialValue?: string;
 }
 
 export default function ConversationComposer({
@@ -23,8 +24,9 @@ export default function ConversationComposer({
   disabled,
   disabledReason,
   placeholder: idlePlaceholder = 'Ask a follow-up…',
+  initialValue = '',
 }: Props) {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(initialValue);
   const [queueError, setQueueError] = useState<string | null>(null);
 
   // Running investigations always get a Stop control, even when follow-ups are
