@@ -120,6 +120,9 @@ services:
     environment:
       OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
       NVIDIA_API_KEY: ${NVIDIA_API_KEY}
+      LANGSMITH_API_KEY: ${LANGSMITH_API_KEY}
+      LANGSMITH_PROJECT: ${LANGSMITH_PROJECT}
+      LANGSMITH_BASE_URL: ${LANGSMITH_BASE_URL}
     volumes:
       - ./litellm_config.yaml:/app/config.yaml:ro
       - ./clamp_tokens.py:/app/clamp_tokens.py:ro

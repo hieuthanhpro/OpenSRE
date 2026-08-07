@@ -6,106 +6,92 @@ allowed-tools: Bash(*)
 
 # Oracle AWR Report Analysis Skill
 
-## ⚠️ MANDATORY FILE DISCOVERY RULES
+## Workflow
 
-> [!IMPORTANT]
-> **CRITICAL RULE**: NEVER attempt to read or list dummy paths like `/path/to/awr/file`.
-> Always use real file paths from `/app/awr/orcl/` or `/app/awr/`.
-> 
-> When analyzing Oracle DB performance:
-> 1. Run `ls -la /app/awr/orcl/ /app/awr/` to find the actual AWR HTML report file.
-> 2. Execute the parser script directly on the found file:
->    `python .claude/skills/database-oracle-awr/scripts/parse_awr.py "/app/awr/orcl/AWR Rpt - orcl Snap 125190 thru 125191.html" --metric cpu`
+Follow these steps IN ORDER. Do NOT skip steps. Do NOT add extra steps.
+
+### Step 1: Check Memory for Past Analysis
+
+Before running any parser command, search memory for previous AWR analyses:
+
+```bash
+python .claude/skills/memory-search/scripts/search.py \
+  --query "AWR Oracle CPU SQL performance orcl" --limit 3
+```
+
+If memory returns a **resolved** episode with matching SQL IDs or metrics that answer the user's question → **use that data to answer directly. STOP HERE. Do not proceed to Step 2.**
+
+If memory returns no relevant hits or the data is stale → proceed to Step 2.
+
+### Step 2: Run the Parser Script (ONE command only)
+
+**Fixed paths** (do not search for these — they are always correct):
+- **Parser**: `.claude/skills/database-oracle-awr/scripts/parse_awr.py`
+- **AWR file**: `/app/awr/orcl/AWR Rpt - orcl Snap 125190 thru 125191.html`
+
+Choose the correct command based on what the user is asking:
+
+| User's question | Command |
+|---|---|
+| query tốn cpu / top CPU | `python3 .claude/skills/database-oracle-awr/scripts/parse_awr.py "/app/awr/orcl/AWR Rpt - orcl Snap 125190 thru 125191.html" --metric cpu` |
+| query tốn RAM / buffer gets / memory | `python3 .claude/skills/database-oracle-awr/scripts/parse_awr.py "/app/awr/orcl/AWR Rpt - orcl Snap 125190 thru 125191.html" --metric ram` |
+| query tốn I/O / disk reads / physical reads | `python3 .claude/skills/database-oracle-awr/scripts/parse_awr.py "/app/awr/orcl/AWR Rpt - orcl Snap 125190 thru 125191.html" --metric io` |
+| phân tích tổng quan / full report / all | `python3 .claude/skills/database-oracle-awr/scripts/parse_awr.py "/app/awr/orcl/AWR Rpt - orcl Snap 125190 thru 125191.html" --metric all` |
+| xem SQL ID cụ thể / full sql text | `python3 .claude/skills/database-oracle-awr/scripts/parse_awr.py "/app/awr/orcl/AWR Rpt - orcl Snap 125190 thru 125191.html" --sql-id "<SQL_ID>"` |
+| query chạy lâu / elapsed time | `python3 .claude/skills/database-oracle-awr/scripts/parse_awr.py "/app/awr/orcl/AWR Rpt - orcl Snap 125190 thru 125191.html" --metric elapsed` |
+| SGA PGA advisory / tư vấn RAM | `python3 .claude/skills/database-oracle-awr/scripts/parse_awr.py "/app/awr/orcl/AWR Rpt - orcl Snap 125190 thru 125191.html" --metric advisory` |
+
+Run **exactly one** command from the table above. Do not run any other commands (`ls`, `find`, `grep`, `sed`, `awk`, `cat`, or inline Python).
+
+### Step 3: Present Results and STOP
+
+After the parser output is displayed:
+
+1. **Strict Output Scoping (CRITICAL)**: 
+   - **ONLY show the results of the requested metric.** 
+   - If the user asks for CPU (e.g., "query tốn cpu", "top cpu"), **ONLY** show the Top CPU queries table. **NEVER** include Top RAM (Buffer Gets), Top I/O, or any other tables/summaries in your final response.
+   - If the user asks for RAM/Memory, **ONLY** show the RAM table.
+   - If the user asks for I/O, **ONLY** show the I/O table.
+2. **Format your answer** using the parser output directly. Present the data in a clear markdown table.
+3. **STOP**. Do NOT run additional commands to "get more details", "verify", or "check further".
+
+If the user asks a follow-up question later, go back to Step 1.
 
 ---
 
-## Overview
+## Analysis Rules (Master Trần Văn Bình Method)
 
-Oracle AWR (Automatic Workload Repository) reports are typically very large (10,000+ lines of HTML).
-**NEVER load raw AWR HTML files directly into your prompt context.**
+When presenting results, apply these rules to highlight what matters within the requested metric scope:
 
-Always run the `parse_awr.py` script to extract structured, high-density performance metrics filtered by resource type (CPU, RAM, I/O, Elapsed Time).
+- **Executions = 0**: ALWAYS flag first (if present in the metric output). These are long-running queries stuck during the snapshot — highest priority to investigate.
+- **CPU**: Focus on top 2 queries with highest `% Total CPU`.
+- **RAM (Buffer Gets)**: Focus on top 2 queries.
+- **RAM (Sharable Memory)**: Focus on top 1 query.
+- **Disk I/O (Physical Reads)**: Focus on top 5 queries.
+- **User I/O Time**: Focus on top 2 queries.
+- **Elapsed Time**: Focus on top 2-3 queries.
 
----
-
-## MANDATORY: Statistics-First Investigation Workflow
-
-```
-1. DISCOVER REAL FILE IN /app/awr/orcl/ → 2. RUN PARSER SCRIPT → 3. IDENTIFY BOTTLENECK → 4. REMEDIATE
-```
-
-### Step 1: Run the AWR Parser Script
-
-Depending on what the user is asking, run the appropriate script command:
-
-#### A. Top SQL Consuming CPU
-```bash
-python .claude/skills/database-oracle-awr/scripts/parse_awr.py "/app/awr/orcl/AWR Rpt - orcl Snap 125190 thru 125191.html" --metric cpu
-```
-
-#### B. Top SQL Consuming RAM / Memory (Buffer Gets & Shared Pool)
-```bash
-python .claude/skills/database-oracle-awr/scripts/parse_awr.py "/app/awr/orcl/AWR Rpt - orcl Snap 125190 thru 125191.html" --metric ram
-```
-
-#### C. Top SQL Consuming Disk I/O (Physical Reads & User I/O Time)
-```bash
-python .claude/skills/database-oracle-awr/scripts/parse_awr.py "/app/awr/orcl/AWR Rpt - orcl Snap 125190 thru 125191.html" --metric io
-```
-
-#### D. Full Performance & Resource Breakdown
-```bash
-python .claude/skills/database-oracle-awr/scripts/parse_awr.py "/app/awr/orcl/AWR Rpt - orcl Snap 125190 thru 125191.html" --metric all
-```
-
-#### E. Inspect Specific SQL_ID Code
-```bash
-python .claude/skills/database-oracle-awr/scripts/parse_awr.py "/app/awr/orcl/AWR Rpt - orcl Snap 125190 thru 125191.html" --sql-id "<SQL_ID>"
-```
+**Strict scoping**: If user asks for CPU → ONLY show CPU results. Do NOT add RAM or I/O sections unless asked.
 
 ---
 
-## Resource Bottleneck Mapping Guide (Master Tran Van Binh Rules)
+## Prohibited Actions
 
-### 1. ⚠️ Executions = 0 Queries (Highest Priority)
-- If a query has `Executions = 0` (or 1) with high `Elapsed Time`, it is a **long-running query currently executing during the snapshot**.
-- **ACTION**: Always highlight this query at the top of your report as the primary bottleneck to optimize first.
+These actions waste tokens and produce errors. NEVER do them:
 
-### 2. CPU Consumption (`--metric cpu`)
-- **Key Tables**: `SQL ordered by CPU Time`
-- **Rule**: Focus on the top 2 queries accounting for the highest `% Total CPU`.
-
-### 3. RAM / Memory Consumption (`--metric ram`)
-- **Key Tables**: `SQL ordered by Buffer Gets` (Buffer Cache) & `SQL ordered by Sharable Memory` (Shared Pool)
-- **Rule**: Focus on top 2 queries for Buffer Gets, top 1 query for Sharable Memory.
-
-### 4. Disk I/O Consumption (`--metric io`)
-- **Key Tables**: `SQL ordered by Physical Reads` & `SQL ordered by User I/O Time`
-- **Rule**: Focus on top 5 queries for Physical Reads, top 2 queries for User I/O Time.
+- ❌ Running `ls`, `find`, `which`, `locate` to search for files
+- ❌ Using `grep`, `sed`, `awk`, `cat`, `head`, `tail` on the AWR HTML file
+- ❌ Writing inline Python to parse HTML
+- ❌ Running the parser script more than once per question
+- ❌ Running additional commands after getting the parser output
+- ❌ Checking `sqlplus`, `ps aux`, or other system commands
 
 ---
 
-## Output Report Structure
+## DB Context (pre-loaded — do NOT run commands to get this)
 
-When presenting findings to the user, format your report clearly:
-
-```markdown
-## Oracle AWR Performance Analysis (Oracle DB: orcl)
-
-### 1. System Overview
-- **DB Name & Host**: [Details]
-- **Target Metric**: [CPU / RAM / I/O / All]
-
-### 2. ⚠️ High-Priority Warning (Executions = 0 Queries)
-[Details of long-running queries currently stuck or executing]
-
-### 3. Top Offending SQL Statements
-| SQL ID | Resource Metric (CPU/IO/RAM) | Executions | Avg Value per Exec | SQL Text Preview |
-|---|---|---|---|---|
-| `[SQL_ID]` | [Value] | [Execs] | [Avg] | [SQL Text] |
-
-### 4. Root Cause & Recommended Remediations
-1. **Index Optimization**: [Specific table/column index recommendations]
-2. **Memory / Database Config**: [SGA/PGA/Shared Pool adjustments]
-3. **Application SQL Rewrite**: [Bind variables, query restructuring]
-```
+- **DB**: ORCL | **Instance**: orcl | **Version**: 11.2.0.1.0
+- **Host**: db.onepay.vn | **Platform**: Linux x86 64-bit
+- **CPUs**: 16 | **Cores**: 16 | **Memory**: 62.92 GB
+- **Snap**: 125190 → 125191 | 21-Jul-26 22:00 → 23:00 (60 mins)
+- **DB Time**: 112.71 mins (~1.87x elapsed → moderate load)

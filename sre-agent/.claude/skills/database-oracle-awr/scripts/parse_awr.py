@@ -124,6 +124,23 @@ def parse_awr_file(file_path: Path) -> dict:
                 if len(row) >= 2:
                     extracted["sql_texts"][row[0].strip()] = row[1].strip()
 
+    # If target SQL ID has complete text in a <pre> tag or near the SQL ID anchor in raw HTML, extract it
+    # Oracle AWR reports place complete SQL text inside <pre> tags or after anchors named like #sql_id
+    for sql_id in list(extracted["sql_texts"].keys()):
+        # Find raw blocks matching the sql_id
+        pattern = re.compile(rf'<a\s+name="{sql_id}">.*?<pre>(.*?)</pre>', re.DOTALL | re.IGNORECASE)
+        m = pattern.search(content)
+        if m:
+            full_sql = m.group(1).replace("&lt;", "<").replace("&gt;", ">").replace("&amp;", "&").strip()
+            extracted["sql_texts"][sql_id] = full_sql
+        else:
+            # Alternative: Search for <pre> block directly following SQL ID string
+            alt_pattern = re.compile(rf'sql_id\s*=\s*{sql_id}.*?<pre>(.*?)</pre>', re.DOTALL | re.IGNORECASE)
+            m_alt = alt_pattern.search(content)
+            if m_alt:
+                full_sql = m_alt.group(1).replace("&lt;", "<").replace("&gt;", ">").replace("&amp;", "&").strip()
+                extracted["sql_texts"][sql_id] = full_sql
+
     return extracted
 
 

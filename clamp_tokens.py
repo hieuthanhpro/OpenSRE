@@ -4,7 +4,20 @@ from litellm.integrations.custom_logger import CustomLogger
 class ClampTokensCallback(CustomLogger):
     async def async_pre_call_hook(self, user_api_key_dict, cache, data, call_type):
         if isinstance(data, dict):
-            # Estimate input tokens from messages, system prompt, and tools
+            # 1. Prune conversation history to save tokens
+            messages = data.get("messages")
+            if isinstance(messages, list) and len(messages) > 6:
+                # Keep the first user message (original request)
+                first_msg = messages[0]
+                # Keep the last 4 messages (recent interactions)
+                last_msgs = messages[-4:]
+                
+                # Combine them: [first_msg, ...skipped..., last_msgs]
+                pruned_messages = [first_msg] + last_msgs
+                data["messages"] = pruned_messages
+                print(f"✂️ [LITELLM] Pruned messages from {len(messages)} down to {len(pruned_messages)} turns")
+
+            # 2. Estimate input tokens from pruned messages
             messages = data.get("messages") or []
             input_text = str(messages) + str(data.get("system", "")) + str(data.get("tools", ""))
             
