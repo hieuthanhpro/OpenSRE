@@ -843,22 +843,20 @@ class InteractiveAgentSession:
                 os.environ["LLM_TEMPERATURE"] = str(root_config.model.temperature)
                 print(f"🔧 [AGENT] Temperature: {root_config.model.temperature}")
 
+            max_tok = 2048
             if root_config.model.max_tokens is not None:
-                os.environ["LLM_MAX_TOKENS"] = str(root_config.model.max_tokens)
-                print(f"🔧 [AGENT] Max tokens: {root_config.model.max_tokens}")
+                max_tok = min(root_config.model.max_tokens, 2048)
+            os.environ["LLM_MAX_TOKENS"] = str(max_tok)
+            options_kwargs.setdefault("extra_args", {})["max-tokens"] = str(max_tok)
+            print(f"🔧 [AGENT] Max tokens capped to: {max_tok}")
 
             if root_config.model.top_p is not None:
                 os.environ["LLM_TOP_P"] = str(root_config.model.top_p)
                 print(f"🔧 [AGENT] Top-p: {root_config.model.top_p}")
 
         if system_prompt:
-            # Method 3: Append custom prompt to claude_code preset
-            # Preserves built-in tool instructions, safety, and env context
-            options_kwargs["system_prompt"] = {
-                "type": "preset",
-                "preset": "claude_code",
-                "append": system_prompt,
-            }
+            # Use direct system prompt to avoid 15.5k token claude_code preset overhead (required for local 16k models)
+            options_kwargs["system_prompt"] = system_prompt
 
         self.options = ClaudeAgentOptions(**options_kwargs)
 

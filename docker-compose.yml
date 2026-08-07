@@ -122,6 +122,7 @@ services:
       NVIDIA_API_KEY: ${NVIDIA_API_KEY}
     volumes:
       - ./litellm_config.yaml:/app/config.yaml:ro
+      - ./clamp_tokens.py:/app/clamp_tokens.py:ro
     command: ["--config", "/app/config.yaml", "--port", "4000", "--host", "0.0.0.0"]
     ports:
       - "4001:4000"
@@ -134,6 +135,37 @@ services:
     networks:
       - app_network
       - default
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Anthropic Proxy — strips 15k Claude Code preset, converts /v1/messages to
+  # OpenAI /v1/chat/completions, forwards to local vLLM (max_model_len=16384).
+  # ─────────────────────────────────────────────────────────────────────────────
+  anthropic-proxy:
+    image: opensre-sre-agent:latest
+    container_name: opensre-anthropic-proxy
+    restart: unless-stopped
+    environment:
+      - VLLM_BASE_URL=http://10.36.36.155:8201/v1
+      - VLLM_MODEL=mic-llm
+      - MAX_OUTPUT_TOKENS=2048
+      - MAX_SYSTEM_CHARS=5000
+      - PROXY_PORT=4050
+    volumes:
+      - ./anthropic_proxy.py:/app/anthropic_proxy.py:ro
+    working_dir: /app
+    command: ["python", "/app/anthropic_proxy.py"]
+    ports:
+      - "4050:4050"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:4050/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - app_network
 
   # ─────────────────────────────────────────────────────────────────────────────
   # SRE Agent — runs investigations (in-process, no K8s sandboxes)
@@ -157,8 +189,8 @@ services:
       # LLM access — direct Anthropic by default (Claude Agent SDK engine).
       # To route via the optional LiteLLM proxy instead, start it with
       # `--profile litellm` and set ANTHROPIC_BASE_URL=http://litellm:4000.
-      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
-      - ANTHROPIC_BASE_URL=${ANTHROPIC_BASE_URL:-https://api.anthropic.com}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-EMPTY}
+      - ANTHROPIC_BASE_URL=http://litellm:4000
       # Neo4j — credentials from repo .env; URI is always in-network (not NEO4J_URI from .env)
       - NEO4J_URI=bolt://neo4j:7687
       - NEO4J_USERNAME=${NEO4J_USERNAME:-neo4j}
@@ -175,6 +207,8 @@ services:
       # config. Empty default keeps out-of-box behavior (all skills) while letting
       # the team-level Skills toggles take effect.
       - ENABLED_SKILLS=${ENABLED_SKILLS:-}
+      # Disable subagents (Single Agent mode)
+      - DISABLE_SUBAGENTS=true
       # Investigation timeout (seconds; default 600 = 10 minutes)
       - AGENT_TIMEOUT_SECONDS=600
       # Durable session store for SDK conversation resume (persistent volume).
