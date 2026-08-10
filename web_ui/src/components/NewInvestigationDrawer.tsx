@@ -11,12 +11,13 @@
 //
 // API chain is unchanged from the original inline implementation:
 //   useAgentStream -> POST /api/team/agent/stream -> sre-agent /investigate (SSE).
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Bot, Sparkles, X } from 'lucide-react';
 import { useAgentStream } from '@/lib/useAgentStream';
 import { timelineToTurns } from '@/lib/agentTimeline';
 import ConversationTranscript from './ConversationTranscript';
-import ConversationComposer from './ConversationComposer';
+import ConversationComposer, { type ComposerAttachment } from './ConversationComposer';
 
 type Props = {
   open: boolean;
@@ -25,21 +26,39 @@ type Props = {
   // its own data (run list, dashboard stats, onboarding state, etc.).
   onComplete?: () => void;
   initialPrompt?: string;
+  initialAttachments?: ComposerAttachment[];
+  autoStart?: boolean;
 };
 
-export function NewInvestigationDrawer({ open, onClose, onComplete, initialPrompt }: Props) {
+export function NewInvestigationDrawer({
+  open,
+  onClose,
+  onComplete,
+  initialPrompt,
+  initialAttachments,
+  autoStart = false,
+}: Props) {
   const router = useRouter();
+  const [hasAutoStarted, setHasAutoStarted] = useState(false);
   const { timeline, runId, isStreaming, backgroundWaiting, sendMessage, queueMessage, queuedMessages, stop, reset } = useAgentStream({
     // useAgentStream passes the final output text; callers here only need a
     // signal that the run completed, so we drop the argument.
     onComplete: () => onComplete?.(),
   });
 
+  useEffect(() => {
+    if (open && autoStart && initialPrompt && !hasAutoStarted && timeline.length === 0 && !isStreaming) {
+      setHasAutoStarted(true);
+      sendMessage(initialPrompt);
+    }
+  }, [open, autoStart, initialPrompt, hasAutoStarted, timeline.length, isStreaming, sendMessage]);
+
   // Close + reset stream state so reopening starts a fresh conversation
   // (no carried-over thread_id from the previous investigation).
   const closeChat = () => {
     onClose();
     reset();
+    setHasAutoStarted(false);
   };
 
   if (!open) return null;
@@ -64,8 +83,8 @@ export function NewInvestigationDrawer({ open, onClose, onComplete, initialPromp
           {timeline.length === 0 && !isStreaming ? (
             <div className="text-center py-12">
               <Bot className="w-12 h-12 mx-auto text-stone-300 dark:text-stone-600 mb-4" />
-              <p className="text-stone-500 mb-2">Bắt đầu chẩn đoán Database AWR</p>
-              <p className="text-sm text-stone-400">Bấm Gửi bên dưới để AI Agent tự động đọc folder & file AWR.</p>
+              <p className="text-stone-500 mb-2 font-medium">Bắt đầu chẩn đoán Database AWR</p>
+              <p className="text-sm text-stone-400">Kiểm tra thông tin / context đính kèm bên dưới và bấm Gửi để AI Agent phân tích.</p>
             </div>
           ) : (
             <ConversationTranscript turns={timelineToTurns(timeline)} isRunning={isStreaming} backgroundWaiting={backgroundWaiting} />
@@ -79,7 +98,8 @@ export function NewInvestigationDrawer({ open, onClose, onComplete, initialPromp
             onStop={stop}
             busy={isStreaming}
             initialValue={initialPrompt}
-            placeholder="Describe the issue to investigate..."
+            initialAttachments={initialAttachments}
+            placeholder="Mô tả sự cố hoặc yêu cầu phân tích..."
           />
         </div>
       </div>

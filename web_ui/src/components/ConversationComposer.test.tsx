@@ -113,4 +113,52 @@ describe('ConversationComposer message queue', () => {
     });
     expect(input).toHaveValue('still here');
   });
+
+  it('renders attached context chips and formats message on send', () => {
+    const onSend = vi.fn();
+    render(
+      <ConversationComposer
+        onSend={onSend}
+        initialAttachments={[
+          {
+            id: '/app/awr/orcl/awrrpt_1_5334_5335.html',
+            name: 'awrrpt_1_5334_5335.html',
+            path: '/app/awr/orcl/awrrpt_1_5334_5335.html',
+            type: 'file',
+          },
+        ]}
+        initialValue="Check SQL queries"
+      />,
+    );
+
+    const attachmentsContainer = screen.getByTestId('conversation-composer-attachments');
+    expect(attachmentsContainer).toHaveTextContent('awrrpt_1_5334_5335.html');
+
+    fireEvent.click(screen.getByTestId('conversation-composer-send'));
+    expect(onSend).toHaveBeenCalledWith(
+      '[Đính kèm context: `/app/awr/orcl/awrrpt_1_5334_5335.html`]\nCheck SQL queries',
+    );
+  });
+
+  it('allows removing an attachment chip', () => {
+    render(
+      <ConversationComposer
+        onSend={vi.fn()}
+        initialAttachments={[
+          {
+            id: 'file1',
+            name: 'report.html',
+            path: '/path/report.html',
+            type: 'file',
+          },
+        ]}
+      />,
+    );
+
+    expect(screen.getByTestId('conversation-composer-attachments')).toHaveTextContent('report.html');
+    const removeBtn = screen.getByTitle('Gỡ đính kèm');
+    fireEvent.click(removeBtn);
+    expect(screen.queryByTestId('conversation-composer-attachments')).toBeNull();
+  });
 });
+

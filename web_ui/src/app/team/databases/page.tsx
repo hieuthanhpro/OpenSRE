@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { RequireRole } from '@/components/RequireRole';
 import { NewInvestigationDrawer } from '@/components/NewInvestigationDrawer';
 import {
@@ -53,13 +53,60 @@ const DB_FLEET: DBInstance[] = [
 
 export default function DatabaseHubPage() {
   const [selectedDb, setSelectedDb] = useState<DBInstance>(DB_FLEET[0]);
+  const [reports, setReports] = useState<any[]>([]);
+  const [loadingReports, setLoadingReports] = useState<boolean>(false);
   const [selectedSnapshotFile, setSelectedSnapshotFile] = useState<string>(
     'AWR Rpt - orcl Snap 125190 thru 125191.html'
   );
   const [showChatDrawer, setShowChatDrawer] = useState(false);
 
+  // Fetch reports when database selection changes
+  useEffect(() => {
+    async function loadReports() {
+      setLoadingReports(true);
+      try {
+        const res = await fetch(`/api/team/databases/reports?db_id=${selectedDb.id}`);
+        const data = await res.json();
+        if (data.success && data.reports && data.reports.length > 0) {
+          setReports(data.reports);
+          setSelectedSnapshotFile(data.reports[0].fileName);
+        }
+      } catch (err) {
+        console.error('Failed to load DB reports:', err);
+      } finally {
+        setLoadingReports(false);
+      }
+    }
+    loadReports();
+  }, [selectedDb.id]);
+
   const fullFilePath = `${selectedDb.folderPath}${selectedSnapshotFile}`;
-  const initialInvestigationPrompt = `Hãy phân tích file báo cáo AWR tại đường dẫn \`${fullFilePath}\` của cơ sở dữ liệu ${selectedDb.name}. Cho tôi biết các câu lệnh SQL ngốn CPU, RAM, I/O nặng nhất và đề xuất phương án tối ưu theo quy tắc Trần Văn Bình Master?`;
+  const initialAttachments = [
+    {
+      id: fullFilePath,
+      name: selectedSnapshotFile,
+      path: fullFilePath,
+      type: 'file' as const,
+    },
+  ];
+  const initialInvestigationPrompt = `Hãy phân tích file báo cáo AWR đính kèm của ${selectedDb.name}. Cho tôi biết các câu lệnh SQL ngốn CPU, RAM, I/O nặng nhất và đề xuất phương án tối ưu?`;
+
+  const displayReports = reports.length > 0 ? reports : [
+    {
+      fileName: 'AWR Rpt - orcl Snap 125190 thru 125191.html',
+      timeSlot: '10:00 - 11:00 (Aug 05)',
+      status: 'critical',
+      topEvent: 'DB CPU (81.7%)',
+      hasExecZero: true,
+    },
+    {
+      fileName: 'awrrpt_1_5334_5335.html',
+      timeSlot: '09:00 - 10:00 (Aug 05)',
+      status: 'warning',
+      topEvent: 'db file sequential read',
+      hasExecZero: false,
+    },
+  ];
 
   return (
     <RequireRole role="team" fallbackHref="/">
@@ -82,7 +129,7 @@ export default function DatabaseHubPage() {
           <div className="flex items-center gap-3">
             <button
               onClick={() => setShowChatDrawer(true)}
-              className="flex items-center gap-2 px-4 py-2 bg-forest hover:bg-forest-dark text-white rounded-lg text-sm font-medium transition-colors shadow-sm"
+              className="flex items-center gap-2 px-4 py-2 bg-forest hover:bg-forest-dark text-white rounded-lg text-sm font-medium transition-colors shadow-sm cursor-pointer"
             >
               <Sparkles className="w-4 h-4" /> Chẩn đoán snapshot với AI Agent
             </button>
@@ -98,7 +145,7 @@ export default function DatabaseHubPage() {
                 key={db.id}
                 onClick={() => setSelectedDb(db)}
                 className={clsx(
-                  'p-5 rounded-xl border text-left transition-all flex items-start justify-between group',
+                  'p-5 rounded-xl border text-left transition-all flex items-start justify-between group cursor-pointer',
                   isSelected
                     ? 'border-forest bg-forest/5 dark:bg-forest/10 ring-1 ring-forest'
                     : 'border-stone-200 dark:border-stone-700 hover:border-stone-400 dark:hover:border-stone-600 bg-white dark:bg-stone-800'
@@ -158,36 +205,14 @@ export default function DatabaseHubPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            {[
-              {
-                fileName: 'AWR Rpt - orcl Snap 125190 thru 125191.html',
-                time: '10:00 - 11:00 (Aug 05)',
-                status: 'critical',
-                topWait: 'DB CPU (81.7%)',
-                hasExecZero: true,
-              },
-              {
-                fileName: 'awr_orcl_20260805_0900.html',
-                time: '09:00 - 10:00 (Aug 05)',
-                status: 'warning',
-                topWait: 'db file sequential read',
-                hasExecZero: false,
-              },
-              {
-                fileName: 'awr_orcl_20260805_0800.html',
-                time: '08:00 - 09:00 (Aug 05)',
-                status: 'normal',
-                topWait: 'log file sync',
-                hasExecZero: false,
-              },
-            ].map((snap, idx) => {
+            {displayReports.map((snap, idx) => {
               const active = selectedSnapshotFile === snap.fileName;
               return (
                 <button
                   key={idx}
                   onClick={() => setSelectedSnapshotFile(snap.fileName)}
                   className={clsx(
-                    'p-3.5 rounded-lg border text-left transition-all',
+                    'p-3.5 rounded-lg border text-left transition-all cursor-pointer',
                     active
                       ? 'border-forest bg-forest/10 dark:bg-forest/20 ring-1 ring-forest'
                       : 'border-stone-200 dark:border-stone-700 hover:bg-stone-50 dark:hover:bg-stone-700/50'
@@ -195,7 +220,7 @@ export default function DatabaseHubPage() {
                 >
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-xs font-semibold text-stone-900 dark:text-white font-mono">
-                      {snap.time}
+                      {snap.timeSlot || snap.fileName}
                     </span>
                     {snap.status === 'critical' && (
                       <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-400 uppercase">
@@ -210,7 +235,7 @@ export default function DatabaseHubPage() {
                   </div>
                   <p className="text-[11px] text-stone-500 font-mono truncate">{snap.fileName}</p>
                   <div className="text-xs text-stone-400 font-mono flex items-center justify-between mt-2">
-                    <span>Wait: {snap.topWait}</span>
+                    <span>Wait: {snap.topEvent || 'DB CPU'}</span>
                     {snap.hasExecZero && (
                       <span className="text-red-500 font-semibold text-[10px]">
                         ⚠️ Execs=0
@@ -224,12 +249,14 @@ export default function DatabaseHubPage() {
         </div>
       </div>
 
-      {/* AI Agent Drawer pre-filled with DB folder path */}
+      {/* AI Agent Drawer pre-filled with DB folder path & attached snapshot file */}
       <NewInvestigationDrawer
         open={showChatDrawer}
         onClose={() => setShowChatDrawer(false)}
         initialPrompt={initialInvestigationPrompt}
-        onComplete={() => {}}
+        initialAttachments={initialAttachments}
+        autoStart={false}
+        onComplete={() => { }}
       />
     </RequireRole>
   );

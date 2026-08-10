@@ -25,24 +25,26 @@ If memory returns no relevant hits or the data is stale → proceed to Step 2.
 
 ### Step 2: Run the Parser Script (ONE command only)
 
-**Fixed paths** (do not search for these — they are always correct):
+**Target file resolution**:
 - **Parser**: `.claude/skills/database-oracle-awr/scripts/parse_awr.py`
-- **AWR file**: `/app/awr/orcl/AWR Rpt - orcl Snap 125190 thru 125191.html`
+- **AWR file path**:
+  1. **Khi người dùng chọn file/truyền đường dẫn trên prompt** (ví dụ `/app/awr/orcl/<file.html>`): Bắt buộc dùng đúng đường dẫn file đó.
+  2. **Khi không có đường dẫn file nào trong prompt**: Tự động tìm và phân tích file báo cáo AWR mới nhất trong thư mục `/app/awr/orcl/` (dùng file trả về từ lệnh `ls -t /app/awr/orcl/*.html | head -n 1`).
 
-Choose the correct command based on what the user is asking:
+Choose the correct command based on what the user is asking (replace `<AWR_FILE>` with the target file path):
 
 | User's question | Command |
 |---|---|
-| query tốn cpu / top CPU | `python3 .claude/skills/database-oracle-awr/scripts/parse_awr.py "/app/awr/orcl/AWR Rpt - orcl Snap 125190 thru 125191.html" --metric cpu` |
-| query tốn RAM / buffer gets / memory | `python3 .claude/skills/database-oracle-awr/scripts/parse_awr.py "/app/awr/orcl/AWR Rpt - orcl Snap 125190 thru 125191.html" --metric ram` |
-| query tốn I/O / disk reads / physical reads | `python3 .claude/skills/database-oracle-awr/scripts/parse_awr.py "/app/awr/orcl/AWR Rpt - orcl Snap 125190 thru 125191.html" --metric io` |
-| phân tích tổng quan / full report / all | `python3 .claude/skills/database-oracle-awr/scripts/parse_awr.py "/app/awr/orcl/AWR Rpt - orcl Snap 125190 thru 125191.html" --metric all` |
-| xem SQL ID cụ thể / full sql text | `python3 .claude/skills/database-oracle-awr/scripts/parse_awr.py "/app/awr/orcl/AWR Rpt - orcl Snap 125190 thru 125191.html" --sql-id "<SQL_ID>"` |
-| query chạy lâu / elapsed time | `python3 .claude/skills/database-oracle-awr/scripts/parse_awr.py "/app/awr/orcl/AWR Rpt - orcl Snap 125190 thru 125191.html" --metric elapsed` |
-| wait events / nghẽn hệ thống | `python3 .claude/skills/database-oracle-awr/scripts/parse_awr.py "/app/awr/orcl/AWR Rpt - orcl Snap 125190 thru 125191.html" --metric wait` |
-| SGA PGA advisory / tư vấn RAM | `python3 .claude/skills/database-oracle-awr/scripts/parse_awr.py "/app/awr/orcl/AWR Rpt - orcl Snap 125190 thru 125191.html" --metric advisory` |
+| query tốn cpu / top CPU | `python3 .claude/skills/database-oracle-awr/scripts/parse_awr.py "<AWR_FILE>" --metric cpu` |
+| query tốn RAM / buffer gets / memory | `python3 .claude/skills/database-oracle-awr/scripts/parse_awr.py "<AWR_FILE>" --metric ram` |
+| query tốn I/O / disk reads / physical reads | `python3 .claude/skills/database-oracle-awr/scripts/parse_awr.py "<AWR_FILE>" --metric io` |
+| phân tích tổng quan / full report / all | `python3 .claude/skills/database-oracle-awr/scripts/parse_awr.py "<AWR_FILE>" --metric all` |
+| xem SQL ID cụ thể / full sql text | `python3 .claude/skills/database-oracle-awr/scripts/parse_awr.py "<AWR_FILE>" --sql-id "<SQL_ID>"` |
+| query chạy lâu / elapsed time | `python3 .claude/skills/database-oracle-awr/scripts/parse_awr.py "<AWR_FILE>" --metric elapsed` |
+| wait events / nghẽn hệ thống | `python3 .claude/skills/database-oracle-awr/scripts/parse_awr.py "<AWR_FILE>" --metric wait` |
+| SGA PGA advisory / tư vấn RAM | `python3 .claude/skills/database-oracle-awr/scripts/parse_awr.py "<AWR_FILE>" --metric advisory` |
 
-Run **exactly one** command from the table above. Do not run any other commands (`ls`, `find`, `grep`, `sed`, `awk`, `cat`, or inline Python).
+Run **exactly one** command from the table above. Replace `<AWR_FILE>` with the target file path. Do not run any other commands.
 
 ### Step 3: Present Results and STOP
 

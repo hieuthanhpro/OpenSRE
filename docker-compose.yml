@@ -117,6 +117,8 @@ services:
     container_name: opensre-litellm
     profiles: ["litellm"]
     restart: unless-stopped
+    env_file:
+      - .env
     environment:
       OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
       NVIDIA_API_KEY: ${NVIDIA_API_KEY}
@@ -317,6 +319,8 @@ services:
     depends_on:
       config-service:
         condition: service_healthy
+    volumes:
+      - ./awr:/app/awr:ro
     mem_limit: 512m
     cpus: 1
     logging:
