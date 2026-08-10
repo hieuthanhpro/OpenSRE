@@ -3,6 +3,18 @@ import uuid
 import litellm
 from litellm.integrations.custom_logger import CustomLogger
 
+def trim_tool_descriptions(obj, max_len=120):
+    """Recursively trim all 'description' fields in tools schema to max_len chars to save 20,000+ tokens."""
+    if isinstance(obj, dict):
+        for k, v in list(obj.items()):
+            if k == "description" and isinstance(v, str) and len(v) > max_len:
+                obj[k] = v[:max_len] + "..."
+            else:
+                trim_tool_descriptions(v, max_len)
+    elif isinstance(obj, list):
+        for item in obj:
+            trim_tool_descriptions(item, max_len)
+
 class ClampTokensCallback(CustomLogger):
     async def async_pre_call_hook(self, user_api_key_dict, cache, data, call_type):
         if isinstance(data, dict):
@@ -88,23 +100,11 @@ class ClampTokensCallback(CustomLogger):
                     new_messages.append(msg)
                 data["messages"] = new_messages
 
-            # 2.3 Trim huge tool descriptions in data['tools'] (e.g. Agent tool schema, saves ~10,000 tokens)
+            # 2.3 Deep recursive trim of ALL descriptions in data['tools'] (tool & parameter descriptions, saves ~20,000 tokens)
             tools = data.get("tools")
             if isinstance(tools, list):
-                for t in tools:
-                    if isinstance(t, dict):
-                        # Anthropic format: tool['description']
-                        desc = t.get("description")
-                        if isinstance(desc, str) and len(desc) > 500:
-                            t["description"] = desc[:200] + " (Description shortened to save tokens)"
-                            print(f"✂️ [LITELLM] Trimmed tool description for '{t.get('name')}' ({len(desc)} chars)")
-                        # OpenAI format: tool['function']['description']
-                        func = t.get("function")
-                        if isinstance(func, dict):
-                            fdesc = func.get("description")
-                            if isinstance(fdesc, str) and len(fdesc) > 500:
-                                func["description"] = fdesc[:200] + " (Description shortened to save tokens)"
-                                print(f"✂️ [LITELLM] Trimmed function description for '{func.get('name')}' ({len(fdesc)} chars)")
+                trim_tool_descriptions(tools, max_len=120)
+                print(f"✂️ [LITELLM] Deep recursively trimmed tool & parameter descriptions across {len(tools)} tools")
 
             # 2.5 Compress OLD conversation history (tool results + old assistant tables older than last 6 messages)
             messages = data.get("messages")
@@ -181,4 +181,4 @@ class ClampTokensCallback(CustomLogger):
 
 clamp_callback = ClampTokensCallback()
 litellm.callbacks = [clamp_callback]
-print("✅ [LITELLM] Safe ClampTokensCallback active (Dual-preset & <system-reminder> stripping + Tool schema trimming + Old history response compression)")
+print("✅ [LITELLM] Safe ClampTokensCallback active (Dual-preset & <system-reminder> stripping + Deep recursive tool/parameter description trimming + History compression)")
