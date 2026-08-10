@@ -208,7 +208,7 @@ def format_markdown(data: dict, metric_filter: str, target_sql_id: str | None) -
             lines.append(render_table([data["sql_elapsed"][0]] + exec_zero_elapsed))
 
     # Top Wait Events
-    if metric_filter in ("all", "events"):
+    if metric_filter in ("all", "events", "wait"):
         lines.append("## 2. Top Foreground Wait Events (Điểm nghẽn hệ thống)")
         lines.append("_Quy tắc: Tập trung xử lý Top 3-5 Wait Events hàng đầu chiếm % DB Time lớn nhất._\n")
         lines.append(render_table(data["top_wait_events"]))
@@ -268,7 +268,7 @@ def format_markdown(data: dict, metric_filter: str, target_sql_id: str | None) -
 def main():
     parser = argparse.ArgumentParser(description="Oracle AWR SQL Resource Extractor (Tran Van Binh Rules)")
     parser.add_argument("file", help="Path to AWR HTML report file")
-    parser.add_argument("--metric", choices=["all", "cpu", "ram", "io", "elapsed", "advisory"], default="all", help="Filter specific resource category")
+    parser.add_argument("--metric", choices=["all", "cpu", "ram", "io", "elapsed", "advisory", "events", "wait"], default="all", help="Filter specific resource category")
     parser.add_argument("--sql-id", help="Search specific SQL ID text and stats")
     parser.add_argument("--json", action="store_true", help="Output as JSON")
     parser.add_argument("--output", "-o", help="Save output to file")

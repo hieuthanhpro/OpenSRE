@@ -39,6 +39,7 @@ Choose the correct command based on what the user is asking:
 | phân tích tổng quan / full report / all | `python3 .claude/skills/database-oracle-awr/scripts/parse_awr.py "/app/awr/orcl/AWR Rpt - orcl Snap 125190 thru 125191.html" --metric all` |
 | xem SQL ID cụ thể / full sql text | `python3 .claude/skills/database-oracle-awr/scripts/parse_awr.py "/app/awr/orcl/AWR Rpt - orcl Snap 125190 thru 125191.html" --sql-id "<SQL_ID>"` |
 | query chạy lâu / elapsed time | `python3 .claude/skills/database-oracle-awr/scripts/parse_awr.py "/app/awr/orcl/AWR Rpt - orcl Snap 125190 thru 125191.html" --metric elapsed` |
+| wait events / nghẽn hệ thống | `python3 .claude/skills/database-oracle-awr/scripts/parse_awr.py "/app/awr/orcl/AWR Rpt - orcl Snap 125190 thru 125191.html" --metric wait` |
 | SGA PGA advisory / tư vấn RAM | `python3 .claude/skills/database-oracle-awr/scripts/parse_awr.py "/app/awr/orcl/AWR Rpt - orcl Snap 125190 thru 125191.html" --metric advisory` |
 
 Run **exactly one** command from the table above. Do not run any other commands (`ls`, `find`, `grep`, `sed`, `awk`, `cat`, or inline Python).

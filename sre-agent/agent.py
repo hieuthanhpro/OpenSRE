@@ -847,7 +847,6 @@ class InteractiveAgentSession:
             if root_config.model.max_tokens is not None:
                 max_tok = min(root_config.model.max_tokens, 2048)
             os.environ["LLM_MAX_TOKENS"] = str(max_tok)
-            options_kwargs.setdefault("extra_args", {})["max-tokens"] = str(max_tok)
             print(f"🔧 [AGENT] Max tokens capped to: {max_tok}")
 
             if root_config.model.top_p is not None:
