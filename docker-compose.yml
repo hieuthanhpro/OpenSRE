@@ -223,6 +223,11 @@ services:
       - WRITEUP_LLM_MODEL=${ANTHROPIC_MODEL:-claude-sonnet-4-6}
       # Other services
       - LMNR_PROJECT_API_KEY=${LMNR_PROJECT_API_KEY:-}
+      # LangSmith tracing
+      - LANGSMITH_TRACING=${LANGSMITH_TRACING:-true}
+      - LANGSMITH_API_KEY=${LANGSMITH_API_KEY}
+      - LANGSMITH_PROJECT=${LANGSMITH_PROJECT:-OpenSRE}
+      - LANGSMITH_BASE_URL=${LANGSMITH_BASE_URL}
       # AWS + EKS connectivity (local dev). The agent runs skills in-process
       # (server_simple.py), so it needs direct access to your host AWS SSO creds
       # and kubeconfig. ~/.aws is mounted read-write so the aws CLI can refresh
