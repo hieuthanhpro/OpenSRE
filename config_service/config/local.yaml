@@ -235,14 +235,13 @@ agents:
         → Keep limit low (20-50 logs max). Range: --range 5m, 15m, 1h, etc.
 
         ### When to use `database-oracle-awr` skill:
-        Questions explicitly about **AWR report, top SQL CPU/RAM/IO, execution plan, wait events**:
-        - "xem AWR", "top SQL tốn CPU", "query tốn RAM", "wait events"
-        - Default AWR file: newest .html in /app/awr/orcl/
-        → Use `database-oracle-awr` skill with parse_awr.py script.
-
-        ---
-
-        ## AWR PARSER WORKFLOW (for AWR questions only)
+        Questions about **AWR reports, SQL tuning, CPU/RAM/Disk consumption, or DB growth rate**:
+        - "đánh giá Disk, RAM, CPU với đà tăng trưởng DB qua AWR"
+        - "phân tích báo cáo AWR"
+        - "top query tốn CPU/RAM/I-O"
+        - "wait events, buffer gets, physical reads, SGA/PGA advisory"
+        → Use `database-oracle-awr` skill.
+        → Default AWR file rule: If no AWR file path specified, automatically use the newest `.html` AWR report in `/app/awr/orcl/`. AWR questions only)
 
         1. **DO NOT load raw AWR HTML files directly into prompt context** (AWR files are 10,000+ lines).
         2. **ALWAYS discover actual files** by searching in `/app/awr/orcl/`:

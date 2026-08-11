@@ -97,6 +97,15 @@ def parse_awr_file(file_path: Path) -> dict:
             extracted["header"] = dict(zip(t[0], t[1]))
         elif "host name" in hdr and len(t) >= 2:
             extracted["host"] = dict(zip(t[0], t[1]))
+        elif "per second" in hdr and ("logical reads" in " ".join("".join(r) for r in t).lower() or "db time" in " ".join("".join(r) for r in t).lower()):
+            if not extracted.get("load_profile"):
+                extracted["load_profile"] = t
+        elif "load average begin" in hdr or "%user" in hdr:
+            if not extracted.get("os_stat"):
+                extracted["os_stat"] = t
+        elif "component" in hdr and "current size" in hdr:
+            if not extracted.get("memory_summary"):
+                extracted["memory_summary"] = t
         elif "event" in hdr and ("% db time" in hdr or "%time -outs" in hdr):
             if not extracted["top_wait_events"]:
                 extracted["top_wait_events"] = t[:15]
@@ -183,13 +192,22 @@ def format_markdown(data: dict, metric_filter: str, target_sql_id: str | None) -
 
     # 1. System Overview
     if data["header"] or data["host"]:
-        lines.append("## 1. System Overview")
+        lines.append("## 1. System Overview & Load Profile")
         if data["header"]:
             h = data["header"]
             lines.append(f"- **DB Name**: {h.get('DB Name', 'N/A')} | **Instance**: {h.get('Instance', 'N/A')} | **Startup**: {h.get('Startup Time', 'N/A')}")
         if data["host"]:
             hst = data["host"]
             lines.append(f"- **Host**: {hst.get('Host Name', 'N/A')} | **Platform**: {hst.get('Platform', 'N/A')} | **CPUs**: {hst.get('CPUs', 'N/A')} | **Cores**: {hst.get('Cores', 'N/A')}")
+        if data.get("os_stat"):
+            lines.append("\n### OS Load Statistics & CPU Usage")
+            lines.append(render_table(data["os_stat"]))
+        if data.get("load_profile"):
+            lines.append("### Load Profile (Đà tăng trưởng I/O, Redo & Transaction/s)")
+            lines.append(render_table(data["load_profile"]))
+        if data.get("memory_summary"):
+            lines.append("### Memory Component Sizes (SGA / PGA Allocations)")
+            lines.append(render_table(data["memory_summary"]))
         lines.append("")
 
     # Filter specific SQL ID

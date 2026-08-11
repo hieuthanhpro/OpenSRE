@@ -75,14 +75,21 @@ If the user asks a follow-up question later, go back to Step 1.
 When presenting results, apply these rules to highlight what matters within the requested metric scope:
 
 - **Executions = 0**: ALWAYS flag first (if present in the metric output). These are long-running queries stuck during the snapshot — highest priority to investigate.
-- **CPU**: Focus on top 2 queries with highest `% Total CPU`.
-- **RAM (Buffer Gets)**: Focus on top 2 queries.
-- **RAM (Sharable Memory)**: Focus on top 1 query.
-- **Disk I/O (Physical Reads)**: Focus on top 5 queries.
-- **User I/O Time**: Focus on top 2 queries.
-- **Elapsed Time**: Focus on top 2-3 queries.
+- **CPU Evaluation**:
+  - Check OS Load Statistics (%User, %System, %Idle, Load Average). Flag if Load Average > CPUs count or %Idle < 20%.
+  - Focus on top 2 queries with highest `% Total CPU` from `sql_cpu`.
+- **Memory (RAM) Evaluation**:
+  - Inspect Memory Component Sizes (DEFAULT buffer cache, Shared Pool, PGA Target).
+  - Focus on top 2 queries by `Buffer Gets` and top 1 query by `Sharable Memory`.
+  - Check SGA / PGA Advisory recommendations if SGA/PGA sizing needs adjustment.
+- **Disk I/O Evaluation**:
+  - Inspect Tablespace / File I/O Latency (`Av Rd(ms)` > 20ms indicates disk storage bottlenecks).
+  - Focus on top 5 queries by `Physical Reads` and top 2 queries by `User I/O Time`.
+- **DB Growth Rate (Đà tăng trưởng DB)**:
+  - Analyze **Load Profile** metrics: `Redo size/s` (tốc độ ghi dữ liệu/đà tăng trưởng dung lượng redo log) and `Block changes/s`.
+  - Analyze `Physical writes/s` and `Transactions/s` to predict data volume accumulation over time.
 
-**Strict scoping**: If user asks for CPU → ONLY show CPU results. Do NOT add RAM or I/O sections unless asked.
+**Strict scoping**: If user asks for CPU → ONLY show CPU results. Do NOT add RAM or I/O sections unless asked. If user asks for general/growth/all → present all resource dimensions including Load Profile growth indicators.
 
 ---
 
