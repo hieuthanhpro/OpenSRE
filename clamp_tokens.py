@@ -124,11 +124,33 @@ class ClampTokensCallback(CustomLogger):
                     new_messages.append(msg)
                 data["messages"] = new_messages
 
-            # 2.3 Deep recursive trim of ALL descriptions in data['tools'] (tool & parameter descriptions, saves ~20,000 tokens)
+            # 2.3 Filter out unused developer tools from data['tools'] (saves ~8,000 tokens)
             tools = data.get("tools")
             if isinstance(tools, list):
-                trim_tool_descriptions(tools, max_len=120)
-                print(f"✂️ [LITELLM] Deep recursively trimmed tool & parameter descriptions across {len(tools)} tools")
+                ALLOWED_TOOLS = {"Bash", "Skill", "Read", "Grep", "Glob", "Edit", "Agent"}
+                filtered_tools = []
+                for t in tools:
+                    if isinstance(t, dict):
+                        t_name = t.get("name") or (t.get("function", {}).get("name") if isinstance(t.get("function"), dict) else None)
+                        if not t_name or t_name in ALLOWED_TOOLS:
+                            filtered_tools.append(t)
+                if filtered_tools:
+                    data["tools"] = filtered_tools
+
+                trim_tool_descriptions(data["tools"], max_len=120)
+                print(f"✂️ [LITELLM] Filtered & trimmed tool schemas down to {len(data['tools'])} core SRE tools")
+
+            # 2.4 Inject Multi-action / Parallel Execution Rule to force LLM to output multiple actions in 1 turn
+            PARALLEL_RULE = (
+                "\n\n[SYSTEM OPTIMIZATION RULE]: Batch multiple actions per response turn whenever possible. "
+                "When inspecting files or gathering facts, emit multiple parallel tool_calls OR combine multiple shell commands using '&&' or ';' into a single Bash call. "
+                "Never do 1-by-1 single-command roundtrips when gathering initial evidence."
+            )
+            system = data.get("system")
+            if isinstance(system, list):
+                system.append({"type": "text", "text": PARALLEL_RULE})
+            elif isinstance(system, str):
+                data["system"] = system + PARALLEL_RULE
 
             # 2.5 Compress OLD conversation history (tool results + old assistant tables older than last 6 messages)
             messages = data.get("messages")
