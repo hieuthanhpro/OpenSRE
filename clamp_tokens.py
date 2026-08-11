@@ -3,6 +3,30 @@ import uuid
 import litellm
 from litellm.integrations.custom_logger import CustomLogger
 
+# Fix LiteLLM -> LangSmith integration bugs (HTTP 400 & HTTP 404 fix)
+try:
+    import litellm.integrations.langsmith as ls
+    _orig_prepare = ls.LangsmithLogger._prepare_log_data
+
+    def _patched_prepare_log_data(self, kwargs, response_obj, start_time, end_time, credentials):
+        data = _orig_prepare(self, kwargs, response_obj, start_time, end_time, credentials)
+        if isinstance(data, dict):
+            # 1. Fix 404 Not Found: Remove fake session_id so LangSmith uses session_name (project_name)
+            data.pop("session_id", None)
+
+            # 2. Fix 400 Bad Request: Ensure trace_id matches dotted_order for root runs
+            run_id = data.get("id")
+            parent_run_id = data.get("parent_run_id")
+            if not parent_run_id and run_id:
+                data["trace_id"] = run_id
+                data["dotted_order"] = self.make_dot_order(run_id=run_id)
+        return data
+
+    ls.LangsmithLogger._prepare_log_data = _patched_prepare_log_data
+    print("✅ [LITELLM] Patched LangsmithLogger._prepare_log_data for valid trace_id & session_name", flush=True)
+except Exception as e:
+    print(f"⚠️ [LITELLM] Could not patch LangsmithLogger: {e}", flush=True)
+
 def trim_tool_descriptions(obj, max_len=120):
     """Recursively trim all 'description' fields in tools schema to max_len chars to save 20,000+ tokens."""
     if isinstance(obj, dict):
