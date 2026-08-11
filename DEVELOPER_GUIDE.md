@@ -134,3 +134,9 @@ Khi cần chạy lệnh bash trực tiếp hoặc kiểm tra các file cấu hì
 
 ---
 *Chúc các bạn develop vui vẻ! Mọi đóng gppp xin gửi pull request về nhánh phát triển tương ng.*
+
+
+docker compose up -d sre-agent
+
+
+docker compose up -d sre-agent

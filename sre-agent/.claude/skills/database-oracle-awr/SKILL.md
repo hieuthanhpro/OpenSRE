@@ -1,10 +1,18 @@
 ---
 name: database-oracle-awr
-description: Oracle AWR (Automatic Workload Repository) report analysis. Use when analyzing Oracle Database performance, listing top SQL queries consuming CPU, RAM, or Disk I/O, or investigating Oracle DB bottlenecks and AWR reports.
+description: |
+  Oracle AWR (Automatic Workload Repository) HTML report analysis ONLY.
+  Use ONLY when the user explicitly mentions: AWR report, AWR file, top SQL by CPU/RAM/I/O,
+  SQL execution plan, buffer gets, physical reads, wait events, SGA/PGA advisory, DB bottleneck analysis.
+
+  ❌ DO NOT use for: real-time monitoring, recent logs, "có vấn đề gì không", "5p/15p/1h gần đây",
+  "oracle 114 có lỗi không", "xem log oracle", "DB có lỗi không". For those → use observability-graylog.
 allowed-tools: Bash(*)
 ---
 
 # Oracle AWR Report Analysis Skill
+
+> ⚠️ **SKILL ROUTING GUARD** — If the user's question is about **recent logs, recent issues, monitoring, or errors in the last N minutes/hours** (e.g., "oracle 114 có vấn đề gì không?", "5p gần đây DB có lỗi?", "xem log oracle") → **STOP. Do NOT proceed. Use `observability-graylog` skill instead.** This skill is ONLY for parsing AWR HTML report files.
 
 ## Workflow
 

@@ -74,6 +74,10 @@ Optional chat bots:
 - Config hierarchy: org base, team overrides. Dicts merge, lists replace.
 - Error format: `{"success": bool, "result": ..., "error": "..."}`
 - SSE streaming: events defined in events.py
+- **Database Log Stream**: Query stream `Database Log stream` for DB logs in Graylog.
+- **Oracle DB Naming**: Oracle DBs are named by IP's last octet (e.g. `10.36.88.114` -> `oracle 114`, query by `log_ip:10.36.88.114` / `source:10.36.88.114`).
+- **Graylog Query Limit**: Keep log search limits low (max 20-50 entries) when querying Graylog to avoid large data payloads.
+- **AWR Default File**: If no AWR file path is provided in prompt, default to analyzing the newest `.html` file in `/app/awr/orcl/`.
 
 ## Contributing
 
