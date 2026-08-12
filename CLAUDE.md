@@ -78,6 +78,7 @@ Optional chat bots:
 - **Oracle DB Naming**: Oracle DBs are named by IP's last octet (e.g. `10.36.88.114` -> `oracle 114`, query by `log_ip:10.36.88.114` / `source:10.36.88.114`).
 - **Graylog Query Limit**: Keep log search limits low (max 20-50 entries) when querying Graylog to avoid large data payloads.
 - **AWR Default File**: If no AWR file path is provided in prompt, default to analyzing the newest `.html` file in `/app/awr/orcl/`.
+- **Oracle DB Monitoring Skill**: For real-time monitoring queries (active sessions, locks, slow SQL, tablespaces, temp/undo), use `database-oracle-monitoring` skill referencing standardized queries in `/app/sqltunning/oracle_monitoring_queries_summary.md`.
 
 ## Contributing
 
