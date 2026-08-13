@@ -194,8 +194,13 @@ Examples:
                     print(f"   {line}")
 
     except Exception as e:
-        sys.stderr.write(f"Error executing Graylog search: {e}\n")
+        err_msg = str(e)
+        if "503" in err_msg or "Service Unavailable" in err_msg:
+            print(f"❌ Lỗi kết nối Graylog (HTTP 503 Service Unavailable): Server Graylog tại http://192.168.166.109/ hiện đang tạm ngắt kết nối (Backend service is down).")
+        else:
+            print(f"❌ Lỗi kết nối Graylog: {err_msg}")
         sys.exit(1)
+
 
 
 if __name__ == "__main__":

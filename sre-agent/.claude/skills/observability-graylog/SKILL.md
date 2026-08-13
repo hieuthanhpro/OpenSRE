@@ -11,8 +11,21 @@ allowed-tools: Bash(*)
 
 # Graylog Log Analysis Skill
 
+## 🚨 CRITICAL RULE — Connection Failures & Error Reporting
+**If any script returns a connection failure, network timeout, 404, or Connection Refused (`[Errno 111] Connection refused`):**
+1. **STOP IMMEDIATELY.** Do NOT run diagnostic bash loops (do not check `env`, `netstat`, `ss`, `ping`, `curl`, scan ports 9000/9001/12201).
+2. **DO NOT read or inspect python source code files** (`.py` files like `graylog_client.py` or `search_logs.py`).
+3. **Report the exact raw connection error message directly to the user as your final output.**
+
+## ⚡ FAST EXECUTION DIRECTIVES (Zero Redundant Steps)
+1. **DO NOT run exploratory bash checks** (`ls /app/.claude/skills/`, `cat SKILL.md`, `env | grep`).
+2. **DO NOT read, grep, or inspect python script files** (`graylog_client.py` or `search_logs.py`). They are ready to execute.
+3. **Execute immediately in Step 1**:
+   - Oracle DB check -> `python3 .claude/skills/observability-graylog/scripts/search_logs.py --oracle NNN --range 5m`
+
 > **IMPORTANT — Skill Routing for Oracle DB Questions:**
 > When the user asks about recent Oracle DB issues → this skill is CORRECT. Do NOT try sqlplus, tnsping, or local file lookups. Go straight to Step 1 below.
+
 
 ---
 

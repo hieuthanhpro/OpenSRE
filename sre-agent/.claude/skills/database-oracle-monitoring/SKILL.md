@@ -10,9 +10,34 @@ allowed-tools: Bash(python *)
 
 # Oracle Database Skill
 
+## 🚨 CRITICAL RULE — Connection Failures & Error Reporting
+**If any database query or script returns a connection failure (e.g. `ORA-12170`, `DPY-3010`, `ConnectionRefusedError`, `ORA-01017`):**
+1. **STOP IMMEDIATELY.** Do NOT run diagnostic bash loops (do not check `env`, `netstat`, `ss`, `ping`, `curl` endpoints).
+2. **DO NOT read or inspect python source code files** (`.py` files like `query_oracle.py`).
+3. **Report the exact raw connection error message directly to the user as your final output.**
+
+## ⚡ FAST EXECUTION DIRECTIVES (Zero Redundant Steps)
+1. **ALWAYS PRIORITIZE PRE-BUILT SCRIPTS**: Always use pre-built Python scripts in `.claude/skills/database-oracle-monitoring/scripts/` (`monitor_presets.py` or `query_oracle.py`). DO NOT write new temporary `.py` scripts in `/tmp/`.
+2. **DO NOT run exploratory bash checks** (`ls /app/.claude/skills/`, `cat SKILL.md`, `env | grep`) or inspect python source files.
+3. **Execute immediately in Step 1**:
+   - High Cost SQL -> `python3 .claude/skills/database-oracle-monitoring/scripts/monitor_presets.py --preset high_cost`
+   - High CPU SQL -> `python3 .claude/skills/database-oracle-monitoring/scripts/monitor_presets.py --preset cpu`
+   - Active Sessions -> `python3 .claude/skills/database-oracle-monitoring/scripts/monitor_presets.py --preset active_sessions`
+   - Locks / Blocking -> `python3 .claude/skills/database-oracle-monitoring/scripts/monitor_presets.py --preset locks`
+   - Tablespaces -> `python3 .claude/skills/database-oracle-monitoring/scripts/monitor_presets.py --preset tablespaces`
+   - SQL_ID Full Text & Plan -> `python3 .claude/skills/database-oracle-monitoring/scripts/query_oracle.py --sql-id "<SQL_ID>"`
+4. **OUTPUT BUDGET & LAZY EXECUTION PLAN DIRECTIVE**:
+   - Limit Top SQL table output to max 3–5 items per response.
+   - **Truncate Long SQL Text**: If a SELECT query returns a long SQL statement (>150-200 characters), truncate it in response text (e.g. `SELECT * FROM... (truncated)`). Do not output or feed huge raw SQL blocks into LLM context.
+   - **Summary First for Execution Plans**: Do NOT analyze or print massive execution plans by default. Show a summary table of the query (SQL ID, Elapsed Time, CPU Time, Executions, preview text) to the user first.
+   - **Perform Deep Plan Analysis ONLY on Demand**: Only fetch and analyze execution plans when the user explicitly asks for execution plan analysis (e.g. "hãy phân tích execution plan câu này").
+
+
 ## Authentication
 
 Credentials are automatically loaded from `.env` environment variables (`ORACLE_DB_HOST`, `ORACLE_DB_PORT`, `ORACLE_DB_USER`, `ORACLE_DB_PASSWORD`, `ORACLE_DB_SERVICE`).
+
+
 
 ---
 

@@ -77,8 +77,17 @@ Optional chat bots:
 - **Database Log Stream**: Query stream `Database Log stream` for DB logs in Graylog.
 - **Oracle DB Naming**: Oracle DBs are named by IP's last octet (e.g. `10.36.88.114` -> `oracle 114`, query by `log_ip:10.36.88.114` / `source:10.36.88.114`).
 - **Graylog Query Limit**: Keep log search limits low (max 20-50 entries) when querying Graylog to avoid large data payloads.
-- **AWR Default File**: If no AWR file path is provided in prompt, default to analyzing the newest `.html` file in `/app/awr/orcl/`.
-- **Oracle DB Monitoring Skill**: For real-time monitoring queries (active sessions, locks, slow SQL, tablespaces, temp/undo), use `database-oracle-monitoring` skill referencing standardized queries in `/app/sqltunning/oracle_monitoring_queries_summary.md`.
+
+### Oracle Database Skills:
+1. **`database-oracle-monitoring`** (Live / Real-time Monitoring):
+   - **Use Cases**: Live database monitoring on Oracle DB instances (e.g., Oracle 114), active sessions, locks/blocking, top SQL by CPU/RAM/I/O, high cost SQL, execution plans, tablespaces, temp/undo.
+   - **Scripts**: `.claude/skills/database-oracle-monitoring/scripts/monitor_presets.py` & `query_oracle.py`.
+   - **Rules**: Always prioritize pre-built scripts. Never create temporary `.py` scripts in `/tmp/`. Truncate SQL text >150-200 chars. Stop immediately on connection errors (`ORA-12170`, `DPY-3010`, `ConnectionRefused`).
+
+2. **`database-oracle-awr`** (AWR HTML Report Analysis):
+   - **Use Cases**: Offline analysis of Oracle AWR (Automatic Workload Repository) HTML report files, top SQL by CPU/RAM/I/O in AWR, wait events, SGA/PGA advisory.
+   - **Scripts**: `.claude/skills/database-oracle-awr/scripts/parse_awr.py`.
+   - **Rules**: Default to analyzing the newest `.html` file in `/app/awr/orcl/` if no AWR file path is provided in the user prompt.
 
 ## Contributing
 

@@ -110,12 +110,12 @@ class ClampTokensCallback(CustomLogger):
                                     continue
                                 msg["content"] = filtered_content
                         elif role == "user" and isinstance(content, list):
-                            # Filter out <system-reminder> blocks from user messages
+                            # Filter out <system-reminder> blocks from user messages but preserve skill list
                             filtered_content = []
                             for b in content:
                                 if isinstance(b, dict) and b.get("type") == "text":
                                     t = b.get("text", "")
-                                    if "<system-reminder>" in t or "Available agent types for the Agent tool" in t or "The following skills are available" in t:
+                                    if ("<system-reminder>" in t or "Available agent types for the Agent tool" in t) and "The following skills are available" not in t:
                                         print(f"✂️ [LITELLM] Stripped <system-reminder> block from messages[user] ({len(t)} chars)")
                                         continue
                                 filtered_content.append(b)
@@ -124,21 +124,11 @@ class ClampTokensCallback(CustomLogger):
                     new_messages.append(msg)
                 data["messages"] = new_messages
 
-            # 2.3 Filter out unused developer tools from data['tools'] (saves ~8,000 tokens)
+            # 2.3 Trim tool descriptions in data['tools'] to save tokens without dropping any valid tools
             tools = data.get("tools")
             if isinstance(tools, list):
-                ALLOWED_TOOLS = {"Bash", "Skill", "Read", "Grep", "Glob", "Edit", "Agent"}
-                filtered_tools = []
-                for t in tools:
-                    if isinstance(t, dict):
-                        t_name = t.get("name") or (t.get("function", {}).get("name") if isinstance(t.get("function"), dict) else None)
-                        if not t_name or t_name in ALLOWED_TOOLS:
-                            filtered_tools.append(t)
-                if filtered_tools:
-                    data["tools"] = filtered_tools
-
-                trim_tool_descriptions(data["tools"], max_len=120)
-                print(f"✂️ [LITELLM] Filtered & trimmed tool schemas down to {len(data['tools'])} core SRE tools")
+                trim_tool_descriptions(tools, max_len=120)
+                print(f"✂️ [LITELLM] Trimmed tool descriptions for {len(tools)} tools", flush=True)
 
             # 2.4 Inject Multi-action / Parallel Execution Rule to force LLM to output multiple actions in 1 turn
             PARALLEL_RULE = (
@@ -205,16 +195,16 @@ class ClampTokensCallback(CustomLogger):
             data["metadata"]["trace_name"] = trace_name
             data["metadata"]["project_name"] = "OpenSRE"
 
-            # 4. Estimate input tokens & compute max output tokens
+            # 4. Estimate input tokens & compute max output tokens (128k context support)
             messages = data.get("messages") or []
             input_text = str(messages) + str(data.get("system", "")) + str(data.get("tools", ""))
             
             est_input_tokens = int(len(input_text) / 2.8) + 200
             
-            max_model_len = 32768
-            headroom = 500
+            max_model_len = 131072  # 128k context window for modern LLM models
+            headroom = 1000
             
-            avail_tokens = max(512, max_model_len - est_input_tokens - headroom)
+            avail_tokens = max(2048, max_model_len - est_input_tokens - headroom)
             target_max = min(4096, avail_tokens)
             
             data["max_tokens"] = target_max

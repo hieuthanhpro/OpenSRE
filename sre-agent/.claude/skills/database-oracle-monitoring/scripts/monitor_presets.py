@@ -65,35 +65,37 @@ PRESET_QUERIES = {
     "cpu": {
         "title": "Tìm các câu lệnh SQL chiếm CPU cao nhất",
         "sql": """
-            SELECT sql_id,
-                   ROUND(cpu_time / 1000000, 2) AS cpu_seconds,
-                   ROUND(elapsed_time / 1000000, 2) AS elapsed_seconds,
-                   executions,
-                   ROUND(buffer_gets, 0) AS buffer_gets,
-                   disk_reads,
-                   SUBSTR(sql_text, 1, 120) AS sql_text
-            FROM v$sqlarea
-            WHERE cpu_time > 0
-            ORDER BY cpu_time DESC
-            FETCH FIRST 20 ROWS ONLY
+            SELECT * FROM (
+                SELECT sql_id,
+                       ROUND(cpu_time / 1000000, 2) AS cpu_seconds,
+                       ROUND(elapsed_time / 1000000, 2) AS elapsed_seconds,
+                       executions,
+                       ROUND(buffer_gets, 0) AS buffer_gets,
+                       disk_reads,
+                       SUBSTR(sql_text, 1, 120) AS sql_text
+                FROM v$sqlarea
+                WHERE cpu_time > 0
+                ORDER BY cpu_time DESC
+            ) WHERE ROWNUM <= 20
         """
     },
     # 4. Tìm câu lệnh SQL chiếm COST cao, thời gian chạy lâu
     "high_cost": {
         "title": "Tìm các câu lệnh SQL có Optimizer Cost cao, thời gian chạy lâu",
         "sql": """
-            SELECT sql_id,
-                   optimizer_cost,
-                   ROUND(cpu_time / 1000000, 2) AS cpu_seconds,
-                   ROUND(elapsed_time / 1000000, 2) AS elapsed_seconds,
-                   executions,
-                   buffer_gets,
-                   disk_reads,
-                   SUBSTR(sql_text, 1, 120) AS sql_text
-            FROM v$sqlarea
-            WHERE optimizer_cost IS NOT NULL
-            ORDER BY optimizer_cost DESC
-            FETCH FIRST 20 ROWS ONLY
+            SELECT * FROM (
+                SELECT sql_id,
+                       optimizer_cost,
+                       ROUND(cpu_time / 1000000, 2) AS cpu_seconds,
+                       ROUND(elapsed_time / 1000000, 2) AS elapsed_seconds,
+                       executions,
+                       buffer_gets,
+                       disk_reads,
+                       SUBSTR(sql_text, 1, 120) AS sql_text
+                FROM v$sqlarea
+                WHERE optimizer_cost IS NOT NULL
+                ORDER BY optimizer_cost DESC
+            ) WHERE ROWNUM <= 20
         """
     },
     # 5. Tìm các câu lệnh SQL / Jobs chạy lâu (Long Operations)
@@ -114,33 +116,35 @@ PRESET_QUERIES = {
     "physical_io": {
         "title": "Tìm các câu lệnh SQL chiếm Physical Read / Disk I/O cao nhất",
         "sql": """
-            SELECT sql_id,
-                   disk_reads,
-                   ROUND(physical_read_bytes / 1024 / 1024, 2) AS read_mb,
-                   ROUND(physical_write_bytes / 1024 / 1024, 2) AS write_mb,
-                   executions,
-                   ROUND(elapsed_time / 1000000, 2) AS elapsed_seconds,
-                   SUBSTR(sql_text, 1, 120) AS sql_text
-            FROM v$sqlarea
-            WHERE disk_reads > 0
-            ORDER BY disk_reads DESC
-            FETCH FIRST 20 ROWS ONLY
+            SELECT * FROM (
+                SELECT sql_id,
+                       disk_reads,
+                       ROUND(physical_read_bytes / 1024 / 1024, 2) AS read_mb,
+                       ROUND(physical_write_bytes / 1024 / 1024, 2) AS write_mb,
+                       executions,
+                       ROUND(elapsed_time / 1000000, 2) AS elapsed_seconds,
+                       SUBSTR(sql_text, 1, 120) AS sql_text
+                FROM v$sqlarea
+                WHERE disk_reads > 0
+                ORDER BY disk_reads DESC
+            ) WHERE ROWNUM <= 20
         """
     },
     # 7. Tìm các câu lệnh SQL tiêu tốn nhiều RAM (Buffer Gets)
     "buffer_gets": {
         "title": "Tìm các câu lệnh SQL tiêu tốn nhiều RAM (Buffer Gets)",
         "sql": """
-            SELECT sql_id,
-                   buffer_gets,
-                   executions,
-                   ROUND(buffer_gets / GREATEST(executions, 1), 2) AS gets_per_exec,
-                   sharable_mem,
-                   SUBSTR(sql_text, 1, 120) AS sql_text
-            FROM v$sqlarea
-            WHERE buffer_gets > 0
-            ORDER BY buffer_gets DESC
-            FETCH FIRST 20 ROWS ONLY
+            SELECT * FROM (
+                SELECT sql_id,
+                       buffer_gets,
+                       executions,
+                       ROUND(buffer_gets / GREATEST(executions, 1), 2) AS gets_per_exec,
+                       sharable_mem,
+                       SUBSTR(sql_text, 1, 120) AS sql_text
+                FROM v$sqlarea
+                WHERE buffer_gets > 0
+                ORDER BY buffer_gets DESC
+            ) WHERE ROWNUM <= 20
         """
     },
     # 8. Dung lượng Tablespace

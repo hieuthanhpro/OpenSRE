@@ -17,6 +17,32 @@ import json
 import os
 import sys
 
+def _init_thick_mode(oracledb_mod):
+    """Dynamically locate and initialize Oracle Instant Client Thick mode."""
+    candidate_dirs = []
+    env_dir = os.environ.get("ORACLE_CLIENT_DIR")
+    if env_dir:
+        candidate_dirs.append(env_dir)
+    
+    # Check standard /opt/oracle directories
+    if os.path.exists("/opt/oracle"):
+        for entry in sorted(os.listdir("/opt/oracle"), reverse=True):
+            if entry.startswith("instantclient"):
+                candidate_dirs.append(os.path.join("/opt/oracle", entry))
+
+    for d in candidate_dirs:
+        if os.path.isdir(d):
+            try:
+                oracledb_mod.init_oracle_client(lib_dir=d)
+                return True
+            except Exception:
+                pass
+    try:
+        oracledb_mod.init_oracle_client()
+        return True
+    except Exception:
+        return False
+
 def get_db_connection():
     """Get Oracle database connection using oracledb or cx_Oracle."""
     host = os.environ.get("ORACLE_DB_HOST")
@@ -33,15 +59,19 @@ def get_db_connection():
     # Try oracledb first
     try:
         import oracledb
-        client_dir = os.environ.get("ORACLE_CLIENT_DIR", "/opt/oracle/instantclient")
-        if os.path.exists(client_dir):
-            try:
-                oracledb.init_oracle_client(lib_dir=client_dir)
-            except Exception:
-                pass
+        _init_thick_mode(oracledb)
         conn = oracledb.connect(user=user, password=password, host=host, port=port, service_name=service_name)
         return conn
     except Exception as e1:
+        # If thin mode error DPY-3010 occurred, force thick mode init and retry
+        if "DPY-3010" in str(e1):
+            try:
+                import oracledb
+                _init_thick_mode(oracledb)
+                conn = oracledb.connect(user=user, password=password, host=host, port=port, service_name=service_name)
+                return conn
+            except Exception:
+                pass
         # Try cx_Oracle as fallback
         try:
             import cx_Oracle
@@ -51,6 +81,7 @@ def get_db_connection():
         except Exception as e2:
             print(f"Error connecting to Oracle DB ({host}:{port}/{service_name}): {e1} | Fallback: {e2}", file=sys.stderr)
             sys.exit(1)
+
 
 def execute_read_only_query(sql_query, as_json=False):
     """Safely execute a read-only SELECT query against the Oracle Database."""
