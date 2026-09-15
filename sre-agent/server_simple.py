@@ -129,20 +129,10 @@ _TEAM_NODE_ID = os.getenv("OPENSRE_TEAM_ID", "default")
 
 def _resolve_team_identity(token: str) -> tuple[str, str]:
     """Resolve org_id and team_node_id from config-service auth/me; env fallback on failure."""
-    try:
-        resp = httpx.get(
-            f"{_CONFIG_SERVICE_URL}/api/v1/auth/me",
-            headers={"Authorization": f"Bearer {token}"},
-            timeout=5.0,
-        )
-        resp.raise_for_status()
-        data = resp.json()
-        org_id = (data.get("org_id") or "").strip() or _ORG_ID
-        team_node_id = (data.get("team_node_id") or "").strip() or _TEAM_NODE_ID
-        return org_id, team_node_id
-    except Exception as e:
-        logger.warning("[AUTH] resolve_team_identity failed, using env fallback: %s", e)
-        return _ORG_ID, _TEAM_NODE_ID
+    data = _fetch_auth_me(token)
+    org_id = (data.get("org_id") or "").strip() or _ORG_ID
+    team_node_id = (data.get("team_node_id") or "").strip() or _TEAM_NODE_ID
+    return org_id, team_node_id
 
 
 def _thread_tenancy(thread_id: str) -> tuple[str, str]:
@@ -164,6 +154,44 @@ def _normalize_trigger_source(value: Optional[str]) -> str:
     return v if v in _ALLOWED_TRIGGER_SOURCES else "web_ui"
 
 
+_TRIGGER_ACTOR_MAX = 128
+
+
+def _normalize_trigger_actor(value: Optional[str]) -> Optional[str]:
+    """Strip and cap trigger_actor. Empty → None so the DB column stays null."""
+    if not isinstance(value, str):
+        return None
+    stripped = value.strip()
+    if not stripped:
+        return None
+    return stripped[:_TRIGGER_ACTOR_MAX]
+
+
+def _fetch_auth_me(token: str) -> dict:
+    """GET /auth/me as a dict. Empty dict on failure (do not raise)."""
+    try:
+        resp = httpx.get(
+            f"{_CONFIG_SERVICE_URL}/api/v1/auth/me",
+            headers={"Authorization": f"Bearer {token}"},
+            timeout=5.0,
+        )
+        resp.raise_for_status()
+        data = resp.json()
+        return data if isinstance(data, dict) else {}
+    except Exception as e:
+        logger.warning("[AUTH] fetch_auth_me failed: %s", e)
+        return {}
+
+
+def _actor_from_auth_me(data: dict) -> Optional[str]:
+    """Web SSO actor: display name if present, else email. Token-paste → None."""
+    if not isinstance(data, dict):
+        return None
+    return _normalize_trigger_actor(data.get("name")) or _normalize_trigger_actor(
+        data.get("email")
+    )
+
+
 def _create_agent_run(
     thread_id: str, prompt: str, agent_name: str = "sre-agent"
 ) -> Optional[str]:
@@ -178,7 +206,7 @@ def _create_agent_run(
             "team_node_id": team_node_id,
             "correlation_id": thread_id,
             "trigger_source": trigger_source,
-            "trigger_actor": None,
+            "trigger_actor": _trigger_actor_by_thread.get(thread_id),
             "trigger_message": prompt,
             "trigger_channel_id": None,
             "agent_name": agent_name,
@@ -196,6 +224,29 @@ def _create_agent_run(
     except Exception as e:
         logger.warning(f"[RUNS] create_agent_run failed (non-fatal): {e}")
         return None
+
+
+def _finalize_running_rows_for_thread(thread_id: str) -> None:
+    """Best-effort: mark leftover running rows for this thread interrupted."""
+    org_id, team_node_id = _thread_tenancy(thread_id)
+    try:
+        resp = httpx.post(
+            f"{_CONFIG_SERVICE_URL}/api/v1/internal/agent-runs/finalize-running-for-thread",
+            json={
+                "correlation_id": thread_id,
+                "org_id": org_id,
+                "team_node_id": team_node_id,
+                "status": "interrupted",
+                "error_message": "Superseded by new turn",
+            },
+            headers=_INTERNAL_HEADERS,
+            timeout=5.0,
+        )
+        resp.raise_for_status()
+    except Exception as e:
+        logger.warning(
+            f"[RUNS] finalize_running_rows_for_thread {thread_id} failed (non-fatal): {e}"
+        )
 
 
 def _complete_agent_run(
@@ -367,6 +418,80 @@ def _flush_thoughts(run_id: str, thoughts: list) -> None:
         logger.warning(f"[RUNS] flush_thoughts {run_id} failed (non-fatal): {e}")
 
 
+def _persist_sdk_session_id(run_id: str, sdk_session_id: str) -> None:
+    """Best-effort PUT of sdk_session_id on a running agent run."""
+    if not run_id or not sdk_session_id:
+        return
+    try:
+        resp = httpx.put(
+            f"{_CONFIG_SERVICE_URL}/api/v1/internal/agent-runs/{run_id}/sdk-session",
+            json={"sdk_session_id": sdk_session_id},
+            headers=_INTERNAL_HEADERS,
+            timeout=5.0,
+        )
+        resp.raise_for_status()
+    except Exception as e:
+        logger.warning(
+            f"[RUNS] persist_sdk_session_id {run_id} failed (non-fatal): {e}"
+        )
+
+
+def _lookup_latest_sdk_session_id(thread_id: str) -> Optional[str]:
+    """Best-effort latest sdk_session_id for this thread. None on miss or error."""
+    org_id, team_node_id = _thread_tenancy(thread_id)
+    try:
+        resp = httpx.get(
+            f"{_CONFIG_SERVICE_URL}/api/v1/internal/agent-runs/latest-sdk-session",
+            params={
+                "correlation_id": thread_id,
+                "org_id": org_id,
+                "team_node_id": team_node_id,
+            },
+            headers=_INTERNAL_HEADERS,
+            timeout=5.0,
+        )
+        resp.raise_for_status()
+        sid = (resp.json() or {}).get("sdk_session_id")
+        if isinstance(sid, str) and sid.strip():
+            return sid.strip()
+        return None
+    except Exception as e:
+        logger.warning(
+            f"[RUNS] lookup_latest_sdk_session_id {thread_id} failed (non-fatal): {e}"
+        )
+        return None
+
+
+async def _start_interactive_session(thread_id: str, team_config, resume: Optional[str]):
+    """Start a session; if resume fails (missing JSONL), start without resume."""
+    from agent import InteractiveAgentSession
+
+    session = InteractiveAgentSession(
+        thread_id=thread_id, team_config=team_config, resume=resume
+    )
+    try:
+        await session.start()
+        return session
+    except Exception as e:
+        if not resume:
+            raise
+        logger.warning(
+            "[BG] resume %s failed for thread %s; starting fresh: %s",
+            resume,
+            thread_id,
+            e,
+        )
+        try:
+            await session.cleanup()
+        except Exception:
+            pass
+        session = InteractiveAgentSession(
+            thread_id=thread_id, team_config=team_config, resume=None
+        )
+        await session.start()
+        return session
+
+
 # ---------------------------------------------------------------------------
 # File proxy: token -> download info mapping
 _file_download_tokens: Dict[str, dict] = {}
@@ -375,6 +500,7 @@ _FILE_TOKEN_TTL_SECONDS = 3600  # 1 hour
 import asyncio
 
 # Thread ID -> background task mapping
+_SHUTDOWN_INTERRUPT_SECONDS = 5.0
 _background_tasks: Dict[str, asyncio.Task] = {}
 _message_queues: Dict[str, asyncio.Queue] = {}  # Queue for sending prompts
 _response_queues: Dict[str, asyncio.Queue] = {}  # Queue for receiving events
@@ -389,6 +515,7 @@ _ALLOWED_TRIGGER_SOURCES = frozenset(
     {"web_ui", "teams", "slack", "api", "scheduled", "manual"}
 )
 _trigger_source_by_thread: Dict[str, str] = {}
+_trigger_actor_by_thread: Dict[str, str] = {}
 _active_sessions: Dict[str, object] = (
     {}
 )  # Thread ID -> agent session (for interrupt/answer)
@@ -433,6 +560,51 @@ async def _bootstrap_memory_schema():
         logger.error("[MEMORY] schema bootstrap failed: %s", e)
 
 
+@app.on_event("shutdown")
+async def _finalize_on_shutdown():
+    """Best-effort: mark in-flight simple-mode runs interrupted on SIGTERM."""
+    logger.info("[SHUTDOWN] finalizing in-flight agent runs")
+    thread_ids = list(_background_tasks.keys())
+    for thread_id in thread_ids:
+        session = _active_sessions.get(thread_id)
+        if session is not None:
+            try:
+
+                async def _drain_interrupt():
+                    async for _event in session.interrupt():
+                        pass
+
+                await asyncio.wait_for(
+                    _drain_interrupt(), timeout=_SHUTDOWN_INTERRUPT_SECONDS
+                )
+            except Exception as e:
+                logger.warning("[SHUTDOWN] interrupt %s failed: %s", thread_id, e)
+        _complete_agent_run(
+            thread_id=thread_id,
+            success=True,
+            result_text="",
+            tool_calls=[],
+            run_status="interrupted",
+            error_message="Investigation interrupted (agent shutting down)",
+        )
+        task = _background_tasks.get(thread_id)
+        if isinstance(task, asyncio.Task):
+            task.cancel()
+    leftover = [
+        t
+        for t in _background_tasks.values()
+        if isinstance(t, asyncio.Task) and not t.done()
+    ]
+    if leftover:
+        try:
+            await asyncio.wait_for(
+                asyncio.gather(*leftover, return_exceptions=True),
+                timeout=_SHUTDOWN_INTERRUPT_SECONDS,
+            )
+        except Exception as e:
+            logger.warning("[SHUTDOWN] wait for background tasks failed: %s", e)
+
+
 class ImageData(BaseModel):
     type: str = "base64"
     media_type: str
@@ -456,6 +628,8 @@ class InvestigateRequest(BaseModel):
     resume_session_id: Optional[str] = None
     # Optional. teams-bot sends "teams"; web console omits and we store web_ui.
     trigger_source: Optional[str] = None
+    # Optional. Teams sends activity.from.name. Web omits; we infer from /auth/me.
+    trigger_actor: Optional[str] = None
 
 
 class InterruptRequest(BaseModel):
@@ -526,6 +700,8 @@ async def _ensure_background_task(
     """Start the per-thread background agent task if not already running."""
     if thread_id in _background_tasks:
         return
+    if not resume_session_id:
+        resume_session_id = _lookup_latest_sdk_session_id(thread_id)
     logger.info(f"Creating background task for thread {thread_id}")
     _message_queues[thread_id] = asyncio.Queue()
     _response_queues[thread_id] = asyncio.Queue()
@@ -601,7 +777,7 @@ async def agent_background_task(
     Processes messages from queue and sends responses back.
     """
 
-    from agent import InteractiveAgentSession, observability_update_metadata
+    from agent import observability_update_metadata
 
     logger.info(f"[BG] Starting background agent task for thread {thread_id}")
 
@@ -625,10 +801,9 @@ async def agent_background_task(
         except Exception as e:
             logger.warning(f"[BG] Failed to load team config (continuing without): {e}")
 
-    session = InteractiveAgentSession(
-        thread_id=thread_id, team_config=team_config, resume=resume_session_id
+    session = await _start_interactive_session(
+        thread_id, team_config, resume_session_id
     )
-    await session.start()
     logger.info(f"[BG] Session started for thread {thread_id}")
     _active_sessions[thread_id] = session
 
@@ -664,6 +839,7 @@ async def agent_background_task(
                     _agent_name = _ra.name
             except Exception:
                 _agent_name = "sre-agent"
+            _finalize_running_rows_for_thread(thread_id)
             _rid = _create_agent_run(
                 thread_id=thread_id, prompt=original_prompt, agent_name=_agent_name
             )
@@ -762,6 +938,11 @@ async def agent_background_task(
                     )
                     persisted_tool_call_count += 1
 
+                elif event_type == "sdk_session" and _rid:
+                    sid = data.get("session_id")
+                    if sid:
+                        _persist_sdk_session_id(_rid, sid)
+
                 if event_type == "result":
                     run_result_text = data.get("text", "")
                     run_success = data.get("success", True)
@@ -818,6 +999,7 @@ async def agent_background_task(
             result_text=f"Investigation failed: {e}",
             tool_calls=[],
             duration_seconds=0.0,
+            sdk_session_id=getattr(session, "session_id", None),
         )
         await response_queue.put({"error": str(e)})
     finally:
@@ -827,7 +1009,9 @@ async def agent_background_task(
             else:
                 os.environ["TEAM_TOKEN"] = prev_team_token
         _active_sessions.pop(thread_id, None)
-        # Cleanup
+        _background_tasks.pop(thread_id, None)
+        _message_queues.pop(thread_id, None)
+        _response_queues.pop(thread_id, None)
         if session.client:
             await session.cleanup()
         logger.info(f"[BG] Background task ended for thread {thread_id}")
@@ -1004,6 +1188,16 @@ async def investigate(investigate_request: InvestigateRequest, http_request: Req
             investigate_request.trigger_source
         )
 
+    body_actor = _normalize_trigger_actor(investigate_request.trigger_actor)
+    inferred = None
+    if not body_actor and team_token:
+        inferred = _actor_from_auth_me(_fetch_auth_me(team_token))
+    actor = body_actor or inferred
+    if actor:
+        _trigger_actor_by_thread[thread_id] = actor
+    else:
+        _trigger_actor_by_thread.pop(thread_id, None)
+
     print(f"🔍 Investigation: thread={thread_id}, new={is_new}")
 
     if is_new:
@@ -1128,13 +1322,21 @@ async def answer(request: AnswerRequest):
     """
     Send answer to agent's AskUserQuestion.
     """
-    if request.thread_id not in _active_sessions:
+    session = _active_sessions.get(request.thread_id)
+    if session is None:
         raise HTTPException(404, f"No active session for thread {request.thread_id}")
 
     print(f"📬 Forwarding answer to thread {request.thread_id}")
 
-    _active_sessions[request.thread_id]
-    # TODO: Implement answer forwarding when InteractiveAgentSession supports it
+    if not session.is_running:
+        raise HTTPException(409, "Investigation is not executing")
+
+    from agent import NoPendingQuestionError
+
+    try:
+        await session.provide_answer(request.answers)
+    except NoPendingQuestionError as e:
+        raise HTTPException(409, str(e)) from e
 
     return {"status": "ok", "thread_id": request.thread_id}
 

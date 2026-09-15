@@ -7,15 +7,19 @@ import { useAgentStream } from '@/lib/useAgentStream';
 import { timelineToTurns, mergeTurns } from '@/lib/agentTimeline';
 import ConversationTranscript from '@/components/ConversationTranscript';
 import ConversationComposer from '@/components/ConversationComposer';
-import { interruptThread } from '@/lib/streamRequest';
+import { isOrphanedRun } from '@/lib/orphanRun';
+import { abandonRun, interruptThread } from '@/lib/streamRequest';
 import {
   EpisodeResolutionBadge,
   RunStatusBadge,
 } from '@/components/RunStatusBadge';
 import { Skeleton, TeamPageShell } from '@/components/ui-flow';
 import { ArrowLeft } from 'lucide-react';
+import { formatTriggerMeta } from '@/lib/triggerMeta';
 
 const NO_RESUME = "This conversation can't be continued (no saved session). Start a new investigation.";
+const INTERRUPTED_HALT =
+  'This turn was interrupted. Send a follow-up to continue.';
 const STORAGE_KEY = 'opensre.trace.technicalDetails';
 
 export default function AgentRunDetailPage() {
@@ -23,8 +27,9 @@ export default function AgentRunDetailPage() {
   const router = useRouter();
   const {
     turns: historicalTurns, title, status,
-    sessionId, threadId, continuable, errorMessage, loading, error, reload,
-    episode, triggerSource,
+    sessionId, threadId, sessionAlive, continuable, errorMessage, loading, error, reload,
+    activeKnown, consecutiveInactivePolls,
+    episode, triggerSource, triggerActor,
   } = useConversation(runId);
 
   const stream = useAgentStream({
@@ -40,7 +45,14 @@ export default function AgentRunDetailPage() {
     queuedMessages,
     backgroundWaiting,
   } = stream;
-  const isRunning = status === 'running' || stream.isStreaming;
+  const isOrphaned = isOrphanedRun({
+    status,
+    activeKnown,
+    sessionAlive,
+    isStreaming: stream.isStreaming,
+    consecutiveInactivePolls,
+  });
+  const isLiveTurn = stream.isStreaming || (status === 'running' && !isOrphaned);
 
   const settle = useCallback(async () => { await reload(); resetStream(); }, [reload, resetStream]);
 
@@ -53,11 +65,21 @@ export default function AgentRunDetailPage() {
       await stopStream();
       return;
     }
-    if (threadId) {
-      await interruptThread(threadId);
+    if (isOrphaned) {
+      await abandonRun(runId);
       await reload();
+      return;
     }
-  }, [stream.isStreaming, stopStream, threadId, reload]);
+    if (!threadId) return;
+    try {
+      await interruptThread(threadId);
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : '';
+      if (msg !== 'No active session to interrupt') throw e;
+      await abandonRun(runId);
+    }
+    await reload();
+  }, [stream.isStreaming, stopStream, isOrphaned, threadId, runId, reload]);
 
   const [technicalDetails, setTechnicalDetails] = useState(false);
 
@@ -102,15 +124,18 @@ export default function AgentRunDetailPage() {
   const liveTurns = timelineToTurns(stream.timeline);
   const turns = mergeTurns(historicalTurns, liveTurns, stream.runId);
 
-  const displayStatus = isRunning
-    ? 'running'
-    : (stream.runStatus === 'timeout' ? 'timeout' : status);
-  const haltMessage = stream.error || errorMessage;
-  const showHaltBanner = !isRunning && !!haltMessage && (
-    displayStatus === 'timeout' || displayStatus === 'failed'
+  const displayStatus = isOrphaned
+    ? 'interrupted'
+    : isLiveTurn
+      ? 'running'
+      : (stream.runStatus === 'timeout' ? 'timeout' : status);
+  const haltMessage = displayStatus === 'interrupted'
+    ? INTERRUPTED_HALT
+    : (stream.error || errorMessage);
+  const showHaltBanner = !isLiveTurn && !!haltMessage && (
+    displayStatus === 'timeout' || displayStatus === 'failed' || displayStatus === 'interrupted'
   );
 
-  const channelLabel = (triggerSource ?? 'web_ui').replace(/_/g, ' ');
   const turnLabel = `${turns.length} turn${turns.length === 1 ? '' : 's'}`;
 
   return (
@@ -124,10 +149,12 @@ export default function AgentRunDetailPage() {
             onSend={onSend}
             onQueueMessage={queueMessage}
             queuedMessages={queuedMessages}
-            onStop={isRunning ? onStop : undefined}
-            busy={isRunning}
-            disabled={!isRunning && !continuable}
-            disabledReason={NO_RESUME}
+            onStop={isLiveTurn || isOrphaned ? onStop : undefined}
+            busy={isLiveTurn}
+            disabled={!isLiveTurn && !continuable && !isOrphaned}
+            disabledReason={
+              !continuable && !isOrphaned && !threadId ? NO_RESUME : undefined
+            }
           />
         </div>
       }
@@ -163,7 +190,7 @@ export default function AgentRunDetailPage() {
               />
             )}
             <span className="text-xs text-slate-400 font-mono tabular-nums">
-              · {turnLabel} · {channelLabel}
+              · {turnLabel} · {formatTriggerMeta(triggerSource, triggerActor)}
             </span>
           </div>
         </header>
@@ -187,7 +214,7 @@ export default function AgentRunDetailPage() {
         {/* Full column width — align agent chat with run title edges */}
         <ConversationTranscript
           turns={turns}
-          isRunning={isRunning}
+          isRunning={isLiveTurn}
           technicalDetails={technicalDetails}
           backgroundWaiting={backgroundWaiting}
         />

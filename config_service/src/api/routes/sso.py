@@ -98,6 +98,61 @@ def _resolve_sso_email(
     return None
 
 
+def _resolve_sso_name(
+    userinfo: dict[str, Any],
+    id_token_claims: Optional[dict[str, Any]],
+    name_claim: str,
+) -> Optional[str]:
+    """First non-empty display name from OIDC claims.
+
+    Graph userinfo may omit `name`; Entra often returns `displayName` on the
+    ID token or `given_name` + `family_name` instead.
+    """
+    sources = [userinfo]
+    if id_token_claims:
+        sources.append(id_token_claims)
+    keys = (name_claim, "name", "displayName")
+    for source in sources:
+        for key in keys:
+            value = source.get(key)
+            if isinstance(value, str):
+                stripped = value.strip()
+                if stripped:
+                    return stripped
+
+    for source in sources:
+        given: Optional[str] = None
+        family: Optional[str] = None
+        for key in ("given_name", "givenName"):
+            value = source.get(key)
+            if isinstance(value, str) and value.strip():
+                given = value.strip()
+                break
+        for key in ("family_name", "surname", "familyName"):
+            value = source.get(key)
+            if isinstance(value, str) and value.strip():
+                family = value.strip()
+                break
+        if given and family:
+            return f"{given} {family}"
+        if given:
+            return given
+        if family:
+            return family
+
+    return None
+
+
+def _apply_sso_display_name(token: TeamToken, name: object) -> None:
+    """Persist Entra display name when present. Never clear a stored name."""
+    if not isinstance(name, str):
+        return
+    stripped = name.strip()
+    if not stripped:
+        return
+    token.display_name = stripped[:256]
+
+
 @router.post("/exchange", response_model=TokenExchangeResponse)
 async def exchange_auth_code(
     body: TokenExchangeRequest,
@@ -200,7 +255,7 @@ async def exchange_auth_code(
     token_claims = _id_token_claims(id_token)
 
     email = _resolve_sso_email(userinfo, token_claims, email_claim)
-    name = userinfo.get(name_claim) or token_claims.get(name_claim)
+    name = _resolve_sso_name(userinfo, token_claims, name_claim)
     groups = userinfo.get(groups_claim, [])
 
     if not email:
@@ -243,6 +298,7 @@ async def exchange_auth_code(
         existing_token.token_hash = _sso_token_hash(token_secret)
         existing_token.last_used_at = datetime.utcnow()
         existing_token.expires_at = datetime.utcnow() + timedelta(days=7)
+        _apply_sso_display_name(existing_token, name)
         token_id = existing_token.token_id
     else:
         # Create new token
@@ -269,6 +325,7 @@ async def exchange_auth_code(
             expires_at=datetime.utcnow() + timedelta(days=7),
             issued_by=f"sso:{email}",
         )
+        _apply_sso_display_name(new_token, name)
         db.add(new_token)
 
     db.commit()
