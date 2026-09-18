@@ -180,8 +180,14 @@ async def _run_investigation_body(
 
         if step.update_progress:
             now = time.monotonic()
-            if now - last_update >= UPDATE_INTERVAL_SECONDS:
-                await stream_update(build_progress_text(state))
+            if step.immediate_progress:
+                await stream_update(
+                    build_progress_text(state, run_url=_run_url(cfg, state))
+                )
+            elif now - last_update >= UPDATE_INTERVAL_SECONDS:
+                await stream_update(
+                    build_progress_text(state, run_url=_run_url(cfg, state))
+                )
                 last_update = now
 
         if step.post_question is not None:

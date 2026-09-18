@@ -23,6 +23,7 @@ import os
 import secrets
 import time
 import uuid
+from pathlib import Path
 from typing import Dict, List, Optional
 
 import httpx
@@ -41,6 +42,25 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
 load_dotenv()
+
+_DEFAULT_SESSIONS_ROOT = "/tmp/sessions"
+RUN_ID_FILENAME = ".opensre_agent_run_id"
+
+
+def write_thread_run_id(
+    thread_id: str,
+    run_id: str,
+    *,
+    sessions_root: str = _DEFAULT_SESSIONS_ROOT,
+) -> None:
+    """Persist this turn's run_id for skill scripts (cwd = thread workspace)."""
+    tid = (thread_id or "").strip()
+    rid = (run_id or "").strip()
+    if not tid or not rid:
+        return
+    folder = Path(sessions_root) / tid
+    folder.mkdir(parents=True, exist_ok=True)
+    (folder / RUN_ID_FILENAME).write_text(rid, encoding="utf-8")
 
 
 # ---------------------------------------------------------------------------
@@ -845,6 +865,7 @@ async def agent_background_task(
             )
             if _rid:
                 _run_id_by_thread[thread_id] = _rid
+                write_thread_run_id(thread_id, _rid)
                 # Stamp the OpenSRE URL hex onto this turn's Langfuse metadata
                 # so cost traces can be pasted onto /team/agent-runs/{id}.
                 observability_update_metadata(thread_id, agent_run_id=_rid)
