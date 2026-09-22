@@ -37,6 +37,8 @@ For enterprise safety, the recommended flow is:
 
 This avoids exposing team tokens to browsers.
 
+The web-ui Deployment sets `OPENSRE_VERSION` from the chart `appVersion` (shown on Settings → About); if you override the image tag without updating `appVersion`, About will still display the chart version.
+
 ## Admin auth (OIDC-first) + RBAC
 
 OpenSRE supports **OIDC JWTs** for admin auth (recommended for enterprise). The `config_service` is the source of truth for admin permissions via `GET /api/v1/auth/me`.
