@@ -289,6 +289,8 @@ services:
       - AGENT_SERVICE_URL=http://sre-agent:8000
       - WEB_UI_SSO_ORG_ID=${WEB_UI_SSO_ORG_ID:-local}
       - WEB_UI_PUBLIC_BASE_URL=${WEB_UI_PUBLIC_BASE_URL:-http://localhost:3002}
+      - OPENSRE_VERSION=${OPENSRE_VERSION:-dev}
+      - OPENSRE_GIT_SHA=${OPENSRE_GIT_SHA:-}
       - WEB_UI_COOKIE_SECURE=0
       - HOSTNAME=0.0.0.0
       - PORT=3000
