@@ -31,6 +31,7 @@ app = FastAPI(title="Anthropic->OpenAI Proxy", version="1.0.0")
 
 VLLM_BASE_URL = os.environ.get("VLLM_BASE_URL", "http://10.36.36.155:8201/v1")
 VLLM_MODEL = os.environ.get("VLLM_MODEL", "mic-llm")
+API_KEY = os.environ.get("CUSTOM_API_KEY", os.environ.get("OPENAI_API_KEY", os.environ.get("OPENROUTER_API_KEY", "EMPTY")))
 MAX_OUTPUT_TOKENS = int(os.environ.get("MAX_OUTPUT_TOKENS", "2048"))
 # System blocks larger than this are Claude Code preset -- strip them
 MAX_SYSTEM_CHARS = int(os.environ.get("MAX_SYSTEM_CHARS", "5000"))
@@ -123,16 +124,23 @@ async def stream_openai_to_anthropic(openai_stream, model: str, request_id: str)
             except json.JSONDecodeError:
                 continue
 
+            text = ""
             choices = data.get("choices", [])
             if choices:
                 delta = choices[0].get("delta", {})
-                text = delta.get("content", "")
-                if text:
-                    total_output_tokens += 1
-                    yield (
-                        "event: content_block_delta\n"
-                        f"data: {json.dumps({'type': 'content_block_delta', 'index': 0, 'delta': {'type': 'text_delta', 'text': text}})}\n\n"
-                    ).encode()
+                if isinstance(delta, dict):
+                    text = delta.get("content", "")
+            elif data.get("type") == "response.output_text.delta":
+                delta_val = data.get("delta", "")
+                if isinstance(delta_val, str):
+                    text = delta_val
+
+            if text:
+                total_output_tokens += 1
+                yield (
+                    "event: content_block_delta\n"
+                    f"data: {json.dumps({'type': 'content_block_delta', 'index': 0, 'delta': {'type': 'text_delta', 'text': text}})}\n\n"
+                ).encode()
 
             usage = data.get("usage", {})
             if usage.get("completion_tokens"):
@@ -186,7 +194,7 @@ async def handle_messages(request: Request):
                     "POST",
                     f"{VLLM_BASE_URL}/chat/completions",
                     json=openai_payload,
-                    headers={"Authorization": "Bearer EMPTY", "Content-Type": "application/json"},
+                    headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
                 ) as resp:
                     if resp.status_code != 200:
                         error_body = await resp.aread()
@@ -206,7 +214,7 @@ async def handle_messages(request: Request):
             resp = await client.post(
                 f"{VLLM_BASE_URL}/chat/completions",
                 json=openai_payload,
-                headers={"Authorization": "Bearer EMPTY", "Content-Type": "application/json"},
+                headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
             )
 
         if resp.status_code != 200:

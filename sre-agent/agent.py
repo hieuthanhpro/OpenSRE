@@ -1291,9 +1291,10 @@ class InteractiveAgentSession:
                                 yield message_queued_event(
                                     self.thread_id, pending_count=0
                                 )
-                            print(
-                                f"🔍 [DEBUG] Received message #{message_count}: {type(message).__name__} for thread {self.thread_id}"
-                            )
+                            if type(message).__name__ not in ("StreamEvent", "SystemMessage"):
+                                print(
+                                    f"🔍 [DEBUG] Received message #{message_count}: {type(message).__name__} for thread {self.thread_id}"
+                                )
                             # Get parent_tool_use_id if this message is from a subagent
                             parent_tool_use_id = getattr(
                                 message, "parent_tool_use_id", None

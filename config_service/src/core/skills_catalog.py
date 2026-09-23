@@ -52,6 +52,20 @@ BUILT_IN_SKILLS_METADATA = [
         "required_integrations": ["mysql"],
     },
     {
+        "id": "database-oracle-awr",
+        "name": "Oracle AWR Analysis",
+        "description": "Oracle AWR (Automatic Workload Repository) HTML report analysis for SQL performance tuning, SGA/PGA advisory, and DB growth trends.",
+        "category": "Databases",
+        "required_integrations": ["oracle"],
+    },
+    {
+        "id": "database-oracle-monitoring",
+        "name": "Oracle DB Monitoring",
+        "description": "Oracle Database live performance monitoring, active sessions, locks, high CPU/RAM/IO queries, high cost SQL, long operations, and tablespace usage.",
+        "category": "Databases",
+        "required_integrations": ["oracle"],
+    },
+    {
         "id": "database-postgresql",
         "name": "PostgreSQL",
         "description": "PostgreSQL database inspection and queries. Use when investigating table schemas, running queries, checking locks, replication status, or long-running queries.",
@@ -234,6 +248,13 @@ BUILT_IN_SKILLS_METADATA = [
         "required_integrations": ["grafana"],
     },
     {
+        "id": "observability-graylog",
+        "name": "Graylog Logs",
+        "description": "Graylog log analysis using Lucene query syntax for database alert logs, errors, and real-time monitoring.",
+        "category": "Observability",
+        "required_integrations": [],
+    },
+    {
         "id": "observability-honeycomb",
         "name": "Honeycomb",
         "description": "Honeycomb observability analysis. Use when querying Honeycomb datasets, traces, or metrics. Provides scripts and query syntax reference for high-cardinality exploration.",
@@ -295,13 +316,6 @@ BUILT_IN_SKILLS_METADATA = [
         "description": "Jenkins job discovery, build triggers, console reads, and chained workflows across named Jenkins controllers. Built-in controllers are legacy and aws. Use when investigating CI/CD failures, triggering deploys, or orchestrating build-then-deploy chains.",
         "category": "Other Integrations",
         "required_integrations": ["jenkins"],
-    },
-    {
-        "id": "platform-kronos",
-        "name": "Platform Kronos",
-        "description": "Kronos env lifecycle — list/check environments, scale up, shut down, and manage recurring schedules. Use when a user asks if a HIX/CCX env is supposed to be up/down, or wants OpenSRE to start/stop/schedule an env. Do NOT use for pod logs, replicas detail, or Argo sync (use kubernetes and ArgoCD skills).",
-        "category": "Other Integrations",
-        "required_integrations": ["kronos"],
     },
     {
         "id": "platform-vercel",
