@@ -318,6 +318,12 @@ BUILT_IN_SKILLS_METADATA = [
         "required_integrations": ["jenkins"],
     },
     {
+        "id": "platform-kronos",
+        "name": "Platform Kronos",
+        "description": "Kronos env lifecycle — list/check environments, scale up, shut down, and manage recurring schedules. Use when a user asks if a scheduled environment is supposed to be up/down, or wants OpenSRE to start/stop/schedule an env. Do NOT use for pod logs, replicas detail, or Argo sync (use kubernetes and ArgoCD skills).",
+        "category": "Other Integrations",
+        "required_integrations": ["kronos"],
+    },
         "id": "platform-vercel",
         "name": "Vercel",
         "description": "Query Vercel deployments, projects, and build logs. Use when investigating Vercel deployment failures, runtime errors, or build issues.",

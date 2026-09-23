@@ -44,6 +44,9 @@ OpenSRE is an open-source AI SRE agent that automatically investigates productio
 
 ## Quick Start
 
+> **⚠️ Local-dev mode — not for production exposure.**
+> `make dev` starts the agent in **simple-mode** (cleartext HTTP, no rate limiting, no sandbox isolation). It is designed for use on `localhost` only. Before exposing OpenSRE on any network, read the [Simple-Mode / Local-Dev Security Posture](SECURITY.md#simple-mode--local-dev-security-posture) and [Hardening Checklist](SECURITY.md#hardening-checklist) in [SECURITY.md](SECURITY.md).
+
 ```bash
 git clone https://github.com/swapnildahiphale/OpenSRE.git
 cd OpenSRE
@@ -52,9 +55,9 @@ cp .env.example .env
 make dev
 ```
 
-This starts Postgres, config-service, Neo4j, sre-agent, and the web console. Migrations run automatically. Open **http://localhost:3002** and paste the admin token shown in the terminal to sign in. (LiteLLM is an optional `--profile litellm` add-on.)
+Requires **Docker Desktop** (or equivalent) running. `make dev` creates the external data volumes if they are missing, then starts Postgres, config-service, Neo4j, sre-agent, and the web console. Migrations run automatically. Open **http://localhost:3002** and paste the admin token shown in the terminal to sign in. (LiteLLM is an optional `--profile litellm` add-on.)
 
-> **[Full setup guide](https://www.opensre.in/docs/quick-start)** · **[Slack integration](https://www.opensre.in/docs/integrations)** · **[Configuration](https://www.opensre.in/docs/configuration)**
+> **[Full setup guide](https://www.opensre.in/docs/quick-start)** · **[Entra SSO](https://www.opensre.in/docs/sso)** · **[Slack integration](https://www.opensre.in/docs/integrations)** · **[Configuration](https://www.opensre.in/docs/configuration)**
 
 ## Architecture
 
@@ -73,6 +76,7 @@ This starts Postgres, config-service, Neo4j, sre-agent, and the web console. Mig
 | **Knowledge Graph** | Neo4j service topology, dependency traversal, blast radius |
 | **Multi-provider LLM** | Direct Anthropic by default; optional LiteLLM for OpenAI, Gemini, and more |
 | **Web Console** | Investigations, memory hub, config editor |
+| **Entra SSO** | Sign in to the web console with Microsoft Entra ID (token login remains) |
 | **Slack Integration** | Investigate incidents directly from Slack (`make dev-slack`) |
 | **Teams Bot** | Investigate incidents from Microsoft Teams (`make dev-teams`) |
 
@@ -98,6 +102,10 @@ This starts Postgres, config-service, Neo4j, sre-agent, and the web console. Mig
 ### Microsoft Teams
 
 Configure `TEAMS_APP_ID`, `TEAMS_APP_PASSWORD`, and `TEAMS_TENANT_ID` in `.env`, then run `make dev-teams`. The bot listens on port **3978**. See `teams-bot/README.md`.
+
+### Web console Entra SSO
+
+Create a confidential **Web** Entra app (redirect `http://localhost:3002/api/auth/callback` locally), paste tenant / client id into **Admin → SSO**, and set `SSO_CLIENT_SECRET` on config-service. Keep Helm `services.webUi.oidc.enabled` off — that PKCE path is separate. Token login remains as break-glass. [Full guide](https://www.opensre.in/docs/sso) · [`docs/SSO_SETUP.md`](docs/SSO_SETUP.md).
 
 ## E2E Testing with EKS
 
@@ -172,17 +180,31 @@ OpenSRE is built on top of proven open-source technologies:
 
 ## Star History
 
-<a href="https://www.star-history.com/?repos=swapnildahiphale%2FOpenSRE&type=date&legend=top-left">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=swapnildahiphale/OpenSRE&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=swapnildahiphale/OpenSRE&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=swapnildahiphale/OpenSRE&type=date&legend=top-left" />
- </picture>
-</a>
+<p align="center">
+  <a href="https://github.com/swapnildahiphale/OpenSRE/stargazers">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset=".github/assets/star-history-dark.svg" />
+      <source media="(prefers-color-scheme: light)" srcset=".github/assets/star-history-light.svg" />
+      <img alt="OpenSRE GitHub star history — 140 stars as of 21 Sep 2026" src=".github/assets/star-history-light.svg" width="800" />
+    </picture>
+  </a>
+</p>
 
 ## Contributing
 
 We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines. Please open an issue before starting major work.
+
+
+## Contributors
+
+Thanks to everyone who helps improve OpenSRE:
+
+<p align="center">
+  <a href="https://github.com/swapnildahiphale"><img src="https://avatars.githubusercontent.com/u/13692814?s=64" width="64" alt="swapnildahiphale" /></a>
+  <a href="https://github.com/snowyukitty"><img src="https://avatars.githubusercontent.com/u/270071858?s=64" width="64" alt="snowyukitty" /></a>
+  <a href="https://github.com/amolkekan"><img src="https://avatars.githubusercontent.com/u/25413488?s=64" width="64" alt="amolkekan" /></a>
+  <a href="https://github.com/GitanshKapoor"><img src="https://avatars.githubusercontent.com/u/72307552?s=64" width="64" alt="GitanshKapoor" /></a>
+</p>
 
 ## Creator
 

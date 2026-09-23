@@ -27,14 +27,32 @@ def _default_org_id() -> Optional[str]:
 
 class AuthMeResponse(BaseModel):
     role: Literal["admin", "team"]
-    auth_kind: Literal["admin_token", "team_token", "oidc", "impersonation", "visitor"]
+    auth_kind: Literal["admin_token", "team_token", "oidc", "impersonation"]
     org_id: Optional[str] = None
     team_node_id: Optional[str] = None
     subject: Optional[str] = None
     email: Optional[str] = None
+    name: Optional[str] = None
     can_write: bool = False
     permissions: List[str] = Field(default_factory=list)
-    visitor_session_id: Optional[str] = None  # Set for visitor auth
+
+
+def sso_persona_from_token(
+    label: Optional[str], display_name: Optional[str]
+) -> tuple[Optional[str], Optional[str], Optional[str]]:
+    """Return (email, name, subject) for sso:{email} labels. Else all None.
+
+    Do not treat an arbitrary token label as an email.
+    """
+    if not isinstance(label, str) or not label.startswith("sso:"):
+        return None, None, None
+    remainder = label[4:]
+    if "@" not in remainder:
+        return None, None, None
+    name = None
+    if isinstance(display_name, str) and display_name.strip():
+        name = display_name.strip()
+    return remainder, name, remainder
 
 
 def _extract_token(authorization: str, x_admin_token: str) -> str:
@@ -143,11 +161,27 @@ def auth_me_impl(
             raise HTTPException(status_code=503, detail=str(e))
         except ValueError:
             raise HTTPException(status_code=401, detail="Invalid token")
+
+        from sqlalchemy import select
+
+        from src.db.models import TeamToken
+
+        token_id = raw.split(".", 1)[0]
+        row = session.execute(
+            select(TeamToken).where(TeamToken.token_id == token_id)
+        ).scalar_one_or_none()
+        email, name, subject = sso_persona_from_token(
+            getattr(row, "label", None) if row is not None else None,
+            getattr(row, "display_name", None) if row is not None else None,
+        )
         return AuthMeResponse(
             role="team",
             auth_kind="team_token",
             org_id=principal.org_id,
             team_node_id=principal.team_node_id,
+            email=email,
+            name=name,
+            subject=subject,
             can_write=True,
             permissions=["team:read", "team:write"],
         )
@@ -182,24 +216,6 @@ def auth_me_impl(
         if not oidc_principal.org_id or not oidc_principal.team_node_id:
             raise HTTPException(
                 status_code=403, detail="OIDC token missing org/team scope"
-            )
-
-        # Handle visitor tokens (public playground users)
-        if auth_kind == "visitor":
-            return AuthMeResponse(
-                role="team",
-                auth_kind="visitor",
-                org_id=oidc_principal.org_id,
-                team_node_id=oidc_principal.team_node_id,
-                subject=oidc_principal.subject,
-                email=oidc_principal.email,
-                can_write=True,  # Visitors can write for playground demo
-                permissions=[
-                    "team:read",
-                    "team:write",
-                    "agent:invoke",
-                ],  # Full playground access
-                visitor_session_id=oidc_principal.claims.get("visitor_session_id"),
             )
 
         can_write = (auth_kind == "oidc") and (

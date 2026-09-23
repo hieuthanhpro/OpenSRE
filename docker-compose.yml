@@ -61,6 +61,12 @@ services:
       ADMIN_TOKEN: ${ADMIN_TOKEN:-local-admin-token}
       ADMIN_AUTH_MODE: token
       TEAM_AUTH_MODE: token
+      SSO_DEFAULT_TEAM_NODE_ID: ${SSO_DEFAULT_TEAM_NODE_ID:-default}
+      # Shared admin token has no org claim; /auth/me uses this so Org Tree
+      # and other admin pages target the seeded tenant (entrypoint seed uses local).
+      DEFAULT_ORG_ID: ${DEFAULT_ORG_ID:-local}
+      SEED_ORG_ID: ${SEED_ORG_ID:-local}
+      SEED_TEAM_NODE_ID: ${SEED_TEAM_NODE_ID:-default}
       IMPERSONATION_JWT_SECRET: local-dev-impersonation-secret-32chars!!
       LOG_LEVEL: ${LOG_LEVEL:-INFO}
       LOG_FORMAT: console
@@ -183,13 +189,20 @@ services:
       dockerfile: Dockerfile
     container_name: opensre-sre-agent
     restart: unless-stopped
+    # Anthropic DNS now points at 160.79.104.10, which fails TLS from some
+    # networks (e.g. India). Cloudflare edge still works — temporary workaround.
+    # The pinned IP is env-overridable so environments where the Cloudflare edge
+    # is unreachable (e.g. Cloud Agent VMs) can point at a reachable Anthropic IP
+    # via ANTHROPIC_HOST_IP in .env. Default preserves the original workaround.
     extra_hosts:
       - "host.docker.internal:host-gateway"
+      - "api.anthropic.com:${ANTHROPIC_HOST_IP:-104.18.19.125}"
     env_file:
       - .env
     environment:
       # Config service integration
       - CONFIG_SERVICE_URL=http://config-service:8080
+      - WEB_UI_PUBLIC_BASE_URL=${WEB_UI_PUBLIC_BASE_URL:-http://localhost:3002}
       # Tenant context for config loading
       - OPENSRE_TENANT_ID=local
       - OPENSRE_TEAM_ID=default
@@ -237,6 +250,16 @@ services:
       - LANGSMITH_API_KEY=${LANGSMITH_API_KEY}
       - LANGSMITH_PROJECT=${LANGSMITH_PROJECT:-OpenSRE}
       - LANGSMITH_BASE_URL=${LANGSMITH_BASE_URL}
+      # Langfuse tracing. Unset by default — the agent auto-detects the backend
+      # from whichever credentials are present, so leaving these blank is a no-op.
+      # The Langfuse console hands out LANGFUSE_BASE_URL while older setups use
+      # LANGFUSE_HOST, so pass both through rather than defaulting one of them to
+      # a region the operator did not pick. The agent reconciles the two.
+      - OBSERVABILITY_BACKEND=${OBSERVABILITY_BACKEND:-}
+      - LANGFUSE_PUBLIC_KEY=${LANGFUSE_PUBLIC_KEY:-}
+      - LANGFUSE_SECRET_KEY=${LANGFUSE_SECRET_KEY:-}
+      - LANGFUSE_BASE_URL=${LANGFUSE_BASE_URL:-}
+      - LANGFUSE_HOST=${LANGFUSE_HOST:-}
       # AWS + EKS connectivity (local dev). The agent runs skills in-process
       # (server_simple.py), so it needs direct access to your host AWS SSO creds
       # and kubeconfig. ~/.aws is mounted read-write so the aws CLI can refresh
@@ -267,7 +290,11 @@ services:
     # But we limit writable locations with tmpfs
     tmpfs:
       - /tmp:rw,noexec,nosuid,size=500m
-      - /home/agent/.cache:rw,noexec,nosuid,size=200m
+      # Must be uid/gid 1000 — without that the mount is root:root and
+      # FastEmbed/HuggingFace cannot write model files under
+      # /home/agent/.cache/huggingface (MEMORY-ERROR: Permission denied).
+      # Size bumped: bge-small-en-v1.5 ONNX + HF hub metadata exceeds 200m.
+      - /home/agent/.cache:rw,noexec,nosuid,size=500m,uid=1000,gid=1000
       - /home/agent/.claude:rw,nosuid,size=500m,uid=1000,gid=1000
     # Docker default pids.max=100 is too low for parallel subagents + Bash forks + bkt.
     pids_limit: 4096
@@ -318,9 +345,18 @@ services:
     environment:
       - CONFIG_SERVICE_URL=http://config-service:8080
       - AGENT_SERVICE_URL=http://sre-agent:8000
+      - WEB_UI_SSO_ORG_ID=${WEB_UI_SSO_ORG_ID:-local}
+      - WEB_UI_PUBLIC_BASE_URL=${WEB_UI_PUBLIC_BASE_URL:-http://localhost:3002}
+      - OPENSRE_VERSION=${OPENSRE_VERSION:-dev}
+      - OPENSRE_GIT_SHA=${OPENSRE_GIT_SHA:-}
       - WEB_UI_COOKIE_SECURE=0
       - HOSTNAME=0.0.0.0
       - PORT=3000
+      # Fallback when a page needs an org before identity loads; must match
+      # config-service DEFAULT_ORG_ID / seed tenant.
+      - DEFAULT_ORG_ID=${DEFAULT_ORG_ID:-local}
+      - NEXT_PUBLIC_DEFAULT_ORG_ID=${DEFAULT_ORG_ID:-local}
+      - ORG_ID=${ORG_ID:-local}
     ports:
       - "3002:3000"
     depends_on:
@@ -395,6 +431,7 @@ services:
       - .env
     environment:
       - SRE_AGENT_URL=http://sre-agent:8000
+      - WEB_UI_PUBLIC_BASE_URL=${WEB_UI_PUBLIC_BASE_URL:-http://localhost:3002}
       - PORT=3978
     ports:
       - "3978:3978"
@@ -425,10 +462,18 @@ networks:
   default:
     driver: bridge  # Default network with external access
 
+# Named volumes are shared across worktrees via COMPOSE_PROJECT_NAME=opensre.
+# Mark external so `docker compose down -v` / `make clean` from ANY worktree
+# cannot wipe investigation/memory data.
+# `make dev` creates them via scripts/ensure-volumes.sh if missing.
+# Manual (optional): docker volume create opensre-{postgres,neo4j}-data opensre-agent-sessions
 volumes:
   postgres-data:
     name: opensre-postgres-data
+    external: true
   neo4j-data:
     name: opensre-neo4j-data
+    external: true
   agent-sessions:
     name: opensre-agent-sessions
+    external: true

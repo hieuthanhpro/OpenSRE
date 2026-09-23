@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Send, Square, Paperclip, FileText, Database, Folder, X } from 'lucide-react';
+import { clsx } from 'clsx';
 
 export interface ComposerAttachment {
   id: string;
@@ -21,6 +22,8 @@ interface Props {
   placeholder?: string;
   initialValue?: string;
   initialAttachments?: ComposerAttachment[];
+  /** When true, omits top margin for footer-embedded layout. */
+  embedded?: boolean;
 }
 
 export default function ConversationComposer({
@@ -34,6 +37,7 @@ export default function ConversationComposer({
   placeholder: idlePlaceholder = 'Ask a follow-up…',
   initialValue = '',
   initialAttachments = [],
+  embedded = false,
 }: Props) {
   const [value, setValue] = useState(initialValue);
   const [attachments, setAttachments] = useState<ComposerAttachment[]>(initialAttachments);
@@ -48,12 +52,14 @@ export default function ConversationComposer({
   useEffect(() => {
     setAttachments(initialAttachments || []);
   }, [initialAttachments]);
-
-  // Running investigations always get a Stop control, even when follow-ups are
-  // not yet resumable (e.g. detail page opened from the drawer mid-run).
   if (disabled && !busy) {
     return (
-      <div className="mt-6 rounded-xl border border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-800/40 px-4 py-3 text-sm text-stone-500">
+      <div
+        className={clsx(
+          'rounded-xl border border-slate-200/80 dark:border-stone-700 bg-slate-50 dark:bg-stone-800/40 px-4 py-3 text-sm text-slate-500',
+          !embedded && 'mt-6',
+        )}
+      >
         {disabledReason}
       </div>
     );
@@ -97,7 +103,7 @@ export default function ConversationComposer({
   const placeholder = busy ? 'Queue a message…' : idlePlaceholder;
 
   return (
-    <div className="mt-6">
+    <div className={clsx(!embedded && 'mt-6')}>
       {queuedMessages.length > 0 && (
         <ul
           data-testid="conversation-composer-queued-list"
@@ -109,8 +115,8 @@ export default function ConversationComposer({
               data-testid="conversation-composer-queued-item"
               className="flex items-start justify-between gap-3 text-sm"
             >
-              <span className="text-stone-700 dark:text-stone-300">{msg}</span>
-              <span className="shrink-0 rounded-full bg-forest/10 px-2 py-0.5 text-xs font-medium text-forest">
+              <span className="text-slate-700 dark:text-stone-300">{msg}</span>
+              <span className="shrink-0 rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-700">
                 Queued
               </span>
             </li>
@@ -120,7 +126,7 @@ export default function ConversationComposer({
       {queueError ? (
         <p
           data-testid="conversation-composer-queue-error"
-          className="mb-2 text-sm text-clay"
+          className="mb-2 text-sm text-rose-600"
         >
           {queueError}
         </p>
@@ -235,18 +241,18 @@ export default function ConversationComposer({
 
         <textarea
           data-testid="conversation-composer-input"
-          className="flex-1 resize-none rounded-xl border border-stone-200 dark:border-stone-700 bg-white dark:bg-stone-900 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-forest/40 disabled:opacity-60 text-stone-900 dark:text-white"
+          className="flex-1 resize-none rounded-xl border border-slate-200/80 dark:border-stone-700 bg-white dark:bg-stone-900 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-400/50 placeholder:text-slate-400 disabled:opacity-60 text-stone-900 dark:text-white"
           rows={2}
           placeholder={placeholder}
           value={value}
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); void submit(); } }}
         />
-        {busy && onStop ? (
+        {onStop ? (
           <button
             data-testid="conversation-composer-stop"
             onClick={onStop}
-            className="h-11 w-11 shrink-0 rounded-xl bg-clay text-white flex items-center justify-center cursor-pointer"
+            className="h-11 w-11 shrink-0 rounded-xl bg-rose-100/50 text-rose-700 flex items-center justify-center hover:bg-rose-100/80 transition-colors cursor-pointer"
             aria-label="Stop investigation"
           >
             <Square className="w-4 h-4 fill-current" />
@@ -256,7 +262,7 @@ export default function ConversationComposer({
           data-testid="conversation-composer-send"
           onClick={() => void submit()}
           disabled={!value.trim() && attachments.length === 0}
-          className="h-11 w-11 shrink-0 rounded-xl bg-forest text-white flex items-center justify-center disabled:opacity-40 cursor-pointer"
+          className="h-11 w-11 shrink-0 rounded-xl bg-emerald-100/50 text-emerald-700 flex items-center justify-center hover:bg-emerald-100/80 transition-colors disabled:opacity-40 cursor-pointer"
           aria-label={busy ? 'Queue message' : 'Send follow-up'}
         >
           <Send className="w-5 h-5" />

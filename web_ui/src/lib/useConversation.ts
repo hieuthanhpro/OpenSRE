@@ -2,16 +2,18 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { apiFetch } from '@/lib/apiClient';
-import { canContinueConversation } from '@/lib/streamRequest';
+import { canContinueConversation, pickLatestSdkSessionId } from '@/lib/streamRequest';
 import {
   traceToTimeline, runsToTurns,
   type Turn, type RunWithTrace, type TraceResponse, type RunStatus,
 } from '@/lib/agentTimeline';
-import { pickThreadSummary, type ThreadRunSlice } from '@/lib/pickThreadSummary';
+import { pickThreadSummary, type ThreadEpisode, type ThreadRunSlice } from '@/lib/pickThreadSummary';
 
 interface ListRun {
   id: string; correlationId: string; agentName: string; status: string;
   startedAt: string; triggerMessage?: string;
+  triggerSource?: string;
+  triggerActor?: string;
   outputSummary?: string | null; outputJson?: Record<string, unknown> | null;
   errorMessage?: string | null;
   sdkSessionId?: string | null;
@@ -39,7 +41,12 @@ export function useConversation(runId: string | undefined) {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [threadId, setThreadId] = useState<string | null>(null);
   const [sessionAlive, setSessionAlive] = useState(false);
+  const [activeKnown, setActiveKnown] = useState(false);
+  const [consecutiveInactivePolls, setConsecutiveInactivePolls] = useState(0);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [episode, setEpisode] = useState<ThreadEpisode | null>(null);
+  const [triggerSource, setTriggerSource] = useState<string | null>(null);
+  const [triggerActor, setTriggerActor] = useState<string | null>(null);
 
   // isCancelled defaults to () => false for the public reload path.
   // The polling effect passes its own cancelled flag so in-flight fetches
@@ -78,6 +85,8 @@ export function useConversation(runId: string | undefined) {
 
       let alive = false;
       let inMemorySessionId: string | null = null;
+      let nextActiveKnown = false;
+      let inactivePollDelta: 'reset' | 'inc' | 'alive' | 'skip' = 'skip';
       if (thisRun.correlationId) {
         const activeRes = await apiFetch(
           `/api/team/agent/threads/${encodeURIComponent(thisRun.correlationId)}/active`,
@@ -88,6 +97,10 @@ export function useConversation(runId: string | undefined) {
           };
           alive = activeData.active === true;
           inMemorySessionId = activeData.sdk_session_id ?? null;
+          nextActiveKnown = true;
+          inactivePollDelta = alive ? 'alive' : 'inc';
+        } else {
+          inactivePollDelta = 'reset';
         }
       }
 
@@ -113,11 +126,20 @@ export function useConversation(runId: string | undefined) {
       setAgentName(runs[0]?.agentName ?? 'agent');
       setThreadId(thisRun.correlationId || null);
       // Latest run in the conversation carries the freshest session id.
-      const latestSession = [...runs].reverse().map((r) => r.sdkSessionId).find(Boolean) ?? null;
+      const latestSession = pickLatestSdkSessionId(runs);
       setSessionId(latestSession ?? inMemorySessionId ?? null);
       setSessionAlive(alive);
+      if (nextActiveKnown) setActiveKnown(true);
+      if (inactivePollDelta === 'alive' || inactivePollDelta === 'reset') {
+        setConsecutiveInactivePolls(0);
+      } else if (inactivePollDelta === 'inc') {
+        setConsecutiveInactivePolls((n) => n + 1);
+      }
       setErrorMessage(latestRun.errorMessage ?? null);
       setStatus(asRunStatus(runs[runs.length - 1]?.status ?? 'idle'));
+      setEpisode(episode ?? null);
+      setTriggerSource(runs[0]?.triggerSource ?? null);
+      setTriggerActor(runs[0]?.triggerActor ?? null);
     } catch (e) {
       if (!isCancelled()) setError(e instanceof Error ? e.message : 'Failed to load conversation');
     } finally {
@@ -142,7 +164,15 @@ export function useConversation(runId: string | undefined) {
   return {
     turns, title, agentName, status,
     sessionId, threadId, sessionAlive, errorMessage,
-    continuable: canContinueConversation({ sessionId, sessionAlive }),
+    episode, triggerSource, triggerActor,
+    continuable: canContinueConversation({
+      sessionId,
+      sessionAlive,
+      threadId,
+      isLive: sessionAlive,
+    }),
+    activeKnown,
+    consecutiveInactivePolls,
     loading, error, reload,
   };
 }

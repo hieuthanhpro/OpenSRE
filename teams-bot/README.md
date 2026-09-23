@@ -16,6 +16,7 @@ Set these in the repo root `.env` (see `env.example`):
 | `TEAMS_TENANT_ID` | Azure AD tenant ID |
 | `SRE_AGENT_URL` | sre-agent base URL (default `http://localhost:8000`) |
 | `INVESTIGATE_AUTH_TOKEN` | Bearer token for `/investigate` and `/answer` |
+| `WEB_UI_PUBLIC_BASE_URL` | Web console origin for “View in OpenSRE” links on live progress and final replies (e.g. `http://localhost:3002`) |
 | `PORT` | HTTP listen port (default `3978`) |
 
 `config.py` maps `TEAMS_*` to the SDK's `CLIENT_ID`, `CLIENT_SECRET`, and
@@ -61,7 +62,7 @@ In [Azure Bot](https://portal.azure.com) → **Configuration**, set **Messaging 
 Only needed for real Teams UI — not for Web Chat or routine code deploys.
 
 1. Copy `manifest/manifest.json` and replace `{{TEAMS_APP_ID}}` with your app ID.
-2. Add a Teams color icon as `manifest/color.png` (192×192 PNG). `outline.png` is included.
+2. Icons are already in `manifest/` (`color.png` 192×192, `outline.png` 32×32) from the OpenSRE spinner logo.
 3. Build the zip:
 
    ```bash
@@ -74,13 +75,17 @@ Only needed for real Teams UI — not for Web Chat or routine code deploys.
 Full onboarding checklist, licensing notes, and troubleshooting:
 [`docs/TEAMS_SETUP.md`](../docs/TEAMS_SETUP.md).
 
+## Self-hosted production
+
+Point the Azure Bot messaging endpoint at `https://<your-host>/api/messages` (POST only; GET should return 405). Helm can give the bot its own Ingress host via a private site overlay. Site hostnames and overlay paths stay in the private `deploy/` runbook, not here.
+
 ## Behavior
 
 - **Channel / group chat:** bot must be @mentioned; mention text is stripped.
 - **Personal chat / Web Chat:** no mention required; `help` or `status` returns a welcome card.
 - **Investigations:** message handler awaits the SSE runner so `ctx.stream` stays
   valid for live progress updates (humanized tool labels; current thought last).
-- **Final reply:** Adaptive Card shows the agent summary only (no boilerplate title).
+- **Final reply:** 1:1 / Web Chat use an Adaptive Card with an optional footer link; channel/group threads use plain text with the same inline link.
 - **Questions:** Adaptive Card submit verb `opensre.submit_answers` posts answers to
   sre-agent `/answer`.
 

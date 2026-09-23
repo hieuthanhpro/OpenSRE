@@ -2,7 +2,7 @@
 
 import logging
 import re
-from typing import Any
+from typing import Any, Optional
 
 import aiohttp
 from card_builder import build_welcome_card
@@ -45,6 +45,25 @@ def should_handle_message(
     if is_direct_bot_chat(conversation_type, channel_id):
         return bool((text or "").strip())
     return mentioned and bool((text or "").strip())
+
+
+def activity_sender_name(activity: Any) -> Optional[str]:
+    """Teams display name from the activity sender. Never return the user id."""
+    # microsoft-teams-apps 2.x exposes JSON "from" as from_ on MessageActivity.
+    sender = getattr(activity, "from_", None)
+    if sender is None:
+        sender = getattr(activity, "from_property", None)
+    if sender is None:
+        sender = getattr(activity, "from", None)
+    name = getattr(sender, "name", None) if sender is not None else None
+    if isinstance(sender, dict):
+        name = sender.get("name")
+    if not isinstance(name, str):
+        return None
+    stripped = name.strip()
+    if not stripped:
+        return None
+    return stripped[:128]
 
 
 def strip_bot_mention(text: str, bot_name: str = "OpenSRE") -> str:
@@ -98,36 +117,15 @@ def register_handlers(app) -> None:
 
         thread_id = sanitize_thread_id(conversation.id)
 
-        async def stream_update(content: str) -> None:
-            ctx.stream.update(content)
-
-        async def stream_close() -> None:
-            # HttpStream.close() is synchronous; must run before sending cards.
-            ctx.stream.close()
-
-        async def send_card(card: dict):
-            sent = await ctx.send(
-                MessageActivityInput().add_card(_dict_to_adaptive_card(card))
-            )
-            return getattr(sent, "id", None)
-
-        async def update_card(activity_id: str, card: dict) -> None:
-            # v1: no SDK card-update helper — send a replacement card.
-            try:
-                await ctx.send(
-                    MessageActivityInput().add_card(_dict_to_adaptive_card(card))
-                )
-            except Exception:
-                logger.exception("failed to update/replace card %s", activity_id)
-
         if thread_id in active_investigations:
             try:
                 await queue_message(thread_id=thread_id, text=cleaned)
             except aiohttp.ClientResponseError as exc:
-                if exc.status == 409:
-                    # Race: investigation finished in the window between our check and
-                    # the queue call. Fall through so the message starts a follow-up run
-                    # with the same thread_id (agent retains conversation context).
+                if exc.status in (404, 409):
+                    # 409: race — investigation finished between our check and queue call.
+                    # 404: no in-process session (orphaned run after restart/crash).
+                    # Fall through so the message starts a follow-up run with the same
+                    # thread_id (agent retains conversation context).
                     pass
                 else:
                     logger.exception("queue_message failed for thread %s", thread_id)
@@ -145,14 +143,73 @@ def register_handlers(app) -> None:
                 )
                 return
 
-        # Await runner in-handler so ctx.stream stays valid for the investigation.
+        # Channel/group threads reject Bot Framework streaming (HTTP 405).
+        # 1:1 and Azure Web Chat still use ctx.stream for live progress.
+        # Channels edit one text bubble via PUT (MessageActivityInput.with_id).
+        use_stream = is_direct_bot_chat(conv_type, channel_id)
+        progress_activity_id: str | None = None
+
+        async def stream_update(content: str) -> None:
+            nonlocal progress_activity_id
+            if use_stream:
+                ctx.stream.update(content)
+                return
+            if not progress_activity_id:
+                return
+            try:
+                # ActivitySender.send() PUTs when activity.id is set — no new toast.
+                await ctx.send(
+                    MessageActivityInput(text=content).with_id(progress_activity_id)
+                )
+            except Exception:
+                logger.exception(
+                    "failed to update channel progress %s", progress_activity_id
+                )
+
+        async def stream_close() -> None:
+            # HttpStream.close() is synchronous; must run before sending cards.
+            if use_stream:
+                ctx.stream.close()
+
+        async def send_card(card: dict):
+            sent = await ctx.send(
+                MessageActivityInput().add_card(_dict_to_adaptive_card(card))
+            )
+            return getattr(sent, "id", None)
+
+        async def send_text(content: str) -> None:
+            await ctx.send(MessageActivityInput().add_text(content))
+
+        async def update_card(activity_id: str, card: dict) -> None:
+            # PUT the existing activity so question-timeout does not spawn a new card.
+            try:
+                await ctx.send(
+                    MessageActivityInput()
+                    .with_id(activity_id)
+                    .add_card(_dict_to_adaptive_card(card))
+                )
+            except Exception:
+                logger.exception("failed to update/replace card %s", activity_id)
+
+        if not use_stream:
+            sent = await ctx.send(
+                MessageActivityInput().add_text(
+                    "Working on it — I'll reply in this thread."
+                )
+            )
+            progress_activity_id = getattr(sent, "id", None)
+
+        # Await runner in-handler so ctx.stream stays valid for 1:1 / Web Chat.
         await run_investigation(
             thread_id=thread_id,
             prompt=cleaned,
             stream_update=stream_update,
             stream_close=stream_close,
             send_card=send_card,
+            send_text=send_text,
             update_card=update_card,
+            plain_text_final=not use_stream,
+            trigger_actor=activity_sender_name(activity),
         )
 
     @app.on_card_action_execute(SUBMIT_VERB)

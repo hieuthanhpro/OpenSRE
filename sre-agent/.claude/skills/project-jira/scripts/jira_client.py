@@ -11,9 +11,45 @@ In proxy mode (production), credentials are injected transparently by the proxy 
 
 import base64
 import os
+from pathlib import Path
 from typing import Any
 
 import httpx
+
+RUN_ID_FILENAME = ".opensre_agent_run_id"
+VIEW_LINK_LABEL = "View in OpenSRE"
+
+
+def investigation_link_footer(base_url: str, run_id: str) -> str | None:
+    base = (base_url or "").strip().rstrip("/")
+    rid = (run_id or "").strip()
+    if not base or not rid:
+        return None
+    return f"---\n[{VIEW_LINK_LABEL}]({base}/team/agent-runs/{rid})"
+
+
+def with_investigation_link(description: str, footer: str | None) -> str:
+    if not footer:
+        return description
+    desc = (description or "").rstrip()
+    if desc:
+        return f"{desc}\n\n{footer}"
+    return footer
+
+
+def read_thread_run_id(cwd: Path | None = None) -> str:
+    # Skill scripts may run from a subdirectory of the thread workspace;
+    # .opensre_agent_run_id lives at the workspace root, not always in cwd.
+    start = (cwd or Path.cwd()).resolve()
+    for directory in [start, *start.parents]:
+        path = directory / RUN_ID_FILENAME
+        try:
+            content = path.read_text(encoding="utf-8").strip()
+            if content:
+                return content
+        except OSError:
+            continue
+    return ""
 
 
 def get_config() -> dict[str, str | None]:
@@ -125,10 +161,88 @@ def jira_request(
             params=params,
             json=json_body,
         )
-        response.raise_for_status()
+        if response.is_error:
+            body_snippet = response.text or ""
+            if len(body_snippet) > 800:
+                body_snippet = body_snippet[:800] + "..."
+            error_kind = (
+                "Client error" if response.status_code < 500 else "Server error"
+            )
+            message = (
+                f"{error_kind} '{response.status_code} {response.reason_phrase}' "
+                f"for url '{response.url}'"
+            )
+            if body_snippet:
+                message = f"{message}\n{body_snippet}"
+            raise httpx.HTTPStatusError(
+                message, request=response.request, response=response
+            )
         if response.status_code == 204:
             return None
         return response.json()
+
+
+def search_jql(
+    jql: str,
+    max_results: int = 50,
+    fields: str | list[str] | None = None,
+) -> dict:
+    """Run a JQL search against the configured Jira flavor.
+
+    Jira Cloud removed GET/POST ``/rest/api/3/search`` (HTTP 410). Use
+    ``POST /rest/api/3/search/jql`` instead. Data Center still uses the
+    classic ``GET /rest/api/2/search`` endpoint.
+
+    ``fields`` may be a comma-separated string or a list; Cloud expects a
+    JSON array in the POST body, DC accepts a comma-separated query param.
+    """
+    if fields is None:
+        field_list: list[str] = [
+            "summary",
+            "status",
+            "issuetype",
+            "priority",
+            "assignee",
+            "reporter",
+            "created",
+            "updated",
+            "labels",
+            "description",
+        ]
+    elif isinstance(fields, str):
+        field_list = [f.strip() for f in fields.split(",") if f.strip()]
+    else:
+        field_list = list(fields)
+
+    api_version = os.getenv("JIRA_API_VERSION", "3")
+    # Cloud (v3 default): enhanced JQL search. DC (v2): classic search.
+    if api_version == "2":
+        data = jira_request(
+            "GET",
+            "/search",
+            params={
+                "jql": jql,
+                "maxResults": max_results,
+                "fields": ",".join(field_list),
+            },
+        )
+    else:
+        data = jira_request(
+            "POST",
+            "/search/jql",
+            json_body={
+                "jql": jql,
+                "maxResults": max_results,
+                "fields": field_list,
+            },
+        )
+
+    if not isinstance(data, dict):
+        return {"issues": [], "total": 0}
+    # Cloud enhanced search omits ``total``; fall back to page length.
+    if "total" not in data:
+        data = {**data, "total": len(data.get("issues") or [])}
+    return data
 
 
 def make_adf_text(text: str) -> dict:
@@ -144,12 +258,14 @@ def make_text_body(text: str) -> dict | str:
     """Build a write body for description/comment fields, picking the right format
     for the configured Jira API version.
 
-    - Jira Cloud (JIRA_API_VERSION=3, default): returns an ADF document (JSON).
+    - Jira Cloud (JIRA_API_VERSION=3, default): converts Markdown to a real ADF
+      document via markdown_to_adf() - headings, lists, tables, code blocks and
+      inline marks are preserved, not flattened into one plain paragraph. On any
+      converter failure, falls back to the flat single-paragraph wrap so a comment
+      always posts, just without formatting.
     - Jira Data Center (JIRA_API_VERSION=2): returns the plain `text` string,
-      interpreted by Jira DC as Wiki Markup. Wiki Markup supports rich formatting
-      (`*bold*`, `_italic_`, `||...||` tables, `{code}...{code}`, headings, lists),
-      so no formatting capability is lost vs the ADF path (which only wraps the
-      input in a single plain paragraph anyway).
+      interpreted by Jira DC as Wiki Markup. Unchanged - Markdown-to-wiki-markup
+      conversion is not built yet (see spec: deferred).
 
     The caller should assign the return value directly to the `description` /
     `body` field of the Jira REST payload — do not wrap it further.
@@ -158,7 +274,12 @@ def make_text_body(text: str) -> dict | str:
     if api_version == "2":
         # v2 wire format: plain string (Jira Wiki Markup), not ADF JSON.
         return text
-    return make_adf_text(text)
+    try:
+        from markdown_to_adf import markdown_to_adf
+
+        return markdown_to_adf(text)
+    except Exception:
+        return make_adf_text(text)
 
 
 def make_assignee_field(assignee: str) -> dict:

@@ -23,12 +23,14 @@ LLM Provider:
 Observability:
 - Configurable backend via OBSERVABILITY_BACKEND env var: "laminar", "langfuse", or "none"
 - Laminar: Sessions grouped by thread_id, metadata for filtering, outcome tags
-- Langfuse: Trace/span/generation tracking with Claude SDK callback integration
+- Langfuse: Trace/span/generation tracking. Turn spans, nested tool spans, and
+  a nested generation with model/usage/cost from the SDK ResultMessage.
 - Backend selection is a deployment config (Helm values), not per-tenant
 """
 
 import asyncio
 import base64
+import functools
 import json
 import logging
 import mimetypes
@@ -46,6 +48,7 @@ from claude_agent_sdk import (
     ClaudeSDKClient,
     HookMatcher,
     ResultMessage,
+    SystemMessage,
     TaskNotificationMessage,
     TaskProgressMessage,
     TaskStartedMessage,
@@ -60,6 +63,7 @@ from events import (
     message_queued_event,
     question_event,
     result_event,
+    sdk_session_event,
     task_notification_event,
     task_started_event,
     thought_event,
@@ -356,6 +360,20 @@ _observe = None
 
 # Langfuse helpers (lazy-imported)
 _langfuse_client = None
+_langfuse_propagate_attributes = None
+
+# Session metadata recorded by observability_set_session(), keyed by thread_id.
+# Langfuse (unlike Laminar) scopes trace attributes to a `with` block rather than
+# to a long-lived session object, so we stash the metadata at session start and
+# re-apply it around every turn in execute().
+_langfuse_session_metadata: dict = {}
+
+# Tool spans opened by observability_tool_start(), keyed by
+# (thread_id, tool_use_id). The thread_id is part of the key because
+# server_simple.py runs many investigations concurrently in one process: keying
+# on tool_use_id alone would let one investigation's turn ending close another's
+# still-running tool spans.
+_langfuse_tool_spans: dict = {}
 
 
 def _detect_observability_backend() -> str:
@@ -371,10 +389,26 @@ def _detect_observability_backend() -> str:
     return "none"
 
 
+def _sync_langfuse_host_env() -> str:
+    """Keep LANGFUSE_HOST and LANGFUSE_BASE_URL in sync and return the host.
+
+    The Langfuse v4 SDK reads LANGFUSE_BASE_URL; earlier versions (and our Helm
+    chart) use LANGFUSE_HOST. Whichever the operator set, copy it to the other so
+    the SDK and any langfuse-cli invocation both resolve the same server.
+    """
+    host = os.getenv("LANGFUSE_BASE_URL") or os.getenv("LANGFUSE_HOST")
+    if not host:
+        # Default to Langfuse Cloud US, matching the previous OpenSRE default.
+        host = "https://us.cloud.langfuse.com"
+    os.environ["LANGFUSE_BASE_URL"] = host
+    os.environ["LANGFUSE_HOST"] = host
+    return host
+
+
 def init_observability() -> None:
     """Initialize the configured observability backend. Call once at process startup."""
     global _observability_backend, _observability_initialized
-    global _Laminar, _observe, _langfuse_client
+    global _Laminar, _observe, _langfuse_client, _langfuse_propagate_attributes
 
     if _observability_initialized:
         return
@@ -396,17 +430,27 @@ def init_observability() -> None:
 
     elif _observability_backend == "langfuse":
         try:
-            from langfuse import Langfuse
+            from langfuse import get_client, propagate_attributes
 
-            _langfuse_client = Langfuse(
-                public_key=os.getenv("LANGFUSE_PUBLIC_KEY"),
-                secret_key=os.getenv("LANGFUSE_SECRET_KEY"),
-                host=os.getenv("LANGFUSE_HOST", "https://us.cloud.langfuse.com"),
-            )
+            # The Langfuse v4 SDK reads its credentials from the environment.
+            # It prefers LANGFUSE_BASE_URL, but older OpenSRE deployments (and
+            # the Helm chart) set LANGFUSE_HOST — mirror whichever is present so
+            # both keep working.
+            host = _sync_langfuse_host_env()
+
+            _langfuse_client = get_client()
+            _langfuse_propagate_attributes = propagate_attributes
+
+            # Note: we deliberately do NOT use
+            # openinference-instrumentation-claude-agent-sdk here. It builds its
+            # tool spans inside a wrapper around ClaudeSDKClient.receive_response(),
+            # and execute() drains via receive_messages() instead — so it produces
+            # no spans for us. It also merges its own hooks into client.options,
+            # which would collide with the agent-attribution hooks below. Tool
+            # spans come from our own PreToolUse/PostToolUse events instead; see
+            # observability_tool_start / observability_tool_end.
             _observability_initialized = True
-            print(
-                f"[OBSERVABILITY] Langfuse initialized (host: {os.getenv('LANGFUSE_HOST', 'https://us.cloud.langfuse.com')})"
-            )
+            print(f"[OBSERVABILITY] Langfuse initialized (host: {host})")
         except Exception as e:
             print(f"[OBSERVABILITY] Langfuse init failed: {e}")
             _observability_backend = "none"
@@ -423,20 +467,323 @@ def observability_set_session(thread_id: str, metadata: dict | None = None) -> N
         if metadata:
             _Laminar.set_trace_metadata(metadata)
     elif _observability_backend == "langfuse" and _langfuse_client:
-        # Langfuse session context is set per-trace at creation time
-        pass
+        # Langfuse scopes attributes to a `with` block rather than to a session
+        # object, so remember them here and apply them per turn in execute().
+        # Grouping by thread_id is what makes every turn of one investigation
+        # show up as a single Langfuse session.
+        _langfuse_session_metadata[thread_id] = dict(metadata or {})
+
+
+def observability_update_metadata(thread_id: str, **fields) -> None:
+    """Merge keys into this thread's Langfuse metadata. Do not replace.
+
+    agent_run_id is per execute() turn. Session start already stashed
+    environment and thread_id; replacing that dict would drop them and the
+    Langfuse Metadata panel would lose the join keys we already send.
+    """
+    if not thread_id or not fields:
+        return
+    current = _langfuse_session_metadata.get(thread_id, {})
+    _langfuse_session_metadata[thread_id] = {**current, **fields}
 
 
 def observability_set_tags(tags: list[str]) -> None:
     """Set outcome tags on the current span."""
     if _observability_backend == "laminar" and _Laminar:
         _Laminar.set_span_tags(tags)
+    elif _observability_backend == "langfuse" and _langfuse_client:
+        # Tags let investigations be filtered by outcome (success / incomplete /
+        # error) in the Langfuse UI and by online evaluators.
+        #
+        # The outcome is only known as the turn ends, by which point the turn's
+        # propagate_attributes() block has already been entered and cannot take
+        # new tags. So write the tag attribute straight onto the still-open turn
+        # span — which is exactly what propagate_attributes does internally.
+        try:
+            from langfuse import LangfuseOtelSpanAttributes
+            from opentelemetry import trace as otel_trace
+
+            span = otel_trace.get_current_span()
+            if span is not None and span.is_recording():
+                span.set_attribute(LangfuseOtelSpanAttributes.TRACE_TAGS, tags)
+        except Exception as e:  # never let telemetry break an investigation
+            print(f"[OBSERVABILITY] Langfuse tag update failed: {e}")
+
+
+def observability_tool_start(
+    thread_id: str,
+    name: str,
+    tool_input: dict | None,
+    tool_use_id: str | None,
+    agent_type: str | None = None,
+    depth: int = 0,
+) -> None:
+    """Open a span for one tool call, nested under the current turn span.
+
+    The agent's trajectory — which skills and tools it reached for, in what
+    order — is most of what makes an investigation reviewable, so it needs to be
+    visible in the trace and not just in the SSE stream.
+    """
+    if _observability_backend != "langfuse" or _langfuse_client is None:
+        return
+    if not tool_use_id:
+        return  # without an id we could never match the closing event
+
+    try:
+        _langfuse_tool_spans[(thread_id, tool_use_id)] = (
+            _langfuse_client.start_observation(
+                as_type="tool",
+                name=name,
+                input=tool_input,
+                metadata={"agent_type": agent_type, "depth": depth},
+            )
+        )
+    except Exception as e:
+        print(f"[OBSERVABILITY] Langfuse tool span start failed: {e}")
+
+
+def observability_tool_end(
+    thread_id: str,
+    tool_use_id: str | None,
+    output: str | None = None,
+    success: bool = True,
+    error: str | None = None,
+) -> None:
+    """Close the span opened by observability_tool_start() for this tool call."""
+    span = _langfuse_tool_spans.pop((thread_id, tool_use_id), None)
+    if span is None:
+        return
+
+    try:
+        span.update(
+            output=output if success else error,
+            level="DEFAULT" if success else "ERROR",
+            status_message=None if success else error,
+        )
+        span.end()
+    except Exception as e:
+        print(f"[OBSERVABILITY] Langfuse tool span end failed: {e}")
+
+
+def observability_close_open_tool_spans(thread_id: str) -> None:
+    """Close tool spans this investigation left open when its turn ended.
+
+    A turn can end on timeout or interrupt with tools still in flight. Those
+    spans would otherwise stay open forever and leak. Only this thread's spans
+    are touched — other investigations running in the same process are still
+    mid-turn and must keep theirs.
+    """
+    for open_thread_id, tool_use_id in list(_langfuse_tool_spans):
+        if open_thread_id != thread_id:
+            continue
+        observability_tool_end(
+            thread_id,
+            tool_use_id,
+            success=False,
+            error="Turn ended before the tool returned",
+        )
+
+
+def observability_end_session(thread_id: str) -> None:
+    """Drop per-investigation observability state when a session closes.
+
+    Without this, _langfuse_session_metadata grows by one entry per thread for
+    the lifetime of the process.
+    """
+    _langfuse_session_metadata.pop(thread_id, None)
+    observability_close_open_tool_spans(thread_id)
+
+
+def _langfuse_usage_details(usage: dict | None) -> dict[str, int]:
+    """Map Claude Agent SDK usage onto Langfuse exclusive token buckets.
+
+    Anthropic already reports ``input_tokens`` exclusive of cache reads and
+    writes, so the numbers pass through. Nested objects (``cache_creation``,
+    ``server_tool_use``) and ``service_tier`` are not token counts — leaving
+    them in would make Langfuse treat the payload as an unrecognized schema
+    and skip cost inference.
+    """
+    if not usage:
+        return {}
+
+    # SDK ``usage`` is snake_case; ``model_usage`` values are camelCase.
+    mapping = (
+        ("input_tokens", "inputTokens", "input"),
+        ("output_tokens", "outputTokens", "output"),
+        ("cache_read_input_tokens", "cacheReadInputTokens", "cache_read_input_tokens"),
+        (
+            "cache_creation_input_tokens",
+            "cacheCreationInputTokens",
+            "cache_creation_input_tokens",
+        ),
+    )
+    details: dict[str, int] = {}
+    for snake, camel, langfuse_key in mapping:
+        raw = usage.get(snake)
+        if raw is None:
+            raw = usage.get(camel)
+        if raw:
+            details[langfuse_key] = int(raw)
+    return details
+
+
+def _langfuse_cost_details(cost_usd) -> dict[str, float] | None:
+    """Wrap a USD amount as Langfuse ``cost_details``. ``None`` if missing."""
+    if cost_usd is None:
+        return None
+    try:
+        return {"total": float(cost_usd)}
+    except (TypeError, ValueError):
+        return None
+
+
+def _emit_langfuse_generation(
+    *,
+    model: str | None,
+    usage_details: dict[str, int],
+    cost_details: dict[str, float] | None,
+) -> None:
+    """Open and close one Langfuse generation under the current turn span."""
+    if not usage_details and not cost_details:
+        return
+    kwargs: dict = {"as_type": "generation", "name": "llm"}
+    if model:
+        kwargs["model"] = model
+    generation = _langfuse_client.start_observation(**kwargs)
+    update: dict = {}
+    if usage_details:
+        update["usage_details"] = usage_details
+    if cost_details:
+        update["cost_details"] = cost_details
+    if update:
+        generation.update(**update)
+    generation.end()
+
+
+def observability_record_generation(message, fallback_model: str | None = None) -> None:
+    """Record LLM usage and cost from a Claude Agent SDK ResultMessage.
+
+    Langfuse only computes cost on observations of type ``generation`` that
+    carry a model name plus ``usage_details`` and/or ``cost_details``. The
+    turn wrapper is a span (the turn is not itself an LLM call) and tool
+    spans are tools, so without this helper the Cost dashboard stays at $0
+    even though traces show up.
+
+    Prefer ``model_usage``: it includes subagent tokens and is broken down
+    by model. Fall back to aggregated ``usage`` + ``total_cost_usd`` when
+    the SDK omitted the per-model map. Call this once per ``execute()``
+    with the last ResultMessage — in streaming input mode those cost
+    fields are running totals, so summing every result would double-count.
+    """
+    if _observability_backend != "langfuse" or _langfuse_client is None:
+        return
+    if message is None:
+        return
+
+    try:
+        model_usage = getattr(message, "model_usage", None) or {}
+        if isinstance(model_usage, dict) and model_usage:
+            for model_name, usage in model_usage.items():
+                usage_dict = usage if isinstance(usage, dict) else {}
+                _emit_langfuse_generation(
+                    model=model_name or fallback_model,
+                    usage_details=_langfuse_usage_details(usage_dict),
+                    cost_details=_langfuse_cost_details(
+                        usage_dict.get("costUSD", usage_dict.get("cost_usd"))
+                    ),
+                )
+            return
+
+        usage = getattr(message, "usage", None)
+        usage_details = (
+            _langfuse_usage_details(usage) if isinstance(usage, dict) else {}
+        )
+        _emit_langfuse_generation(
+            model=fallback_model or os.getenv("ANTHROPIC_MODEL"),
+            usage_details=usage_details,
+            cost_details=_langfuse_cost_details(
+                getattr(message, "total_cost_usd", None)
+            ),
+        )
+    except Exception as e:  # never let telemetry break an investigation
+        print(f"[OBSERVABILITY] Langfuse generation record failed: {e}")
+
+
+def observability_flush() -> None:
+    """Flush buffered telemetry. Call before a short-lived process exits."""
+    if _observability_backend == "langfuse" and _langfuse_client:
+        try:
+            _langfuse_client.flush()
+        except Exception as e:
+            print(f"[OBSERVABILITY] Langfuse flush failed: {e}")
+
+
+def _langfuse_observe_async_gen(fn):
+    """Wrap an async-generator method so one Langfuse span covers the whole turn.
+
+    execute() is an async *generator*, which Langfuse's @observe() decorator does
+    not support. So we open the span ourselves and re-yield everything the
+    wrapped generator produces. Tool spans nest underneath from our own hooks.
+    LLM usage/cost is a nested generation recorded from the SDK ResultMessage
+    (see observability_record_generation). Session id + metadata make every
+    turn of an investigation group together.
+    """
+
+    @functools.wraps(fn)
+    async def wrapper(self, *args, **kwargs):
+        # Backend can be torn down at runtime (or in tests) — fall back to a
+        # plain pass-through rather than failing the investigation.
+        if _langfuse_client is None or _langfuse_propagate_attributes is None:
+            async for event in fn(self, *args, **kwargs):
+                yield event
+            return
+
+        thread_id = getattr(self, "thread_id", None)
+        attributes = {
+            "metadata": _langfuse_session_metadata.get(thread_id, {}),
+            # Without this the trace shows up unnamed in the Langfuse UI.
+            "trace_name": "investigation",
+        }
+        if thread_id:
+            attributes["session_id"] = thread_id
+
+        # The prompt is the turn's input. Record it on the span so a trace shows
+        # what was actually asked, not just that a turn happened.
+        prompt = args[0] if args else kwargs.get("prompt")
+        # Captured as it streams past so the span can also carry the answer.
+        final_text = None
+
+        with _langfuse_client.start_as_current_observation(
+            as_type="span", name="investigation-turn", input=prompt
+        ) as span:
+            with _langfuse_propagate_attributes(**attributes):
+                try:
+                    async for event in fn(self, *args, **kwargs):
+                        # events.py emits exactly one terminal result per turn;
+                        # an error event stands in for it when the turn fails.
+                        if getattr(event, "type", None) in ("result", "error"):
+                            data = getattr(event, "data", None) or {}
+                            final_text = data.get("text") or data.get("message")
+                        yield event
+                finally:
+                    # A timeout or interrupt can end the turn with tools still
+                    # in flight; don't leave this investigation's spans open.
+                    observability_close_open_tool_spans(thread_id)
+                    try:
+                        span.update(output=final_text)
+                    except Exception as e:
+                        print(f"[OBSERVABILITY] Langfuse turn output failed: {e}")
+
+    return wrapper
 
 
 def observability_observe():
     """Decorator for tracing a function. Returns identity decorator if backend doesn't support it."""
     if _observability_backend == "laminar" and _observe:
         return _observe()
+
+    if _observability_backend == "langfuse":
+        return _langfuse_observe_async_gen
 
     # No-op decorator
     def identity(fn):
@@ -485,8 +832,23 @@ def format_investigation_timeout_message(timeout_seconds: int) -> str:
 
 
 def capture_session_id_from_result(session_id: str | None, message) -> str | None:
-    """Replicate ResultMessage session_id capture from execute()."""
-    return getattr(message, "session_id", None) or session_id
+    """Prefer a session_id on this message; otherwise keep the existing value."""
+    from_msg = getattr(message, "session_id", None)
+    if not from_msg and isinstance(message, SystemMessage):
+        data = getattr(message, "data", None) or {}
+        if isinstance(data, dict):
+            from_msg = data.get("session_id")
+    return from_msg or session_id
+
+
+def session_id_event_if_changed(
+    thread_id: str, session_id: str | None, message
+) -> tuple[str | None, StreamEvent | None]:
+    """Apply capture. Yield sdk_session only when the stored id changes."""
+    new_id = capture_session_id_from_result(session_id, message)
+    if new_id and new_id != session_id:
+        return new_id, sdk_session_event(thread_id, new_id)
+    return new_id, None
 
 
 class TextSegmentBuffer:
@@ -530,6 +892,10 @@ class TextSegmentBuffer:
         return (fallback or "").strip()
 
 
+class NoPendingQuestionError(RuntimeError):
+    """Raised when an answer arrives without an active user question."""
+
+
 class InteractiveAgentSession:
     """
     Manages a persistent ClaudeSDKClient session that supports interrupts.
@@ -564,8 +930,7 @@ class InteractiveAgentSession:
         self.thread_id = thread_id
         self.team_config = team_config
         self.resume = resume
-        # Captured from the SDK ResultMessage; persisted so the conversation can
-        # be resumed after this process recycles.
+        # Captured from init SystemMessage (and ResultMessage as backup).
         self.session_id: str | None = None
 
         self.client: ClaudeSDKClient | None = None
@@ -667,10 +1032,7 @@ class InteractiveAgentSession:
 
             return PermissionResultAllow(updated_input=input_data)
 
-        # Import AgentDefinition for subagent configuration
-        from claude_agent_sdk import AgentDefinition
-
-        subagents = {}
+        self._can_use_tool_handler = can_use_tool_handler
 
         # Build options for streaming input mode
         # Determine working directory based on mode
@@ -721,6 +1083,16 @@ class InteractiveAgentSession:
 
             cwd = thread_workspace
 
+        self._cwd = cwd
+
+        self._build_options()
+
+    def _build_options(self):
+        # Import AgentDefinition for subagent configuration
+        from claude_agent_sdk import AgentDefinition
+
+        subagents = {}
+
         # --- Dynamic config from team config service ---
         system_prompt = None
         root_config = None
@@ -743,6 +1115,7 @@ class InteractiveAgentSession:
                     f"from root agent '{root_config.name}'"
                 )
 
+            from investigation_lifecycle import investigation_guidance_append
             from team_context import render_team_context_block
 
             ctx_block = (
@@ -758,11 +1131,15 @@ class InteractiveAgentSession:
                     sub_prompt = agent_cfg.prompt.system or ""
                     if ctx_block:
                         sub_prompt = sub_prompt + ctx_block
+                    # Sub-agents get no preset and no append — guidance that is not in
+                    # their prompt text does not reach them.
+                    sub_prompt = sub_prompt + investigation_guidance_append()
                     subagents[name] = AgentDefinition(
-                        description=agent_cfg.prompt.prefix or f"{name} specialist",
+                        description=agent_cfg.description or f"{name} specialist",
                         prompt=sub_prompt,
                         model=resolve_model(agent_cfg.model.name),
                         tools=resolve_agent_tools(agent_cfg.tools),
+                        maxTurns=agent_cfg.max_turns,
                     )
 
             # Authoritative delegation list: overrides any stale static
@@ -775,8 +1152,6 @@ class InteractiveAgentSession:
             if ctx_block:
                 system_prompt = (system_prompt or "") + ctx_block
                 print(f"📝 [AGENT] Appended team context ({len(ctx_block)} chars)")
-
-            from investigation_lifecycle import investigation_guidance_append
 
             system_prompt = (system_prompt or "") + investigation_guidance_append()
             print(
@@ -804,12 +1179,11 @@ class InteractiveAgentSession:
                 allowed_tools = [t for t in self.DEFAULT_TOOLS if t not in tc.disabled]
 
         options_kwargs = dict(
-            cwd=cwd,
+            cwd=self._cwd,
             allowed_tools=allowed_tools,
             permission_mode="acceptEdits",
-            can_use_tool=can_use_tool_handler,
+            can_use_tool=self._can_use_tool_handler,
             include_partial_messages=True,  # Needed to get parent_tool_use_id for subagent tracking
-            setting_sources=["user", "project"],  # Loads .claude/skills/
             # Enables the Skill tool + auto-allows it (replaces deprecated "Skill"
             # in allowed_tools). "all" is correct, not a widening: team-level
             # filtering already deleted disabled skill dirs from the thread
@@ -830,12 +1204,19 @@ class InteractiveAgentSession:
             **({"resume": self.resume} if self.resume else {}),
         )
 
-        # Apply model settings and execution limits from root agent config
+        # Apply execution limits and model selection from root agent config
         if root_config:
             # Apply max_turns to prevent infinite loops
             if root_config.max_turns:
                 options_kwargs["max_turns"] = root_config.max_turns
                 print(f"🔧 [AGENT] Max turns: {root_config.max_turns}")
+
+            # "inherit" means "use the session default", which is meaningless at
+            # session level — only forward a concrete model.
+            root_model = resolve_model(root_config.model.name)
+            if root_model != "inherit":
+                options_kwargs["model"] = root_model
+                print(f"🔧 [AGENT] Model: {root_model}")
 
             # Apply model settings globally via environment variables
             # Note: These apply to all subagents (Claude SDK limitation)
@@ -1193,6 +1574,10 @@ class InteractiveAgentSession:
         # Split mid-turn narration (thought) from final answer (result).
         # See TextSegmentBuffer + docs/superpowers/specs/2026-07-10-thinking-vs-result-dedupe-design.md
         segments = TextSegmentBuffer()
+        # Last SDK result + model, recorded once in finally so Langfuse gets
+        # the streaming-input running total instead of a sum of every result.
+        last_result_message = None
+        last_llm_model = None
 
         # Timeout for receive_messages drain (10 minutes for complex investigations)
         # This prevents hanging forever if interrupted from another request
@@ -1314,6 +1699,14 @@ class InteractiveAgentSession:
                                 segments.mark_tool()
                             while self._pending_tool_starts:
                                 pending = self._pending_tool_starts.pop(0)
+                                observability_tool_start(
+                                    self.thread_id,
+                                    pending["name"],
+                                    pending.get("input"),
+                                    pending.get("tool_use_id"),
+                                    agent_type=pending.get("agent_type"),
+                                    depth=pending.get("depth", 0),
+                                )
                                 yield tool_start_event(
                                     self.thread_id,
                                     pending["name"],
@@ -1329,6 +1722,13 @@ class InteractiveAgentSession:
                             # Emit any pending tool_end events (from PostToolUse hook)
                             while self._pending_tool_ends:
                                 pending = self._pending_tool_ends.pop(0)
+                                observability_tool_end(
+                                    self.thread_id,
+                                    pending.get("tool_use_id"),
+                                    output=pending.get("output"),
+                                    success=pending.get("success", True),
+                                    error=pending.get("error"),
+                                )
                                 yield tool_end_event(
                                     self.thread_id,
                                     pending["name"],
@@ -1394,6 +1794,7 @@ class InteractiveAgentSession:
                                         message.task_id
                                     )
                             elif isinstance(message, AssistantMessage):
+                                last_llm_model = message.model
                                 for block in message.content:
                                     if isinstance(block, TextBlock):
                                         # Buffer only — flushed as thought before tools, or as result at end.
@@ -1421,11 +1822,24 @@ class InteractiveAgentSession:
                                             yield question_event(
                                                 self.thread_id, questions
                                             )
+                            elif isinstance(message, SystemMessage):
+                                new_id, ev = session_id_event_if_changed(
+                                    self.thread_id, self.session_id, message
+                                )
+                                self.session_id = new_id
+                                if ev is not None:
+                                    yield ev
                             elif isinstance(message, ResultMessage):
                                 # Capture the SDK session id for durable resume.
-                                self.session_id = capture_session_id_from_result(
-                                    self.session_id, message
+                                new_id, ev = session_id_event_if_changed(
+                                    self.thread_id, self.session_id, message
                                 )
+                                self.session_id = new_id
+                                if ev is not None:
+                                    yield ev
+                                # Keep the latest result so finally can emit one
+                                # Langfuse generation with this turn's cost.
+                                last_result_message = message
                                 # Pending tool_end events are already drained at the top
                                 # of the loop on every iteration, so nothing extra to do
                                 # here.
@@ -1462,7 +1876,9 @@ class InteractiveAgentSession:
                                             result_text,
                                             parent_tool_use_id=parent_tool_use_id,
                                         )
-                                    pending_ids = sorted(self._outstanding_background_tasks)
+                                    pending_ids = sorted(
+                                        self._outstanding_background_tasks
+                                    )
                                     yield background_waiting_event(
                                         self.thread_id,
                                         pending_count=len(pending_ids),
@@ -1541,6 +1957,7 @@ class InteractiveAgentSession:
                                 self.session_id = capture_session_id_from_result(
                                     self.session_id, message
                                 )
+                                last_result_message = message
                                 break
                 except (asyncio.TimeoutError, Exception):
                     pass
@@ -1578,6 +1995,15 @@ class InteractiveAgentSession:
             yield error_event(self.thread_id, error_msg, recoverable=False)
             # Don't re-raise - let the error event be sent cleanly
         finally:
+            # One generation per execute(), nested under the turn span. Must
+            # run before the wrapper closes that span.
+            observability_record_generation(
+                last_result_message, fallback_model=last_llm_model
+            )
+            # Push the generation before the next turn; otherwise cost sits in
+            # the OTEL batch until the processor's interval and the dashboard
+            # looks empty right after the investigation.
+            observability_flush()
             # Close the input generator so the concurrent query task can finish.
             self._input_closed = True
             self._message_event.set()  # unblock generator
@@ -1674,15 +2100,17 @@ class InteractiveAgentSession:
             except Exception:
                 pass  # Ignore cleanup errors
             self.client = None
+        # Drop this thread's observability state so it doesn't accumulate for
+        # the lifetime of a long-running server process.
+        observability_end_session(self.thread_id)
 
     async def provide_answer(self, answers: dict) -> None:
         """Provide answer to pending AskUserQuestion."""
-        if (
-            hasattr(self, "_pending_answer_event")
-            and self._pending_answer_event is not None
-        ):
-            self._pending_answer = answers
-            self._pending_answer_event.set()
+        if not hasattr(self, "_pending_answer_event") or self._pending_answer_event is None:
+            raise NoPendingQuestionError("No pending question")
+
+        self._pending_answer = answers
+        self._pending_answer_event.set()
 
 
 def create_agent_session(thread_id: str, team_config=None):

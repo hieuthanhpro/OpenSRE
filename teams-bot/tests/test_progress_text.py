@@ -98,6 +98,46 @@ def test_completed_thought_collapses_many_tools():
     assert "Glob" not in text
 
 
+def _done(name, **inp):
+    return ToolCall(name=name, input=inp, running=False, success=True)
+
+
+def test_progress_collapses_like_one_on_one():
+    """Channel UpdateActivity uses the same string as 1:1: collapse old, nest Bash."""
+    older = ThoughtSection(text="I'll validate Kubernetes connectivity", completed=True)
+    older.tools = [
+        _done("Skill", skill="infrastructure-kubernetes", args="list namespaces"),
+        _done("Bash", command="python .claude/skills/k8s/scripts/list_namespaces.py"),
+    ]
+    live = ThoughtSection(text="Checking cluster-info", completed=False)
+    live.tools = [
+        _done("Skill", skill="infrastructure-kubernetes", args="e2e"),
+        *[
+            _done("Bash", command=c)
+            for c in (
+                "python .claude/skills/k8s/scripts/list_namespaces.py",
+                "kubectl auth can-i --list",
+                "kubectl version --short",
+                "kubectl cluster-info",
+            )
+        ],
+    ]
+    text = build_progress_text(
+        InvestigationState(thread_id="t", thoughts=[older, live])
+    )
+    assert "list_namespaces.py" not in text
+    assert "kubectl auth can-i" not in text
+    assert "Used 1 tool" in text
+    assert "↳ 4 commands" in text
+
+    many = ThoughtSection(text="Still working", completed=False)
+    many.tools = [_done("Read", file_path=f"/tmp/file{i}.md") for i in range(5)]
+    clipped = build_progress_text(InvestigationState(thread_id="t", thoughts=[many]))
+    assert "+2 more" in clipped
+    assert "file0.md" not in clipped
+    assert "file4.md" in clipped
+
+
 def test_shows_background_waiting_label():
     state = InvestigationState(thread_id="t")
     state.thoughts.append(ThoughtSection(text="Delegating work", completed=False))
@@ -171,3 +211,38 @@ def test_live_clutter_scenario_readable():
     assert "from kubernetes import client" not in text
     assert "infrastructure-kubernetes" in text
     assert "kubernetes: Check pods" in text
+
+
+def test_progress_includes_run_link_when_url_given():
+    state = InvestigationState(thread_id="t")
+    state.thoughts.append(ThoughtSection(text="Checking pods", completed=False))
+    text = build_progress_text(
+        state, run_url="https://opensre.example.com/team/agent-runs/run-abc"
+    )
+    assert (
+        "[View in OpenSRE](https://opensre.example.com/team/agent-runs/run-abc)" in text
+    )
+
+
+def test_progress_has_no_run_link_without_url():
+    state = InvestigationState(thread_id="t")
+    state.thoughts.append(ThoughtSection(text="Checking pods", completed=False))
+    assert "View in OpenSRE" not in build_progress_text(state)
+    assert "View in OpenSRE" not in build_progress_text(state, run_url=None)
+
+
+def test_progress_link_is_last_line():
+    state = InvestigationState(thread_id="t")
+    state.thoughts.append(ThoughtSection(text="Checking pods", completed=False))
+    state.background_waiting_label = "Waiting on 1 background agent(s)…"
+    text = build_progress_text(state, run_url="https://x/team/agent-runs/r")
+    assert text.rstrip().endswith("[View in OpenSRE](https://x/team/agent-runs/r)")
+
+
+def test_progress_link_present_with_no_thoughts_yet():
+    # run_started fires before the first thought — the link must still render.
+    text = build_progress_text(
+        InvestigationState(thread_id="t"), run_url="https://x/team/agent-runs/r"
+    )
+    assert "Investigating" in text
+    assert "[View in OpenSRE](https://x/team/agent-runs/r)" in text

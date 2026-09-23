@@ -7,6 +7,9 @@ Tools are humanized and Bash is nested under Skill — see tool_display.py.
 
 from __future__ import annotations
 
+from typing import Optional
+
+from run_links import format_view_link_markdown
 from state import InvestigationState, ThoughtSection, ToolCall
 from tool_display import (
     DisplayTool,
@@ -68,45 +71,61 @@ def _tool_row(dt: DisplayTool) -> list[str]:
     return lines
 
 
-def _render_thought_tools(thought: ThoughtSection) -> list[str]:
-    lines: list[str] = []
-    plan = _plan_line(thought.tools)
-    if plan:
-        lines.append(plan)
-
-    # Display list: nest Bash, drop plan tools (covered by plan line)
+def _render_thought_tools(thought: ThoughtSection, *, is_current: bool) -> list[str]:
+    # Nest Bash under Skill; drop plan tools (covered by the plan line).
     nested = nest_bash_under_skills(thought.tools)
     display = [dt for dt in nested if not is_plan_tool(dt.tool.name)]
+    lines: list[str] = []
 
-    if thought.completed and len(display) >= 2:
-        lines.append(f"  ↳ Used {len(display)} tools")
+    # Live thought: last 3 top-level rows (1:1 stream tail).
+    if is_current and not thought.completed:
+        plan = _plan_line(thought.tools)
+        if plan:
+            lines.append(plan)
+        visible = display[-3:]
+        hidden = len(display) - len(visible)
+        if hidden > 0:
+            lines.append(f"  +{hidden} more")
+        for dt in visible:
+            lines.extend(_tool_row(dt))
         return lines
 
-    # Current (or sparse) thought: show last 3 top-level rows
-    visible = display[-3:]
-    hidden = len(display) - len(visible)
-    if hidden > 0:
-        lines.append(f"  +{hidden} more")
-    for dt in visible:
-        lines.extend(_tool_row(dt))
+    # Older / completed thoughts: collapse so the channel edit is not a diary.
+    if display:
+        n = len(display)
+        lines.append(f"  ↳ Used {n} tool{'s' if n != 1 else ''}")
+    else:
+        plan = _plan_line(thought.tools)
+        if plan:
+            lines.append(plan)
     return lines
 
 
-def build_progress_text(state: InvestigationState) -> str:
+def _with_run_link(lines: list[str], run_url: Optional[str]) -> str:
+    if run_url:
+        lines.extend(["", format_view_link_markdown(run_url)])
+    return "\n".join(lines)
+
+
+def build_progress_text(
+    state: InvestigationState, run_url: Optional[str] = None
+) -> str:
     lines = ["**OpenSRE — Investigating…**", ""]
     # Last 3 thoughts; chronological → current thought ends the stream body
     thoughts = state.thoughts[-3:]
     if not thoughts:
         lines.append("_Starting investigation…_")
-        return "\n".join(lines)
-    for thought in thoughts:
+        return _with_run_link(lines, run_url)
+    for index, thought in enumerate(thoughts):
         mark = "✓" if thought.completed else "…"
         lines.append(f"{mark} {thought.text}")
-        lines.extend(_render_thought_tools(thought))
+        lines.extend(
+            _render_thought_tools(thought, is_current=index == len(thoughts) - 1)
+        )
     if state.background_notification:
         lines.append("")
         lines.append(f"_{state.background_notification}_")
     if state.background_waiting_label:
         lines.append("")
         lines.append(f"_{state.background_waiting_label}_")
-    return "\n".join(lines)
+    return _with_run_link(lines, run_url)

@@ -12,6 +12,7 @@ from sqlalchemy.orm import Session
 
 from ...core.config_cache import get_config_cache
 from ...core.security import get_token_pepper
+from ...db import repository
 from ...db.models import (
     AgentRun,
     KnowledgeDocument,
@@ -22,26 +23,11 @@ from ...db.models import (
 from ...db.session import get_db
 from ...services.config_service_rds import ConfigServiceRDS
 from ..auth import TeamPrincipal, authenticate_team_request, require_team_auth
-from .config_v2 import _check_visitor_write_access
 
 logger = structlog.get_logger(__name__)
 
 
 router = APIRouter(prefix="/api/v1/team", tags=["team"])
-
-
-# =============================================================================
-# Visitor Access Control
-# =============================================================================
-
-
-def require_write_access(team: TeamPrincipal) -> None:
-    """Verify the team principal has write access. Visitors are read-only."""
-    if not team.can_write():
-        raise HTTPException(
-            status_code=403,
-            detail="Visitor accounts have read-only access",
-        )
 
 
 # =============================================================================
@@ -192,8 +178,6 @@ async def create_knowledge_document(
     team: TeamPrincipal = Depends(require_team_auth),
 ):
     """Create a new knowledge document."""
-    require_write_access(team)
-
     doc_id = f"doc_{uuid.uuid4().hex[:12]}"
 
     doc = KnowledgeDocument(
@@ -229,8 +213,6 @@ async def delete_knowledge_document(
     team: TeamPrincipal = Depends(require_team_auth),
 ):
     """Delete a knowledge document."""
-    require_write_access(team)
-
     doc = (
         db.query(KnowledgeDocument)
         .filter(
@@ -257,8 +239,6 @@ async def upload_knowledge_document(
     team: TeamPrincipal = Depends(require_team_auth),
 ):
     """Upload a document to the knowledge base."""
-    require_write_access(team)
-
     content = await file.read()
     text_content = content.decode("utf-8", errors="ignore")
 
@@ -337,8 +317,6 @@ async def approve_kb_change(
     team: TeamPrincipal = Depends(require_team_auth),
 ):
     """Approve a proposed knowledge change and add it to the knowledge base."""
-    require_write_access(team)
-
     change = (
         db.query(PendingConfigChange)
         .filter(
@@ -384,8 +362,6 @@ async def reject_kb_change(
     team: TeamPrincipal = Depends(require_team_auth),
 ):
     """Reject a proposed knowledge change."""
-    require_write_access(team)
-
     change = (
         db.query(PendingConfigChange)
         .filter(
@@ -540,8 +516,6 @@ async def approve_pending_change(
     team: TeamPrincipal = Depends(require_team_auth),
 ):
     """Approve a pending configuration change."""
-    require_write_access(team)
-
     change = (
         db.query(PendingConfigChange)
         .filter(
@@ -658,8 +632,6 @@ async def reject_pending_change(
     team: TeamPrincipal = Depends(require_team_auth),
 ):
     """Reject a pending configuration change."""
-    require_write_access(team)
-
     change = (
         db.query(PendingConfigChange)
         .filter(
@@ -710,6 +682,30 @@ class AgentRunResponse(BaseModel):
     sdkSessionId: Optional[str] = None
 
 
+def _agent_run_to_response(run: AgentRun) -> AgentRunResponse:
+    duration = None
+    if run.completed_at and run.started_at:
+        duration = int((run.completed_at - run.started_at).total_seconds())
+    return AgentRunResponse(
+        id=str(run.id),
+        correlationId=run.correlation_id or "",
+        agentName=run.agent_name or "unknown",
+        triggerSource=run.trigger_source or "api",
+        triggerActor=run.trigger_actor,
+        triggerMessage=run.trigger_message,
+        status=run.status,
+        startedAt=run.started_at.isoformat(),
+        completedAt=run.completed_at.isoformat() if run.completed_at else None,
+        durationSeconds=duration,
+        toolCallsCount=run.tool_calls_count,
+        outputSummary=run.output_summary,
+        outputJson=run.output_json,
+        errorMessage=run.error_message,
+        confidence=run.confidence,
+        sdkSessionId=run.sdk_session_id,
+    )
+
+
 @router.get("/agent-runs", response_model=List[AgentRunResponse])
 async def list_agent_runs(
     limit: int = 50,
@@ -730,34 +726,7 @@ async def list_agent_runs(
         .all()
     )
 
-    result = []
-    for run in runs:
-        duration = None
-        if run.completed_at and run.started_at:
-            duration = int((run.completed_at - run.started_at).total_seconds())
-
-        result.append(
-            AgentRunResponse(
-                id=str(run.id),
-                correlationId=run.correlation_id or "",
-                agentName=run.agent_name or "unknown",
-                triggerSource=run.trigger_source or "api",
-                triggerActor=run.trigger_actor,
-                triggerMessage=run.trigger_message,
-                status=run.status,
-                startedAt=run.started_at.isoformat(),
-                completedAt=run.completed_at.isoformat() if run.completed_at else None,
-                durationSeconds=duration,
-                toolCallsCount=run.tool_calls_count,
-                outputSummary=run.output_summary,
-                outputJson=run.output_json,
-                errorMessage=run.error_message,
-                confidence=run.confidence,
-                sdkSessionId=run.sdk_session_id,
-            )
-        )
-
-    return result
+    return [_agent_run_to_response(run) for run in runs]
 
 
 @router.get("/agent-runs/{run_id}", response_model=AgentRunResponse)
@@ -780,28 +749,29 @@ async def get_agent_run(
     if not run:
         raise HTTPException(status_code=404, detail="Agent run not found")
 
-    duration = None
-    if run.completed_at and run.started_at:
-        duration = int((run.completed_at - run.started_at).total_seconds())
+    return _agent_run_to_response(run)
 
-    return AgentRunResponse(
-        id=str(run.id),
-        correlationId=run.correlation_id or "",
-        agentName=run.agent_name or "unknown",
-        triggerSource=run.trigger_source or "api",
-        triggerActor=run.trigger_actor,
-        triggerMessage=run.trigger_message,
-        status=run.status,
-        startedAt=run.started_at.isoformat(),
-        completedAt=run.completed_at.isoformat() if run.completed_at else None,
-        durationSeconds=duration,
-        toolCallsCount=run.tool_calls_count,
-        outputSummary=run.output_summary,
-        outputJson=run.output_json,
-        errorMessage=run.error_message,
-        confidence=run.confidence,
-        sdkSessionId=run.sdk_session_id,
+
+@router.post("/agent-runs/{run_id}/abandon", response_model=AgentRunResponse)
+async def abandon_agent_run(
+    run_id: str,
+    db: Session = Depends(get_db),
+    team: TeamPrincipal = Depends(require_team_auth),
+):
+    """Mark a running agent run interrupted (zombie Stop). Tenant-scoped."""
+    run = repository.abandon_agent_run(
+        db,
+        run_id=run_id,
+        org_id=team.org_id,
+        team_node_id=team.team_node_id,
     )
+    if run is None:
+        raise HTTPException(status_code=404, detail="Agent run not found")
+    # abandon_agent_run only sets interrupted when the row was running.
+    if run.status != "interrupted":
+        raise HTTPException(status_code=409, detail="Run is not in running state")
+    db.commit()
+    return _agent_run_to_response(run)
 
 
 # =============================================================================
@@ -1096,9 +1066,6 @@ async def update_output_config(
     - Trigger-specific routing rules (e.g., Slack -> reply in thread)
     Supports both team and admin tokens (admin uses org root node).
     """
-    # Visitors cannot modify output config
-    _check_visitor_write_access(authorization)
-
     org_id, team_node_id = _resolve_team_or_admin_identity(authorization, db)
 
     config = (

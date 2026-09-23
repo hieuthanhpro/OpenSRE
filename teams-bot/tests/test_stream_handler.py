@@ -13,6 +13,12 @@ def test_parse_sse_event_ignores_non_data():
     assert parse_sse_event(": keepalive") is None
 
 
+def test_run_started_sets_run_id():
+    state = InvestigationState(thread_id="t1")
+    handle_stream_event(state, {"type": "run_started", "data": {"run_id": "r-99"}})
+    assert state.run_id == "r-99"
+
+
 def test_thought_appends_section():
     state = InvestigationState(thread_id="t1")
     result = handle_stream_event(
@@ -176,10 +182,40 @@ def test_error_clears_waiting_fields():
             },
         },
     )
-    result = handle_stream_event(
-        state, {"type": "error", "data": {"message": "boom"}}
-    )
+    result = handle_stream_event(state, {"type": "error", "data": {"message": "boom"}})
     assert result.finished is True
     assert state.background_waiting_label is None
     assert state.pending_background_count == 0
     assert state.background_notification is None
+
+
+def test_run_started_requests_progress_update():
+    state = InvestigationState(thread_id="t1")
+    result = handle_stream_event(
+        state, {"type": "run_started", "data": {"run_id": "r-99"}}
+    )
+    assert state.run_id == "r-99"
+    assert result.update_progress is True
+    assert result.immediate_progress is True
+
+
+def test_run_started_immediate_progress_only_when_run_id_present():
+    state = InvestigationState(thread_id="t1")
+    result = handle_stream_event(state, {"type": "run_started", "data": {}})
+    assert result.immediate_progress is False
+
+
+def test_thought_leaves_immediate_progress_false():
+    state = InvestigationState(thread_id="t1")
+    result = handle_stream_event(
+        state, {"type": "thought", "data": {"text": "Checking pods"}}
+    )
+    assert result.update_progress is True
+    assert result.immediate_progress is False
+
+
+def test_run_started_without_run_id_does_not_update_progress():
+    state = InvestigationState(thread_id="t1")
+    result = handle_stream_event(state, {"type": "run_started", "data": {}})
+    assert state.run_id is None
+    assert result.update_progress is False
