@@ -209,6 +209,7 @@ agents:
   investigator:
     enabled: true
     name: "Oracle Database Specialist"
+    max_turns: 8
     model:
       name: "mic-llm"
       max_tokens: 4096
@@ -233,8 +234,9 @@ agents:
         - "DB có lỗi không?"
         - "kiểm tra oracle [số] gần đây"
         → Use `observability-graylog` skill. Query Graylog `Database Log stream`.
-        → Oracle IP rule: oracle 114 = source:10.36.88.114 (IP last octet = oracle number)
-        → Keep limit low (20-50 logs max). Range: --range 5m, 15m, 1h, etc.
+        → Oracle IP rule: oracle 114 = source:10.36.88.114 (IP last octet = oracle number).
+        → Run standard command: `search_logs.py --oracle NNN --range 15m` (or `--from ... --to ...`).
+        → CRITICAL: DO NOT add `--query "level:<=3..."` or restrict to `ORA- OR TNS-`! Critical root cause events (e.g. `TMON hung on an I/O to LAD:3`, process kills, `ARCH process failure`, `Thread cannot allocate new log`, `Checkpoint not complete`) have NO ORA- code and have level: -1.
 
         ### When to use `database-oracle-monitoring` skill:
         Questions about **live Oracle monitoring, active sessions, locks, blocking sessions, slow queries, tablespace usage**:
@@ -251,9 +253,21 @@ agents:
         - "wait events, buffer gets, physical reads, SGA/PGA advisory"
         → Use `database-oracle-awr` skill.
         → Default AWR file rule: If no AWR file path specified, automatically use the newest `.html` AWR report in `/app/awr/orcl/`.
+
+        ### When to use `observability-jaeger` skill:
+        Questions about **distributed tracing, microservice request latency, slow endpoints, error traces, trace diagram / flow visualization**:
+        - "tra cứu trace", "kiểm tra Jaeger", "xem trace service [tên]", "danh sách service trên jaeger", "tìm span chậm", "độ trễ service", "trace dịch vụ", "trace id [abc]", "vẽ diagram", "visualize trace", "sơ đồ luồng request", "vẽ flow trace", "vẽ mô tả"
+        → Use `observability-jaeger` skill (https://jaeger.opvn.vn).
+        → Scripts: `list_services.py`, `get_traces.py`, `get_slow_traces.py`, `get_error_traces.py`, `get_trace.py`, `visualize_trace.py`.
+        → **BẮT BUỘC khi người dùng yêu cầu "vẽ mô tả", "vẽ flow trace", "vẽ sơ đồ", "visualize trace" cho một trace ID**:
+           1. Chạy ngay: `python .claude/skills/observability-jaeger/scripts/visualize_trace.py <trace-id> --mode mermaid`
+           2. Xuất diagram Mermaid flowchart trong câu trả lời kèm bảng phân tích chi tiết: Client → Services, Method, Endpoint, Status, Duration, DB calls.
+           3. Sinh file HTML tương tác: `python .claude/skills/observability-jaeger/scripts/visualize_trace.py <trace-id> --output /tmp/trace_<trace-id>.html`
+           4. Nhắc người dùng có thể xem trực quan trên Web UI tại menu "Trace Visualizer" (/team/trace-visualizer) hoặc mở file HTML.
   planner:
     enabled: true
     name: "SRE Planner"
+    max_turns: 8
     model:
       name: "mic-llm"
       max_tokens: 4096
@@ -278,8 +292,9 @@ agents:
         - "DB có lỗi không?"
         - "kiểm tra oracle [số] gần đây"
         → Use `observability-graylog` skill. Query Graylog `Database Log stream`.
-        → Oracle IP rule: oracle 114 = source:10.36.88.114 (IP last octet = oracle number)
-        → Keep limit low (20-50 logs max). Range: --range 5m, 15m, 1h, etc.
+        → Oracle IP rule: oracle 114 = source:10.36.88.114 (IP last octet = oracle number).
+        → Run standard command: `search_logs.py --oracle NNN --range 15m` (or `--from ... --to ...`).
+        → CRITICAL: DO NOT add `--query "level:<=3..."` or restrict to `ORA- OR TNS-`! Critical root cause events (e.g. `TMON hung on an I/O to LAD:3`, process kills, `ARCH process failure`, `Thread cannot allocate new log`, `Checkpoint not complete`) have NO ORA- code and have level: -1.
 
         ### When to use `database-oracle-monitoring` skill:
         Questions about **live Oracle monitoring, active sessions, locks, blocking sessions, slow queries, tablespace usage**:
@@ -296,6 +311,17 @@ agents:
         - "wait events, buffer gets, physical reads, SGA/PGA advisory"
         → Use `database-oracle-awr` skill.
         → Default AWR file rule: If no AWR file path specified, automatically use the newest `.html` AWR report in `/app/awr/orcl/`.
+
+        ### When to use `observability-jaeger` skill:
+        Questions about **distributed tracing, microservice request latency, slow endpoints, error traces, trace diagram / flow visualization**:
+        - "tra cứu trace", "kiểm tra Jaeger", "xem trace service [tên]", "danh sách service trên jaeger", "tìm span chậm", "độ trễ service", "trace dịch vụ", "trace id [abc]", "vẽ diagram", "visualize trace", "sơ đồ luồng request", "vẽ flow trace", "vẽ mô tả"
+        → Use `observability-jaeger` skill (https://jaeger.opvn.vn).
+        → Scripts: `list_services.py`, `get_traces.py`, `get_slow_traces.py`, `get_error_traces.py`, `get_trace.py`, `visualize_trace.py`.
+        → **BẮT BUỘC khi người dùng yêu cầu "vẽ mô tả", "vẽ flow trace", "vẽ sơ đồ", "visualize trace" cho một trace ID**:
+           1. Chạy ngay: `python .claude/skills/observability-jaeger/scripts/visualize_trace.py <trace-id> --mode mermaid`
+           2. Xuất diagram Mermaid flowchart trong câu trả lời kèm bảng phân tích chi tiết: Client → Services, Method, Endpoint, Status, Duration, DB calls.
+           3. Sinh file HTML tương tác: `python .claude/skills/observability-jaeger/scripts/visualize_trace.py <trace-id> --output /tmp/trace_<trace-id>.html`
+           4. Nhắc người dùng có thể xem trực quan trên Web UI tại menu "Trace Visualizer" (/team/trace-visualizer) hoặc mở file HTML.
 
         1. **DO NOT load raw AWR HTML files directly into prompt context** (AWR files are 10,000+ lines).
         2. **ALWAYS discover actual files** by searching in `/app/awr/orcl/`:
@@ -393,11 +419,12 @@ agents:
 # Skills and Tools
 # Enable or disable specific capabilities
 skills:
-  # Enable Oracle DBA skills: AWR analysis + Graylog DB log monitoring
+  # Enable Oracle DBA + Observability skills: AWR analysis + Graylog + Jaeger Tracing
   enabled:
   - database-oracle-awr
   - database-oracle-monitoring
   - observability-graylog
+  - observability-jaeger
   - memory-search
   disabled:
   - '*'

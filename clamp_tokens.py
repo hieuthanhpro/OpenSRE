@@ -130,17 +130,38 @@ class ClampTokensCallback(CustomLogger):
                 trim_tool_descriptions(tools, max_len=120)
                 print(f"✂️ [LITELLM] Trimmed tool descriptions for {len(tools)} tools", flush=True)
 
-            # 2.4 Inject Multi-action / Parallel Execution Rule to force LLM to output multiple actions in 1 turn
-            PARALLEL_RULE = (
-                "\n\n[SYSTEM OPTIMIZATION RULE]: Batch multiple actions per response turn whenever possible. "
-                "When inspecting files or gathering facts, emit multiple parallel tool_calls OR combine multiple shell commands using '&&' or ';' into a single Bash call. "
-                "Never do 1-by-1 single-command roundtrips when gathering initial evidence."
+            # 2.4 Inject Single-Execution, Fast Completion & Visible Output Rule
+            EFFICIENCY_RULE = (
+                "\n\n[SYSTEM EFFICIENCY & OUTPUT RULES]:"
+                "\n1. Conclude investigations within 1-2 focused queries. Do not run repetitive or guessing queries."
+                "\n2. CRITICAL FOR REASONING MODELS: The <think> block is strictly for brief internal scratchpad only. "
+                "You MUST output your complete final report (Verdict, Event Summary Table, Recommendations) OUTSIDE the <think> tag in regular markdown text. "
+                "Never put tables, headers, or final answers inside <think>."
             )
             system = data.get("system")
             if isinstance(system, list):
-                system.append({"type": "text", "text": PARALLEL_RULE})
+                system.append({"type": "text", "text": EFFICIENCY_RULE})
             elif isinstance(system, str):
-                data["system"] = system + PARALLEL_RULE
+                data["system"] = system + EFFICIENCY_RULE
+
+            # 2.45 Stop sequences to prevent model from hallucinating <system-reminder> training artifacts
+            stop = data.get("stop")
+            if isinstance(stop, list):
+                if "<system-reminder>" not in stop:
+                    stop.append("<system-reminder>")
+            elif isinstance(stop, str):
+                data["stop"] = [stop, "<system-reminder>"]
+            else:
+                data["stop"] = ["<system-reminder>"]
+
+            stop_seqs = data.get("stop_sequences")
+            if isinstance(stop_seqs, list):
+                if "<system-reminder>" not in stop_seqs:
+                    stop_seqs.append("<system-reminder>")
+            elif isinstance(stop_seqs, str):
+                data["stop_sequences"] = [stop_seqs, "<system-reminder>"]
+            else:
+                data["stop_sequences"] = ["<system-reminder>"]
 
             # 2.5 Compress OLD conversation history (tool results + old assistant tables older than last 6 messages)
             messages = data.get("messages")
