@@ -54,6 +54,7 @@ from claude_agent_sdk import (
     TaskStartedMessage,
     TaskUpdatedMessage,
     TextBlock,
+    ThinkingBlock,
 )
 from dotenv import load_dotenv
 from events import (
@@ -872,6 +873,12 @@ class TextSegmentBuffer:
     def append(self, text: str) -> None:
         cleaned = (text or "").strip()
         if not cleaned or cleaned == "(no content)":
+            return
+        # Strip trailing hallucinated <system-reminder> tags and repeated answers
+        if "<system-reminder>" in cleaned:
+            parts = re.split(r"(?:\s*abc)?\s*<system-reminder>", cleaned, flags=re.IGNORECASE)
+            cleaned = parts[0].strip()
+        if not cleaned:
             return
         self._parts.append(cleaned)
 
@@ -1799,6 +1806,18 @@ class InteractiveAgentSession:
                                     if isinstance(block, TextBlock):
                                         # Buffer only — flushed as thought before tools, or as result at end.
                                         segments.append(block.text)
+                                    elif isinstance(block, ThinkingBlock):
+                                        # Fallback for reasoning models (e.g. DeepSeek) that put the markdown report inside thinking
+                                        th = getattr(block, "thinking", "") or ""
+                                        if ("## " in th or "### " in th) and ("Kết luận" in th or "Verdict" in th or "Bảng tổng hợp" in th or "Khuyến nghị" in th or "|---" in th):
+                                            for marker in ["## Tóm tắt", "## Kết quả", "### 1.", "## 1.", "## "]:
+                                                idx = th.find(marker)
+                                                if idx != -1:
+                                                    report_body = th[idx:].strip()
+                                                    if report_body:
+                                                        print(f"💡 [AGENT] Rescued {len(report_body)} chars of report from ThinkingBlock into segments", flush=True)
+                                                        segments.append(report_body)
+                                                    break
                                     elif hasattr(block, "name"):
                                         # Same-message tool-use: flush narration before the tool boundary
                                         # even if PreToolUse already queued (or not yet drained).

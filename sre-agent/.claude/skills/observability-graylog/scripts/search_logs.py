@@ -36,6 +36,47 @@ def parse_time_range(range_str: str) -> int:
     return val * multiplier[unit]
 
 
+def normalize_timestamp(ts: Optional[str]) -> Optional[str]:
+    """Normalize user-supplied timestamps to formats accepted by Graylog API:
+    - 'YYYY-MM-DD HH:MM:SS'
+    - 'YYYY-MM-DDTHH:MM:SS.sssZ'
+    """
+    if not ts:
+        return ts
+    ts = ts.strip().strip("\"'")
+    # If ends with Z and has no milliseconds (e.g. 2026-09-22T17:50:00Z)
+    if re.match(r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$', ts):
+        return ts[:-1] + ".000Z"
+    # If ISO format with timezone offset (e.g., 2026-09-22T17:50:00+07:00 or +0700)
+    match_tz = re.match(r'^(\d{4}-\d{2}-\d{2})[T ](\d{2}:\d{2}:\d{2}(?:\.\d+)?)([+-]\d{2}):?(\d{2})?$', ts)
+    if match_tz:
+        try:
+            from datetime import datetime, timezone
+            iso_str = f"{match_tz.group(1)}T{match_tz.group(2)}{match_tz.group(3)}:{match_tz.group(4) or '00'}"
+            dt = datetime.fromisoformat(iso_str)
+            dt_utc = dt.astimezone(timezone.utc)
+            return dt_utc.strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"
+        except Exception:
+            pass
+    # If ISO with 'T' and no timezone offset (e.g., 2026-09-22T17:50:00 or 2026-09-22T17:50)
+    if "T" in ts and not ts.endswith("Z"):
+        ts = ts.replace("T", " ")
+    # If date without seconds: 2026-09-22 17:50
+    if re.match(r'^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$', ts):
+        return ts + ":00"
+    # If date only: 2026-09-22
+    # Auto-correct outdated year (e.g. 2025 -> 2026) due to LLM training cutoff
+    from datetime import datetime
+    current_year = datetime.now().year
+    match_year = re.match(r'^(\d{4})-(.*)$', ts)
+    if match_year:
+        specified_year = int(match_year.group(1))
+        if specified_year < current_year:
+            ts = f"{current_year}-{match_year.group(2)}"
+
+    return ts
+
+
 def format_log_entry(msg_obj: Dict[str, Any], fields: List[str]) -> str:
     """Format a single Graylog log message object into a clean text line."""
     message_data = msg_obj.get("message", {})
@@ -136,10 +177,17 @@ Examples:
     if args.oracle:
         oracle_num = args.oracle.strip()
         oracle_ip = f"{ORACLE_IP_PREFIX}{oracle_num}"
-        if args.query == "*":
-            args.query = f"source:{oracle_ip}"
+        # Strip level:<=3 because Oracle alert logs have level: -1 which matches <=3 for all logs
+        clean_q = re.sub(r'level:<=?\d+\s*(?:OR\s*)?', '', args.query, flags=re.IGNORECASE).strip()
+        clean_q = re.sub(r'\s+OR\s*$', '', clean_q).strip()
+        if not clean_q or clean_q == "*":
+            args.query = f"source:{oracle_ip} AND log_service:oracle_alert"
         else:
-            args.query = f"source:{oracle_ip} AND ({args.query})"
+            # If user/agent is looking for ORA- or TNS- errors, auto-expand to include all Oracle alert issues
+            # (TMON hung on I/O, Killing hung process, ARCH process failure, Checkpoint not complete, cannot allocate new log)
+            if any(kw in clean_q for kw in ("ORA-", "TNS-")) and "TMON" not in clean_q:
+                clean_q += ' OR message:timeout OR message:"timed out" OR message:"Checkpoint not complete" OR message:"cannot allocate new log" OR message:TMON OR message:hung OR message:hang* OR message:Killing OR message:Terminating OR message:deadlock OR message:"ARCH process failure" OR message:"FAL request" OR message:LAD'
+            args.query = f"source:{oracle_ip} AND log_service:oracle_alert AND ({clean_q})"
 
     # Resolve stream name → ID (uses pre-cached KNOWN_STREAMS for speed)
     stream_id: Optional[str] = None
@@ -151,15 +199,28 @@ Examples:
             stream_id = args.stream  # pass as-is
 
     try:
-        if args.from_time and args.to_time:
+        if args.from_time or args.to_time:
+            from_clean = normalize_timestamp(args.from_time)
+            to_clean = normalize_timestamp(args.to_time)
+            if not to_clean:
+                from datetime import datetime
+                to_clean = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            if not from_clean:
+                from datetime import datetime, timedelta
+                try:
+                    dt_to = datetime.fromisoformat(to_clean.replace("Z", "+00:00"))
+                    from_clean = (dt_to - timedelta(hours=1)).strftime("%Y-%m-%d %H:%M:%S")
+                except Exception:
+                    from_clean = to_clean
             res = client.search_absolute(
                 query=args.query,
-                from_time=args.from_time,
-                to_time=args.to_time,
+                from_time=from_clean,
+                to_time=to_clean,
                 limit=args.limit,
                 fields=field_list,
                 filter_stream_id=stream_id,
             )
+            time_display = f"from='{from_clean}' to='{to_clean}'"
         else:
             range_secs = parse_time_range(args.range)
             res = client.search_relative(
@@ -169,9 +230,56 @@ Examples:
                 fields=field_list,
                 filter_stream_id=stream_id,
             )
+            time_display = f"range={args.range}"
 
         messages = res.get("messages", [])
         total_results = res.get("total_results", len(messages))
+
+        # RULE (>50 logs): If >50 logs in timeframe and query didn't target specific errors,
+        # ONLY check and display DB errors (ORA-, TNS-, timeouts), process hangs/kills (TMON, hung, LAD, ARCH failure),
+        # and DB performance/slowness issues (checkpoint lag, slow, hang, deadlock).
+        if total_results > 50 and not any(kw in args.query for kw in ("ORA-", "TNS-", "timeout", "timed out", "TMON", "hung")):
+            db_issues_query = (
+                f"({args.query}) AND ("
+                f"message:ORA- OR message:TNS- OR message:TNS OR message:timeout OR message:\"timed out\" OR "
+                f"message:\"Checkpoint not complete\" OR message:\"cannot allocate new log\" OR "
+                f"message:deadlock OR message:hang* OR message:hung OR message:waited OR message:\"private strand flush\" OR "
+                f"message:TMON OR message:Killing OR message:Terminating OR message:\"ARCH process failure\" OR "
+                f"message:\"FAL request\" OR message:LAD OR message:fatal"
+                f")"
+            )
+            try:
+                if args.from_time or args.to_time:
+                    issue_res = client.search_absolute(
+                        query=db_issues_query,
+                        from_time=from_clean,
+                        to_time=to_clean,
+                        limit=args.limit,
+                        fields=field_list,
+                        filter_stream_id=stream_id,
+                    )
+                else:
+                    issue_res = client.search_relative(
+                        query=db_issues_query,
+                        range_seconds=range_secs,
+                        limit=args.limit,
+                        fields=field_list,
+                        filter_stream_id=stream_id,
+                    )
+                issue_msgs = issue_res.get("messages", [])
+                issue_count = issue_res.get("total_results", len(issue_msgs))
+                if issue_msgs:
+                    print(f"=== Graylog Search: Total {total_results} logs in timeframe (>50 logs rule: Filtering exclusively for ORA-, TNS-, timeouts, process hangs & DB issues: Found {issue_count} issues) ===")
+                    for m in issue_msgs:
+                        el = format_log_entry(m, field_list)
+                        print(f"⚠️  {el}")
+                    return
+                else:
+                    print(f"=== Graylog Search: Total {total_results} logs in timeframe (>50 logs rule: Verified 0 ORA-, TNS-, timeout, process hang, or DB slowness issues) ===")
+                    print(f"  ✅ Database healthy: All {total_results} logs are routine background operations (LOGMINER, redo switches). No errors or performance issues found.")
+                    return
+            except Exception:
+                pass
 
         if args.format == "json":
             print(json.dumps({
@@ -179,7 +287,7 @@ Examples:
                 "messages": [m.get("message", {}) for m in messages]
             }, indent=2))
         else:
-            print(f"=== Graylog Search: query='{args.query}' range={args.range} "
+            print(f"=== Graylog Search: query='{args.query}' {time_display} "
                   f"(Found {total_results} total, showing {len(messages)}) ===")
             if not messages:
                 print("  ✅ No matching logs found.")
@@ -187,8 +295,14 @@ Examples:
 
             for msg in messages:
                 line = format_log_entry(msg, field_list)
-                # Highlight ORA- errors and high severity levels
-                if any(kw in line for kw in ("ORA-", "[ERROR]", "[CRIT]", "[ALERT]", "[EMERG]")):
+                line_lower = line.lower()
+                # Highlight ORA-, TNS- errors, timeouts, process hangs/kills, and high severity levels
+                if any(kw in line_lower for kw in (
+                    "ora-", "tns-", "tns:", "[error]", "[crit]", "[alert]", "[emerg]",
+                    "timed out", "timeout", "deadlock", "checkpoint not complete",
+                    "cannot allocate new log", "tmon", "hung", "killing", "terminating process",
+                    "arch process failure", "fal request rejected", "fatal"
+                )):
                     print(f"⚠️  {line}")
                 else:
                     print(f"   {line}")

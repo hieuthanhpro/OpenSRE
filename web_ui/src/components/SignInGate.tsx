@@ -9,7 +9,7 @@ import { OnboardingWrapper } from './onboarding/OnboardingWrapper';
 import { LoginHero } from './auth/LoginHero';
 import { Button, Skeleton } from '@/components/ui-flow';
 
-const PUBLIC_PATHS = ['/integrations/github/setup'];
+const PUBLIC_PATHS = ['/integrations/github/setup', '/team/trace-visualizer'];
 
 interface OrgSSOConfig {
   enabled: boolean;

@@ -28,8 +28,8 @@ def get_api_url() -> str:
     if os.environ.get("JAEGER_URL"):
         return os.environ["JAEGER_URL"].rstrip("/")
 
-    # Default to proxy endpoint
-    return "http://localhost:8001/jaeger"
+    # Default to production Jaeger endpoint
+    return "https://jaeger.opvn.vn"
 
 
 def get_headers() -> dict[str, str]:
@@ -99,10 +99,15 @@ def api_request(endpoint: str, params: dict[str, Any] | None = None) -> dict[str
         if filtered_params:
             url = f"{url}?{urllib.parse.urlencode(filtered_params)}"
 
+    import ssl
+    ctx = ssl.create_default_context()
+    ctx.check_hostname = False
+    ctx.verify_mode = ssl.CERT_NONE
+
     req = urllib.request.Request(url, headers=get_headers())
 
     try:
-        with urllib.request.urlopen(req, timeout=30) as response:
+        with urllib.request.urlopen(req, timeout=30, context=ctx) as response:
             return json.loads(response.read().decode("utf-8"))
     except urllib.error.HTTPError as e:
         error_body = e.read().decode("utf-8") if e.fp else ""

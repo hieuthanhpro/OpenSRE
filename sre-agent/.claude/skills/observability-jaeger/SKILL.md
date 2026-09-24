@@ -1,17 +1,29 @@
 ---
 name: observability-jaeger
-description: Jaeger distributed tracing analysis. Use when investigating request latency, tracing errors across services, finding slow spans, or understanding service dependencies.
-allowed-tools: Bash(python *)
+description: |
+  Jaeger distributed tracing analysis for microservices (https://jaeger.opvn.vn). Use this skill for:
+  - Investigating request latency, tracing errors across services, finding slow spans, or understanding service dependencies.
+  - Tra cứu distributed traces, kiểm tra trace request, trace flow qua Jaeger.
+  - Tìm kiếm và phân tích các request / endpoint chậm, độ trễ cao (slow traces, latency percentiles, bottleneck).
+  - Tra cứu danh sách microservice, endpoint / operation có trên hệ thống Jaeger.
+  - Phân tích lỗi theo trace ID, tìm span bị lỗi (tags error=true).
+  - Trực quan hóa luồng request từ Trace ID thành sơ đồ Node-based Topology Graph và Interactive Timeline (vẽ diagram, visualize trace, vẽ flow trace, sơ đồ luồng request).
+  - Các câu hỏi như: "tra cứu trace", "kiểm tra Jaeger", "xem trace service [tên]", "danh sách service trên jaeger", "tìm span chậm", "độ trễ service", "trace dịch vụ", "trace id [abc]", "vẽ diagram trace", "visualize trace".
+allowed-tools: Bash(*)
 ---
 
 # Jaeger Tracing Analysis
 
-## Authentication
+## 🚨 CRITICAL RULE — Connection Failures & Error Reporting
+**If any script returns a connection failure, network timeout, 404, or Connection Refused:**
+1. **STOP IMMEDIATELY.** Do NOT run diagnostic bash loops (do not check `netstat`, `ping`, `curl`).
+2. **DO NOT read or inspect python source code files.**
+3. **Report the exact connection error message directly to the user.**
 
-**IMPORTANT**: Credentials are injected automatically by a proxy layer. Do NOT check for `JAEGER_URL` or other credentials in environment variables - they won't be visible to you. Just run the scripts directly; authentication is handled transparently.
-
-Configuration environment variables you CAN check (non-secret):
-- `JAEGER_URL` - Jaeger Query API URL (e.g., `http://jaeger-query:16686`)
+## Configuration
+- Jaeger Query API is configured at `https://jaeger.opvn.vn` (or `JAEGER_URL` in environment).
+- Scripts use `python3 .claude/skills/observability-jaeger/scripts/...`.
+- No authentication required for internal Jaeger queries.
 
 ---
 
@@ -77,6 +89,32 @@ python .claude/skills/observability-jaeger/scripts/get_trace.py <trace-id>
 # Example:
 python .claude/skills/observability-jaeger/scripts/get_trace.py abc123def456789
 ```
+
+#### visualize_trace.py - Generate Interactive Trace Diagram & Timeline
+Use when user asks to:
+- "vẽ diagram", "visualize trace", "sơ đồ luồng request", "vẽ flow trace", "mô tả luồng request từ trace id".
+
+```bash
+# Generate standalone interactive HTML file (default)
+python .claude/skills/observability-jaeger/scripts/visualize_trace.py <trace-id>
+
+# Generate Mermaid flowchart text (for terminal/chat output)
+python .claude/skills/observability-jaeger/scripts/visualize_trace.py <trace-id> --mode mermaid
+
+# Save HTML to a specific path
+python .claude/skills/observability-jaeger/scripts/visualize_trace.py <trace-id> --output /tmp/trace_flow.html
+
+# Automatically open in browser
+python .claude/skills/observability-jaeger/scripts/visualize_trace.py <trace-id> --open
+```
+
+Features:
+- **Node-based Service Topology**: Each service is a node with duration badge, error status, and aggregated DB call badge (`🗄️ X DB calls`).
+- **Clickable Edges**: Clicking any request edge opens an inspector with Method, Endpoint, Status, Server Address, Headers, and **Response Time Breakdown** inside the call.
+- **Clickable Nodes**: Clicking a service node displays service metrics and full list of database statements executed.
+- **Interactive Timeline**: Gantt chart displaying service spans and the slowest representative DB call for each service. Hovering shows operation tooltip; clicking highlights on the graph.
+- **Fallback Mermaid Diagram**: Clean flowchart text format for markdown previews and terminal environments.
+
 
 ### LATENCY ANALYSIS
 

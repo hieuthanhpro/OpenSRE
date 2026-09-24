@@ -114,6 +114,9 @@ litellm_settings:
   request_timeout: 300
   callbacks: ["clamp_tokens.clamp_callback"]
   success_callback: ["langsmith"]
+
+general_settings:
+  dangerously_permit_weak_or_unset_master_key: true
 EOF
 
 echo "Generated $OUTPUT (provider=$LLM_PROVIDER, model=$TARGET_MODEL, api_base=${API_BASE:-default})"

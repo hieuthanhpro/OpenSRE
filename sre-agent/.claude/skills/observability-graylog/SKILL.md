@@ -34,30 +34,103 @@ allowed-tools: Bash(*)
 **Step 1 — Run this ONE command immediately** (replace NNN with the oracle number):
 
 ```bash
-python3 .claude/skills/observability-graylog/scripts/search_logs.py --oracle NNN --range 5m
+# Recent relative check (default 15m):
+python3 .claude/skills/observability-graylog/scripts/search_logs.py --oracle NNN --range 15m
+
+# Specific timeframe check:
+python3 .claude/skills/observability-graylog/scripts/search_logs.py --oracle NNN --from "YYYY-MM-DD HH:MM:SS" --to "YYYY-MM-DD HH:MM:SS"
 ```
 
-> Examples:
-> ```bash
-> # Oracle 114, last 5 minutes
-> python3 .claude/skills/observability-graylog/scripts/search_logs.py --oracle 114 --range 5m
->
-> # Oracle 114, errors only, last 15 minutes
-> python3 .claude/skills/observability-graylog/scripts/search_logs.py --oracle 114 --query "level:3" --range 15m
->
-> # Oracle 114, ORA- errors only
-> python3 .claude/skills/observability-graylog/scripts/search_logs.py --oracle 114 --query "message:ORA-" --range 1h
-> ```
-
-The `--oracle NNN` flag automatically:
-- Sets query to `source:10.36.88.NNN AND log_service:oracle_alert`
+> **🚨 CRITICAL QUERY RULE**:
+> **DO NOT pass `--query "level:<=3..."` or restrict query to only `message:ORA- OR message:TNS-"`!**
+> In Graylog, Oracle Alert logs have `level: -1` (info). Critical root cause events such as:
+> - `TMON: Process hung on an I/O to LAD:3 after ... seconds`
+> - `TMON: WARN: Terminating process hung on an operation` / `Killing ... processes`
+> - `TMON: Detected ARCH process failure`
+> - `Thread 1 cannot allocate new log` / `Checkpoint not complete`
+> have **NO ORA- code** and have **level: -1**. Restricting to `level:<=3` or `ORA-` will **SILENTLY MISS THE ROOT CAUSE**!
+> `search_logs.py --oracle NNN` automatically applies smart anomaly filtering when logs exceed 50 lines.
 
 **Step 2 — Analyze and respond:**
-- `✅ No matching logs found` → Không có vấn đề gì trong khoảng thời gian này
-- Lines with `⚠️` → ORA- errors hoặc ERROR/CRIT — cần chú ý và giải thích cho user
-- Lines without `⚠️` → INFO/NOTICE logs — hoạt động bình thường
+
+### ⚠️ Volume Rule (>50 logs in timeframe):
+If the timeframe contains **more than 50 logs**, `search_logs.py` automatically filters out routine background logs (`LOGMINER`, routine `LGWR switch`, `Archived Log entry added`).
+Focus EXCLUSIVELY on:
+1. **Process Hangs, TMON & I/O Stalls (PRIMARY ROOT CAUSE):**
+   - `TMON hung on an I/O to LAD:X`: Archiver / background process stuck on I/O to archive destination (Data Guard / disk).
+   - `TMON: Terminating / Killing process hung on an operation`: Watchdog killing hung archiver processes.
+   - `Detected ARCH process failure` / `ORA-16055: FAL request rejected`: Archive process failed, causing Data Guard gap.
+   - `Thread 1 cannot allocate new log` + `Checkpoint not complete`: Write pipeline stall — all redo logs full, instance freezes until logs are archived/checkpointed.
+2. **DB Kernel & Network Errors:** `ORA-` errors, `TNS-` errors, timeouts (`TNS-12535`, `ORA-3136`, `ORA-16055`, `ORA-609`, `Fatal NI connect error 12170`).
+3. **DB Lock & Integrity Issues:** `deadlock`, `Corrupt block`, `hang`.
+
+- If any such issues exist: Report them in the Event Summary Table with actionable DBA advice and trace the **full root cause chain**.
+- If NO such issues exist: Conclude immediately: **✅ Database is healthy (all logs are routine background operations, no errors or slowness issues found).**
+
+### 1. Log Classification & Root Cause Guide:
+
+- **`✅ No matching logs found`:**
+  - No error or warning logs found in the queried timeframe.
+  - Immediate conclusion: Database is operating normally; no alerts or anomalies recorded in alert log.
+
+- **Lines with `⚠️` — Actionable Alerts & Error Analysis:**
+
+  - **🔴 Group 1: Process Hangs, TMON & Redo/Archive Stalls (CRITICAL ROOT CAUSE):**
+    - `TMON: Process (PID:...) hung on an I/O to LAD:X after N seconds with threshold of M`:
+      - **Root Cause**: Archiver process hung on network/disk I/O to Log Archive Destination `LAD:X` (typically Data Guard standby or remote NFS/disk).
+    - `TMON: Terminating / Killing process hung on an operation (PID:...)`:
+      - **Root Cause**: TMON watchdog killed the hung process to prevent full instance stall.
+    - `Detected ARCH process failure`:
+      - **Impact**: Archive shipping to standby halted. Standby requests archive redo gap (`ORA-16055: FAL request rejected`).
+    - `Thread 1 cannot allocate new log, sequence ...` + `Checkpoint not complete`:
+      - **Impact**: **DATABASE WRITE STALL (HANG)**. LGWR needs to switch redo logs, but the next redo group cannot be overwritten because archiver hung or checkpoint is not complete. All user write transactions freeze until switch completes!
+
+  - **🟡 Group 2: Network & Listener Group (Application connectivity):**
+    - `TNS-12535: TNS:operation timed out` / `Fatal NI connect error 12170`: Client initiated connection to Oracle Listener but timed out before handshake finished. Root causes: Network latency/packet loss, firewall dropping connections, connection storm, or high host CPU load.
+    - `ORA-3136: inbound connection timed out`: Client completed TCP handshake but failed to authenticate within `SQLNET.INBOUND_CONNECT_TIMEOUT` (default 60s). Frequently accompanies `TNS-12535`.
+
+  - **🔴 Group 3: Storage & Memory Critical Group:**
+    - `ORA-19809 / ORA-19815 / ORA-00257 (Archiver error)`: Flash Recovery Area (FRA) full or archive disk exhausted. Database halts writes.
+    - `ORA-01653 / ORA-01654 (unable to extend table/index)`: Tablespace full or datafile reached maxsize.
+    - `ORA-04031 (unable to allocate memory)`: Shared Pool or Large Pool memory exhaustion in SGA.
+    - `ORA-00600 / ORA-07445`: Internal Oracle kernel unhandled exception.
+    - `ORA-00060 (Deadlock detected)`: Application-level transaction deadlock.
+
+- **Lines without `⚠️` — Benign Background Operations (NORMAL, NOT ERRORS):**
+  - `LOGMINER: Begin mining logfile...` / `LOGMINER: End mining logfile...`: Change Data Capture (CDC) streaming tools (Debezium, Kafka Connect, GoldenGate) reading redo logs. Normal.
+  - `Thread 1 advanced to log sequence ... (LGWR switch)`: Routine Redo Log Group switch when current is full. Normal.
+  - `Archived Log entry ... added for thread ...`: Archiver process (`ARCn`) successfully archived a redo log group. Normal.
+  - `Incremental checkpoint up to RBA...`: Regular DBWR/CKPT checkpoint. Normal.
+
+### 2. Standard Response Format for Users:
+Always present findings to the user following this 3-part structure:
+1. **Quick Verdict:** Clear statement identifying if the database experienced a stall, hang, network timeout, or is healthy.
+2. **Event Summary Table:**
+   | Timestamp (Local) | Event / Error Code | Severity | Root Cause & Technical Interpretation |
+   |---|---|---|---|
+   | HH:MM:SS | TMON hung on I/O LAD:3 / ORA-xxxx | 🚨 Critical / ⚠️ Warning | Cause, Impact on DB, Recovery |
+3. **Actionable Recommendations:**
+   - For TMON / LAD hung I/O: Check network connectivity and disk latency on Data Guard Standby (`LAD:3`), inspect Data Guard transport lag (`v$archive_dest_status`), verify storage performance.
+   - For network timeouts (`TNS-12535`, `ORA-3136`): Check app connection pools, firewall conntrack timeouts, and network path.
 
 **STOP. Do NOT run additional commands unless user asks to drill down.**
+
+---
+
+## 🛑 ROOT CAUSE & DRILL-DOWN RULES (Max 2 Queries Budget)
+
+When user asks to drill down, find root cause, or "tìm hiểu rõ nguyên nhân":
+1. **MAXIMUM BUDGET: 1 TO 2 QUERIES ONLY.** Conclude your analysis immediately.
+2. **COMBINE ALL ERROR CHECKS (ORA- and TNS-) INTO ONE SINGLE QUERY:**
+   ```bash
+   python3 .claude/skills/observability-graylog/scripts/search_logs.py --oracle NNN --query "message:ORA- OR message:TNS- OR message:timeout" --from "..." --to "..."
+   ```
+3. **❌ NEVER run multiple sequential queries guessing individual errors** (such as separate searches for `ORA-3136`, `ORA-609`, `ORA-16055`, `ORA-16038`, `Fatal NI`, `Client address`, `Starting up`, `Shutdown`). The combined query above catches **ALL** errors at once!
+4. **❌ NEVER redirect output to files** (e.g. `> /tmp/out.txt`) or chain with `&&` or `;`. Run the command directly.
+5. **CONCLUSION RULES:**
+   - If the combined query returns no errors (no ORA-, no TNS-): Conclude immediately that the database is healthy with no recorded errors.
+   - If `TNS-12535` is found: Explain listener timeout (network latency, connection storm, or firewall issue).
+   - If the logs show `LOGMINER` or sequence switch lines: Explain that these are normal, expected database background operations.
 
 ---
 
@@ -66,6 +139,7 @@ The `--oracle NNN` flag automatically:
 - ❌ Do NOT run `pwd`, `ls`, `find`, `env`, `which sqlplus` before searching
 - ❌ Do NOT list streams or check statistics first for Oracle DB questions — go straight to search
 - ❌ Do NOT exceed `--limit 50` per query
+- ❌ Do NOT run more than 2 query commands per turn
 
 ---
 
@@ -119,15 +193,19 @@ python3 .claude/skills/observability-graylog/scripts/search_logs.py --query "lev
 # Search specific host in the last 2 hours (limit 30)
 python3 .claude/skills/observability-graylog/scripts/search_logs.py --query "source:10.36.88.114 AND level:3" --range 2h --limit 30
 
-# Absolute time range search (ISO8601)
-python3 .claude/skills/observability-graylog/scripts/search_logs.py --query "message:Exception" --from "2026-08-11T08:00:00Z" --to "2026-08-11T09:00:00Z"
+# Absolute time range search (Format: "YYYY-MM-DD HH:MM:SS")
+python3 .claude/skills/observability-graylog/scripts/search_logs.py --query "source:10.36.88.124 AND log_service:oracle_alert AND (message:ORA- OR message:TNS- OR message:timeout)" --from "2026-09-22 17:50:00" --to "2026-09-22 18:20:00"
 ```
+
+### ⏰ Timezone Rule for `--from` and `--to`:
+- **ALWAYS use the local time string**: `"YYYY-MM-DD HH:MM:SS"` (e.g. `"2026-09-22 17:50:00"`).
+- **❌ DO NOT convert local time to UTC** by subtracting 7 hours! Graylog interprets local time strings directly. If you subtract 7 hours, you will search the morning (10:50) instead of the afternoon (17:50) and get 0 results!
 
 ### Lucene Query Quick Reference
 ```lucene
 source:10.36.88.114              # Filter by Oracle 114
-level:3                          # ERROR severity
-message:ORA-                     # Oracle errors
+message:ORA- OR message:TNS-     # Both DB kernel and TNS network/listener errors
+message:timeout OR message:"timed out" # Connection timeouts
 log_service:oracle_alert         # Oracle alert log type
 source:10.36.88.114 AND level:3  # Combined filter
 ```
