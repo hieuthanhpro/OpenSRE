@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:8a7df20347627a739ae4c6f3a719d061cdfe37e16c135a57345788d660a5d000",
+  "claims": [
+    {
+      "id": "claim_7636a4153af44dc39f2f04b0fbc8791a",
+      "statement": "Util.failureResponse is the global exception handler that converts exceptions (ErrorException, ErrorExceptionExt, DecodeException) into standardized JSON error responses via ErrorExceptionUtil.convertErrorToJson.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/Util.java#L239-L269",
+          "version": "repo-lines-v1:sha256:01da368c0c55066fa27e64501cce0359cd42f4c402d87b0d18752a46a9679618:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiMDllYjBhNjhmNzU1NTYyNDEyYjFmNjBiODk5YzUzMGQyMGRlNTIwZDU3ZWU5YTMyYTc4YzM4MGVlZTBiNzgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZiZTU4MDc4ZjVkYzlmZTBiOGU5OGE0MTU3MjYwNzg3YmU3ZjI3YzY0Njk3OWI3Y2U1YzViOWUxYjU4M2FmM2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQzMjcyMjVkM2Q2MjYyZDE1ZmRjMGJhOWI2ZDJhMTFmMjJkZWI2NWUwMzlkMmI2ODhlZWUzNWM5NjcyZGIzNTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_caafffa700f04ef48bdb409efa92e47c",
+      "statement": "ErrorExceptionUtil converts ErrorException objects into a standardized JSON response format, merging error details and transaction information (merchant_name, order_info, merch_txn_ref) into the response payload.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/ErrorExceptionUtil.java#L48-L84",
+          "version": "repo-lines-v1:sha256:798e6b239b978652cfefebd0c8d78fe3a5eff5b1c59ef19f32b019e378fa86e1:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY5MTkwMjQ5MTIzYmNjNzRmMzVjNjhmZTMyNTJlODEzMTQzZWIyOWZhNDZjM2JiMjY5NmFhZjc3NTVmODMyOTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRlOWE5YTYzODI5NjE0NWMyNTA1NjBkNGIxZDVhNDA1ZDg5NmJlZjg1ZjEzMTcyNmI4MWU5YmU5YTJjOTcyYzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE1NmZlMTA2NGZlNGY2YWU2MTNiMWI0YzQ5ZjBkMzBmZWYyYThlY2IwMzM0OGZmOTA5NjBiOTNiY2I3MjE0ZDIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_53438324867649a089087471c17496e2",
+      "statement": "The convertErrorToJson method handles INVALID_INSTALLMENT_AMOUNT errors specially by preserving min_amount, max_amount, and amount fields from the error details.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/ErrorExceptionUtil.java#L70-L74",
+          "version": "repo-lines-v1:sha256:a8fa8495cef10edfcbdc0bcd53d6265043e45dcfb4148b743bed775e3edbd1d4:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmNiMzBjZTI1ZTExNzIxOTFmYjcwNDNhMmU2NGU4ZmE2NDcxMzRmMDA4Y2IxZGUzNjI1YTg4ZjhhNmFmNjEyNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTZiMDQ0OTE0Njk3MjJlODM2M2E5NGU0MDQ0NTM4ZTAxM2EyYTIxN2UzNmIxZTU2OGJhNjBhY2I3YjRjOGYyZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGY0MDQ1MzZkMzY4NGFhYWE0N2ZjMTk2YmJiNzIzOTZmMWI4MTg1ZGYxYjhlOTdmNWVlZWViZjdmOGI1ZDYwMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGM5YzY3ZTVkN2EzNGI2MmEyODAxNjEwYjIwYzU5N2EwNTA0MTgwNjExMzhjYjUxNzk4OTk0MGJiN2E5NmY5OCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b72c985c906b438b81e97f330e68684d",
+      "statement": "ErrorExceptionUtil provides error page redirection via HTTP 302 responses, selecting error page URLs based on error name, theme, and locale.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/ErrorExceptionUtil.java#L102-L162",
+          "version": "repo-lines-v1:sha256:f2b44d28a8fa10fa0a77a444250cebeea4eb28d0d0bc2688d19940690f77327e:eyJzZWxlY3RlZExpbmVDb3VudCI6NjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmNzRjODVkNzk3NWViZmQ3MzgzYmI4OWNlZTMxMGU0M2QzYTg0MWRlYjliZjU1YjZjODMyNjI2MzA4NTQ0MTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgyNTFmYjVmYmJlNTE0MjljMjM2MWU2NmQwMzJkMGY0ZmU5NWJkZGQ4Y2Y5NDk4MWViOTY0MzJjY2E3YWQ2YWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ1OGM2Y2Q2YmI1YWU1NzZlMmRkNjBiNDAzNGYwZTU1MzUzNzcxMjViN2FkMzU1ODUxMWJlZTA5N2MwMjUxNjcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d434713affc34f68a98cb0ca4fcb78f9",
+      "statement": "Config.java loads configuration by reading config.json from the classpath, processing it through TemplateProcessor for template resolution before parsing into a JsonObject.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/Config.java#L30-L33",
+          "version": "repo-lines-v1:sha256:d467084c4a79d37683b5df2f04739c64295538c1ed1363f7449a1c9ece5267a5:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGY2OGMwMWE1NjRmYWExNTBhYjYxYjE3YTQ5NTZmYjlmM2VkZTUzNmI5MzYxZTQxYWZlZTAwYjUxMmU4YzU3YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGFjODg0ZGEyMDZjNzliYmRhNGYzZGY3M2NlODE2NjgwMGNlZDMzZTAwZjRlODUyMGUxNzU2ZjRkNzM2ZDk5ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmJiMjUyYWY3Y2Q5ZWU1NmIzZTc3NzM1NjdhYjA3Y2IzNzZjYWMxNzE4OTBjOGRjZjFlYmRmNTBlNTIyZWM5NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjRkZTBiNDc2YjVlZDI0NmJlNThlNzMxMzJkNThiNTEzMjJlMjQ2NWVhNGEzOGE5ZmFhMTQxNTMzMDM4M2ZhOSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-22T08:58:44.659Z"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:58597e6cb4a2711e84ac6e16d27b6db0487fe2486b5722ba1e2664f9a258d55e",
+  "claims": [
+    {
+      "id": "claim_acd911871c974cf0ba412a5509337f3c",
+      "statement": "The Instrument Registration Workflow is implemented by the InstrumentPostHandler, which receives a client request, extracts user details, and forwards them to an upstream eWallet service via a signed HTTP request.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/psp/server/handler/instrument/InstrumentPostHandler.java#L33-L74",
+          "version": "repo-lines-v1:sha256:8dec4e7631f2b6894b00e46f7f1d97c6a5ed9fa137aa402766fdb88754a5cbc3:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhjNmMwYWEzZDRkNmY3MDljMjc4YmQ1ODI2NTU4NTI1ODI0MzJiMmY4MWZiNWYzOTY2OGNhOGJjOWQ5MWM2NmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg3YjM0Y2ExMDBiYmZiY2Y4NjE4MzEzMDRmZmNjZWYwOWVlNWUxNjdmMzUxMzY2NWQ1MzMxZTI5YjQ5YTA5ZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMzNjFjMjZhNzVjMGU0NDA1YzU3NjZmZTQwZWNkNDlmOGY5OGNkMWUxZmJiNGU2MmJlZWEwZDYzYzI2MWZkOTQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_76390f9abf3c48b3bfa0057f11ddcd51",
+      "statement": "The workflow requires client requests to be signed and verified by the ClientAuthorizationHandler before reaching the business logic, using the OWS1 authorization scheme.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/psp/server/handler/common/ClientAuthorizationHandler.java#L35-L147",
+          "version": "repo-lines-v1:sha256:45f20901abdbf8d4f4e3fcd0b739161f7b815158b9f89b15dce05739bd7c3eff:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEzLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJmNWY1ZmVjMGZhNDg5NzhlZGQ1MGU4NTkxN2E5YThkMDhlZmVhNDVhNTBhZWJkNGM5ODY3ZDlhZTk1ZWRiYTI3IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0ODkzZjQwZTM3ODFlYjg5NmM4MmQwNDZhMDgwNjdhMTFlMzVjZGYyZjFkZmFmMjZmZWE5MGI4ZGI2Njc2NDEzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIyYTlkZGI2YjM5YjJiYmM1NGQyNTMzZjJhMzU4NGYwMGVjMGFmMzA1YjBmYWQyMjNlNWRjYjljZDY0MGY2ZTRkIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIxMGFmZmQ4NGNjNTAyNWNhMjA4NmY4NmZhYTkwNDkxM2I2MGQ2NWU5NjJiZDE4MWMyMTdjZGZmMDI4Mjc3NWU2In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_eae7f8a6d91b4c98ac6da9d03e4ba811",
+      "statement": "The PSP Connector maps the eWallet service response back to the client format, returning the upstream response body if successful (HTTP 201), or translating errors into appropriate HTTP status codes.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/psp/server/handler/instrument/InstrumentPostHandler.java#L76-L95",
+          "version": "repo-lines-v1:sha256:372cc92d3ad90b95b38561cf04d9ee5eb89c661cc766421db129387415be229a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJhMTM5N2UwYzVjODBhYmNkMTNhMzc1M2M4ZGViMWNhNWRjMzc5NTRmYjcxYTdmNzZjNTc4NzVhN2E2Y2NhMTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZmYjM5NmE5ODJlNmRiZTMwOTc2YmMzMmFkNDRiMGJiNWU0YmJkZWY5MDA4NmY3M2Y5MTgwNzdkOGMxZDNkMzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJkNzFmYzM1OGJjNTA0YTY4YTFlZTI0YTFhNjY3MzY3YzFjNzA0MThmYTFlZTY2YjMzYzVmZGFmM2IyZDJkYjgifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-30T08:38:20.900Z"
+  }
+}

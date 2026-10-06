@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:8dae46e33058183d6d10fc267499e8d816430abc95ed24909196e2606a19fb8e",
+  "claims": [
+    {
+      "id": "claim_60df4dd9422b4f8d861d079b6ca4ab2f",
+      "statement": "The Makefile provides build, test (`go test ./... -v`), vet, fmt, deps, run, and clean targets as the repository's validation entrypoints.",
+      "evidence": [
+        {
+          "resource": "repo://Makefile",
+          "version": "repo-file-v1:sha256:a5fcc097875e25a20b4fac1bb27ce08368d42013386e5d1a08b598d9cf505a12"
+        }
+      ]
+    },
+    {
+      "id": "claim_4d4aad31c89747c583d0bd91786b9375",
+      "statement": "The repository contains no `*_test.go` files, so `go test ./...` compiles packages but reports no tests, and validation falls back to go build/vet plus manual API calls.",
+      "evidence": [
+        {
+          "resource": "repo://Makefile",
+          "version": "repo-file-v1:sha256:a5fcc097875e25a20b4fac1bb27ce08368d42013386e5d1a08b598d9cf505a12"
+        }
+      ]
+    },
+    {
+      "id": "claim_3a3b15788d93474f846e19615a2e4e0e",
+      "statement": "Handler.SetupRouter registers gin.Recovery() first, then otelgin.Middleware(serviceName), then a custom JSON access logger, so every request gets a span and a trace-correlated access log.",
+      "evidence": [
+        {
+          "resource": "repo://internal/adapters/driving/rest/handler.go#L510-L547",
+          "version": "repo-lines-v1:sha256:5cdfbecbe421e67292fa21360019b6887efdff3a8496f39c75e81efac89906ac:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwZWNhODBlZDk5ZDRmOGI5ZDM5NzM4YTM1NDJiMTM5MzczMzE4NTY5Y2NhYWZlMWE4MzlmMTdjOGQ1MjRiY2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5MDc2MTEyYTc0YzkwNWNhN2U0NTQ2YmE4ODYxY2UyYmIxNDBmMzE0YzM5ODFiNjU2NzJkZDI1NzYyODJmNmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkwODFiNDVhZjc5OGFlMDFmODExM2VmNTk2Nzg2ZjJlNGJlMTY0YTA3ZTE1ZmEwMWJjZjhlNmZmOGNhMDlhNGIifQ"
+        },
+        {
+          "resource": "repo://internal/adapters/driving/rest/handler.go#L549-L583",
+          "version": "repo-lines-v1:sha256:b02eab7a84601d6c537171aa786ab21f76d8ac866b9fe992f254cef8b74b1aad:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiYzU0MDgwNTQ0Njg0NmU4MmY3ZGEyOTczY2U5Zjk3ZjlhZDI0MDY3N2Y2Y2ExZTNiYTUwNTc1ZTJmY2MwMzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f211383f4ed84a9c85a5affe7d6f1292",
+      "statement": "The custom access logger records status, latency, client IP, method, and path with query, appends private Gin errors, and logs at Error level for status >= 500 and Info otherwise using context-aware logger calls.",
+      "evidence": [
+        {
+          "resource": "repo://internal/adapters/driving/rest/handler.go#L510-L547",
+          "version": "repo-lines-v1:sha256:5cdfbecbe421e67292fa21360019b6887efdff3a8496f39c75e81efac89906ac:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwZWNhODBlZDk5ZDRmOGI5ZDM5NzM4YTM1NDJiMTM5MzczMzE4NTY5Y2NhYWZlMWE4MzlmMTdjOGQ1MjRiY2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5MDc2MTEyYTc0YzkwNWNhN2U0NTQ2YmE4ODYxY2UyYmIxNDBmMzE0YzM5ODFiNjU2NzJkZDI1NzYyODJmNmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkwODFiNDVhZjc5OGFlMDFmODExM2VmNTk2Nzg2ZjJlNGJlMTY0YTA3ZTE1ZmEwMWJjZjhlNmZmOGNhMDlhNGIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_84354204b1434bd39fd69e04dd213a05",
+      "statement": "Gin's built-in plain-text logging is redirected into the application JSON logger by overriding gin.DebugPrintRouteFunc and replacing gin.DefaultWriter/gin.DefaultErrorWriter with a ginLogWriter.",
+      "evidence": [
+        {
+          "resource": "repo://internal/adapters/driving/rest/handler.go#L497-L558",
+          "version": "repo-lines-v1:sha256:649790002b61ef67716e5b1324a5ceba1a1ae26834859abe9fd437284075521f:eyJzZWxlY3RlZExpbmVDb3VudCI6NjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhlNmUyYWNhMTZmYWQ2ZmFhYzRjYWRmYzdkNGM5MWIxOWJiYmQ2ZjI5OGY0YTk4ZDA3YmQ1YzMzNWU2NTNiYjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZiM2E1YjZhOGI3ZTY5MzNjYjZkYjIxZDA1YjA5ODk5MTYyZTZjZGFiNTIyMDNmOTAzYmFiMWQ4YjZiMGFjYTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI5MGUwZmJkNDQxOTFlMjJmNmY5NjM1ZjM3M2Q1OWFiMDQ5M2QzZThhNjI2YWU1YzA0ODdmYjZmZWQ5YmY0ZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkxMDY5NTA4MTg2OTgwYmVhYzg1M2MzNzE2ZDVkOTM5NDRlYjFmMGZkZGM3ZTI4YTM3ZjA4NzliZjhkYzM1YWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_69bd09dbfbb048a598f6453bcc7820bb",
+      "statement": "SlogLogger writes JSON to stdout and its context-aware methods inject trace_id/span_id fields from the OTel span in the context, omitting them when no valid span exists.",
+      "evidence": [
+        {
+          "resource": "repo://internal/logger/logger.go#L28-L48",
+          "version": "repo-lines-v1:sha256:96749ffef14ef8525fb44a70cd085ff5ac66083c11ead6cf6e5ba57d23de56d1:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkY2M3N2Q4MTAyNmVlMGQ3NzIyNmM2ZmYzMDMwMTc1YzM2YTYyOWQ1MDMzYzJkNmNkYzE2MmJhYzI2ZTljNjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdhZjNiNWUyYjIwMzMwOTcwMmQ1MGZmYWRlOWEwODM0YjJjNWEzZTU3MGRmN2MyNjM1YjExMTE1MzEwMThlYmQifQ"
+        },
+        {
+          "resource": "repo://internal/logger/logger.go#L86-L110",
+          "version": "repo-lines-v1:sha256:56b2720c0b27161d3ca54114dfc86de0d5b2dd9e4b4280cfca632cbecaced932:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM1YWU3ODQ1NWFiYzJjZWIzYmE4ODZhY2U4YWFjYzMxMzdhYWFiMTRmMzViZTJkMWZhNDVmYjkwOWYwNzU4YzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU1YzY4OTA5Mzc5OTQzZDllMWQ4YzYzNTQyOTZhODYzMTZkYWUyZmZmOWVlMDc0ZjRmOTJhMWI3N2NlYTRkNWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1a427a53ff394f1cac2f213c6a5e77e4",
+      "statement": "tracer.InitTracer creates an insecure gRPC OTLP exporter to the configured endpoint, builds a resource with service/environment/host attributes, installs a global batched TracerProvider, and sets W3C TraceContext plus Baggage propagation.",
+      "evidence": [
+        {
+          "resource": "repo://internal/tracer/tracer.go#L23-L67",
+          "version": "repo-lines-v1:sha256:681392fd9c7af3703845a33fe726187a923873d222447d8a1e6b7dfb42698bcb:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4YjExMGVjNzlmOGY0ZGQxYTg0N2ZjNDE0Y2Y1ODM2NTNiZGExZDM1N2VjOGNiMjA5M2RiYmExMTNlYjk0MWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZjMWI5ZWJiZjAwYTI3NmVmYzdlNjc0NzgwZGY5Y2IwMDE5YTRmY2EzYjJkNDY0MWM0ZDg5MDk4ZGMwNGFjMGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_66c58daf7e0c41e195177c7abb740c9c",
+      "statement": "InitTracer returns tp.Shutdown, which main defers so batched spans are flushed on exit, and startup fails fast via log.Fatalf if tracer initialization errors.",
+      "evidence": [
+        {
+          "resource": "repo://cmd/server/main.go#L36-L46",
+          "version": "repo-lines-v1:sha256:e4ed3091bcf70322fc86626e65f74650f4580259c600f0d86872d6af64431c39:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVhNjRkYjViOTRkYzdjMjliN2IyOTE1OWFlMzQwMTliNmVjOTg0YmE0MGI5OTMxZmQ1M2Q0YzFmNjBmNzdiNGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEwZDIzZDZjODcyOGIyN2EyMmY5YTgyY2U3OWEyODVkMzA1MjFhYmRkYmRjYmVjMWFhYzVjMmU4NDc5MDQ5MmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJlOGExYzBkYjQ4YjEzYTRhZTVkNDE5Yjk1NzMxYmMzMmU2MTdjMmM0YjBlZjA1NjI4YjNkNjA1ZTNkYjhlNjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU1OWM4ZjFlNmNlNGVkZmM2YzU1MGVhNTg2OWJkZDY2MzRmODc2NjA5Yjk1NWJlOGIwNjIxYTUyYWM5NTIwZGYifQ"
+        },
+        {
+          "resource": "repo://internal/tracer/tracer.go#L23-L30",
+          "version": "repo-lines-v1:sha256:45ecf8dd8b2ec1f9d6ff0039507993b5b0cf40e419220e9b53a7937b9c6d1fc5:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzhiMTEwZWM3OWY4ZjRkZDFhODQ3ZmM0MTRjZjU4MzY1M2JkYTFkMzU3ZWM4Y2IyMDkzZGJiYTExM2ViOTQxYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdjZGE4MmRhNjA2MjM4ZTA1ZTYyMzk5NTY5YzVlZTAzOTkzNDE5NjQ4YWU1ZDQzYTJiZjhjZDYzNDdmODI2MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmMxYjllYmJmMDBhMjc2ZWZjN2U2NzQ3ODBkZjljYjAwMTlhNGZjYTNiMmQ0NjQxYzRkODkwOThkYzA0YWMwYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWI5OWVjZjBjZmZlMTAxNDZmMGZkMDBiZjU5YzQ5MWEzOGNmODc2MGFlMjJmYmRiYTc5NjgxMjM2OGYyY2NhZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_5f6ef87ef5c34224bce904c628e5855a",
+      "statement": "Tracer settings come from config keys tracer.endpoint, tracer.service_name, tracer.service_version, and tracer.environment, with defaults localhost:4317, scsp, v1.0.0, and prod.",
+      "evidence": [
+        {
+          "resource": "repo://internal/config/config.go#L105-L108",
+          "version": "repo-lines-v1:sha256:fa054edf816dadc0f2626c4405d6169cdf4ff1c3d01b5cc08a644376a2a312bf:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTQwNDcxZDVlNzkyOTBjMzY5NjJmNzEyMjA4NzQ5YTA1ZGJiMGZhY2Y4OGNkZDhiOGNjYWU3YmNjYTE5NDZhMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjE3ODVjMzZiNTM4ZTk3ZWFmNzAxNjJkNGFhYzgyMDdiZGEzMjZjYzQ4M2EzNGEzYTFiNDUzMDJkMjJlZTc1NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDJhYzk2NzkwNzJjOTk2YzM1ZWViZGEyMDE4Yjc3YjM2NDk1MGFmYjk1NDkwMWQzNDM0NzY4ZThiY2Q5MWZhYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjMwMzY0ZTAwNmFmY2ViZTljZjMwMmU3ZGE5MTgyNWQ5MTY4MzkxNWU0YTM2Nzg2NGRlNDc3ZWE3MTBkMjA5NyJ9"
+        },
+        {
+          "resource": "repo://internal/config/config.go#L141-L146",
+          "version": "repo-lines-v1:sha256:88017f6efc1fe6aa9dd563bd42e56210cc8f3b0a8221b875df4b603a94a8f770:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzQxMzQ4YWNmNzRhYThkZjhiMTYxNTJiOGNkYzg3ZjhiYzNlMjA5M2JmMTE5YmEzMTlhNGEwMzNiMjU1MTdlZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNWJhZDdjYzJkZmFmYzIxNzVmYTJkOTcwNGUwMjAyZjk0MDgzYTlkYTY5YTU4NWIwYjE4YzQ4YmVhMjM2Mjc1ZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTBhMGM5MTRmYmFjYjE3NjA0MmY1NGYzN2QyODFhNWVmMjY1YzE0MTFkNDZmODBjNGUwNjZhODUwNDUyOTU5OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjYzNThjZDYxYmE5NWQ1OTlkNmFlMmI4OTg0ZTI2MmViNTAyOTg1Zjk4ZjMwMjFiZWM1ZjM3YzdlODliMDU3ZSJ9"
+        },
+        {
+          "resource": "repo://internal/config/config.go#L59-L65",
+          "version": "repo-lines-v1:sha256:0374b8a72121946f581ef1afb86b89268d2387db8ee312f8daa6c245eab044bc:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzc2NTI0ZGZmNTNjYTE3YjQyOWUyYmViZDU4MWE3ODhlMzAyYmZmN2IzYmM4ZWMyZWQzNzc2NmUwZmQwNjhhZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjBkOTk1ZjQ4MjRmNzU4MzRhZjY1NDgxN2UxNzlhMjdmNmQzNjRmNzkwODE3M2YzNTAxNzc2OTgzMmNjY2EyNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODRhOWRmZjRmNjMwODgwNzZjM2Q3OTA5Nzg4MTZlNDRiYmY3YjQwYTQxNWI2OGRjMzI3MGFhNmZlYjlmYzM1MSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-10-06T03:44:01.257Z"
+  }
+}

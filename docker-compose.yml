@@ -86,7 +86,8 @@ services:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/health')"]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 10
+      start_period: 30s
     networks:
       - app_network
       - default  # Needs host access for port publishing
@@ -123,12 +124,20 @@ services:
     container_name: opensre-litellm
     profiles: ["litellm"]
     restart: unless-stopped
+    env_file:
+      - .env
     environment:
       OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
       NVIDIA_API_KEY: ${NVIDIA_API_KEY}
+      LANGSMITH_TRACING: "true"
+      LANGSMITH_API_KEY: ${LANGSMITH_API_KEY}
+      LANGSMITH_PROJECT: ${LANGSMITH_PROJECT}
+      LANGSMITH_BASE_URL: ${LANGSMITH_BASE_URL}
+      LITELLM_DANGEROUSLY_PERMIT_WEAK_OR_UNSET_MASTER_KEY: "true"
     volumes:
       - ./litellm_config.yaml:/app/config.yaml:ro
-    command: ["--config", "/app/config.yaml", "--port", "4000"]
+      - ./clamp_tokens.py:/app/clamp_tokens.py:ro
+    command: ["--config", "/app/config.yaml", "--port", "4000", "--host", "0.0.0.0"]
     ports:
       - "4001:4000"
     healthcheck:
@@ -156,6 +165,7 @@ services:
     # is unreachable (e.g. Cloud Agent VMs) can point at a reachable Anthropic IP
     # via ANTHROPIC_HOST_IP in .env. Default preserves the original workaround.
     extra_hosts:
+      - "host.docker.internal:host-gateway"
       - "api.anthropic.com:${ANTHROPIC_HOST_IP:-104.18.19.125}"
     env_file:
       - .env
@@ -169,8 +179,11 @@ services:
       # LLM access — direct Anthropic by default (Claude Agent SDK engine).
       # To route via the optional LiteLLM proxy instead, start it with
       # `--profile litellm` and set ANTHROPIC_BASE_URL=http://litellm:4000.
-      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
-      - ANTHROPIC_BASE_URL=${ANTHROPIC_BASE_URL:-https://api.anthropic.com}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-EMPTY}
+      - ANTHROPIC_BASE_URL=http://litellm:4000
+      # Graylog config
+      - GRAYLOG_URL=${GRAYLOG_URL:-https://graylog.onepay.vn}
+      - GRAYLOG_API_TOKEN=${GRAYLOG_API_TOKEN}
       # Neo4j — credentials from repo .env; URI is always in-network (not NEO4J_URI from .env)
       - NEO4J_URI=bolt://neo4j:7687
       - NEO4J_USERNAME=${NEO4J_USERNAME:-neo4j}
@@ -178,6 +191,8 @@ services:
       - NEO4J_DATABASE=${NEO4J_DATABASE:-neo4j}
       # Coralogix config
       - CORALOGIX_DOMAIN=${CORALOGIX_DOMAIN:-}
+      # Jaeger config
+      - JAEGER_URL=${JAEGER_URL:-https://jaeger.opvn.vn}
       # Skills filtering
       # Default empty so team-level skills config (skills.enabled/disabled, set
       # via the web UI) governs which skills load. Set ENABLED_SKILLS=all (or a
@@ -185,6 +200,8 @@ services:
       # config. Empty default keeps out-of-box behavior (all skills) while letting
       # the team-level Skills toggles take effect.
       - ENABLED_SKILLS=${ENABLED_SKILLS:-}
+      # Disable subagents (Single Agent mode)
+      - DISABLE_SUBAGENTS=true
       # Investigation timeout (seconds; default 600 = 10 minutes)
       - AGENT_TIMEOUT_SECONDS=600
       # Durable session store for SDK conversation resume (persistent volume).
@@ -195,6 +212,11 @@ services:
       - WRITEUP_LLM_MODEL=${ANTHROPIC_MODEL:-claude-sonnet-4-6}
       # Other services
       - LMNR_PROJECT_API_KEY=${LMNR_PROJECT_API_KEY:-}
+      # LangSmith tracing
+      - LANGSMITH_TRACING=${LANGSMITH_TRACING:-true}
+      - LANGSMITH_API_KEY=${LANGSMITH_API_KEY}
+      - LANGSMITH_PROJECT=${LANGSMITH_PROJECT:-OpenSRE}
+      - LANGSMITH_BASE_URL=${LANGSMITH_BASE_URL}
       # Langfuse tracing. Unset by default — the agent auto-detects the backend
       # from whichever credentials are present, so leaving these blank is a no-op.
       # The Langfuse console hands out LANGFUSE_BASE_URL while older setups use
@@ -245,6 +267,10 @@ services:
     pids_limit: 4096
     volumes:
       - agent-sessions:/data/agent-sessions
+      - ./awr:/app/awr
+      - ./data:/app/data
+      - ./open-wiki:/app/open-wiki:ro
+      - ./sre-agent/.claude/skills:/app/.claude/skills
       # Host AWS SSO creds + kubeconfig for direct AWS/EKS access (local dev).
       # ~/.aws is read-WRITE so the aws CLI can refresh expired SSO access tokens
       # (it writes to ~/.aws/sso/cache); writes propagate back to the host via
@@ -284,9 +310,12 @@ services:
       dockerfile: Dockerfile
     container_name: opensre-web-ui
     restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
       - CONFIG_SERVICE_URL=http://config-service:8080
       - AGENT_SERVICE_URL=http://sre-agent:8000
+      - JAEGER_URL=${JAEGER_URL:-https://jaeger.opvn.vn}
       - WEB_UI_SSO_ORG_ID=${WEB_UI_SSO_ORG_ID:-local}
       - WEB_UI_PUBLIC_BASE_URL=${WEB_UI_PUBLIC_BASE_URL:-http://localhost:3002}
       - OPENSRE_VERSION=${OPENSRE_VERSION:-dev}
@@ -304,6 +333,9 @@ services:
     depends_on:
       config-service:
         condition: service_healthy
+    volumes:
+      - ./awr:/app/awr:ro
+      - ./open-wiki:/app/open-wiki:ro
     mem_limit: 512m
     cpus: 1
     logging:

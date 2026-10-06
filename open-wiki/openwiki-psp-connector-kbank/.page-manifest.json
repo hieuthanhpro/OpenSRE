@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "pages": {
+    "/openwiki/architecture/components.md": {
+      "pageVersion": "sha256:d4e0adc52bc9d8e9d0a31407320829df3cc6b5aedbb51a9c6fce001e21b9e66a",
+      "completedBy": "openwiki/0.5.2",
+      "completedRunId": "32a81eba-cdf3-4c2e-8d8f-3b272e93ebc8",
+      "gitHead": "b4c28cb1e96aa2a538a7b0cad8f0beb81372502a",
+      "sourceFingerprint": "sha256:616408bd5b3642f69b075d30da478d92c6a76a79192686b8f5a8577e0b9625ca"
+    },
+    "/openwiki/architecture/overview.md": {
+      "pageVersion": "sha256:29f0146f01e3059572b1cb005dcf1c15786525f7bb2c70501859a084ac8051a2",
+      "completedBy": "openwiki/0.5.2",
+      "completedRunId": "32a81eba-cdf3-4c2e-8d8f-3b272e93ebc8",
+      "gitHead": "b4c28cb1e96aa2a538a7b0cad8f0beb81372502a",
+      "sourceFingerprint": "sha256:616408bd5b3642f69b075d30da478d92c6a76a79192686b8f5a8577e0b9625ca"
+    },
+    "/openwiki/concepts/configuration.md": {
+      "pageVersion": "sha256:6447046a64a914f61b21368c92e8425dce0cb15d1839d81a0251415b16512afe",
+      "completedBy": "openwiki/0.5.2",
+      "completedRunId": "32a81eba-cdf3-4c2e-8d8f-3b272e93ebc8",
+      "gitHead": "b4c28cb1e96aa2a538a7b0cad8f0beb81372502a",
+      "sourceFingerprint": "sha256:616408bd5b3642f69b075d30da478d92c6a76a79192686b8f5a8577e0b9625ca"
+    },
+    "/openwiki/concepts/security.md": {
+      "pageVersion": "sha256:fb0a035beb46cd830c56d7a5ad1591274df45fe26093eae7044b743d56579d32",
+      "completedBy": "openwiki/0.5.2",
+      "completedRunId": "32a81eba-cdf3-4c2e-8d8f-3b272e93ebc8",
+      "gitHead": "b4c28cb1e96aa2a538a7b0cad8f0beb81372502a",
+      "sourceFingerprint": "sha256:616408bd5b3642f69b075d30da478d92c6a76a79192686b8f5a8577e0b9625ca"
+    },
+    "/openwiki/integrations/database.md": {
+      "pageVersion": "sha256:6c2daa3bfccff1df41371d51d3a0468870fc52f3da8851ada9f07b270c339b25",
+      "completedBy": "openwiki/0.5.2",
+      "completedRunId": "32a81eba-cdf3-4c2e-8d8f-3b272e93ebc8",
+      "gitHead": "b4c28cb1e96aa2a538a7b0cad8f0beb81372502a",
+      "sourceFingerprint": "sha256:616408bd5b3642f69b075d30da478d92c6a76a79192686b8f5a8577e0b9625ca"
+    },
+    "/openwiki/integrations/kbank-gateway.md": {
+      "pageVersion": "sha256:63913c3352c516beeec5d18a0e274f6e6bc5677747699b510ba10990ddf40410",
+      "completedBy": "openwiki/0.5.2",
+      "completedRunId": "32a81eba-cdf3-4c2e-8d8f-3b272e93ebc8",
+      "gitHead": "b4c28cb1e96aa2a538a7b0cad8f0beb81372502a",
+      "sourceFingerprint": "sha256:616408bd5b3642f69b075d30da478d92c6a76a79192686b8f5a8577e0b9625ca"
+    },
+    "/openwiki/operations/deployment.md": {
+      "pageVersion": "sha256:fcf63d594a59f1f229aad8ad87a2b5ba0ee360e8b1c84106b3b70d916f629f5e",
+      "completedBy": "openwiki/0.5.2",
+      "completedRunId": "32a81eba-cdf3-4c2e-8d8f-3b272e93ebc8",
+      "gitHead": "b4c28cb1e96aa2a538a7b0cad8f0beb81372502a",
+      "sourceFingerprint": "sha256:616408bd5b3642f69b075d30da478d92c6a76a79192686b8f5a8577e0b9625ca"
+    }
+  }
+}

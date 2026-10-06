@@ -1,0 +1,198 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:3367556824ec8a001ad13215e0f1a6c2089af83da92fcb8f87fee7dbec42ad31",
+  "claims": [
+    {
+      "id": "claim_67092fdb4d0c443cad20fc830baff4d1",
+      "statement": "The read path is GET /key/*key-path -> Handler.ReadKeyOrSubkeyHandler -> SecureKeyUseCase.Read, which maps port.ErrKeyNotFound to 404 and any other error (including Vault decrypt failures) to 500 while returning value, custom_metadata, version, and created_time.",
+      "evidence": [
+        {
+          "resource": "repo://internal/adapters/driving/rest/handler.go#L283-L329",
+          "version": "repo-lines-v1:sha256:46430e0cad0ee71695db9e3ca44beb4cdb70c0ac2bf6323113ae218300f1a80e:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ0NGJmMzE2NmMwZWM2Y2Q5ZTdkNDZiZTdjZTZjNTJlNTMyMzc1M2IxNmZmOWU4N2JhZmMyMWM3NWY1MDI2MDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZiOTE4NGI4MjdiMTI2M2JiYTc4MTNkMWY3YmUzOTA2YTZkY2RkMWRiZjhlM2Y2MmFmYWE4YTg3ZGZkNjQ0NzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFiZjAyY2NmZGUyNjE0MzQ4ZWJhOGE1NGQwZjJmMjQ4NTE2ZjZhM2Y3MmQwOTdkNDE4MDQyNDU4Mzg0ODNiZDMifQ"
+        },
+        {
+          "resource": "repo://internal/domain/usecase/secure_key_usecase.go#L143-L218",
+          "version": "repo-lines-v1:sha256:69a99f399ed9b78aa0787d98614020798b2ba118caaaaa0a9bd0cd94073ce0fc:eyJzZWxlY3RlZExpbmVDb3VudCI6NzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmNjNkMjRjYzkzOTQ5OWI1YjgwMDdhNmFlOGVjMTUxNzE2NWEzZDg4NGFlYzZkMWE0M2I5OWM4ZTRhOGRiZDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUxMjJiNDgwN2FhZmE4MzIzZWRjOWQ5YmI2OWJhMDhiNDQ5NDIyNmNiOTc5YzI5OTNiYjg3NjM4YjgzMmRhNjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNiYTc3Mzg0YzBjMTA0MWNiYTJiNjBhMGRlOTFjYjFkNDc4Y2YyMDc5MWVlMWQyZGIyNjE1YjE1YzQ2NmIwOGMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cad77984ce85457fb5ff6ca6456e886b",
+      "statement": "secureKeyUseCase.Read derives the cache key as path + \"::\" + key and, on a cache hit with a successful type assertion to the internal cachedKey struct, returns the cached plaintext and KeyData without any storage query or Vault call; cache errors and failed type assertions degrade to a miss.",
+      "evidence": [
+        {
+          "resource": "repo://internal/domain/usecase/secure_key_usecase.go#L143-L162",
+          "version": "repo-lines-v1:sha256:dc8cbb926c2a8d521f03aced9371f1c6d1fce05d119a9b84c561e8006e789670:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmNjNkMjRjYzkzOTQ5OWI1YjgwMDdhNmFlOGVjMTUxNzE2NWEzZDg4NGFlYzZkMWE0M2I5OWM4ZTRhOGRiZDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUxMjJiNDgwN2FhZmE4MzIzZWRjOWQ5YmI2OWJhMDhiNDQ5NDIyNmNiOTc5YzI5OTNiYjg3NjM4YjgzMmRhNjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY1ZjM0N2M3Yjg2MmU2ZjMxNjk2MmQyM2FlMThmMmU5ZjI2ZTI1OWViM2QxZjlmM2E4MDI5ZGIyYzVhYmEzMGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1b2e5965b7e6428697fcec6e91b26b26",
+      "statement": "On a cache miss, Read joins sfGroup.Do keyed by the same path::key string, so concurrent misses for one key collapse into a single execution that performs storage.Find then encryptor.Decrypt once for all waiters.",
+      "evidence": [
+        {
+          "resource": "repo://internal/domain/usecase/secure_key_usecase.go#L164-L198",
+          "version": "repo-lines-v1:sha256:0d6256ee7c0942c05150467a6386bac96f45bd9d7e7589c901bfa7840a3f2649:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM5MmI4NTkxOWE4MjgyMzQ2Mjk2M2Y1OGYzMDQ2NjA2ZTZiMmZmMDA5NGU3MWJjZmI5NmY3NmIwZWUxNDFiNzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc3YTliNWU5MDE5YzhkYjg3ODNlYzljM2ZlYmIwYTJjOTg2MmY2MWEwNWMzMDhmZTg5NWU0YTliZWQwM2VkYjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIyZjJmZjVmZWVjNjBmNTg3YzhmYWU0ZTg3ZjgwOWE2NjFjZmZlZDZiNDdhYWU1ZjZkNmEyNjUzYWE4OTUyZWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc3MDcyODM3ODYwOGYxNGM4MzcyNDRjOTc0OGVmNmY3N2Q3ZmU3ZGZkNjg2NDFlOTA4MzU4ZmQ4YmQ4ZTBmNDYifQ"
+        },
+        {
+          "resource": "repo://internal/domain/usecase/secure_key_usecase.go#L40-L60",
+          "version": "repo-lines-v1:sha256:a63e30ccf89d46e08181bb8b2a57bd0fdd882ddd42e21b371cfc730def3385b6:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM2ZWU5NDdiNzY0NzY4OTVjMTkxOTc5YmVlZTA2NGE1MDVjYzg4N2E2NzA1ZjgyYzNiYzE0MDNhYzNmY2IwNWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjMxZjhkMmFkN2I2YWQyZmFmYjRlZmExY2FlNGY2YWUyODA5N2YyMDA2ODcxYTM2YmFlNmFiYjFjN2EyMTRlYmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYwMmU3NTgzYjZhMDkwMDQyMDMyOTUxNjZjNmI1ZDdkNjE5NWIyMTM4NzJjYjg1ODIxYjNmMDdkZmIwMGI5MjIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6a52d84bbaf749cbaa1e445247d4eab7",
+      "statement": "Within the singleflight callback, sql.ErrNoRows maps to port.ErrKeyNotFound while other storage errors and decrypt errors are returned verbatim, and the cache is written only after both the storage read and the Vault transit decrypt succeed.",
+      "evidence": [
+        {
+          "resource": "repo://internal/adapters/driven/postgres/storage.go#L185-L210",
+          "version": "repo-lines-v1:sha256:923270da1cd8c884db5b6c888b156a730363bddf9ef9a04992338dcbd6f11eed:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNjNGM2YmVjNTM3OTk4ZjdmNzQxMTM0MzU2MDQ3ZTVmYzcwMTY1NjVmYjQ2NzdiNGZmYmNhZWUxZTQ1NGU0MWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY2MjM1YjFiYzcyODJhNGU4ZTQyMTNiYTM2ZjZiNDY0ZjgwOWFhYzVlMmM5YjdkMmRiNDEzNWJiYjdjMzg0ZDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJkZTE2NTFkZTFiNzNmMTc4YmNhMzc2ZDlkZDg5NTk5MGE0YjRmMTVjZTU0MjkzYjBiODVkZTJmNjVhMzEwY2EifQ"
+        },
+        {
+          "resource": "repo://internal/adapters/driven/vault/vault.go#L148-L170",
+          "version": "repo-lines-v1:sha256:cdcad394855460790a1f6aea7e6e52d71af62949559963142e56ddec0e9192a2:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY4ODhhZjA0MWZhZDI1YWM4YTNiZWY0YzIwNThkOTRiMDQ5NGZiNjkyMDI5NzQxMDYyYjAzN2EyMjk5ZmEyODQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVmYzQwOTlkODAwMTJjZjg3ZjcwMmI2YzZlNjhjNzhlODFiNTMwY2M4YzgzYjllN2ZlOTk5MzllMGYwZTI2OWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI3ZjkyY2FlZTk4YzhkYWViODU4NTg4YTI2MWVlOGRiNjk3Y2YxMWQ2NWZjMjY2Yzc0NTUxOTRmZmVkODgwNGUifQ"
+        },
+        {
+          "resource": "repo://internal/domain/usecase/secure_key_usecase.go#L170-L198",
+          "version": "repo-lines-v1:sha256:e964a1fafc53f6de64ec5cea2074b4760d5fc1b6cbc5a45cfbff84781856dd22:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM3NTFiYmU5NDk3OTY3YjVjMGJkMzhlZTExZDIzOGY4NWZjYWZhOGQ4Y2Q1ODhlMGQzMWM3YjEwMTYyZTdiZjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc3YTliNWU5MDE5YzhkYjg3ODNlYzljM2ZlYmIwYTJjOTg2MmY2MWEwNWMzMDhmZTg5NWU0YTliZWQwM2VkYjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNlMjc4MmZhZTk2MjQ2N2I2OTFlM2Y1MDRhZjk1ODI4NTViOTFiY2M4YzgyNTkyMjFkMjVlOGVhZjQxYjU0ODEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc3MDcyODM3ODYwOGYxNGM4MzcyNDRjOTc0OGVmNmY3N2Q3ZmU3ZGZkNjg2NDFlOTA4MzU4ZmQ4YmQ4ZTBmNDYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_71ed18b2f23945239a91a752c8eeadc4",
+      "statement": "The cachedKey struct stores both the decrypted plaintext and the full port.KeyData from Find, so cached reads bypass Vault and can return a superseded version, metadata, timestamps, and ciphertext.",
+      "evidence": [
+        {
+          "resource": "repo://internal/domain/usecase/secure_key_usecase.go#L189-L197",
+          "version": "repo-lines-v1:sha256:f097414d06f1c24694967ee159fb13cce13c3f04d3d15cc141af9bfa6a088f58:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGY0MmU0YzhmNjE0ZTg5ZmEyNDFhNzM5MjBiZmJkMmFhOWI4MGM0MTIxMjhmMTBkNTQ0ZTBmNzJiODU2NDc1ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDQ1OGE5N2M2OTJmMDU4ZDEzZTk0MGRiMDdlOTJkZjE3ODFjOGNjNGFjOThiZWJmYjJkNzdjY2VkOGRjZDc4NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWE5YTk0MzMzMTMzMGU4YzFjMmM4OWY1YTViZDc1YmJkYjUxMmE2ZDExZDI2Zjc3NjJiNTQ4ZDMzYzU4Njk1MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzlhMWE4NWZlMDhhMWUyOTUxODVjZGM5MjUwMDYxM2MxYjliZDAzNTJlODExZjdkMThiZmFlOTYwYzNhODFmYSJ9"
+        },
+        {
+          "resource": "repo://internal/domain/usecase/secure_key_usecase.go#L34-L38",
+          "version": "repo-lines-v1:sha256:8c6224f7c57424fd48bb1e6e7d1a08d682371806aaf8fdd11f3c5d95231951e8:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjBmYmUxNzkxZDRlNDY5YmNmMDFlYWEzMTk2N2E3NGEzYjg4ZWViYzRkZDgzZmZlZWEzMWEyNjcwMGJkNjE5NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmQ1YTFkNzU0YjgwMDk3M2ZkNzJmZjFkMzVmZTgzNGJmOThiMmE3NWY2MjU3MDYzZDI3ZmFlZDQ3ZDU4M2NiMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzk5YTBkNWYyMGUyNDE1MjcwN2ZjYjNlODNiZGIyYmUyYjk4N2NmMTg0YjE4NWRlZWFhY2FiNWQ0M2M2NTY4ZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_d10a0d6766084a17b4e54b7454c4614d",
+      "statement": "FindByPath and ListSubkeys bypass the cache entirely, and FindByPath decrypts every key on every call, so the multi-key read endpoint always pays one Vault decrypt per key.",
+      "evidence": [
+        {
+          "resource": "repo://internal/adapters/driving/rest/handler.go#L579-L581",
+          "version": "repo-lines-v1:sha256:a27bab995a4a68555c0d02a0bc5b7f528e964da89a95e2b3394be9cc16073080:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDY3YWVjYzlmYjJmN2U1YjUzMGFhODAyNGMyNTE3NDQ1ZDdhMWJkOGJhMTM4OTkwOGNmYTM2ZWMwZjU2Zjk2ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTQ2YmNmMmQ2MmYwYmRhMDE1ZGQ2YzI5ZTE1NjQ1NzdkNzI4YTMwMjY4NjEzMTc2NDhiZjk1OWNiYmEyM2ExNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDY1ZGY1MDE5ZmM0ZTRkNzM2NDdlZTI4MzMzNzdjMjcyZjBhMDcyODQ2NzNiMTUwMmQ5MDQ5OTViNTk0NTBiYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjIsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzlmMjI4ZmQ1NWFjMWJmMDUzYTEyODk0YmM0MWJjNGIwODJjMjMxZjQ5NzQ3NjBiZTFiOGEwZDVjOGYyN2YxYiJ9"
+        },
+        {
+          "resource": "repo://internal/domain/usecase/secure_key_usecase.go#L220-L262",
+          "version": "repo-lines-v1:sha256:ab1c1b55b27632e396db2dad1ab4f116da6ca7a5390a22a5958c9246fb1ff070:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1Yzk2ZDcxZDM3NGY2MjA4NTEwYmY1YTUxNzJhMGE4ODFiYjg1MTlmNzBkMmY3ZTFlYjM3NTU4ZmRjYWNmY2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI3OGExYWRmMTc5MDY5YTA4MDU1ZGM4ZWFjODUwYzI2NDA1MGU5OGU1NjQ5ZmRiNzYxNzJlZWJkYTk2Yjg5MzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFmOGUxNTdkMTQ2NmZlYzYyNTBjMTYxMzgxNzU4MDk1YTJiYmViZjc1OWY4ZDI0ZmYxMDY4ZmJhYWFiZDI5ZGQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8e56d2ee58b44debbc1f81241cca4e4e",
+      "statement": "RistrettoAdapter returns a nil error from SetWithTTL even when Ristretto drops the item, logging a warning instead, and its computed defaultTTL field is never used because callers always supply a TTL.",
+      "evidence": [
+        {
+          "resource": "repo://internal/adapters/driven/cache/ristretto.go#L47-L68",
+          "version": "repo-lines-v1:sha256:34ef87d1ed16840a7db318a2dc264f93ba74df352216535bdeba52a9b027724d:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQzOTdiOTE4ZDZiNmQ1MWNmN2ZkZjQ4Mjk1MmU5YWNiNTVkY2M4Y2UyOTRlNTdhM2YyZjQ1MzZhNWYzZDUyZTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNlNGU0MmY3MDQwMTdiZmYxMWViODYxODQ1ZDMyYTA0MjRhNjc4OGJhMWU3NDQyOGFiMTI2MDJjOGEzZmEyZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZiNDk4MmNjZTUwYTkxMzYwZGJhYjlhNjkyODBjMTZkMDQ0NDNjNzIxNTg4ODhiYmM3YjFkMjg0MjBjNDdjYzYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c4e627e2761144eba99fe0a0b522c56c",
+      "statement": "Update and DeleteKey invalidate the single path::key entry after the storage operation succeeds, and invalidation errors are logged as warnings without failing the API call.",
+      "evidence": [
+        {
+          "resource": "repo://internal/domain/usecase/secure_key_usecase.go#L128-L136",
+          "version": "repo-lines-v1:sha256:ce0715404e42d6bb4ca3117e17a55f4cc50db5741363baa9d5282573e587c135:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWE1ZDdlZWVmNjY3ZTU4OTBiNjI0ZWYyZjhhYjQwZDExNjYzY2JmYzRjZWEzZDlmNDRlOWE3Zjc1NWMxOWY5NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTY4OGNiMzFmNWEwZGE3ZmUyNzkxZTdjMDVlZmZlZmRkNTkxZTI2M2M4NmY0YzUzODcxZDk5NjcyZDNkMTk3MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTAzMjZjOGUyNjU1MTQ3MDk3MDhjODZiNGM1OWQ1N2UyZjJlNGIzYjg1NjU5NjVjYzk4ODgzZjA2YjdmZDdiYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzM1MzdiNTdjM2NmZmY2Y2RmNzczNDBhOTFmNjY3OTBjOGFjN2YxYmIwZGFhY2MxYTUxNWQyNzQyYzUyM2Y4MyJ9"
+        },
+        {
+          "resource": "repo://internal/domain/usecase/secure_key_usecase.go#L277-L283",
+          "version": "repo-lines-v1:sha256:b33139c931f9ef4e80930e50a6d068fd70688448a6f52ea88aa8cbf899fec334:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDcxZGU3ODQ5NGM4MTQ2NGRlZTFhNmM3YjA3Y2NiMWViYTJiZWI4OWU4YzRkM2M0MTc0N2E1MTdkMDYyZGRkOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTY4OGNiMzFmNWEwZGE3ZmUyNzkxZTdjMDVlZmZlZmRkNTkxZTI2M2M4NmY0YzUzODcxZDk5NjcyZDNkMTk3MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWYxMzA1YmZjYmIxZjI5NzhmNTM3NjI0ZDNmYmRkM2NhMTdmODFjM2QzZjJjNzk2NDY5OWVlMDE3YzUzMzkzYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTJiMTkyMmNlMTEzNTI0YTM5YWRkYzljNjdkMGU3MGJlMWM0N2U3M2E4MTU5MDRiMDdjZGFlNzhjNTQ1ODliYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_db5fdf1f1db1417aa585b975762a93c1",
+      "statement": "Create performs no cache operation, so a newly created key enters the cache lazily on the first successful Read.",
+      "evidence": [
+        {
+          "resource": "repo://internal/domain/usecase/secure_key_usecase.go#L62-L93",
+          "version": "repo-lines-v1:sha256:c08e11f44b9494a36282d351ae6b1b3ac82d4a2ac40757fcf774ec2b61cb3665:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3YTY0MTY5YzM5MTJmNjQ4NGVjOTNhZWM5ODYyYmI1MDRlYmQ5NDIyMTI3ZDg4NDQyOGQ4NzlkMjgzYTkwYzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVkY2JiM2FlM2I2MjE4YzI0MDg1NzU0MzJjYjVmMDAyMjAwNWJmMDgyNTJjMWE0ZWIwZjE0NWNjOGJhOGEwZjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY0OTU1Y2M0NDc1MDcyZDhkMTIxNTc2MmU3YThmNmJkZGEyODQ5NTEyODkxNzgwYmE5NzFiYThjZWJmZjJmZTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d14627fa933e49ebb75407b1adf171b7",
+      "statement": "DeleteByPath calls keyCache.Clear to drop the entire cache because CachePort has no prefix deletion, and since main.go injects one cache adapter into both the secure key and auth use cases, a path delete also evicts cached authentication credentials.",
+      "evidence": [
+        {
+          "resource": "repo://cmd/server/main.go#L62-L74",
+          "version": "repo-lines-v1:sha256:6f72819b568fb3bc5af03450179f586dfc69c25615b3183fbcea38ed5008be92:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM4OWQ5YTNmNmVmNWRhMTAwMjU3NDFiMjM4YjQwMmVmMjQ0ZThlNDNkZTM4NjBkNWI1NzA2ZWJiODJiZWEyODciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQzN2U5ZTc1OWVkMTc3MTgwZGIyZGIxNDNmMzAxZDgzN2ViZmZlYjhmYTU1Y2FiODRhMGUzNTJhM2Q3YzI5MjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBiYjM3OGQ4NDg2NzZmNmJhYjdiNTE4MDg3NDNjZjY4N2JlNDg0OGViMDQwMmY5ZWRhNzRhNTVmMmI5ZjliOTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBlNDU1MDg4OWE5YmJhZDMzOWFhN2E4MWI4YjNmNDQ4MTc2MDJmMjg3MzZhODM5MzY4ZWZiMTNlZTlhZTc3ZTgifQ"
+        },
+        {
+          "resource": "repo://internal/domain/usecase/secure_key_usecase.go#L288-L315",
+          "version": "repo-lines-v1:sha256:d9e74c5e1a7e430b20ddfd4638d43b63286674672f9811daae7d2a14f5f55124:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVkNTE5MTU1OWE4MzI1OWEzMzljOWJlNGRlODZkNjgzM2Y0Y2Y5YjA4NmM1YThkMzExMWVjZDIwY2MwZjgxMDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkYTFkNzkxNDgwOWUzNDk5ZDQ1NzNlOGJmZTU4MjZhZTA4MmVhMmUyYTE0ZGI3Y2MxNDE3MjU3N2M2YTczNWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2MzFiNmUyY2EwN2Q4YmFmMGViNDRlNzQ5ZGJmNDkwYjM5MmUzYTUzNGVmNjEwMjI3NzExNDZjZGY5YWYxYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f9c863f2379c450797ced8e924d215d7",
+      "statement": "Auth credential cache entries use the prefix auth_creds_<username>, so they cannot collide with path::key key entries and key invalidation never evicts credentials.",
+      "evidence": [
+        {
+          "resource": "repo://internal/domain/usecase/auth_usecase.go#L58-L62",
+          "version": "repo-lines-v1:sha256:6bcf886e3b7aa00d24befcf0d5787de54221cd69fe21c9b4ee13ad023cee2236:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmU5MjQxYTUyYmUyZTljZWZlNDQ1ZmVjOGJkNDZhNWJjYzhhZTg5ODdmYzY1YzdkMmRhYTBkNWQzYjg4ZWNmYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODJhOTU0MDg1ZTg2NTllYWE4ZWY3YjgxMWJjYTI0ZjY0YzYxOWQwNjFiOWJmZGJjMWM5ZDYwN2Y3ZWU5MWE0NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjI5NjQwNzljM2M1YzgxNTIwZWYzM2EyYjlkMmUxNWExYjg0ZDcyODBkYjg1OTBkY2Q2NTc0N2UzZTAxMmE0MCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDU2MTM3MmEwNmU3YTdmM2Y2YjUzMWI0OWVhMTQ2NTRjNGYxMWU0ZGVhZmQzYTQ3YmNkNDRjOGUyNDFmZDc3YiJ9"
+        },
+        {
+          "resource": "repo://internal/domain/usecase/secure_key_usecase.go#L144-L144",
+          "version": "repo-lines-v1:sha256:7c4a579268ad34977ff934cc26ce759e725fad8c70737b40168f4f737e30fe2e:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2M0YTU3OTI2OGFkMzQ5NzdmZjkzNGNjMjZjZTc1OWU3MjVmYWQ4YzcwNzM3YjQwMTY4ZjRmNzM3ZTMwZmUyZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2M0YTU3OTI2OGFkMzQ5NzdmZjkzNGNjMjZjZTc1OWU3MjVmYWQ4YzcwNzM3YjQwMTY4ZjRmNzM3ZTMwZmUyZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjAzNzYyYzBjMTljZWM2YjRjYmU3ZTdkNTE2ODkwYzY0NzEzODBiYTM3MDc1NzQ1NTRiM2M4ZWFlMGFlZTVjMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDJiOGNiODNkOTBiMTc0NjI3NWEzNjg0MDM3MzdmNzRmMzE0MjQ1ZmE2MWFkMjhjMWUyOTQ5NWNhZjQ5ZThkNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_af3471fa91d343cda0b3e87fca5ca438",
+      "statement": "The cache TTL comes from config.Cache.TTL seconds (Viper key cache.ttl, env prefix SCSP_, default 300), is clamped to 86400 seconds and to 300 when non-positive, and main.go injects the same duration into both use cases and shuts the cache adapter down via defer.",
+      "evidence": [
+        {
+          "resource": "repo://cmd/server/main.go#L69-L74",
+          "version": "repo-lines-v1:sha256:d4e199b7c42f6bbbd4a4f8c18533e46ca50799a3eaebd8c3895028d21c0ae015:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTNjMGFlZjlmNTU5Y2M4NjVmNTdmMDEyYzEyZjhiNDAwYWJmNzJmNGZmYWI2OGZlMmRkNGEwNzcyOTM1ZjIxYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDM3ZTllNzU5ZWQxNzcxODBkYjJkYjE0M2YzMDFkODM3ZWJmZmViOGZhNTVjYWI4NGEwZTM1MmEzZDdjMjkyMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTk4MjU2ZDE5YTY2M2I1OWExZjAyOGU2ZGU2YWJiNWU5ODBkYzQ3NDlhZWJlYWE4NDY4OGI3ZTk1MjkwZjE2YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGU0NTUwODg5YTliYmFkMzM5YWE3YTgxYjhiM2Y0NDgxNzYwMmYyODczNmE4MzkzNjhlZmIxM2VlOWFlNzdlOCJ9"
+        },
+        {
+          "resource": "repo://internal/config/config.go#L149-L154",
+          "version": "repo-lines-v1:sha256:5f6386ab0689ba75484aa5c0c8c67be7aa3dc5a0491251e2321deb9a67aa226f:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNThhYjVkNDFmZmM2MjBmMWI3MGRjMjI5ODExMzg4YTk4OWJmNzNmM2JmMDAwYmViNWViNWNiNTIyNDBhYzk5YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdjZGE4MmRhNjA2MjM4ZTA1ZTYyMzk5NTY5YzVlZTAzOTkzNDE5NjQ4YWU1ZDQzYTJiZjhjZDYzNDdmODI2MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWEzZTEwYjZkNTE3NGExMDUzMGE0Mjc5OTVhYzg3YjVmZDJiMGIxYjhjZmIyMDQ4NTBlN2IyNjc0Yzk1MmMyMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGEzZTUxYTYyYzkxMDY5MjNkNDk4OTBhN2I5NDE1N2ZmODRhOTJjMDAzYjcyYzFhZjFhZWYxNTc2OGQ3OTk5ZiJ9"
+        },
+        {
+          "resource": "repo://internal/config/config.go#L51-L57",
+          "version": "repo-lines-v1:sha256:7f25aa337d5640d1da63d802997a1ad824986defc1f14a0ea60323caea08f0f7:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTYwZGE5NjEyMGIxOWNjNTdhOTIxMjY2ZWZlNGI0ZTdlMjhjMzZmMzVhZTg5ZjI1ZWUzYjJiYTZjODczZmFlNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTk2MzQ0MDI4MjRhNDUxMzVmMGRhMzE4NGI2NjliYWE1MjQ3MzU4MjY3ZGQ0MTQyYTE4OWY2ZjlhNDM3NGU2NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTBiY2E5ZmJkODQxNWVjZjBhYmMyZWQ0OTFlY2E4YTYwMGE5NTdjZDI5NzE3YjAxN2U4MTgzOGJkNzAxYjNkYyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b07e09d4d7774789a04d705b77e43e42",
+      "statement": "The usecase depends on cache only through the CachePort interface, so swapping backends requires implementing Get, SetWithTTL, Delete, and Clear in internal/adapters/driven/cache and changing construction in main.go, with no usecase change.",
+      "evidence": [
+        {
+          "resource": "repo://cmd/server/main.go#L62-L71",
+          "version": "repo-lines-v1:sha256:a250a85ee5bf4a21442ab5140aa68271b23e1eb5aae79bad246b166426113eb7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM4OWQ5YTNmNmVmNWRhMTAwMjU3NDFiMjM4YjQwMmVmMjQ0ZThlNDNkZTM4NjBkNWI1NzA2ZWJiODJiZWEyODciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhMzZkYjA3MTFiMGIwZWQ2NzFiMDVlMGEyMDcyYjQ0YjgzZjVmZjU2YThlZjRhNDA2ODU4MTgzMzFiMWEzMTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBiYjM3OGQ4NDg2NzZmNmJhYjdiNTE4MDg3NDNjZjY4N2JlNDg0OGViMDQwMmY5ZWRhNzRhNTVmMmI5ZjliOTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI1NTAzMzY2ZDdlZDRlZjMzNzYxZTQ3OGQ5MDNiNWViMjY4MzdjMTBkZTEwNmJhYWJiNjM3ZjBhOTY4ZjcyOTMifQ"
+        },
+        {
+          "resource": "repo://internal/domain/port/cache.go#L10-L25",
+          "version": "repo-lines-v1:sha256:4f63a6a4e804a698a8ec7e52b73b6d95be5461c4fcac723155d4b2ac50791c18:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI2ODIzNGQ3Yjk1Mjg4NjNhYWE0NTE5NTFhYjc0NzBhYWM5N2FhMDYyOWNlN2JjZDAxY2UyMWRmY2Y2N2FmMTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA2ODFlNTg4NWViZjE3NTY5ZTgzMDQxMjcyY2QwYmI1OWYzN2ZlMjExZTQ4MjYwNGU5MTI4NzgxYzFlY2MyYWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5972acb39c094a168c100cbd22afa6e0",
+      "statement": "The cache is an in-process Ristretto instance, so entries are per-replica, never shared or invalidated across instances, and are dropped on restart.",
+      "evidence": [
+        {
+          "resource": "repo://internal/adapters/driven/cache/ristretto.go#L14-L45",
+          "version": "repo-lines-v1:sha256:6d65e46f84f062ea9995972db8acbfba45340f02c7e797fb25a1c37e1033fdd8:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ3NjNkNDI3ZjEwYTUyYzE4OTI3OTQ5NTQxMGQ1ZjRjM2JjNGU4NGJjNmEzNjQzNTRmMWNiZDlkYzVhMDgyODYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJiYmMzZmNmZWRhZWMzMWYzOGFkNjM4NzRlYWE1M2IwZGY5MWE4NmRlZDNjNWQ2YWUxNGJhNzEwYWYyNTgwM2MiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkxNWUxNWRkNjk5ODJiMGExY2QyNGJlOGRkOGQxNDkyZTA2NjRlNWQ2YmZmYjlkNGQ4ZmQwNDM3N2RjYmVmNTEifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-10-06T03:44:01.257Z"
+  }
+}

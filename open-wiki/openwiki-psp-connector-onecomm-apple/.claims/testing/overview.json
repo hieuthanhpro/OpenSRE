@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:6e86f9c9eb7c55c20c888d906bf7c1f5674fb3d72d9be00aa2694d40baa75488",
+  "claims": [
+    {
+      "id": "claim_3e74aab645f84d6bb424e67cf9d110e1",
+      "statement": "The project uses JUnit 4.12 as its test framework, declared as a test-scoped dependency in the Maven POM, with tests skipped by default via the <skipTests>true</skipTests> property so standard builds do not run them.",
+      "evidence": [
+        {
+          "resource": "repo://pom.xml#L14-L14",
+          "version": "repo-lines-v1:sha256:054cae4f4af66296ff9236c3b8408162bfb52f7df7d4f90c0ef7e4c866f042e0:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDU0Y2FlNGY0YWY2NjI5NmZmOTIzNmMzYjg0MDgxNjJiZmI1MmY3ZGY3ZDRmOTBjMGVmN2U0Yzg2NmYwNDJlMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDU0Y2FlNGY0YWY2NjI5NmZmOTIzNmMzYjg0MDgxNjJiZmI1MmY3ZGY3ZDRmOTBjMGVmN2U0Yzg2NmYwNDJlMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzQwNjJiMTE5ZTJiMGRhNzYyNjVhZDFmOTQyOGRjNzRmZWU0YWEzZWExYjdkMmYzZDM2MDcxOGMzMTFiZmJiZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDRlY2U3MDE2YjhiYWI0YTI5NDlhZTZkNDYwMjE2OWY4MjBhYWVhN2FiYjQ4ZmE0ZTQ1YWE4YzAyMGIwZjdmOSJ9"
+        },
+        {
+          "resource": "repo://pom.xml#L233-L238",
+          "version": "repo-lines-v1:sha256:2ad3dac9132b6b4c533b86b6671f06e4d726cde4afc6709b734c705232a81cb8:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzMwZmEzNjZjYjg5OWU4OWRiOTI1MzlhZGU3MWFkYWY4ODdmMmYwZjRiNzg2MDJlYTlmZWFhMmQ2YTc1YTlhNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzE1ZTc2ZGM3MTA4ODNiZWUwNjBiMWFkNmI1OWVhZDk0OGY0MmJmZGI3ZWE1YjhkYjVkMzBkMzVlYTBkMGRiMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTEyNDVhNDhkNjU5Zjc3Mzg2YzJlMTAyZWY4Nzc5YmEyYTkzYmY1MWYwM2I3ZDdkNjExM2YxM2QwZWRkYTM2OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjFmNDhiZThlYTFhMWZmYTFkMWMyOTY4OWI5ZWZmYmNkNjJhMGI0MTUyNTE3NDljM2NkOTQzZWU2OWRhZmRlZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_db0a2307ed574baa8a5c6c975691695c",
+      "statement": "OnecommGatewayTest is the only test class in the repository and validates that OnecommGateway.getFailedReason maps numeric gateway response codes to internal error name constants such as \"1\" to ONECOMM_BANK_DECLINED and \"99\" to ONECOMM_USER_CANCEL_TRANSACTION.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/onecomm/OnecommGateway.java#L1206-L1226",
+          "version": "repo-lines-v1:sha256:9e7554e2b326175fd5dd36f196ffd7b5d79fe46db47a9fabaf78d93700415e10:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVmODkyMDJjNDJiZjNjNTUyMDU2NzQyZThhMjkxYjkzZTZhNzVhYzdkOThhOGVkMzM3ZWUwNWQzMTlhMmYyOGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJkZDZmNjdmNGZkNDRhMGYwMDQ2NDM5NmYyMjI4MjgxY2U5Nzg5M2UyNjM2YjZiNWQ1OWIyOTQ0NDY1NjMxMzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNmNDRlMmIxYTA4MGE2MzAzZTkxZTY5YmEzNDg2ZDY3OGVlZmQ4M2Y1YWYxYmNhNDNhY2YyN2U5MjNmMmY4NGMifQ"
+        },
+        {
+          "resource": "repo://src/test/java/vn/onepay/pspconnector/provider/onecomm/OnecommGatewayTest.java#L11-L39",
+          "version": "repo-lines-v1:sha256:ad4d2bb20be4f26299460fcaf950ac3cfa189ae2a8752fe8487bb24a5506bf0c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRjZjA5ZWIwYzU3NDRmYjk3MzMxYjk4ZmYzZmJmMDVhNjAyYmEzZjdmNjdlNWRhNWJlOTA5NTAzM2Y2MjU4MjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQyYWVkYjQ1Yjc5NmEyM2ZkMzI0ODJiODJkY2Y1NzExYjU3N2Q3MDBmMjY0OGQ1OTUzMDViZmNhMzIyOThiNDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c133f894894346229637a09db0deebc3",
+      "statement": "The OnecommGatewayTest must load app.properties into the static Main.p Properties object before exercising getFailedReason, because that method resolves reason names and messages entirely from the onecomm.status.<code>.code and onecomm.status.<code>.desc properties.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/onecomm/OnecommGateway.java#L1208-L1209",
+          "version": "repo-lines-v1:sha256:0a9c1edf1ea8293fc9edcb38d2b4e06669b7c5047d2f4595f2b679a7392b1ff7:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzg1NWYzMDNiNzRjZDg4YmQ3Y2VhMDQ4MDdiZGE2NTQwNTlmNjExN2I5NmRmNjg2MmY5YTA3MmVmNmE4NGQxZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMGRlZmM5NTY1Nzg1MmQzNWFhNzE0NWM3ZTY2MmQ3OWU1Yzc3YmM4NmVkYmZhMGE0NWFiM2VhMGMzODIzODE1OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTQyNDUyOGQ2YTM0OTlmNjIxMDhiM2ViOGI3MzgwNjI0NTkzY2M2NDY3OWJlZmM5NWUxZDVkZWY3NGI0ZTFhZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2NmOWMyMzdkYzg5ZDBlOWJhOWJjNDAzNTM0YzU0ZTY3ZjA1MDQ4ODU0MzBlZDkyNGFhMDI4MDQ1Nzg0NWJiMyJ9"
+        },
+        {
+          "resource": "repo://src/main/resources/app.properties#L53-L54",
+          "version": "repo-lines-v1:sha256:7c2d62b5a846d9e77befaec2fce8199b198100ad248f66491358ffbf799137e6:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTFiMDMzMjVkY2RkN2Y5ZmRlYWMxNmE3M2U3NzFiZDllMWEzNjZmOWE3YzEwMjBkZTIxZmJmNTIzOTkwM2IxZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmFkODFmY2JjNDdlYmFmMjEzMWY1ZTlhYjdlNTI2YzZjMGNmODE5ODBhNTQxNTg4MTM2MTk2ZWE1ZGYzYTBjYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWNiOWEzYTVjNmU0N2JiNTEwZjg5NjFmMjE1M2RhODg3YzI0YTJjMWY4MzI5ZTYyMjMxNGNiODQxN2NiMGNjYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZThmYzAyZGFjYjdmNzMzZTU4ZjZhMzdhYTY5NWNjMzdjZTBjODNmODRjYjg0MDMzY2YwZThmN2Y3OTExYThkMyJ9"
+        },
+        {
+          "resource": "repo://src/test/java/vn/onepay/pspconnector/provider/onecomm/OnecommGatewayTest.java#L13-L13",
+          "version": "repo-lines-v1:sha256:f1731addca93158e0c2b7c6e6e98bccaa17d5d48c6c1b27d59e87bf6f9dd373a:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjE3MzFhZGRjYTkzMTU4ZTBjMmI3YzZlNmU5OGJjY2FhMTdkNWQ0OGM2YzFiMjdkNTllODdiZjZmOWRkMzczYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjE3MzFhZGRjYTkzMTU4ZTBjMmI3YzZlNmU5OGJjY2FhMTdkNWQ0OGM2YzFiMjdkNTllODdiZjZmOWRkMzczYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDg2ZmY5NWQzOGJhMTA2YjE1YTcwMTJmODJjNDkxOWNhZWNmYTUzNjg0NDRlY2Q3NzBlNTM3Y2ZhMTNhNDMwMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjY5NzY0NGFmYWRlYTM5YzhkM2JiNzJhMmFlYzM0MjUyNDc1ODJjZjY4ZTA0YTMzYmU1MTk3NTAwMmE4MTYwZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_c2a90830aae14dac9c540572fe5de80f",
+      "statement": "When no property exists for a given response code, getFailedReason falls back to the default name ONECOMM_RESPONSE_CODE_NOT_MAP with message \"Response code is not map\", and the test verifies this fallback explicitly using code \"100\".",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/onecomm/OnecommGateway.java#L1212-L1216",
+          "version": "repo-lines-v1:sha256:c14b3a46816e4651d2f2871ab0dee0ea86ae5fb87acda6cb4f314c59819060a0:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzhjM2FlMTNhNmZhYTg0ZTRlNmRjNjAwYzY3YzJiODQ2M2U4NzA1YjI1OTg3ZDI4YzIxNzczMjQ1YmFhZTI2NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTZiMDQ0OTE0Njk3MjJlODM2M2E5NGU0MDQ0NTM4ZTAxM2EyYTIxN2UzNmIxZTU2OGJhNjBhY2I3YjRjOGYyZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGU4MzU0MmUwMjlkYzI4ODMxNDJjMjkyMTMwYTcxYzg2NjViNDEwODkxNWM4NWJlMTVmZGMxN2RkYjAxYzEwNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDMxMmJmYTlhOTJmN2U1NjI5N2RiODlmY2Y1OWVkZjU2MGFkODEyNDRmNzhjZDdmMTdiNDA0N2NmZWFlYjA2ZSJ9"
+        },
+        {
+          "resource": "repo://src/test/java/vn/onepay/pspconnector/provider/onecomm/OnecommGatewayTest.java#L38-L38",
+          "version": "repo-lines-v1:sha256:de816dbf8e7b0722f7db36d2a20e39cfe5a1e5c159c9ceec300957c7cb87301b:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGU4MTZkYmY4ZTdiMDcyMmY3ZGIzNmQyYTIwZTM5Y2ZlNWExZTVjMTU5YzljZWVjMzAwOTU3YzdjYjg3MzAxYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGU4MTZkYmY4ZTdiMDcyMmY3ZGIzNmQyYTIwZTM5Y2ZlNWExZTVjMTU5YzljZWVjMzAwOTU3YzdjYjg3MzAxYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmRhZTE1NzQ0YzI4YTVhY2JlZDAxMzIyNWJiOWIxYjhkMTkzYzkxYWJlYmE3MTc5NTE5YzE3NDk2ZjEzNTg4OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjIsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzc5NGQwMmE4MTIxOTQ0ZDE3NmQyNjVlOWJiOWNjNTlmNmFiODkwYmNhZGY4YWVmZGViZGJiYjRmMmVhODQ0NCJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-25T07:03:17.397Z"
+  }
+}

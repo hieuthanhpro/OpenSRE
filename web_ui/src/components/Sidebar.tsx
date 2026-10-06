@@ -16,6 +16,9 @@ import {
   Cog,
   LayoutDashboard,
   Key,
+  Database,
+  GitFork,
+  Compass,
 } from 'lucide-react';
 import { clsx } from 'clsx';
 import { LogoFull } from './Logo';
@@ -27,6 +30,9 @@ import { AccountMenu } from './AccountMenu';
 const teamNavigation = [
   { name: 'Dashboard', href: '/team', icon: LayoutDashboard },
   { name: 'Agent Runs', href: '/team/agent-runs', icon: Bot },
+  { name: 'Trace Visualizer', href: '/team/trace-visualizer', icon: GitFork },
+  { name: 'OpenWiki Visualizer', href: '/team/openwiki', icon: Compass },
+  { name: 'Database Hub', href: '/team/databases', icon: Database },
   { name: 'Agent Topology', href: '/team/agents', icon: Bot },
   { name: 'Tools & MCPs', href: '/team/tools', icon: Server },
   { name: 'Knowledge Base', href: '/team/knowledge', icon: BookOpen },
@@ -47,6 +53,8 @@ const adminNavigation = [
 
 // Navigation when not logged in
 const guestNavigation = [
+  { name: 'Trace Visualizer', href: '/team/trace-visualizer', icon: GitFork },
+  { name: 'OpenWiki Visualizer', href: '/team/openwiki', icon: Compass },
   { name: 'Sign In', href: '/settings', icon: ShieldCheck },
 ];
 

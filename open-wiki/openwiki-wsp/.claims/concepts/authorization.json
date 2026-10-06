@@ -1,0 +1,184 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:84a675369002eef6f3c6f0a28d0b7063c3e7f355fa69bdef4e60dddc05d4e7e2",
+  "claims": [
+    {
+      "id": "claim_2f598fb651514350a0724e7f9be2385d",
+      "statement": "AuthorizationService.update is the primary web 3DS callback handler, routed for both POST and GET on /authorizations/:authorization_id; it validates the authorization_id and brand_id params (redirecting a VALIDATION_ERROR on absence) before fetching authorization details.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/Server.java#L169-L170",
+          "version": "repo-lines-v1:sha256:aea8e9a44bc5e71bce06ef22a907b9b502f2e43e5e67bcf26dbd927fd1891113:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzgzNDMwZmE3YWE0OWU5YjViMWIzZmYxZTUxZTBhOTRhYzBmYWJmZjIxZGRlYjI5MmU5MjVhMWNkNjY4MGFmYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGQzMzc4YmQyMzkyYmMxMTkwOGVhYmY4NmU1MDRhYjk2YTE1ZGU1YzQzYmM2MzRjMGNmZTQ4ZGNhMWZhMDE1ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDQyZTFjNDg3NjdiYWMxNDVmOTc2MGQyMTQ5NjFkZDk1N2RlNzA4NzVlMDIxYzNmNDQ4MzkwYjIxODgwY2IyZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWZkYzhiZWU0MmI2ZjNjM2ViNzE5MDM3MjgyYWJiMjgzMTExNDhlMGMyMjM3ZDk3ZGUyMGY3YjNkZjQzZmRiMiJ9"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/resources/authorization/AuthorizationService.java#L105-L127",
+          "version": "repo-lines-v1:sha256:235ea7bcfa1e5b9bf29260cea2dea75031e6ae0170b5533169cbd1d764436bef:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNiNjc3ZDE3MWM2MzU4ODkwODhhZTIwNDVmOWMxOGVlZTgwNWZhODVjODcyMGFmYTliNTE1M2MxM2UyMTg5ODQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYzY2VjNzdlYWIwZDVlMDk3Yzk4YjFmM2YwYmViYTg2OGNmZTAzNGVhODQyZTg5YWJkYzBmZTVlNWUxODlmZDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM5NGVkOWVhNjA2NThmNWZmYmM4NGZhMzQ1OWUxZTk2MzgzMzU1NTA1YWRiYmU2NDA1NDUwMzhmYmMzZjVhNjQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_deef8dfe634c4bb888dbc46a59c20e62",
+      "statement": "updateTsp forces brand_id to 'token' before delegating to update, serving POST/GET on /payment/authorizations/:authorization_id as the TSP-compatible challenge callback path.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/Server.java#L172-L173",
+          "version": "repo-lines-v1:sha256:8e7bcd2f6ed6e4233331b831228ec23718b771da3e8ddebee8a12727b216b2fb:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjQ5ODIyYTlkNjZkNzFmYzI5MTRlNDE3NjllZjM2NTIyMjIxYzI5NThhM2FhN2EwMGRiZmQ5ZjQyOGM1MTVjOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjU1OGMzMjhhOWVmMjRlZDUzNTBmYzkzOTAyMjFlMzIxODA5NGI1MjVjOThkMDk1ZDM0NjEyYjc3MzYxOTgzMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDExMGNkMjdhNDhhOWMxM2Q0NDFkNTQwODZmOTkyNjgyMTAzODVjZTg0ZjBjMDY5ZDBlMWMwMGExMzhmNjZhYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzE2ODI4MDc2NTJkZDJhYzY4NjkwY2NmMWY5M2U2ZGRiMjNlOTc2NzA3MTMwMmE1OTI5NGQwYzUyMTYwYjcwMCJ9"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/resources/authorization/AuthorizationService.java#L44-L47",
+          "version": "repo-lines-v1:sha256:93191bdcf52eba302fc0c1c2e01d5af50b341831610320514e3c781c387f0c9c:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTg2NzkzNmZlMjA0YWM4YzY0ZmQzNjRkYzcxMmI2ZWZjOTM4MTk0YzM4NzQzMDJlMTM1Zjc3ODIwNWRlYWVmMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzNhODk1YzY2OGE0NDIyNjQ4NjExMmZiYzc2MmJhYWI5Mzk2Y2VhNTg4OTE1OGM4MDM1MTU0ZmE5MzI2NjFlZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmViOGYxYzg1ZTBjMDgyZTQzOGUzYmFjMjI0OTc4ODhiYmVkNDc1OTY0Y2RmNTA1MDdmN2EwNjQ0YjNhMDY4MSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_4b4f3c05c7624517bc40e910bd4b1604",
+      "statement": "updateInput handles direct authorization updates (JSON body) for integrations such as mobile SDKs and Lazada, routed via PATCH and POST on /authorizations/:id; it checks the MSP authorization state (created vs expired vs invalid) before forwarding the authorization_input to the PSP.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/Server.java#L175-L177",
+          "version": "repo-lines-v1:sha256:4708a2a96af07ad5f028a07236244e968201e3d22840347fbea04cc5147bad5e:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTY3MDg4MzFhZWU0MWU1Y2NjODgwMWM2MmEzYjFlOTBjYTA2OWI2YTI1NzY0MThlNzRkNTRiM2FjZDY1YWNhOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjYzZmIzNzQ4ODQxYjVlMmI4OGM2ODg0Y2FjZmNmMDc3Yjk2Yjk4ZTA4YmU4NzFmNmNmZTY5MjMzMGYzNjVkZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTM4ZTcwYTdmNzBkM2NkN2EwZDI4NzBlZDI5MmZmMTZhM2Y3YmRjZTZjNGU4MWU5YWE1MDBjMjkzNjk5MmYyYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWRkOTI3ZWZmNjQyY2JhZjExNTE5NTQwODFiNjRlZTUzMDQ4MDMyZjU5MDdlMzJkN2Y0ZmI1Y2JjZDRlOGUyMyJ9"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/resources/authorization/AuthorizationService.java#L656-L681",
+          "version": "repo-lines-v1:sha256:0236801ece77387ad996608859cc812f379dbcc7b7a5999bea1071c74b2b6d69:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMzYmYyNTFkODgyOTFiYTJiN2E5OTgzNjliM2E5MTVkNzg5MGI2Mzg1Nzg5NTJlYmU5ODkzZmE2OWFmZDYxM2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE4MGMwYmUyYWIyNWI0M2Y1YWEyYzA4NThkN2E0ZDEyODllNjM2ZWFkMjY2NTcyZDI2MzU2ZTM4ODgwMWQ2OTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE5Y2FlNjg4YTQ5Njk5YzBlODRjNTY2NzI3YjYyNWUxZDVhODIwNzZjMGYyZjc3NGU5OTM1MTQwNzMyYmMwZTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d342f01a26f5484bacac98fcca91fd28",
+      "statement": "migrationVerifyOtp supports legacy OTP verification flows, parsing the authorization id from the submitted vpc_AuthURL, checking MSP authorization state, and forwarding the OTP to the PSP; approval parses merchant_return query parameters into a vpc response while failure sets vpc_TxnResponseCode=3.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/Server.java#L179-L179",
+          "version": "repo-lines-v1:sha256:4fa615e3baec3fdc3a02e9edcc99b7eae7eec04499abc6449b014fea832d68bb:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGZhNjE1ZTNiYWVjM2ZkYzNhMDJlOWVkY2M5OWI3ZWFlN2VlYzA0NDk5YWJjNjQ0OWIwMTRmZWE4MzJkNjhiYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGZhNjE1ZTNiYWVjM2ZkYzNhMDJlOWVkY2M5OWI3ZWFlN2VlYzA0NDk5YWJjNjQ0OWIwMTRmZWE4MzJkNjhiYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDlhNmQ3OTIwZTU5YmFhOTVmN2E5MWI5YjhhODBmMTUyMDdmYWM1MzEwMGZlZTdjNWUyYzM0Y2I4NGVhMmQ4NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzAxZDMzODFhYzg4ZGE4Y2E4ZTNiMGFlMWI2NWUyMWExZmVjZDk5Y2QyYTdkZDI0NGNmNDUzZDUyNjMxNmExNyJ9"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/resources/authorization/AuthorizationService.java#L1018-L1042",
+          "version": "repo-lines-v1:sha256:2e8dde99721fc38ff043aadf45797f09059f9aab4aff57d7a0ad7ccbbe5d27df:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ2YjZhM2Q3OGYyYzE4MWQ2OTE0NTFhZjRjMzA1YjZiMzQ5ZjM3OTRjYjU3NTI1YzhiMWZjYTJiYmVlM2ExYzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgwNTZkMjlkYWViNzU4NmI1NzU3OWU0M2NmNjEyYjVjYWQ4NjVhY2U4OGEwOWNkNGRjYmUyZGRjOTVkNGJkZWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg5YmU4YWY3ZTFlMmQ5ZGY2MTNlODk2NmI5OTYzNjhiZTA3NTNiOTE5NWZhNmNhNDRhM2U3MTFlMzNjNWM5ZjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYxMzFmYjEwODlmODZhMzJhZDkzMGNkYjllYTI5NGJjMjgxODJhMjk0NTA0ODY1NjM5NjdjY2M1OTJhMTFiYmEifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/resources/authorization/AuthorizationService.java#L852-L863",
+          "version": "repo-lines-v1:sha256:9533a3bd0a599d98b729cc3c47324ff46bb585f73dfe65a4da5528d2ad850ca1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjZWFkNzUyOTU5ZWQ3ZTc2YmQ0MGE3OTdjYzY5ZDBlMjkwOTI2ZTQ4ODU3MTk2MjM0MmY2Yjg1NWU4MjNkM2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQwZTRmZjcwMmE2NDA2YWU1ZjMyOTAzNGY5MGZmYjFmYzM3MTYxNjZkZTY1YjNiNDYzNzJiYzVhYjA2YmE4YTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNmYWY0NmM3ZDQ4NjVkOTg3Y2Y1MjkzOTVjZjUzOTkxZTVhMTc4ZjQ0N2E3MjBmMDIzN2FmMDFkYzAwMTBlMjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkwYTg3M2VjOGI1N2U0MWFkNzc3ZDNjMTM5NTQ0ZGU1MWVlYjc0Y2E4NDQwYWU2OTg5ZDY1MThlZDcyNTUxNmIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b16f1ef08e024dd7ba30d430df6d8286",
+      "statement": "isFinalPaymentState treats the payment state as final only for approved, failed, canceled, or expired values; any other state (created, pending, missing, malformed) returns false so that update redirects to the invoice URL to prevent duplicate processing.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/resources/authorization/AuthorizationService.java#L141-L163",
+          "version": "repo-lines-v1:sha256:c8b20abce07e0416608672402d68b7857714b124b968cb01d0d58df7647b5c60:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZkN2M1YzE3NzkwZjMzZjk5NzgzMTgzNWViYzU3N2U3OTkyY2E5MjhkMjRmMDU3ZGMyZWZjNjJiMTcyNzBhNDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkYjMzOWMxN2Q0Y2M1NGU3MGM0ZmNmZWNiNjExYmI5ZTdkMzYzZjI1YjE4ZTA5MjNhMWQzMDZjYzk1OTI0ZTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU0NThmMTkyYTJiNWM5Nzk0Y2FhZWI4NjY1NWJlZGU3YzAzYzM2MGE4N2Q1NjkzYThhNTBhNWEzY2JjYTI3ZTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI0NDc0Mzk4NjhkNWYwZmNjMjYzNmEwNjRkYTBlOTY0NmRlMWRkODRhZDZjMjE5YTQ3MmM4NzQxNDZmZTY4NjcifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/resources/authorization/AuthorizationService.java#L523-L537",
+          "version": "repo-lines-v1:sha256:a0b4f619caf219e5e97a0b4b82ff36c2045a46842c6e22fb16acc4ea9cf25852:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxYTM0ZjA1ZjUzMGNmYmU2M2RhNDUyYjNhNDk5NWUwZWVmNzdhMTZkNjhkMTE3OTg5ZWU1NmQ4MzBjYzA2ODMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcxZDRiOTZkOGRjNWExNGE4MGFkMDg0N2I1M2Y0OTg4YjgxODE0MDIzZmE1MGMwODVlN2UzNjJjZGMyMjk1YTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNkMmRmZTk3OTYwNzc4ZWIzOTI4ODY0ODExOTU2ZWZkN2IyNzg2YWI3N2EwY2Y3NDMzODliY2Y5MzUwMzAyMWYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d1aad283b8bb46618640d20d932885a7",
+      "statement": "isInvoiceExpiredTime compares the invoice expire_time against now plus one minute; on a missing/malformed expire_time it safely returns false so the flow continues, while a genuine expiry fails the transaction with INVOICE_EXPIRED.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/resources/authorization/AuthorizationService.java#L166-L172",
+          "version": "repo-lines-v1:sha256:f41de4c43d87dd47b17dd20f7a1224489898c5807c17f2d6c77739813ec665fa:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjY3ZDUzZDJiNWQxZjk5ZTI0OTdmYzFkNWE3NDdhOGQzZjIyN2JkZGJiNmM2YmEyM2IxMjRhNjVmMzZmYjI3ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGRiMzM5YzE3ZDRjYzU0ZTcwYzRmY2ZlY2I2MTFiYjllN2QzNjNmMjViMThlMDkyM2ExZDMwNmNjOTU5MjRlNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzlkMzQyZTNmYTVjMTY0MGEyYTVlYThlODA5MTU4YTU0NTBiYTBlNWI2Y2Y4NDM0OGJiNTFjMmJhZjlmYzc1NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWNhY2QyYzE5MTMyYWM3ZjQ3YjU3NjZjYzczMGJlMzk5MTkzYTFhY2UxMzcwYzMxNjBhNWExYTJhZDc5NDliZCJ9"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/resources/authorization/AuthorizationService.java#L547-L561",
+          "version": "repo-lines-v1:sha256:be0ad9b783cd352c9d17ea57d2b8ac2756f0a2e014f6123c41037a797c8e6328:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUzNjg2ODE2YjkyNjNhMGU5OGVlMmUzNzRmNzFlNThhNWE4Y2Q4Nzk1MGM3N2U5NGU0YmI1MzlkMDZjZTkxMjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA5MDhlNDEzZTkwMTg0N2IzMjRkYmYwYjE5YWFlMDgwMzI2MjIyYjVmNmM3MzQ5NmY3MjdjNDYxNTdmZDMxNzUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEzNTZlMzRiODJkNjk1NWE0ZGQ2ZDFmMjZiMDMxODVmNzgxMWEzNDU1MjkzZGRmMzlhY2ZmYTRlOGI5Y2JkMjkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_87836d41422b4e18a0a39be92c716054",
+      "statement": "In update, after the MspAuthorizationDetails and optional updateAuthPending guards pass, the callback parameters (id, type payment, channel WSP, authorization_result) are PATCHed to the PSP/TSP /authorizations/:authId endpoint; the target (TSP, Onecredit, Kredivo, or Onecomm) and its signed HTTP client configuration are chosen from brand_id and Token/Onecredit mode.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/resources/authorization/AuthorizationService.java#L187-L244",
+          "version": "repo-lines-v1:sha256:baa1785de073bd5a02230e780af04038eabf693cae5fdc49cd1c77b8693f1b74:eyJzZWxlY3RlZExpbmVDb3VudCI6NTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRjNTRkODNlYzFlNjBkNzM2OTg2ODk0M2Y5NDMwYWI1MWU5MTlmY2FhYTMwZmRmMzkzNzk5OWJkMzU0MWI2MTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE0MzM0ZmFlMzdhZDM0NjQxNjgyMDFhZmZlNGViMGQyN2I4N2JlNTY0YjU0N2RmOGE2YzhhZTIxMmFjMmZiZmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRmZTY0Y2I0ZDE1NzA1OTViMjk2YTUyMDRlOTI5OTQwMGFjZWU2MDQwMjcyMDA0MmQyOGI4ZmQzYzI0MGY3YjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI5YThhNjdlMGExOGEzMDBlNjc5NmEzZjQ2MjdhMzg2ZTc3YWVlMDFkNDk5OGIyYTMxYmRkMjAyZmZmOWIyMDgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_70ff814d6898408fb4991d44f241d768",
+      "statement": "A PATCH response of state approved or failed causes WSP to enrich the PSP payment object with payment_data and bank_response_data and token_update_required, then update the MSP payment; after success it either redirects via auto-submitted HTML to merchant_return_url or to the invoice URL, incorporating per-merchant fail_delay behavior.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/resources/authorization/AuthorizationService.java#L349-L406",
+          "version": "repo-lines-v1:sha256:0505799137c0a6c2b1892ddf6c876e202603fb0585043ebe36d9e41e438bea4f:eyJzZWxlY3RlZExpbmVDb3VudCI6NTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY3NmU0M2ZhZjY4OWZjMmRjNjBjOWIzNWY3Yjg4ZGFjYjE3OTI2ODk1YTQ4MTVhNzQ0ZGM4ZDYwNjJlZjM4OGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4Njg1MzI1NGVmN2QzYjg3NjUzYjhjNGMzODAwYTE2NDMzYzA2MTMzN2Y5OTJkMzFlOGE5MTYxMzYwMDQ1N2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQwNmUwMzAxYTEwZjBjNmMxMWE5YTk3MTI2MzQxMDRlYzQ5ZWUxM2I1NDIyYThjNzAyMDRjYjdjNGIyMWRkNTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE2N2FkMWU2NTcwNWVkNjVmMTA4N2MyYjRjNThkNGJlZDhkZDNiYTM0ZGFjYTZiNjkxNjMxMzI3N2I0M2M4NDYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_344086d2404547f896e1e63902b67967",
+      "statement": "AuthorizationService performs MSP bridging operations through createMspAuthorization, createMspAuthorizationVpc, getMspAuthorization, getMspAuthorizationDetails, and patchMspAuthorization; these callers (InvoiceService, PaymentService, OHCreditService, InternationalInvoice, GooglePayInvoice, InvoiceEncryptCardService, MigrationService) persist PSP authorization objects to the internal MSP ledger.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/resources/authorization/AuthorizationService.java#L1210-L1343",
+          "version": "repo-lines-v1:sha256:46fe7ef283c4686a3f597cac39013967308d77b54c39cb1c7dce502270568950:eyJzZWxlY3RlZExpbmVDb3VudCI6MTM0LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJkMDgzZmExZDE0M2E4MTIxMmNjNTgyMmVlZjM1NDE4OTZhNDA3NjVmOTExNDk1OGQ5NmVhZWMxMzAxZjI0Yjk3IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0ODkzZjQwZTM3ODFlYjg5NmM4MmQwNDZhMDgwNjdhMTFlMzVjZGYyZjFkZmFmMjZmZWE5MGI4ZGI2Njc2NDEzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJkOWFiM2U4Y2FmNzIwNGZmZWJiZTE5YzI0N2U5MjQ2ODM0NWY1NTdlZGRkMjRlNWE0MGU0ZmZmOWNhZGQ0YzYzIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MSwiZm9sbG93aW5nQ29udGV4dEhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIn0"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/resources/invoice/InvoiceService.java#L994-L998",
+          "version": "repo-lines-v1:sha256:1c78230beb69bd1ec2776b8481c6b2407e62e0f26f65545220a7e6acfeaeca81:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDA4NDM2ODgxNzE4ZWI2NTZkN2QzZTU5MThiZGM1ZWZmYTQxZTA2MjcwYjY5MjA0YTFjZWY0OWJkYWUzODM2MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmEwM2JhZGY4ODUxM2VhOTlmMzZiYTgyNGU5MGNhYmRkNDI5ZmE2MDNlZjNhM2Q2ZDI2NTI4MzNlM2U5NDM5YSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzU4M2ZmMjRhYWVkZGMxYWYyNWVkOWI0MmRkMjViNTdjOTE5YzA2MDQ1NGU2YjVhNDk4MDlmNzVkZmFjN2E2ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmQ5NzdhZjQ0M2VkYTQyOTUwYmQyMTcyYzM3MjdjNDZhODhhMWMyZjA0YzlhYTRlNjJhNGY3Njc2YjFhOWYxZCJ9"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/resources/payment/PaymentService.java#L323-L323",
+          "version": "repo-lines-v1:sha256:cd61e763bf7fed5219f4248892618c4e2b447fa4357a5879bb24544a02d25842:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2Q2MWU3NjNiZjdmZWQ1MjE5ZjQyNDg4OTI2MThjNGUyYjQ0N2ZhNDM1N2E1ODc5YmIyNDU0NGEwMmQyNTg0MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2Q2MWU3NjNiZjdmZWQ1MjE5ZjQyNDg4OTI2MThjNGUyYjQ0N2ZhNDM1N2E1ODc5YmIyNDU0NGEwMmQyNTg0MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMThiMjkxNmRkMzg0ZWNkZmMwOGNkZDdhZTAwMDA3YzVhNTZkYjgyMjhjN2Y1MjUyZWY0MTFhMGRmNjgyZjUwNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzRlOWEyODlkMDk3NTIyMWNkMDRmN2ViYTI4NTIwYmE5ZGE2NjcyZjc0ZTQzNTI1MjMzOTQ5MmNmMjUyMWQwMyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_cd9c7dfcf06641a5b63546bf49952475",
+      "statement": "NapasAuthorization renders an HTML OTP entry page from the napas_template.html resource (cached in memory) by substituting ${param} placeholders with the request parameters, serving POST /napasauth and /auth as NAPAS OTP challenge endpoints.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/Server.java#L187-L188",
+          "version": "repo-lines-v1:sha256:78953075c63fc8aae1638a6da80a59decc936d99ebec3ecfec2f19c4999f31f1:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmFkYTAxMDFkNmQyNzE4ZmViMTcyNThhNjg5ZmJkYjVlNmI1Y2YyZGI4MTI4MTUyODljNTE2ZDJmNGViNjAyYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZGE2NTJlNThiMzVhYmVkYjA5OGU1YWI1OTE3MmQ4NjEzNzhlZDU3MDlmODk0OWU4ZjdlYWIwYzMwZWUzYjIwYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjQ3ZWE4YWQ3MDQxZjk2NDE1ODA0Y2Y0NzJlM2Q1Mjk3ZDBmNjFlZjc4YTI1NjljZmUyMTMxNTcwN2UxMThkMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTc1MGEwYTFiYTFjZjNhMWM3MWNiMmI1YmUwMWIzMmY4Yjg0ZTYxNWU3ODljM2JmNjBjZWZiM2Y0NTFkYWZlNyJ9"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/resources/authorization/NapasAuthorization.java#L19-L54",
+          "version": "repo-lines-v1:sha256:d2b6197086459b7f456247544e429a4d29681ebe9a803025fac3e30ab4b96afc:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc3ODBlNDkyZTkyNTZlMWIzOTkzZWIxY2QxZjRkZDliZDQzODQ0OTdlMzQ3MThiMTUwOGQ4ZGE5ZWExYmFiNzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZkNmY5Njg2ZjkwYmRmZjc4NmZiYzkxMzhjODMyYjI1Y2Q5MGYwM2Q5MmNiMmQwYWQ4NjRmMmVmMmYyZjQ5ZWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0206cd0c46b74bda82b850818d93902d",
+      "statement": "Timeout and error handling in authorization callbacks fails safe to the user UI: TimeoutException produces a TRANSACTION_TIMEOUT error redirect, ErrorException from MSP/PSP is surfaced as a structured error redirect, and unexpected exceptions fall back to redirectToErrorPage.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/resources/authorization/AuthorizationService.java#L464-L507",
+          "version": "repo-lines-v1:sha256:15ef272840cfbda9130652504eb269331b758ac765f048941d519f7deade50cf:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ2NzlkM2E4MjIzZTViM2Y3YWQwNWNmYzUyZmM3NmJhYzBmYTY2ZDU5Y2U4ZjJhMzVhNjEzZmQxZThiYWVmY2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBjNjQ3OWNjMjMwNDQwZmQ0MWU4MjI0MjE4Njc5Njk4NTU5ZDI4OTNiZDY3YjQzODBhZmFiODExYjM4YTU1YWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlmYWE5YmMwYjM5ZWQ4ZmY5OTY4NDNlZDM0MjQ0MDhmNmYzYjM1MGE3NGJmNzRhYzU1YzYzM2IwMjczZjM5NjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRlODI5ZTQ3ZTE4ZDVjNmQzMWFiNDBlMTdjMDUzZTZhYjQ2M2ViZTNiNzg4MDAyNWI3MmM3ZGE1MWY4MzVhYTMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6c6a8f0073554f75949009117b2363dc",
+      "statement": "Authorization unit tests live in src/test/java/vn/onepay/wsp/resources/authorization/AuthorizationServiceTest.java and cover isFinalPaymentState (approved/failed/canceled/expired true; created/pending/empty/missing false) and isInvoiceExpiredTime (past, near-future and future expiry boundaries).",
+      "evidence": [
+        {
+          "resource": "repo://src/test/java/vn/onepay/wsp/resources/authorization/AuthorizationServiceTest.java#L23-L77",
+          "version": "repo-lines-v1:sha256:b78c68b0b061bb7df05b2c7d0c94dfe1e24f4ec25d3c530535f4895b17201fa4:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRjZjA5ZWIwYzU3NDRmYjk3MzMxYjk4ZmYzZmJmMDVhNjAyYmEzZjdmNjdlNWRhNWJlOTA5NTAzM2Y2MjU4MjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjliZTg5MzU5MjllOTBiOTEzNzE2YTY5YzYxYzNhNTg5ZGI0NDczODdiZTVlMjJmMWE3NTMyOGIyNDcxM2YyNzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU1Mzc3NzQzNDJiMjZmODIwYWZjYzFmZmI5YmYwNmIxOTZmYzI5YmE5YzdhNzNmMTZlZGM2MDhkZjU4ZjgxZjYifQ"
+        },
+        {
+          "resource": "repo://src/test/java/vn/onepay/wsp/resources/authorization/AuthorizationServiceTest.java#L86-L128",
+          "version": "repo-lines-v1:sha256:1910c4752f14008481307369eea30cd1b3add752847f5edb09515ea37667271c:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2MTViNjQ0MGIzNjU3NTEzZjNkZjY0ZjljNDljMjEyNzAwMWMyNzlkYTkyMzViYTU1M2Q5ZWJmNWJiNmNmYzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgwMTQwN2MzMzdmZTUzZDQ2MTM2ZDc2NjkwNDRmNjJjN2JlNmU5OGEyNmIzOWU2NTgzODkxN2E2OGRjYWUyNWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQxMGIzNmFhNzRhNTliY2Y0YTg4MTg1ODM3ZjY1OGFmYWYzNjQ2ZWZmMmJiMTZjMzkyOGQwZTkzMzVlOTQ1ZDIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d6ebb0bf42b64794bd0cbe68972e6fc8",
+      "statement": "Tests are skipped in the default Maven build via the <skipTests>true</skipTests> property in pom.xml; they can be run explicitly with mvn test -DskipTests=false.",
+      "evidence": [
+        {
+          "resource": "repo://pom.xml#L14-L14",
+          "version": "repo-lines-v1:sha256:054cae4f4af66296ff9236c3b8408162bfb52f7df7d4f90c0ef7e4c866f042e0:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDU0Y2FlNGY0YWY2NjI5NmZmOTIzNmMzYjg0MDgxNjJiZmI1MmY3ZGY3ZDRmOTBjMGVmN2U0Yzg2NmYwNDJlMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDU0Y2FlNGY0YWY2NjI5NmZmOTIzNmMzYjg0MDgxNjJiZmI1MmY3ZGY3ZDRmOTBjMGVmN2U0Yzg2NmYwNDJlMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzQwNjJiMTE5ZTJiMGRhNzYyNjVhZDFmOTQyOGRjNzRmZWU0YWEzZWExYjdkMmYzZDM2MDcxOGMzMTFiZmJiZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTVjOGYyYTQ1ZTg4MTk0MDBhM2E5NjdhYzdjNjlhY2VmMTExOTYzMTBlM2QyYTk4YjFhOTc1NTFhMzlhMGViMSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-22T08:58:44.659Z"
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:3ab9494cb5a714d6c508f6b2c459de4729f66353754987380d3d96a7a5da232b",
+  "claims": [
+    {
+      "id": "claim_c963dc30d84a40379bc39512a0ee5212",
+      "statement": "The refund workflow supports multiple entry points for different refund types: standard (POST /merchant/:id/refunds/:ref), NAPAS (POST /refund_napas), manual (POST /merchant/:id/refunds_manual/:ref), auto (POST /merchant/:id/refunds_auto/:ref), and Apple Pay (POST /refunds2).",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/vertical/PSPConnectorVertical.java#L128-L141",
+          "version": "repo-lines-v1:sha256:01314dc99e6f7d703d62bd8535d742f6c36dcd0269a24a3037289d3892f5c0e7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg4NDliNzE2ZTdiOWI2MWQ5ZDc1ODQ3ODk2YjdkZGJkMzgzNDg0OTVjNDA2MzU1OTc5YjVjNzJkMTBjMzdkZTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3NTE2MzdmMmZlM2ZmMTAyZjgyOTc5OGQ5YTliYWUxMzZmZDczOWNkZWVmODZmM2Q3YjMwMzVlNWU5MWJkYjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYxMzY3YjgzMmYzNTVjMmVlY2Y5MGZlZTI4MWE5MjU1OGY0MWIxMzQ4ODhlNjY5NmY2OTc5ZDIyY2EzNzZlZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVjNTgwNWMzZDg2OTU4NjQ5NTkxZWJhM2RhMTk1ZmMzZDA2YjQwN2FiYTQyYWJkOTQ2ZWFkN2U3ZjFlOGVkNzYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8b799a907f8543479eafcb2c0b36d65e",
+      "statement": "RefundRule.isManual() determines whether a refund should be processed automatically or manually based on bank-specific rules, including time limits (e.g., 180 days for BIDV, 300 days for NAPAS banks, 90 days for VNPT Money/VietinBank), single-refund limits (e.g., BacABank), and data eligibility (e.g., MBBank requires mbbank_txn_info in jData).",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/rulerefund/RefundRule.java#L25-L129",
+          "version": "repo-lines-v1:sha256:227079856e80ae40345e26b4fbcfda93ee90f57b20550a738eed5312666fc7e6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA1LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJkMzk0NGYxM2Y2NTg4ZGRiZDc1MDFmZGI2MjJmN2RiZjBjNDVjYzBhOTZhNjdlY2ZiZTMzNzgwZGQ2ZDk3MTAxIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0ODkzZjQwZTM3ODFlYjg5NmM4MmQwNDZhMDgwNjdhMTFlMzVjZGYyZjFkZmFmMjZmZWE5MGI4ZGI2Njc2NDEzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJmMDdkNTU0NGEwNjYzMjJmMDZjODMzMjg1NjgyODE5MmVhMTgwZmMxNzg1MDY4OTFkZDAzZjBkOTkzZTVmMzE1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MSwiZm9sbG93aW5nQ29udGV4dEhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_890463a2edaa465f916b5178d82b80c8",
+      "statement": "OnecommRefundServiceProvider.paymentRefund() orchestrates the standard refund flow: it validates the original payment is approved and a purchase type, calls RefundRule.isManual() to determine the processing path, inserts a PENDING refund record via RefundDB, and either calls OnecommGateway.refundExtend() for auto refunds or delegates to paymentRefundManual() for manual refunds.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/onecomm/OnecommRefundServiceProvider.java#L42-L156",
+          "version": "repo-lines-v1:sha256:93ad2666af6cb4f82697b9a0259c25ebdfd05c4d0c6ba83afcd8e1d706d60c10:eyJzZWxlY3RlZExpbmVDb3VudCI6MTE1LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJlZGMyYjMxMWFiZTg3NTcyZThhN2NjMGQ5OTZhNjU4NDQwNzZlNTIzMmQyMWI3YTg1NDc1ZjliNDA1NWI3NDkyIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0ODkzZjQwZTM3ODFlYjg5NmM4MmQwNDZhMDgwNjdhMTFlMzVjZGYyZjFkZmFmMjZmZWE5MGI4ZGI2Njc2NDEzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIzOWNjNWZjZTE1ZTNmMGY2NDM0M2IyN2ZlZjM1M2I4ZWYwZGRjNmZmNTUwNmVjMTg2Mzg5ZDhhZDQ2ZDI0MDJjIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlNmQ2NmFlYzdjNzE0NTdiMjM2Yzc4NTM3ZGViNGYxMjRhZWU2YzNjYWFjYWZjN2QzZDdmYWM2NDQ3YzFmZmQ2In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_30e212b82ac1478e9e853f84002176c3",
+      "statement": "OnecommRefundServiceProvider.paymentNPRefund() handles NAPAS-specific refunds by validating the bank ID against the napas.bank configuration property, then calling OnecommGateway.refundNP() with a RefundNPRequest object.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/onecomm/OnecommRefundServiceProvider.java#L158-L236",
+          "version": "repo-lines-v1:sha256:49d4a1a603543b0ac5db954142e8c7b6bffb2b2433b33830bc2df2be0c6c9271:eyJzZWxlY3RlZExpbmVDb3VudCI6NzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ2MGZiOTU5ZDYxMjI2NTNiYjhmN2U2YTM5NDU0YjRkZjJkZTYyYzM5MThiYmVkOTRiNDc2YTRkZGZmM2RhMWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEyY2MwZDQ0ZGRlMzkxMDE4YTQ1OWMwNmIwOTBlZWVjOGRmNTA0MTg4Mjk3MzIwMmQwYTc2NWZjOTM1NjRjYTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYxOTcxMzUxMzNkM2NkMDMzNmRhZTI4YjQ5YTQyNjVmYjcxMGVkOWNkNWI2OTE3MDJiZjc0ZGNlOTc5ZjMyY2UifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_456bf247ddc7480a8319a1b208ad9929",
+      "statement": "OnecommRefundServiceProvider.paymentRefundManual() processes manual refunds by immediately recording a RefundManual transaction status 400 (Approved) in OnecommDB and inserting an APPROVED refund record in RefundDB, bypassing any gateway communication.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/onecomm/OnecommRefundServiceProvider.java#L356-L439",
+          "version": "repo-lines-v1:sha256:28c8ec6db834acb82adc6eb93a97ece5ad27ad838328d6e078177d13ebeb6637:eyJzZWxlY3RlZExpbmVDb3VudCI6ODQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVkYzJiMzExYWJlODc1NzJlOGE3Y2MwZDk5NmE2NTg0NDA3NmU1MjMyZDIxYjdhODU0NzVmOWI0MDU1Yjc0OTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEyY2MwZDQ0ZGRlMzkxMDE4YTQ1OWMwNmIwOTBlZWVjOGRmNTA0MTg4Mjk3MzIwMmQwYTc2NWZjOTM1NjRjYTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc4ZDhjN2U2ZjNkYWNkYWY2OGI4NjRiZjA1ZjhhOTJjZmNhZWZkMTU5ODZjYzRiYjliNjRlOWQyZDhkZWYyZWMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_438bf2750e1b48398fe129e72e8235a5",
+      "statement": "OnecommRefundServiceProvider.updateRefund() allows updating a refund's state from Pending to Approved or Failed, with business rules that prevent updating terminal states, updating a non-existent refund to Approved, or updating an Onecomm-approved refund to Failed.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/onecomm/OnecommRefundServiceProvider.java#L238-L354",
+          "version": "repo-lines-v1:sha256:ef51f27f7428a81df95c3abc95a4784a084d879265a65d4ae2f2551d194355a6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTE3LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJlZGMyYjMxMWFiZTg3NTcyZThhN2NjMGQ5OTZhNjU4NDQwNzZlNTIzMmQyMWI3YTg1NDc1ZjliNDA1NWI3NDkyIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0ODkzZjQwZTM3ODFlYjg5NmM4MmQwNDZhMDgwNjdhMTFlMzVjZGYyZjFkZmFmMjZmZWE5MGI4ZGI2Njc2NDEzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJhMmNjMGQ0NGRkZTM5MTAxOGE0NTljMDZiMDkwZWVlYzhkZjUwNDE4ODI5NzMyMDJkMGE3NjVmYzkzNTY0Y2E2IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIzNTA4ZTFiOTcxNGY0YmIyZjEwMjExY2FmNGZkOWM0Nzc1MTFiZTUzYTUzOTBjMTc1ZDQ0ZGIyNGMzNjljYWM3In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_4069200576864503b9864f63ef016714",
+      "statement": "RefundHandler acts as the HTTP adapter layer, parsing the JSON request body from the Vert.x RoutingContext and delegating to the appropriate RefundServiceProvider method (paymentRefund, paymentNPRefund, updateRefund, paymentRefundManual, paymentRefund4B, queryCheckTypeRefund, or paymentRefundAuto).",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/handler/refund/RefundHandler.java#L11-L90",
+          "version": "repo-lines-v1:sha256:870a8c6f048c7638203285c9abb3303ae5d410b2fe84068e3f8bc12a6db00f89:eyJzZWxlY3RlZExpbmVDb3VudCI6ODAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkxMjM4Y2RmNDc5MzJlZWZkYTJmY2E0MjQ5MjVhM2IxYjFiZDAxY2E0OTBlOTBkMjUzYWM0MGY3YzdhODQ1YTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNhNWE1MDMwNWQzOWEyNjQzMzIwNmVjMDYxNzAzZmJjY2Q5ZDQ0OGZiMDYzNjQ1YTk2MTI5YzRhMDljNDVkN2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_12dc4c18f03148fba7ad4b8504ec145e",
+      "statement": "AppleRefundPostHandler delegates Apple Pay refund requests to PaymentServiceProvider.applePaymentRefund(), which calls OnecommGateway.refundApple() using an AppleRefundConfirmReq object.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/onecomm/OnecommPaymentServiceProvider.java#L742-L813",
+          "version": "repo-lines-v1:sha256:0f9c70c5f19a5f60374a6b791edd9408c24e70408741cf09873c862d26008587:eyJzZWxlY3RlZExpbmVDb3VudCI6NzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcyMGJlOGIyMjQyODlhYmIzZmMzNTRiMTE3NDhjN2M3MmZmZTQ2YzFjY2UwNjkxMDQ0NDVmOWQwMzc4OTRlY2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ2OTc0NTNiNjY1ZDE0ODc4M2YxM2U1NmIxZmZlNWY4NThiMzVjNTJkZDBjZWY4ZGUxNjIzOWNjZDNkY2FkMTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRmNjQyODlhZjY1MGMxYWYwMDgzOGZjZTM1M2Q1M2Q2ZDk3MWRkZmNlNzc2MTM0YjE5NjIzNDEyMjlhYWZhODMifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/handler/refund/AppleRefundPostHandler.java#L11-L25",
+          "version": "repo-lines-v1:sha256:b26871a82ebf5583b5b2f4f92a42872d1299c4eb5aa0ebd0bf33f1c178ae0c1a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyNDVlOTJiZWMxNjhkNGY4NGM2ZWJkMWQ1YWYzYWQ3ZWYxNDMzZTZiMTk0MTRkZWUyOTVmZmEyOTI2YzcwZTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNhNWE1MDMwNWQzOWEyNjQzMzIwNmVjMDYxNzAzZmJjY2Q5ZDQ0OGZiMDYzNjQ1YTk2MTI5YzRhMDljNDVkN2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2d4c48bcbb6d480fa46c1649224fb5c3",
+      "statement": "OnecommRefundServiceProvider.queryCheckTypeRefund() provides a pre-check endpoint that returns the predicted processing type (auto, manual, or error) and a detailed message by calling RefundRule.isManual() without actually initiating the refund.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/onecomm/OnecommRefundServiceProvider.java#L494-L525",
+          "version": "repo-lines-v1:sha256:bdb23a15ed0167c474d3f50d76e8bdc0ce9181ba3bbb18b0ecf052b245cea76a:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVkYzJiMzExYWJlODc1NzJlOGE3Y2MwZDk5NmE2NTg0NDA3NmU1MjMyZDIxYjdhODU0NzVmOWI0MDU1Yjc0OTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEyY2MwZDQ0ZGRlMzkxMDE4YTQ1OWMwNmIwOTBlZWVjOGRmNTA0MTg4Mjk3MzIwMmQwYTc2NWZjOTM1NjRjYTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUxOGQ5NjgxYTAyOTc3MzM0NjY4MjdjYzc0OTcwZThhNzNkMGU2NjQyMDVlYmUyOTllOGRkYzNkMGUwZDYzMTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-23T03:50:02.660Z"
+  }
+}

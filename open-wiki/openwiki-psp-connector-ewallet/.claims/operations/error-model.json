@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:ff2c08fb510c8df3c6747e66add41f86ac870d1df4c27e46d38e2005d223be34",
+  "claims": [
+    {
+      "id": "claim_e1a1825f04de4186b98b7fcb58855913",
+      "statement": "ExceptionHandler maps exception subtypes to fixed HTTP status codes: AuthorizationException to 401, BadRequestException to 400, ResourceConflictException to 409, ResourceNotFoundException to 404, HttpServiceException to its dynamic SystemError code/reason, and any other SystemException or non-SystemException throwable to 500.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/psp/server/handler/common/ExceptionHandler.java#L35-L76",
+          "version": "repo-lines-v1:sha256:eb5f0f814b75de5f4b28c5bd3e52f4d170f0c890ecc36c8ff27c5d8a47c13393:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY5OWFlNGQ3ZmI0Y2ExODI2MGFjMzMxNWY0ODM5ODBiYTE4OTA5ZjM5YzhjYjJjNTVhYjJhYmJmY2Q1NmYxY2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YjA0NDkxNDY5NzIyZTgzNjNhOTRlNDA0NDUzOGUwMTNhMmEyMTdlMzZiMWU1NjhiYTYwYWNiN2I0YzhmMmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI2NDljNzY1Yjk1MjgwOTc1YWUzZGIyZjcxMjIwYWY5ZjUxZThhNzI3OWEyMmZjMzIyZTUzZjU2OGQ4NDdmYzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFkYzNiY2U5ZDU3ODBjYjVhYTNkNjAxOGY2M2VmNTQ5M2U1YjViNTNmZjE3MTI3OTdiMTczNDdjNzdiYTlmNTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_82ca0825398f4c798c74f5ac510628c2",
+      "statement": "All error responses use a uniform four-field JSON envelope containing name, message, details, and information_link, constructed from the SystemError carried by the caught exception.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/psp/server/handler/common/ExceptionHandler.java#L78-L84",
+          "version": "repo-lines-v1:sha256:ad5320af900e1008a5b0e18daa2c0f8c3837d30d4fa873ffe328fed22cc73b34:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDhmNTY0NjMxNzAxNTFjOWFlNWUyY2VlNThkMDNiMWVhMDgwYmYyYzBmY2VlMmQ5NjExMmY2YWUwNjAxMjA5ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmEwNGIyZDcyMGZhYmZkM2VlMmY3NDMzYzRmMTFlZTVlM2U2OTM1ZTNhMjU4YTI0MGUyMjcyY2FlNTYxNDNmYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjUzZmI5YTljZWFlNzI4YTJhYzlkM2VjZGEzYjRmNmYwMTU0Y2FmZDI1NDEzYmRiMzkyN2Y0NDVjNzI5YzRjNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_f5a105de837047279fcc7ad6b8618172",
+      "statement": "ClientAuthorizationHandler raises BadRequestException for missing or invalid headers (Accept, Content-Type, X-OP-Date, X-OP-Expires, X-OP-Authorization) and AuthorizationException for credential, region, service, algorithm, or signature failures, rejecting requests before business logic runs.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/psp/server/handler/common/ClientAuthorizationHandler.java#L46-L143",
+          "version": "repo-lines-v1:sha256:1047d8d6bac97c34580200001755a2b6b6fb743a46d0bf909fb3bc1fe8e0f860:eyJzZWxlY3RlZExpbmVDb3VudCI6OTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjljMTAzMWM1NGZlNTBkYjk4Mjg5YmNhMjM2YzM1YWI4ODgzZGQ3ZDVlNGU5ZDQyNDYxMTZkNTFhNzliNmNiMDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdjMWQ3MDBhNzEyYTFkOGVjODhjNTQyM2JjNWU0MDc5NjUyMWM1NGUzMjhjYzE0MTUyOTk3M2U1OGUyMGRjYWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIyMzkwNjczYjU3MzRhODk3ZDRkNjEwODg0OTk3ZTM1YjE4NzdhMzdiZjBlMTVkZmZjZDJjYWI5NTFhOTQ2ZGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYxZjdkMGMwZjg0MTUzZDM4NDk5ZTVlMjBlZGUzOTQ2Y2EwMzY5NzM3MzBhMDc1MzNlZGZjMWFhNDdhODBjODAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9999f46717fd41d3afbca3e435489b39",
+      "statement": "InstrumentPostHandler raises BadRequestException with INVALID_REQUEST_BODY or VALIDATION_ERROR for empty or incomplete request bodies, and HttpServiceException when the upstream e-wallet service returns any status other than HTTP 201.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/psp/server/handler/instrument/InstrumentPostHandler.java#L37-L84",
+          "version": "repo-lines-v1:sha256:1156aa1c86b72b75c62ceb36494e7529ccb613a03be1ab0bdd6c743ae9cda436:eyJzZWxlY3RlZExpbmVDb3VudCI6NDgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM5ZjY5ZWUxMDZlMTA5YzYwYzQ2MTEwZGFiN2VhOTkwZTlmYjQxOGY4Y2UwZTg5NjYxYTIyOGRhNjQ0ZjkzOGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0MTRmZTBjZWFhOWQxZTQ3MGI4MjJhMjIzODk3MjVkNDkzMGEwM2ZmNjE4Yzg1ODBkOTM4YmIzYWQ3ZDQyNmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZkOTAzYzZkNmZiYTFjNmJjNTE3NGE2Y2ZjZjdhOGUzZjAxYzY5ZTNmZTU5MTQ5MDJhNWJhYjdjYjQ5ZjM3NDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFlNWMyM2RhYWViMzY2YWI3ZDUyNTI2OWU3NTllMTNiMjE4YmJmYzgyOTYzZTBhNzRiZjQwNzVmMThkN2RjNWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e178d63590de42649cdc05bec81209ef",
+      "statement": "HttpServiceException is the only SystemException subclass that carries its own HTTP status code and reason, constructed from the upstream response data rather than a predefined constant.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/psp/common/exception/HttpServiceException.java",
+          "version": "repo-file-v1:sha256:1c5c411d5725c8033f9a3d2093858f11f075e4ee8b3ba9756eabf8a4759e4f74"
+        }
+      ]
+    },
+    {
+      "id": "claim_a292cdbbfcf14d139781d2515273437a",
+      "statement": "SystemError is a value object cataloging all public error names, messages, details, and information links; constants serve as shared singletons paired with typed exceptions to define the service's failure vocabulary.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/psp/common/error/SystemError.java",
+          "version": "repo-file-v1:sha256:486f7ba65d722362c5b08a43ae8643dab6747c361e3b0d6df939fe72ccf0f82f"
+        }
+      ]
+    },
+    {
+      "id": "claim_ad959d9937964b8f8a82434dcd3ade1f",
+      "statement": "OracleException is a standalone RuntimeException not part of the SystemException hierarchy and is used only by dormant common.service classes, not by the active instrument request path.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/psp/common/exception/OracleException.java",
+          "version": "repo-file-v1:sha256:49c360087483d4d50189678cac7615ae735506dadfc6579ddfb04da5279c339d"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-30T08:38:20.900Z"
+  }
+}

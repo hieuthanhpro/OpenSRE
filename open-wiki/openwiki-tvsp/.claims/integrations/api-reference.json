@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:455cc11c4082696650d7113e21e888933f4b247d03e95ecf0726a5262a6ec7d9",
+  "claims": [
+    {
+      "id": "claim_c6d25f20a03d41e8b46318c84a8bd4e5",
+      "statement": "The TSP Vault service exposes a REST API defined in TSPVaultVertical, utilizing routes from RoutePool and handlers for instruments and tokens.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/tsp/vault/server/vertical/TSPVaultVertical.java#L71-L98",
+          "version": "repo-lines-v1:sha256:3045df7920492a926dfd9088b65f14bb9585925f6014f07dc326ef7da774c8b2:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdmZmEwNjY0NTA2OTA5ZTIxMTY2MTJiZjc5YTkzYjNhODhiYjlhMjVkNjk4MWNiYmRmMmMxNGQ2ZWJkY2IxZTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhjZGViZjMyODliMjk4MjZhMmQ3OTk4ZjcxNTUxMjU0ZTBjODk4Yjc2ZmQyOGQxYzJhNTI0MDQ3ZWRmZTcyM2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhiOGY3ZTRhOGRmMTFkZTUwMzYwZjcxMjY2Zjc1NWFmYmJhMWNhYWY2ODY1ZDY5ZmVmZWQ2NWY5ZWIxMmI0MDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYwMjBhZGE1YzNjNzAxMTM3YTdjZmZmN2E5YmU1ODIxZjAwZDM1ZWJjZjgzYTI3ZjgwYzg5M2E5MzE5ZjYwYWQifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/tsp/vault/util/RoutePool.java#L1-L16",
+          "version": "repo-lines-v1:sha256:d28abd91c59955b811440cfa7f8e7000cb54c7158aa3cf46bc950f1f7b62a52f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxMzU5YzNiYTcxODY1NTU0MmE0YzUwZjNlY2Y5ZmNmNGM1M2I0NjYyNTQ5MWM2OTFhNWViYzYwNDZkYTMxZjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNkOWU0ZDczNjZiZWRmNjcwYzdmNjdkYTA1M2E1YTYzOGZhMDcyNzBmNGEwN2Q4ZjQ4ZGNmN2E4NDhkMGJkMDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUyMmZhYTUzNWJkMmVhM2Q1MmU3NDFlZDQ1NDQzNWI3ZmU0OWU4MzU4NmU5NDNkOThkODJiYmZiMjRkMWY1YzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_36409b3a2b644807aeca59fc25b0d82b",
+      "statement": "All API requests require Content-Type, X-OP-Date, X-OP-Expires, and X-OP-Authorization headers for security and validation.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/tsp/vault/server/handler/common/ClientAuthorizationHandler.java#L43-L65",
+          "version": "repo-lines-v1:sha256:261d4df8e8792195276049b53167e0186e9ea496c996fdeece49c6b2f8d7e470:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMzMWMzNTJlOTQ5YWM2MTU2MGI5MTVkMDc2NzI0ZTk1NGQxNmQ2NWQ0MmFlOWE3ODQxOGY2MTI0ZTIxNWFlNWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgyNTFiZmFiY2ZiNmQ4OWZkOWY0ZTNiN2JjNGExNzRmZDkwYzk5ODE4NmU0ZmRlMmM4ZmEzNGU2ZDVjMjkzYWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQwMmM2MWJhODI4Nzg5MDU4NWM2NjU5MzBkNDkyZTY0MTJjMjBiMDA3NDk1MjNiODg5N2FmNjdiN2MwN2Q5MmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVhMTg5ZWE5NDIzMTg0NWFmN2FlZDVhZjQ4YTQwZGVhYThlYTRjNTQ4ZjU2NTNkN2RhNDlkNTgwODRhZDY3ODAifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/tsp/vault/util/AppParams.java#L10-L14",
+          "version": "repo-lines-v1:sha256:f6532bedc2002a649168fd55568224ebc70bb888fe6c5fe7517916ba9f38f624:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzM2NWFiMzJhNDgyNTYxM2I1Mzc2NjM5Zjc3ZDFiN2Q2MGFlNTdmYzMzYjc3NGE4ZjlmNzBlOTc2OGY5ZWQ4YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDRlZTViMmRmODBiYTA4NzIyMjYyZTZiMmIyZDhkM2FmODI3ZjcyM2NmMWJkYjAzNzliNTY1OWI5MzBjYzAzYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTRhNTBhY2JiYzI1YzMzNzExZDVkZmFmZjI2MDQ0N2IyODE2ZTFmZmEyMmFhN2M0NzNiMjk4OTk4Y2YxZDVlNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWQxZTg1YWNhZTc5YjcwMTRmNDZlNjU2ZjVlZTU1ODBjZWRjMWJhYzM2NmY4YWVjM2Y5NDA4NTU4NjBkOTlmMiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_22ff37b5d4684da2be4349c0883efdb5",
+      "statement": "The POST /instruments endpoint allows creating instruments with optional automatic token generation based on service configuration.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/tsp/vault/server/handler/instrument/InstrumentPostHandler.java#L23-L86",
+          "version": "repo-lines-v1:sha256:b7320deb8486783ef8a5cc7d7f5885dcddcad83a8c1a9dd08d1bb302ef3f57d0:eyJzZWxlY3RlZExpbmVDb3VudCI6NjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJhMmQ4ZjQ5ZTBkNDZkMGIxOGE1MjliNTY4Zjk4M2ViMWQxNjA3YmY3YzY4ZmEwM2EwNDM3YTA3NGM4MTA5ZjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI2NzhiYWU3MjU2OGYzNTI0YmZmNmNlMTZiMjMzZjdjMTZlMDYwZDg3ZTY4YzYxYjYxMmYxNjY0YjkyZDZjNmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMwN2U5NmJmNDU3OGJlODliMTFlNGExYzc5YmE2ZDQwNmEyYzMzMmY0Zjg1ZGRmOGZlNmYwMDgyMWVhYjZmNjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVjNjBkNTQyMjdkNWY2ODVhZmFjMWJkNGRjNzQ2MTQyMzNiM2RjOTYxY2Y3MTUxMjk1YjBiNmI1YmY1ZTBhM2IifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-25T07:02:32.401Z"
+  }
+}

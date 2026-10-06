@@ -16,39 +16,51 @@ ARG BKT_VERSION=0.28.2
 ARG GH_VERSION=2.96.0
 # Split downloads so flaky networks can resume from cached layers; curl retries on transient failures.
 RUN apt-get update && \
-    apt-get install -y curl unzip && \
+    apt-get install -y curl unzip libaio1t64 libnsl2 || apt-get install -y curl unzip libaio1 libnsl2 && \
+    ( [ -f /usr/lib/x86_64-linux-gnu/libaio.so.1t64 ] && ln -sf /usr/lib/x86_64-linux-gnu/libaio.so.1t64 /usr/lib/x86_64-linux-gnu/libaio.so.1 || true ) && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-RUN KUBECTL_ARCH=$([ "$TARGETARCH" = "arm64" ] && echo arm64 || echo amd64) && \
-    curl -fSL --retry 5 --retry-delay 5 --retry-all-errors \
-      -LO "https://dl.k8s.io/release/$(curl -fsSL --retry 5 https://dl.k8s.io/release/stable.txt)/bin/linux/${KUBECTL_ARCH}/kubectl" && \
-    install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl && \
-    rm kubectl
-RUN AWS_ARCH=$([ "$TARGETARCH" = "arm64" ] && echo aarch64 || echo x86_64) && \
-    curl -fSL --retry 5 --retry-delay 5 --retry-all-errors \
-      "https://awscli.amazonaws.com/awscli-exe-linux-${AWS_ARCH}.zip" -o awscliv2.zip && \
-    unzip -q awscliv2.zip && \
-    ./aws/install && \
-    rm -rf aws awscliv2.zip
-RUN ARGOCD_ARCH=$([ "$TARGETARCH" = "arm64" ] && echo arm64 || echo amd64) && \
-    curl -fSL --retry 5 --retry-delay 5 --retry-all-errors \
-      -o /usr/local/bin/argocd \
-      "https://github.com/argoproj/argo-cd/releases/download/${ARGOCD_VERSION}/argocd-linux-${ARGOCD_ARCH}" && \
-    chmod 555 /usr/local/bin/argocd
-RUN BKT_ARCH=$([ "$TARGETARCH" = "arm64" ] && echo arm64 || echo x86_64) && \
-    curl -fSL --retry 5 --retry-delay 5 --retry-all-errors \
-      -o /tmp/bkt.tgz \
-      "https://github.com/avivsinai/bitbucket-cli/releases/download/v${BKT_VERSION}/bkt_${BKT_VERSION}_linux_${BKT_ARCH}.tar.gz" && \
-    tar -xzf /tmp/bkt.tgz -C /usr/local/bin bkt && \
-    chmod 555 /usr/local/bin/bkt && \
-    rm /tmp/bkt.tgz
-RUN GH_ARCH=$([ "$TARGETARCH" = "arm64" ] && echo arm64 || echo amd64) && \
-    curl -fSL --retry 5 --retry-delay 5 --retry-all-errors \
-      -o /tmp/gh.tgz \
-      "https://github.com/cli/cli/releases/download/v${GH_VERSION}/gh_${GH_VERSION}_linux_${GH_ARCH}.tar.gz" && \
-    tar -xzf /tmp/gh.tgz -C /tmp && \
-    install -o root -g root -m 0555 "/tmp/gh_${GH_VERSION}_linux_${GH_ARCH}/bin/gh" /usr/local/bin/gh && \
-    rm -rf /tmp/gh.tgz "/tmp/gh_${GH_VERSION}_linux_${GH_ARCH}"
+# RUN KUBECTL_ARCH=$([ "$TARGETARCH" = "arm64" ] && echo arm64 || echo amd64) && \
+#     curl -fSL --retry 5 --retry-delay 5 --retry-all-errors \
+#       -LO "https://dl.k8s.io/release/$(curl -fsSL --retry 5 https://dl.k8s.io/release/stable.txt)/bin/linux/${KUBECTL_ARCH}/kubectl" && \
+#     install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl && \
+#     rm kubectl
+# RUN AWS_ARCH=$([ "$TARGETARCH" = "arm64" ] && echo aarch64 || echo x86_64) && \
+#     curl -fSL --retry 5 --retry-delay 5 --retry-all-errors \
+#       "https://awscli.amazonaws.com/awscli-exe-linux-${AWS_ARCH}.zip" -o awscliv2.zip && \
+#     unzip -q awscliv2.zip && \
+#     ./aws/install && \
+#     rm -rf aws awscliv2.zip
+# RUN ARGOCD_ARCH=$([ "$TARGETARCH" = "arm64" ] && echo arm64 || echo amd64) && \
+#     curl -fSL --retry 5 --retry-delay 5 --retry-all-errors \
+#       -o /usr/local/bin/argocd \
+#       "https://github.com/argoproj/argo-cd/releases/download/${ARGOCD_VERSION}/argocd-linux-${ARGOCD_ARCH}" && \
+#     chmod 555 /usr/local/bin/argocd
+# RUN BKT_ARCH=$([ "$TARGETARCH" = "arm64" ] && echo arm64 || echo x86_64) && \
+#     curl -fSL --retry 5 --retry-delay 5 --retry-all-errors \
+#       -o /tmp/bkt.tgz \
+#       "https://github.com/avivsinai/bitbucket-cli/releases/download/v${BKT_VERSION}/bkt_${BKT_VERSION}_linux_${BKT_ARCH}.tar.gz" && \
+#     tar -xzf /tmp/bkt.tgz -C /usr/local/bin bkt && \
+#     chmod 555 /usr/local/bin/bkt && \
+#     rm /tmp/bkt.tgz
+# RUN GH_ARCH=$([ "$TARGETARCH" = "arm64" ] && echo arm64 || echo amd64) && \
+#     curl -fSL --retry 5 --retry-delay 5 --retry-all-errors \
+#       -o /tmp/gh.tgz \
+#       "https://github.com/cli/cli/releases/download/v${GH_VERSION}/gh_${GH_VERSION}_linux_${GH_ARCH}.tar.gz" && \
+#     tar -xzf /tmp/gh.tgz -C /tmp && \
+#     install -o root -g root -m 0555 "/tmp/gh_${GH_VERSION}_linux_${GH_ARCH}/bin/gh" /usr/local/bin/gh && \
+#     rm -rf /tmp/gh.tgz "/tmp/gh_${GH_VERSION}_linux_${GH_ARCH}"
+
+# Copy local Oracle Instant Client zip from build context
+COPY instantclient.zip /tmp/instantclient.zip
+
+# Install Oracle Instant Client for Thick Mode
+RUN mkdir -p /opt/oracle && \
+    unzip -q /tmp/instantclient.zip -d /opt/oracle && \
+    rm /tmp/instantclient.zip
+
+ENV LD_LIBRARY_PATH=/opt/oracle/instantclient_23_26:/opt/oracle/instantclient_23_6:/opt/oracle/instantclient_23_5:$LD_LIBRARY_PATH
+ENV ORACLE_CLIENT_DIR=/opt/oracle/instantclient_23_26
 
 WORKDIR /app
 

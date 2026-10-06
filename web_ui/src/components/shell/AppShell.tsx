@@ -41,7 +41,7 @@ function getSidebarCollapsedSnapshot(): boolean {
 }
 
 function ShellInner({ children }: { children: ReactNode }) {
-  const { isOpen, open, close, onComplete } = useInvestigationLauncher();
+  const { isOpen, open, close, onComplete, initialPrompt } = useInvestigationLauncher();
   const collapsed = useSyncExternalStore(
     subscribeSidebarCollapsed,
     getSidebarCollapsedSnapshot,
@@ -82,7 +82,12 @@ function ShellInner({ children }: { children: ReactNode }) {
         />
         <main className="min-w-0 flex-1">{children}</main>
       </div>
-      <NewInvestigationDrawer open={isOpen} onClose={close} onComplete={onComplete} />
+      <NewInvestigationDrawer
+        open={isOpen}
+        onClose={close}
+        onComplete={onComplete}
+        initialPrompt={initialPrompt}
+      />
     </>
   );
 }

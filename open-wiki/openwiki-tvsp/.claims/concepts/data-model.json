@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:7f5854435b1f204f5f4b7b34168d1a5aad06a7fcac7455d83d12f9ebcb608421",
+  "claims": [
+    {
+      "id": "claim_a1329eff4a134b12ba0a8b3797e5f565",
+      "statement": "The TSP Vault data model revolves around three core entities: Client, Instrument, and Token, which are persisted via Oracle stored procedures.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/tsp/vault/service/ClientService.java#L20-L52",
+          "version": "repo-lines-v1:sha256:eb5e98fbee98af59607935a6b8ad7edb5516402927eada9552a6f5396011a733:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJiZTMwZTYyOGRkYWU3YzkzOGI4YjY3MmExMWEwY2Y4MjI2NmYzNWY1MTg5YjZjMzU1NTE1MDFhODMyMjkxYWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE0MTlhNmRjYzA0ZTIxM2EzYzdhNzdhNDU2YjAxZTc2ZDFlZjc4Y2QwMGJiZWMxZDhmODE0NThmZTkzZWRjNTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg1MjJlZGVmMWJjN2I1OTQ1YWVlZDE4MTY2OWQxZWVhYWYyZGVkOTZjMTFjYjA1NWU4ZDdhODhkOTc2NDMyMmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRlMjM4MjlkNmRjMzg5NDkyMjJiZTI3Yjk5MzFkN2E4ZDM4Y2I3N2U3MDdlMTU0NGVjZDYyOTI3N2FmODk2NDEifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/tsp/vault/service/InstrumentService.java#L23-L64",
+          "version": "repo-lines-v1:sha256:66dde5bdb810c010f3c70d91e13099eb7acd4d2f57c7edee37e7126764089c7a:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA1ZGMzZGRlOWRkZTkyZGI5NmU2M2FhODNhNDkxZmFkNDU3YTE4NmNhMWE5ZjUzMWY0MmRjMjI3NjI2ODQzN2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE0MTlhNmRjYzA0ZTIxM2EzYzdhNzdhNDU2YjAxZTc2ZDFlZjc4Y2QwMGJiZWMxZDhmODE0NThmZTkzZWRjNTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNhMWY0NWQ0OGRkZTFkY2RhMTJiNjMxMjM5MzEyZDhjNDQwMDY1YWJjM2E3YWVlNmM4NzlkM2Y5ZWM4ZmJkNzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU0OTA4ZjY5MGRmZTJkY2NkMzhjMGQzMGM5YjlkNWI1ZjBmYmZlM2IyOGQ3MDEyN2EzNTc2ODc3ZmJiMTdmYjcifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/tsp/vault/service/TokenService.java#L23-L74",
+          "version": "repo-lines-v1:sha256:de3479151bf7bac631e0912723de558dcd28c6ea5efb1e1f72687e312829c69e:eyJzZWxlY3RlZExpbmVDb3VudCI6NTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1NDAzZDZhYzBiNzYzMWE2NWFiNDc3OGY1MTE2YzgxMjBiMzM0NDIwYjk2NDY3NDZiMzNiOGZjYzJlZDUwMjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE0MTlhNmRjYzA0ZTIxM2EzYzdhNzdhNDU2YjAxZTc2ZDFlZjc4Y2QwMGJiZWMxZDhmODE0NThmZTkzZWRjNTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNhMWY0NWQ0OGRkZTFkY2RhMTJiNjMxMjM5MzEyZDhjNDQwMDY1YWJjM2E3YWVlNmM4NzlkM2Y5ZWM4ZmJkNzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk1YTZjMWI2MGE5MjQ1YWY2ODJjMWNiZjJjNjVlMDZiODQzMWFjYmRhNzQ2OTI4OTAwMGZlMzJlYWQ2Y2QyNGIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d9415ea9089e467bb1efb5b14798a666",
+      "statement": "The Instrument entity represents a payment method and includes fields for user association, type, name, masked number, expiry, billing address, and encrypted sensitive data.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/tsp/vault/service/InstrumentService.java#L128-L218",
+          "version": "repo-lines-v1:sha256:5cf5c87681b43e6054b59e167bc8dd5e046fc8d8805aa8fcbb71c6ae59cf349e:eyJzZWxlY3RlZExpbmVDb3VudCI6OTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmZTFiNTRiMThlMjVlNDc3YjgyODRkMDI0YTZhOTgxOGEwYWYwZTVjZGE2N2ExMjZmYTU0ZDIzNmRmODE0MDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE0MTlhNmRjYzA0ZTIxM2EzYzdhNzdhNDU2YjAxZTc2ZDFlZjc4Y2QwMGJiZWMxZDhmODE0NThmZTkzZWRjNTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA2ZjRmOTc1NGY5ODRlZWI5NmE5MmRjMjg2ZWFjYjk1MTQ1Y2VlMTY3ZDY0OTczYWYyZGY3OWI5NzZjNTlkOTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgzNzhkYzM4NzMzNjJlNjFjNmZmZjBmM2FlZDIzODkyNjFmOWFjYmI2YmRmNmIyMGEyZGE0ZjhjMmZiNTI3YjAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_986ef38b7cf3425bb4728fe45c8cc528",
+      "statement": "The Token entity is a secure representation of an Instrument, containing its own number, ICVV, expiry, and state, generated via TokenService.generate.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/tsp/vault/service/TokenService.java#L181-L234",
+          "version": "repo-lines-v1:sha256:6ac29e80c022bba0fafcc5cd37f98fbca9077d5390d6541417178115d90f7157:eyJzZWxlY3RlZExpbmVDb3VudCI6NTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZlMWI3MTQ2YzY0Nzg5ZGYyMDE2Zjk3NTM3YTk5YmYwY2JhOTlmNDhiMjFmYjE3MDYyZWM3NDdkZmE4NGVkY2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE0MTlhNmRjYzA0ZTIxM2EzYzdhNzdhNDU2YjAxZTc2ZDFlZjc4Y2QwMGJiZWMxZDhmODE0NThmZTkzZWRjNTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNiOThiM2JlNDI4YTI5YjgxMDA1MTdlMDA3Y2JlMTE4ZjRjOWM4ODAyYjA1ZTMzNmQ1NWMwNTQ4OGY1ZDk2YWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjExYmY5MTE3OGE5OTA3MWVmNjRmM2Q5YzM4YTFhOGJjMTM0N2RjMjFmMGZlMzFhNWViNDNkMzEwMTM4MDNiZTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a9300aae78c045319e44bc28b46b9d40",
+      "statement": "Client, Instrument, and Token operations are executed against the database using stored procedures defined in DBProcedurePool.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/tsp/vault/util/DBProcedurePool.java#L1-L29",
+          "version": "repo-lines-v1:sha256:fb66a2c07632771b850f497f09126ed18e6dff6dff61a36bbaf8992beeaed15f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxMzU5YzNiYTcxODY1NTU0MmE0YzUwZjNlY2Y5ZmNmNGM1M2I0NjYyNTQ5MWM2OTFhNWViYzYwNDZkYTMxZjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyMmZhYTUzNWJkMmVhM2Q1MmU3NDFlZDQ1NDQzNWI3ZmU0OWU4MzU4NmU5NDNkOThkODJiYmZiMjRkMWY1YzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_986b5eb77c964246b986c357264f21d4",
+      "statement": "Instruments and Tokens follow a state machine with defined states like CREATED, APPROVED, EXPIRED, and DELETED.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/tsp/vault/util/ResourceStates.java#L1-L21",
+          "version": "repo-lines-v1:sha256:bbc2b5093d8b0bef9a178e25a3e1753846268dcb40420e8400b96ce50ccbb5c2:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxMzU5YzNiYTcxODY1NTU0MmE0YzUwZjNlY2Y5ZmNmNGM1M2I0NjYyNTQ5MWM2OTFhNWViYzYwNDZkYTMxZjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyMmZhYTUzNWJkMmVhM2Q1MmU3NDFlZDQ1NDQzNWI3ZmU0OWU4MzU4NmU5NDNkOThkODJiYmZiMjRkMWY1YzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5a121cf977b54a5e8143d39cb8bca730",
+      "statement": "Sensitive instrument data is encrypted with AES, integrity-checked with HMAC, and numbers are masked for security.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/tsp/vault/service/InstrumentService.java#L128-L188",
+          "version": "repo-lines-v1:sha256:e45575ab5f1cf8b974ca4b8245ec8a5f256c9943ed1fca6f40a9cf00ec272288:eyJzZWxlY3RlZExpbmVDb3VudCI6NjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRmZTFiNTRiMThlMjVlNDc3YjgyODRkMDI0YTZhOTgxOGEwYWYwZTVjZGE2N2ExMjZmYTU0ZDIzNmRmODE0MDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdlYjcwMjU3NTkzZGEwNmY2ODJhM2RkZGE1NGE5ZDI2MGQ0ZmM1MTRmNjQ1MjM3ZjVjYTc0YjA4ZjhkYTYxYTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA2ZjRmOTc1NGY5ODRlZWI5NmE5MmRjMjg2ZWFjYjk1MTQ1Y2VlMTY3ZDY0OTczYWYyZGY3OWI5NzZjNTlkOTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcxYTUxMjc5ZTc2MjdlMDFlYjZhNWNmNTQ0Zjk4NGQwMzZjZGE1ZDRkNzFmNDU3Y2Q0MTYzYmQ2MWUyZDM2ODIifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-25T07:02:32.401Z"
+  }
+}

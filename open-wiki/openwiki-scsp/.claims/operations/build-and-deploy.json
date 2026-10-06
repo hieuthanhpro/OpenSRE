@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:94e8ff4d375a2b057f4ea9c3b424e1491914b9275fb56c7e4dec83cc3f37a0ab",
+  "claims": [
+    {
+      "id": "claim_e4f7d85f8b9c424fb68cda3215c936ca",
+      "statement": "The root Makefile builds ./cmd/server/main.go with -ldflags=\"-s -w\" into releases/bin/scsp and also provides test, run, clean, deps, fmt, and vet targets.",
+      "evidence": [
+        {
+          "resource": "repo://Makefile#L1-L53",
+          "version": "repo-lines-v1:sha256:070087d73eaa2ea2ad8aa5e19980b0196324ad6d8340c02ad91e08c48f4e09d1:eyJzZWxlY3RlZExpbmVDb3VudCI6NTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkZGYwYWFhN2UxN2MyMzQ0MTVmZTM5OTZlYzljZGYwNjI3ZWUwMmNjZTVhN2JiNTE0MTE3YzZhOTE2Njk4NmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA0ODQ1MzNkNWYxMmY3MWUxMDBmMzBhNjBjZjFkMmQzYTc1ZjQyZjRhYjNiNWQwYTM2YzU2NmVlZTdiY2ZjYzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFkMWFjYTIxZDE3MTk4MTlhYmZhNWM1YzcyM2RlYzZjOGRmZTE3YzliNjM1NjI5Zjk1OTZhZTU2MjM2YzcxNTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6c0265b8a15b4730a1d581b7a9f9d00d",
+      "statement": "Phase 1 (1_prepare_build.sh) derives the target branch from the current checkout, clones/fetches the deploy/scsp.git binary repository into bin/binary_repo, builds bin/tmp/scsp, copies config.yaml into bin/tmp/config/config.yaml, and opens meld for manual artifact sync.",
+      "evidence": [
+        {
+          "resource": "repo://1_prepare_build.sh#L1-L64",
+          "version": "repo-lines-v1:sha256:5988678436f339b77472808f6c34dd2b044d41e70db540d3450304d9d89d8425:eyJzZWxlY3RlZExpbmVDb3VudCI6NjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI4NzVmOTI4NTQ2YWVlNzg1NWNiMWRiOWFmYzhhYjNmMWE4YTM0ZDQzZGU1YmJkNjJmNzA3NmQ3YmE5ZjM5MTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4NjRkZTFiMDRmZWUyM2E0NDM2OGNmZDUwZGMyNDFiZTBkMjc3ZTMwYmFjNWI1ODBiNTdmOTI2MmI2YzYxZGMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3d9d663424bc4436a463caeb65ca0d7c",
+      "statement": "Phase 2 (2_push_release.sh) refuses to run without a prepared bin/binary_repo git checkout, then commits the staged artifacts with a message recording source repo URI, branch, commit hash, author, commit time and build time, and pushes to origin.",
+      "evidence": [
+        {
+          "resource": "repo://2_push_release.sh#L1-L64",
+          "version": "repo-lines-v1:sha256:b42e3429397c8aa578681bcaa4b75cee947f252ca335ad4efab60e02dd38d4ed:eyJzZWxlY3RlZExpbmVDb3VudCI6NjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI4NzVmOTI4NTQ2YWVlNzg1NWNiMWRiOWFmYzhhYjNmMWE4YTM0ZDQzZGU1YmJkNjJmNzA3NmQ3YmE5ZjM5MTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYxYzQ1YjRhZTBhNDYzOWU5ZWE2MDhlMTczYTg5MDgyNGZiODMzNTA3ODBlNjgzMTYyN2UwMDZmODRmNzNhMzciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ff3019f7f70443d8ad19fa004cfba22b",
+      "statement": "The per-environment build scripts rebuild the binary, stage config.yaml into a config/ subdirectory, and compare local artifacts against the deployed tree pulled by rsync.",
+      "evidence": [
+        {
+          "resource": "repo://build_prod#L1-L13",
+          "version": "repo-lines-v1:sha256:f4f9b101e0ae07cfb8a8d5c12a79f4b511656bebb5dc95e285e519df596c52e9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYyMWRjYjFhZTA3OGMxZjg4YjJiNzRkZjI3MjJmZGJmMTQ4ODVhZGJmMmQ4ZDc3MzFiZWQxMjhhZDA5YWU5NmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZkYjdmYzY4NDA1M2RiOTZiMjY3NTBkZWMwNzc0ZTRmNmI2ODVlNTYwMGQwODQyNDQ5YTMwYWVjODJmYmJmOGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://build_stg#L1-L13",
+          "version": "repo-lines-v1:sha256:d3931de1a6dee8e2b64a557ff2bf9152b89cf0dc78ade119b37ce4be9abb9c0a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYyMWRjYjFhZTA3OGMxZjg4YjJiNzRkZjI3MjJmZGJmMTQ4ODVhZGJmMmQ4ZDc3MzFiZWQxMjhhZDA5YWU5NmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZkZWEzMzhjNzQ1YWVkNDk3ZWNiMTQ4ZmNjNDdjMDEzODllMzNmYjY2NDVlNGE0MDM3NGE3Zjk4ODBiZjMyOWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_56dd40bf099947279b98a9320ea3187a",
+      "statement": "Each sync script uploads to a per-user staging directory, takes a timestamped backup of the live /opt/scsp tree, replaces it with a destructive rsync, and re-applies ownership with the deployed setown helper.",
+      "evidence": [
+        {
+          "resource": "repo://sync_prod_154_40#L1-L8",
+          "version": "repo-lines-v1:sha256:d41c4981b3ceb855b3f499822a4b8fb4886c56dd792e61654bb59aaf7b93ec95:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjIxZGNiMWFlMDc4YzFmODhiMmI3NGRmMjcyMmZkYmYxNDg4NWFkYmYyZDhkNzczMWJlZDEyOGFkMDlhZTk2ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2Y5OWM3ZWVjMjM3ZmU4YjhlMTliMWEyNWIxZmNiZDkzYThhNzhiZGI0NzM1NDc0ZWNlN2UwMWUzYzgyYTFiNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://sync_prod_154_41#L1-L8",
+          "version": "repo-lines-v1:sha256:97830d92fd66b5712fb3523a5ccfe45b0cdc4a54543d002cb2e85075fa66cd82:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjIxZGNiMWFlMDc4YzFmODhiMmI3NGRmMjcyMmZkYmYxNDg4NWFkYmYyZDhkNzczMWJlZDEyOGFkMDlhZTk2ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2Y5OWM3ZWVjMjM3ZmU4YjhlMTliMWEyNWIxZmNiZDkzYThhNzhiZGI0NzM1NDc0ZWNlN2UwMWUzYzgyYTFiNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://sync_stg_154_50#L1-L8",
+          "version": "repo-lines-v1:sha256:bed241fa60b943a053b84eafa4e8107372e77e1a3f35fa3cbd8c74b53a418ebf:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjIxZGNiMWFlMDc4YzFmODhiMmI3NGRmMjcyMmZkYmYxNDg4NWFkYmYyZDhkNzczMWJlZDEyOGFkMDlhZTk2ZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2Y5OWM3ZWVjMjM3ZmU4YjhlMTliMWEyNWIxZmNiZDkzYThhNzhiZGI0NzM1NDc0ZWNlN2UwMWUzYzgyYTFiNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_6d19945c0e4b46d992a98e3ec046bb5f",
+      "statement": "sync_dev differs from the production/staging scripts by staging the binary as releases/scsp with releases/config/config.yaml and pushing directly to root@dev9:/opt/scsp/ over ssh port 15440.",
+      "evidence": [
+        {
+          "resource": "repo://sync_dev#L1-L10",
+          "version": "repo-lines-v1:sha256:4f007989a89f64b42a8e382ebc13ca102f690a0176215dece1c6db585b43870a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0NGVmNDFhNTcxMDMyOGUwYzExZDY4MjliMmQxZGJlZWE2N2JkMTZmODQwMjI5OGVmZGIxNWY2ZWE1ZDIxYzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImViMjhjYzFhMTc3NWMwZDE3MTI5ZWFmZWRkMjY1YTliNmNjMDM1ZDhmZGEyOWUxYmUwZTFkNDNmZDZiMWFlZjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ac78f19837c34ea6832a2de84bcbdae6",
+      "statement": "config.yaml is shipped as config/config.yaml next to the binary and loaded by config.Load, which searches . and ./config and applies SCSP_-prefixed environment overrides with built-in defaults.",
+      "evidence": [
+        {
+          "resource": "repo://1_prepare_build.sh#L51-L52",
+          "version": "repo-lines-v1:sha256:217402c8818a92694938633a7628d2a76288abf9fb0581a932240b0cd65096a4:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDgxZThjYjdkY2NmZTNiNjFjZmE1OWRhNzJiNWQ0NTE3ODBjYTc0ZmYzMjM3ZmU2NzczYTQ4Mzk2ODQ1MWYwZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTI4OTY1YTdiNGJkYzQ2YWM0MzA2ODNlMjJhM2IxYjUwODkyYjA5Y2RiMGY4ZjJkMDAwNGE3MmQzNzZjYTZiMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDUxOTZiNTU2NGJjYjJiMWQ4MjdhZjI3NDhjYTFmYWJlNmMwNTZhODNjNWRiNTdlOWQwMzBlMzI3MjNhMzI0ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGVjNDM0YTU4ODVmZDQwNjJkYjgzMWIxNzQyMTNmNjZkZDJkNmIyMWExM2JhZmQ2Mjc5MDk1MWMxZjEzYmQzZiJ9"
+        },
+        {
+          "resource": "repo://config.yaml#L1-L31",
+          "version": "repo-lines-v1:sha256:1f18c8a817ec21a3403a1f41328c1adc812fdba1b37a2195bf7c0ad4ca76ae82:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmN2FjMWY3OTE5Y2RmOGNlNmE4NWU1NTRkY2ViOTMyNTc5MGE2M2NmNzMwN2UzNjgwNzZjOWYzMDlmZDljNGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVlNjBkNTFiMmQ0MzY3YjZhMWRjMTk0MmRlYWUzNjFlNjQ3MDYxMzUzMjkxNTY1YWEzMTE2OWNlYzZiYmQ0YjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://internal/config/config.go#L67-L110",
+          "version": "repo-lines-v1:sha256:cbbf6c8cd596466439d6fa7912371174ef894f02d29ce8c8ae8ec2e86d3b3ee9:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkzOGJhZDI2NzU5OTA2NzFjNmY2YzY3MDA3MzYyZDM4M2ExOGJlODk5OGVmNDcxMGUyZTdjYjNiMzA3NmFhZDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJmNjRkYWQ4ZjMxYzcwYWVmODI5ODJhYzRiNGM0Y2FjZDc0ZDZlYTg3NGU0NjliOTk2MzZmZDg5NjFkM2Y5ODIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRmYTkxYjcxNTE4ZjYzNGFmMzcwYWIwMGIyNWEwODk4NDdhMWExNTc3ZjA0NzM4MWZmZmFhNjBiMTIxZWRjZjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImViNWU1NTYxNGU2YjY2NDA1NjM4YjI3MjExNWRmNGYzMGI3MGZkNDc4MmQwNmFlY2VkNGJjZmIxMWNkYTgzOWIifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-10-06T03:44:01.257Z"
+  }
+}

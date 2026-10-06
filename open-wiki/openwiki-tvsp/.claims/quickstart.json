@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:49e887266828cb290aa4d016fa63d8fb21516a766aca6f641f6276fc12b3d6cb",
+  "claims": [
+    {
+      "id": "claim_2eb91c0cdfb349ecb4411ef42d7d58b5",
+      "statement": "The TSP Vault is a Java 11 application using Vert.x for the HTTP server and Oracle Database for storage.",
+      "evidence": [
+        {
+          "resource": "repo://pom.xml#L11-L25",
+          "version": "repo-lines-v1:sha256:5c16507bc540268d9d9280871159fd8973803496dadcfdd9e2e96d8176d998b6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQwNDAxMmFjM2FiMDYxMTUyMDRiOTZjNzJlMzUxYzFlNTZkMTRiM2FkODkyYWEzNWY5MGZiZjhlMjQ0NDNiY2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg1NWVlYzA0ZWJlZjMyZDgxYjk2MWFlMmY1ZjlkOTVlZTA3MjQ1MGNjZjkyM2Q2NWIxZDQ1NWNlNWZmZjRiOGYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJhMzg2ZWMxYzUxODEwYjIzOTNiNThlMjY3NDVlNzE0Mzk2NTQyY2FjNTVmYzU5ZGExYTc2MjY2NzhlMzcxZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg0YjFmYTVkZWViMmJhOWNmNDE4MTkxZTQxNWRkZTc0ZjQ1Nzk1OWQ4YmRkNjJmMjFlZTY4ZmE5MjBkM2YwMjYifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/tsp/vault/Main.java#L1-L109",
+          "version": "repo-lines-v1:sha256:7e3f22c91b433c1b7f5c42cfdcc805abfe7fdcb39f597b8f9ab379b8ee50714a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA5LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI1OWI4YWU2NGEyNmNiMjM3YTlkYmNmNzY5ZDBjZTg4MWI1ODZmNjEwZmI3ZGNjNTc4NGI0NGE1ZWZlNGVjNzNiIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0ODkzZjQwZTM3ODFlYjg5NmM4MmQwNDZhMDgwNjdhMTFlMzVjZGYyZjFkZmFmMjZmZWE5MGI4ZGI2Njc2NDEzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MCwicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MSwiZm9sbG93aW5nQ29udGV4dEhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_60d1656d2c5942ec8794c9fa7cef9fbb",
+      "statement": "The application is built using Maven (`mvn clean package`) and configured via `app.properties` which is processed by `TemplateProcessor`.",
+      "evidence": [
+        {
+          "resource": "repo://pom.xml#L100-L179",
+          "version": "repo-lines-v1:sha256:ed512384acbcf262089f108715e10478cbe99b2aa6c3dba69efe72bc83316442:eyJzZWxlY3RlZExpbmVDb3VudCI6ODAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxZGIyN2M1N2U2OTNlMzJiYjk1NTBjYTVkNjQ0YWRhODU1NTYzYWM0NzZjODY5NDdmNDE4NDA0N2NiYTVjMzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkNGZlZWI1MTllYzA2ZjkyZDgxY2ExYTQ2YThmNTgwNWI5NTY1ZGJhMDM2MDZjMGFhMDMxODJhOTZhZjUzODkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJiY2U4NTFhNjI1MDkwM2IxZjJhZWM4MWRjZTQxMTI4MWRkZGQ5YzNjOThhMmZmNmQyZWJjZDFmYTZhMDNlNTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/tsp/vault/Main.java#L31-L37",
+          "version": "repo-lines-v1:sha256:99618bce831145f664b8458e7b4d2043e80f712fe924af3d4098e05d51d1a60d:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGZiZGM3NDExODBjMmU5YzAzNmJkODk4ZmUyYmEzMGEyOTIxNTBhYmY5MzQwZmFjMDM3ODRjMTQxMDk1NjFhMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDBhMDNmNTJhZWExNGJmYjdiOGY1NGE1ZGJmZTU4ZDcxOTg5NzQ1MTY4ZDcxOTZlOWVjYzNkMzA0YmM0NzVmOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjI5N2JjMmEyNDQwYTg4Yjg5NTAwY2RhZjRiYmYwM2Q0YWUyNjE3YTQ4YzFjMjZkNmI0ODBkMDU4NDc3NjQ4YyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2a2b3a784b43402f8a4825ba83db5172",
+      "statement": "The system architecture consists of a Main entry point, Vert.x server vertical, request handlers, business services (Instrument, Token, OneSM), and a database utility layer.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/tsp/vault/Main.java#L1-L109",
+          "version": "repo-lines-v1:sha256:7e3f22c91b433c1b7f5c42cfdcc805abfe7fdcb39f597b8f9ab379b8ee50714a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA5LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI1OWI4YWU2NGEyNmNiMjM3YTlkYmNmNzY5ZDBjZTg4MWI1ODZmNjEwZmI3ZGNjNTc4NGI0NGE1ZWZlNGVjNzNiIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0ODkzZjQwZTM3ODFlYjg5NmM4MmQwNDZhMDgwNjdhMTFlMzVjZGYyZjFkZmFmMjZmZWE5MGI4ZGI2Njc2NDEzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MCwicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MSwiZm9sbG93aW5nQ29udGV4dEhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIn0"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/tsp/vault/server/handler/instrument/InstrumentPostHandler.java#L1-L99",
+          "version": "repo-lines-v1:sha256:2b03ffc1dfaa59455f53c9aac23ab9e0e1c7fdfd67f4e6801f672f7ed3931373:eyJzZWxlY3RlZExpbmVDb3VudCI6OTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJjZmRkOTQ4ZmFjNGRlNDM5NTRjYjAwMGUwYWU2OTUwYjFlNWE0NWE2NTk4NzIxMDRhYmE1YmRiNGU4NTM5MTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyMmZhYTUzNWJkMmVhM2Q1MmU3NDFlZDQ1NDQzNWI3ZmU0OWU4MzU4NmU5NDNkOThkODJiYmZiMjRkMWY1YzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/tsp/vault/server/vertical/TSPVaultVertical.java#L1-L116",
+          "version": "repo-lines-v1:sha256:02589ca22db75b34a26bd546503f18ffa356f86c52e2e14fd62af59dabf3fa33:eyJzZWxlY3RlZExpbmVDb3VudCI6MTE2LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJjYjIwMDFiNTEwYjRhMzc2MTgxZjhhMTI2NTQ0N2Y4OGRjNzcyMDNjMDE2YzYyZGZhNzk2M2JmMTZmNDRjYjZjIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIxZjg2ZTg2YmU1NGI1ZmZjODdlNjYzMWM4MDZkNGM1ZTJlOGM5OTI5OTBhZGFjMzhlMzE4MmVkNjFhYzNlZjY1IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MCwicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MSwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlMjJmYWE1MzViZDJlYTNkNTJlNzQxZWQ0NTQ0MzViN2ZlNDllODM1ODZlOTQzZDk4ZDgyYmJmYjI0ZDFmNWM1In0"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/tsp/vault/service/InstrumentService.java#L1-L100",
+          "version": "repo-lines-v1:sha256:8996c38dd23a2c647b70cb223acccff5026695c180b485372b1fa15afa991a1a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAwLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI5ZGEyNzcwNWQzN2RjYThjYWIwMTAxNDEwMzViNjc4M2U5NTAyYzg5NjhjZTM5ZjEzYmEzN2FhZWViNmZhZjcyIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJjOWE4NTcyYjg4OGIwOGY3OTc5OGExOWFjYWQxZWZkYWZlZDAyNzA0MjVhM2UxYzIyZDg4OGQxMDZkNjU2ODNiIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MCwicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI1ZDU4NDk5YmVkYjZjZWQ3NDY0YjYzNDkyZDZjNzE5YTMwMzg5NmI5NGE3OTVjYmI3NWU0NTU0Zjc2MWQyYmU4In0"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-25T07:02:32.401Z"
+  }
+}

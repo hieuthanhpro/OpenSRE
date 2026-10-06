@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:a7c9b87e44236be49d1843c7a41b04fbc634134b4a19c614385acc5d0f8e6035",
+  "claims": [
+    {
+      "id": "claim_3fcb5eb9fa3742bfae64836b53534454",
+      "statement": "ClientAuthorizationHandler validates inbound requests using OWS1-HMAC-SHA256 signature verification, checking headers, expiry, region, service name, and comparing computed vs. provided signatures.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/psp/common/util/AppParams.java",
+          "version": "repo-file-v1:sha256:de0667d8c9f8f8c4b01cc05bdb546eaa0b288835dd2f6b04a27486f94b3bb892"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/psp/server/handler/common/ClientAuthorizationHandler.java",
+          "version": "repo-file-v1:sha256:c1623a548753ed66caa4b7e24c222d2f8642611ee7599f874d2c51c9474a8041"
+        },
+        {
+          "resource": "repo://src/main/resources/app.properties",
+          "version": "repo-file-v1:sha256:f7b3c15662178f53d1aae0fb81c810c63bb70b7d081e6ad01a052142b93d8221"
+        }
+      ]
+    },
+    {
+      "id": "claim_ede5317324704227a22bbe52e2363f1c",
+      "statement": "HttpClientUtil signs outbound requests to the downstream ewallet service by generating timestamps, constructing an Authorization object with credentials from app.properties, and attaching the computed signature in headers.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/psp/common/util/HttpClientUtil.java",
+          "version": "repo-file-v1:sha256:33d5ca3209cbd4114f05725b14c02d5db5582efce4592081933b0a99808ff200"
+        },
+        {
+          "resource": "repo://src/main/resources/app.properties",
+          "version": "repo-file-v1:sha256:f7b3c15662178f53d1aae0fb81c810c63bb70b7d081e6ad01a052142b93d8221"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-30T08:38:20.900Z"
+  }
+}

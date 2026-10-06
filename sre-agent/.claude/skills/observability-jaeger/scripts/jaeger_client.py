@@ -9,6 +9,37 @@ from datetime import datetime, timedelta, timezone
 from typing import Any
 
 
+_RESOLVED_JAEGER_URL: str | None = None
+
+
+def _normalize_jaeger_url(raw_url: str) -> str:
+    url = raw_url.strip().rstrip("/")
+    if not url.startswith("http://") and not url.startswith("https://"):
+        url = f"http://{url}"
+
+    # If running inside Docker and pointing to loopback, auto-fallback to reachable targets
+    if os.path.exists("/.dockerenv") and ("127.0.0.1" in url or "localhost" in url):
+        # 1. Try if local inside container works
+        try:
+            req = urllib.request.Request(f"{url}/api/services", headers={"Accept": "application/json"})
+            with urllib.request.urlopen(req, timeout=1.5):
+                return url
+        except Exception:
+            pass
+
+        # 2. Try host.docker.internal and direct network IP fallback
+        for host_candidate in ["host.docker.internal", "10.38.131.121"]:
+            candidate_url = url.replace("127.0.0.1", host_candidate).replace("localhost", host_candidate)
+            try:
+                test_req = urllib.request.Request(f"{candidate_url}/api/services", headers={"Accept": "application/json"})
+                with urllib.request.urlopen(test_req, timeout=1.5):
+                    return candidate_url
+            except Exception:
+                pass
+
+    return url
+
+
 def get_api_url() -> str:
     """Get Jaeger API URL from environment.
 
@@ -19,17 +50,24 @@ def get_api_url() -> str:
     Returns:
         Jaeger API base URL
     """
+    global _RESOLVED_JAEGER_URL
+    if _RESOLVED_JAEGER_URL:
+        return _RESOLVED_JAEGER_URL
+
     # Proxy mode (production)
     base_url = os.environ.get("JAEGER_BASE_URL")
     if base_url:
-        return base_url.rstrip("/")
+        _RESOLVED_JAEGER_URL = _normalize_jaeger_url(base_url)
+        return _RESOLVED_JAEGER_URL
 
     # Direct mode
     if os.environ.get("JAEGER_URL"):
-        return os.environ["JAEGER_URL"].rstrip("/")
+        _RESOLVED_JAEGER_URL = _normalize_jaeger_url(os.environ["JAEGER_URL"])
+        return _RESOLVED_JAEGER_URL
 
-    # Default to proxy endpoint
-    return "http://localhost:8001/jaeger"
+    # Default to production Jaeger endpoint
+    _RESOLVED_JAEGER_URL = "https://jaeger.opvn.vn"
+    return _RESOLVED_JAEGER_URL
 
 
 def get_headers() -> dict[str, str]:
@@ -99,10 +137,15 @@ def api_request(endpoint: str, params: dict[str, Any] | None = None) -> dict[str
         if filtered_params:
             url = f"{url}?{urllib.parse.urlencode(filtered_params)}"
 
+    import ssl
+    ctx = ssl.create_default_context()
+    ctx.check_hostname = False
+    ctx.verify_mode = ssl.CERT_NONE
+
     req = urllib.request.Request(url, headers=get_headers())
 
     try:
-        with urllib.request.urlopen(req, timeout=30) as response:
+        with urllib.request.urlopen(req, timeout=30, context=ctx) as response:
             return json.loads(response.read().decode("utf-8"))
     except urllib.error.HTTPError as e:
         error_body = e.read().decode("utf-8") if e.fp else ""

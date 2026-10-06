@@ -1,0 +1,204 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:29f0146f01e3059572b1cb005dcf1c15786525f7bb2c70501859a084ac8051a2",
+  "claims": [
+    {
+      "id": "claim_5d082798609a4db49e4a7f638aba17eb",
+      "statement": "Main.java is the entrypoint: it loads app.properties, creates a HikariCP Oracle datasource, injects it into payment/authorization/refund/capture/void services and KBank.DB, assigns a KBankPaymentServiceProvider to handler statics, configures KBank gateway and security settings, and starts PSPConnectorServer.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/Main.java#L32-L106",
+          "version": "repo-lines-v1:sha256:3541debfe51412dfcd41521067cf8de8a12c226fd5fec172e4923c70371dfb35:eyJzZWxlY3RlZExpbmVDb3VudCI6NzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQyYTA2MmZmODg3NzU1YjA2ZGRlZTk2MjcxYmVjYjZhMTk2YmU5Yzg3YzFjZGFhYmY3MmQzZTkwNmE1Yzg3MzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlhODEyODhiMjY1ZmRjNTZjYTRhYzYzOGY0YzRlZjE5MjAyMjYyMzA5NjZlYWNhMWIzZTk0NmQzYjhiYmE4ZWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1a29e2f716a445b4a54a03a07428abdb",
+      "statement": "PSPConnectorServer starts a Vert.x instance with configured worker/event-loop pool sizes and blocked-thread settings, then deploys PSPConnectorVertical as the application verticle.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/PSPConnectorServer.java#L53-L71",
+          "version": "repo-lines-v1:sha256:dccf12365184ce2013d8feb45f801358069632946fab7d2ece8e958f5237a34a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3YzdkYTUyNzY3NGE4ODEwMGFjZjg4ZWU5YmJlZGU4MTI1YTA5N2Y3MjhmZGFjNDU2NzRkZjRmMmFjNzhmNTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIyNzNiMDIwZmQwMjU4Yzk3ODA0MjI4ZjVkYTViNWViN2VmYmMyMDk1N2RmZjgzNTg3ZDIyNTU5MDc0MzkxOGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg5ZWE2Y2I3NTM4MzdlNDk3OGQ3NTg1ZjM3YzlhZTNkYzRlNjk1MmYxYTNhNzlhYmU4NjZjZGY3N2Q1YzVhZjMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cff12388098740c7911ce8b572eda01a",
+      "statement": "PSPConnectorVertical creates a shared SSL WebClient with a 300-connection pool, mounts a Vert.x Router with BodyHandler, ResponseTimeHandler, TimeoutHandler, RequestLoggingHandler, and ClientAuthorizationHandler, registers business routes using RoutePool constants, and starts an HttpServer with keepalive and idle-timeout settings.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/vertical/PSPConnectorVertical.java#L73-L115",
+          "version": "repo-lines-v1:sha256:189c4605fa23d5e12df04d2f22179302dcc221318fbc4fbf81d06ee10cf947fa:eyJzZWxlY3RlZExpbmVDb3VudCI6NDMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwMjM5YmMyMGNjYWFlMDRhOGY3MWRhMmE1NmIxYzZlZjNmNzRkMThhZDA4ODBjNGYxZjk1NjJkMzhhMmZlMjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM2OTQ2ZTEwMWU1ZTc4ZDkwYTUxMGM2OWYyNjZlZjc2NTQwZDMwOWIxYjgyMjY5NWI1MzE3MmVkMmNhYTAyNTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9e37a382497946b1af75c8023a498984",
+      "statement": "Every inbound request passes through the middleware pipeline in order: BodyHandler, ResponseTimeHandler, TimeoutHandler, RequestLoggingHandler, ClientAuthorizationHandler, then the matching route handler; failures go to ExceptionHandler and successful completions go to ResponseHandler.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/vertical/PSPConnectorVertical.java#L83-L99",
+          "version": "repo-lines-v1:sha256:39892383b35e4f7ab4d5b691656762498cf453b70f75291e0322a8e16fa0640f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIzZGJhYjM0ODBjMzE3YzEyN2VkMmM5MDBjN2IyYWUwNDllM2ViNjI5MDkzNWQ1NmFjZmRhOTM2NmE3ZjRkNGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQwNDZmMzRhOGY3ZWI0ZWM4YzNkYjkzMjgyNGU3Y2Y1MWYwNTg5ODQzNzdiOTI3ZWFiMGJkZDljZWMyOGFlOTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIxMDE1NTQyMGRjMWUxNzVjMjRiYWM4NTY0YWQ3OWE2ZWZiNzQ1YjRlNzdhOWFlMGM3NWIyMjlhMGNhYzYwZTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyZGZiZThkMDQzNmI5NTU1YmNiNzhmZGQyMDE0ZmE3MzAyZGMzM2E3MDViYmY4ZjZjMDc3NGZiNmQ5YjA3YzgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_421551846243439699e0e4a4f361eb0c",
+      "statement": "ClientAuthorizationHandler enforces client identity by requiring Accept: application/json, X-Op-Date, X-Op-Expires, and X-Op-Authorization headers; it extracts the clientId from the authorization header, validates expiry, region, service name, terminator, and algorithm, recomputes the signature using the client access key from app.properties, and rejects mismatches with AuthorizationException or BadRequestException.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/handler/common/ClientAuthorizationHandler.java#L33-L146",
+          "version": "repo-lines-v1:sha256:051aea64eaf5a87cfefffdd736c57fcf75ebc5e96b9840f299da8b36d3298445:eyJzZWxlY3RlZExpbmVDb3VudCI6MTE0LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJmNWY1ZmVjMGZhNDg5NzhlZGQ1MGU4NTkxN2E5YThkMDhlZmVhNDVhNTBhZWJkNGM5ODY3ZDlhZTk1ZWRiYTI3IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIzNjRhNzg1YTg0Njc1MGYzM2VlMDhiMjg5ZWQ1ODQxMjk5YTQ4ZWMyODhmMjU3ZmY2ZjQ4ZDZjOWFhMTE5YzI4IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI0MmQwNDhkNTU2MmE0NGFhOTEwYzA0ZWU1MWJmZjE2ZDVjZjI2Y2M2ZWE1ZGYyNjYyMTBhOGQxMGU4MGQ2NDQzIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI4ZmRlODNhZDA2YTdmNDc0Y2IwZTU2NDA0MjNkNjY1YmMwZDkyMzAzY2NiYzNhMmQxN2YyYzc2MmFhMmQ1ZDFmIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_7b62d7c964a9424ab4786573af64708d",
+      "statement": "PurchaseHandler, VerifyOTPHandler, and RefundPostHandler validate minimal request fields (body presence, merchantId, amount, currency for purchases; body presence for OTP; body and command field for refunds) and delegate to PaymentServiceProvider; they catch exceptions and pass them to rc.fail(e).",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/handler/payment/PurchaseHandler.java#L21-L40",
+          "version": "repo-lines-v1:sha256:7450ea59b3867feaa0e0a730f493d6bd09f727ea0cf9cf0ff6386644b8de4ab8:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1ZjVmZWMwZmE0ODk3OGVkZDUwZTg1OTE3YTlhOGQwOGVmZWE0NWE1MGFlYmQ0Yzk4NjdkOWFlOTVlZGJhMjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImNkYjYwYzFhNGQ4MTQzOGU3YmJlYzljNzUzODkxZDkzM2JiZWU1MGE2MDZlNzljNTIxZjZiMjZlZDgxNmQzMWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIwOTkyZWVhZmYyMmExZTFjYWQ1NGU5ZDRkNjRiZmYxNjRkNWMxODAyMjRkYmFlNjZlODJmMzY2NmU3NmM3ODAifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/handler/refund/RefundPostHandler.java#L15-L33",
+          "version": "repo-lines-v1:sha256:3d472ab05ece3fa3c01d3b6b96c5737bed10fdd5018dabbef2bf687ca5a87dc5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1ZjVmZWMwZmE0ODk3OGVkZDUwZTg1OTE3YTlhOGQwOGVmZWE0NWE1MGFlYmQ0Yzk4NjdkOWFlOTVlZGJhMjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIzN2UwYzI1NjA2Yzc5ZWNhZGE4ZjcyNWU0ZGU5YzY2ZGNhZDA5MmU3YzExOTU0YjI5NTllNjFlODBlOTU1NjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/handler/verifyOTP/VerifyOTPHandler.java#L16-L38",
+          "version": "repo-lines-v1:sha256:c65607adedb004c8e8bb509836834c5d3500790b3fbd5bb7969e5a30dec41ab9:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1ZjVmZWMwZmE0ODk3OGVkZDUwZTg1OTE3YTlhOGQwOGVmZWE0NWE1MGFlYmQ0Yzk4NjdkOWFlOTVlZGJhMjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVkOTBkMTk5NzYzOTcxNjJkMjcxODU2NmM3OTc2NTc2ZmJmNDJkZThmYWMyNjljMGVlMmQ4NDVjMDM2MGI4NWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fec0ab24720e482a86ef99423b907ea5",
+      "statement": "The active API routes registered in PSPConnectorVertical are POST and PUT to /payments, POST to /verify-otp and /verify-otp2, PATCH to /authorizations/:id, and POST to /refunds2.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/routing/RoutePool.java#L17-L26",
+          "version": "repo-lines-v1:sha256:532d4a35c4f33c01004537c61c09f75e26c7de0373f3d888e80a9a30b9ddd907:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxN2IzMDg0NzBkNGQwNzFjYjMxZDk3NGRjMTkwNmZjNGY5ODMxOTRmYWE4NzU0ZmFlZjUzMDdiMzJlMDY3M2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkMGM4NzA3ZTg3ZGI1MWFmNjcxN2Q1YjRiZjIyNWJmOGQ1YTg5NDVkMWVkYzQ3OTA5NmJiZjkwNWVjOTY5NDQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYzZDgyMWIzMTg3MGZkMjNhNGQ2ZWZlMGQxNDRkOGI2MGQ0NzA4ZjQxYTNjNzU2YTkyZGIzNWUwM2Y3ZjJkMjQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY5OGFmMjE4M2VmODA2NGIyMTQ1NTY3ZDE3MzQxNmY3OTUwYWExZmI4NzU0MmQ1Nzg5MDFmYTM1MWYxNWI3MDYifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/vertical/PSPConnectorVertical.java#L91-L98",
+          "version": "repo-lines-v1:sha256:ee39f6711e2335ac0dae2ec5a668f992d5cde4ae54419bc2a6bf28f095183aea:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTA4YmM0ZTM4NjE0OGMyOGMxODczYjI0NmY4ZjM3N2QyMGMzMTYwZjVlODdlMzhkM2I5OTNmMzE3YzFjYTVlZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWJkODBhNjdjYWU4M2VmODQ3ZTc2YTNjMGMxMTBlOGYzZDc4NjEwZDA0OGEwMjdiNWQ5OTRiZjFlZDQzMjRhMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjc3YzQ2YzA3MDBmNzUzNWNmYzY1MDA3MjliYzYxZGQ4MzNmNzMyMzkxNzQ4YjNhMjE3ODllZjFkNTAxNjg2MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzQ1Yjg5N2MyMjQxZjEzOGMxNWMxOWZiZDQwODc5MTYwMGE2YjIwODAxZWVlYzcwYWJjMWQwYWM4ODk3YjYwZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_34613a25711e4867ba9e367e6ac90c03",
+      "statement": "PaymentServiceProvider is an abstract class that defines operation methods for purchase, refund, capture, void, OTP verification, authorization updates, instrument management, and user operations; default methods throw METHOD_NOT_SUPPORTED, making it the strategy boundary between handlers and PSP-specific logic.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/PaymentServiceProvider.java#L10-L83",
+          "version": "repo-lines-v1:sha256:d6f47db1e7266c6141ebd85dec90f4042d6bfcc2e2495958a43eb87108331be4:eyJzZWxlY3RlZExpbmVDb3VudCI6NzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA0YjE1M2Y2YzQwMGYxNTIxMWRhMWUxNTdlMjQ3Zjg4MTA5NTBhNTQzYTFlMTk1YWI3NDZhNmQ5MTNkMGQ1NzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJiNGMxNWM2MjM0ZmYyNmZkMWJjNjM3ODhmOGE4NTllMjZhMWNlNjY3ZGZmZmQ5NWY5MTA2MjBmYjkyODMyODEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_be4b80f483df408e96ca019156218c0a",
+      "statement": "KBankPaymentServiceProvider implements the payment flows using Vert.x execBlocking chains: paymentPurchase creates a local payment, resolves merchant data via MSP, calls KBankGateway.addPaymentMethod, then updates payment state or inserts authorization; paymentRefund2 validates an approved payment, creates a refund record, calls KBankGateway.refund, verifies the response signature, and updates refund state; verifyOtp/verifyOtp2 fetch payment details, verify OTP with KBank, register and execute payment, and patch MSP settlement records.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/kbank/KBankPaymentServiceProvider.java",
+          "version": "repo-file-v1:sha256:a17cb5af0a81c3acbe66b94693a38bc1a010ffb2e5d0b4b79644854311462143"
+        }
+      ]
+    },
+    {
+      "id": "claim_e6a15612143a4d90b4832e021950653e",
+      "statement": "KBankGateway is the outbound HTTP client for the KBank external API; it builds encrypted payloads with KBankSecurity, signs requests, sends HTTP calls via WebClient, checks response signatures, and maps responses into provider-facing results.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/kbank/KBankGateway.java",
+          "version": "repo-file-v1:sha256:6420181eecaa50b245fdc20a6727467f865eb6edc1ef670c098859a35b7f44fd"
+        }
+      ]
+    },
+    {
+      "id": "claim_0f69862b4e7841719e0cfe6dd10a81f9",
+      "statement": "KBankMSPClient handles internal MSP API communication, enriching OTP requests with customer payment data, patching MSP authorization and settlement records, and generating standardized settlement responses.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/kbank/KBankMSPClient.java",
+          "version": "repo-file-v1:sha256:166f2af50545cb5fadb2290ee49a186746470d4f9e6d43883ddafe13b99c56a4"
+        }
+      ]
+    },
+    {
+      "id": "claim_52b525549fdd413f8fde4592477de0a3",
+      "statement": "Service classes are static utility classes that manage Oracle persistence via DBProcedureUtil and stored procedures; they receive a DataSource injected at bootstrap and provide insert/update/query operations for their entity types.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/Main.java#L66-L76",
+          "version": "repo-lines-v1:sha256:30e7ff402bf3ca782098dacbfd5943a7ae949dc9ee9d423220eb485f325c5e08:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2MWExZGY3ODZhODc2OGJiZWNmMjM1NjFmY2IzZmZkYTBiOTUwN2YwYmVhNzRlOGNiOGZlMTQyYzg0ZGNhYWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyNTgwM2JlODk4NDUyZjhmNGI5NGE5ODQ2MjYyYTg1MDUwYTg1MDNjYTRiYmJkNTlkNzc3ZjdjNGExNGYzNmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJkNjYzY2NkMjk2OTM3ZjQ4MWE5NmUzMTNhMDNhYjhhNjFiYWRmMGY4MWExOWQxODczMjBmZjViYzMyNDhhOWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhlMDBjYTIyNGI5YjAyZGIzOTYxYjJlOTdlZjQwZmI2MjgxOTMwN2QwNTVkYWNlNDk5NWVlNmY4MWU2N2FlNzUifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/service/AuthorizationService.java",
+          "version": "repo-file-v1:sha256:339cd2eb34806c88ccd3acee3656caea1be75e0f8b58730a6730df669c98b9af"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/service/PaymentService.java",
+          "version": "repo-file-v1:sha256:81fab2554fdc9e3c357707e7fe60d598bdfc8e83b0ecc3237a1f97aefa089908"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/service/RefundService.java",
+          "version": "repo-file-v1:sha256:c0123e19aa69db8c1d3b79d4ce61cb6709c6d1011575d8b93eaf4636b9702963"
+        }
+      ]
+    },
+    {
+      "id": "claim_1df6bfad48874eff963f78a9f10b8090",
+      "statement": "The system relies on static field injection at bootstrap: handler classes hold a static paymentServiceProvider, service classes hold static datasource references, and KBankGateway/KBankSecurity hold static configuration; this supports a single provider per JVM without dynamic reconfiguration.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/Main.java#L56-L84",
+          "version": "repo-lines-v1:sha256:928aeea0fd03cfbac9be38b2295f23211b9e72849ebe38fdec3a0a8839306db4:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1ZDU2NmM2YjYxNmM4NGJkY2U5MzU5NGM2NGExZWNjMTFkZjIzMmRkMWM2OGU3MjA1NjNiZTE4MDc1MjEyY2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM5N2RiMzVjNjZiY2JkYmNmMGYyNTNkYjA5YjNiMWVkYjYxNDg1MjM5NWU1NTAyYTA1MzczZjNkMGYxMTU3NWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjZmJmZjgwNDdkZjM2MTRmY2RhZDUxMGFhMDU0ZmIzNjEwOGJmZWYyODAwZThmODYyZDFhMzY5ZWJhN2ExYzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc3MGY0MmYzYzg2N2UzMTliNWU1MzU0ZjczY2I2ZWIxMTM3ODEzODNhOTJlYjgwOGZmZTE3NjI5ZGQ0MWI5OWEifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/handler/payment/PurchaseHandler.java#L19-L19",
+          "version": "repo-lines-v1:sha256:7fd5201855efdc422ac1e13e37de5140d35afeaf719450e0c78b6708dd94e477:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2ZkNTIwMTg1NWVmZGM0MjJhYzFlMTNlMzdkZTUxNDBkMzVhZmVhZjcxOTQ1MGUwYzc4YjY3MDhkZDk0ZTQ3NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2ZkNTIwMTg1NWVmZGM0MjJhYzFlMTNlMzdkZTUxNDBkMzVhZmVhZjcxOTQ1MGUwYzc4YjY3MDhkZDk0ZTQ3NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTg4YjRmZTIxYzI3Mjc5NDNjMjMwOWYyYmRhYjg0OWVkNTIyZDQxOTlmYjM4ODkxMDE1MjcxODUwYmNjY2E3MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWRhNzRmYzdjZGY4ZjYwMWJjZGI1ODczOWE4ZGYyMDQ1NTZhZjFiNDJkZDdkMzBhYjJiZDNlNWU2ZGQ5ZTIyNyJ9"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/handler/refund/RefundPostHandler.java#L13-L13",
+          "version": "repo-lines-v1:sha256:7fd5201855efdc422ac1e13e37de5140d35afeaf719450e0c78b6708dd94e477:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2ZkNTIwMTg1NWVmZGM0MjJhYzFlMTNlMzdkZTUxNDBkMzVhZmVhZjcxOTQ1MGUwYzc4YjY3MDhkZDk0ZTQ3NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2ZkNTIwMTg1NWVmZGM0MjJhYzFlMTNlMzdkZTUxNDBkMzVhZmVhZjcxOTQ1MGUwYzc4YjY3MDhkZDk0ZTQ3NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTJiM2NmYzc4ZWU4MzY3MGRhOTg1MGMxODM0YzNjOGNhYjk0YmMwMTExM2FiNmQyY2IxMmQ4Njk3Yzk5ODVhMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzRiNmFhYWRlNWJiOTU0NWY3ZWI1MGJhYzliNzA4MjJlZTdiMDYzMWVjNGZiMTQ3OTBiYTUzZmMwODk0NjliNCJ9"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/handler/verifyOTP/VerifyOTPHandler.java#L12-L12",
+          "version": "repo-lines-v1:sha256:7fd5201855efdc422ac1e13e37de5140d35afeaf719450e0c78b6708dd94e477:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2ZkNTIwMTg1NWVmZGM0MjJhYzFlMTNlMzdkZTUxNDBkMzVhZmVhZjcxOTQ1MGUwYzc4YjY3MDhkZDk0ZTQ3NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2ZkNTIwMTg1NWVmZGM0MjJhYzFlMTNlMzdkZTUxNDBkMzVhZmVhZjcxOTQ1MGUwYzc4YjY3MDhkZDk0ZTQ3NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTJiNDQyODY5ZjRkZjAwYzc1MjQ1NDk1YzdjYjE0NjJlYWU3MmViNGNhODlhOGI5MGU4NWQzMzQwZGJlMjJiNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWQ5MGQxOTk3NjM5NzE2MmQyNzE4NTY2Yzc5NzY1NzZmYmY0MmRlOGZhYzI2OWMwZWUyZDg0NWMwMzYwYjg1ZiJ9"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/vertical/PSPConnectorVertical.java#L40-L40",
+          "version": "repo-lines-v1:sha256:a2ec9ac6fe50e1f2d42ba8b4ec2dc671b9a0a9e6580c654e31c484cf6ba6f540:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTJlYzlhYzZmZTUwZTFmMmQ0MmJhOGI0ZWMyZGM2NzFiOWEwYTllNjU4MGM2NTRlMzFjNDg0Y2Y2YmE2ZjU0MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTJlYzlhYzZmZTUwZTFmMmQ0MmJhOGI0ZWMyZGM2NzFiOWEwYTllNjU4MGM2NTRlMzFjNDg0Y2Y2YmE2ZjU0MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTc1MGU4MmE2YjgzMTRkOTJmODBmYzg5ZWY1NTIyYmM4NWIyNTZkYjVmMWIzYjI3ZTg1MWU3ODVhNmJhZmU5MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZmZjMzIyMDhkMWY1ZDI1YzBkZjU0YjIzMzk2NDc2Zjk4NGUxYjg4MzFiNjk4YWZkNTBkMmQzZjJhZmE4NjFiZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_0ef51a31678e492f8cdb362bfdb25cec",
+      "statement": "KBankHandler exists in the provider package but is not mounted in the router, so it does not affect runtime behavior.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/kbank/KBankHandler.java",
+          "version": "repo-file-v1:sha256:562e29b55d0facc765cee33a4264d62384f6d6c0edac984b72e8ab5539b53fba"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/vertical/PSPConnectorVertical.java#L83-L98",
+          "version": "repo-lines-v1:sha256:944be18b21da9b42355cc0d026dd279b92b4e0860e8300346506144bfb55a719:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIzZGJhYjM0ODBjMzE3YzEyN2VkMmM5MDBjN2IyYWUwNDllM2ViNjI5MDkzNWQ1NmFjZmRhOTM2NmE3ZjRkNGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFiZDgwYTY3Y2FlODNlZjg0N2U3NmEzYzBjMTEwZThmM2Q3ODYxMGQwNDhhMDI3YjVkOTk0YmYxZWQ0MzI0YTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIxMDE1NTQyMGRjMWUxNzVjMjRiYWM4NTY0YWQ3OWE2ZWZiNzQ1YjRlNzdhOWFlMGM3NWIyMjlhMGNhYzYwZTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc0NWI4OTdjMjI0MWYxMzhjMTVjMTlmYmQ0MDg3OTE2MDBhNmIyMDgwMWVlZWM3MGFiYzFkMGFjODg5N2I2MGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2d21bdf0ac3444fca4b3a0e4767268b2",
+      "statement": "ExceptionHandler maps exception types to HTTP status codes: AuthorizationException to 401, BadRequestException to 400, ResourceConflictException to 409, ResourceNotFoundException to 404, HttpServiceException to its configured SystemError code, and all other exceptions to 500, returning structured JSON error responses.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/handler/common/ExceptionHandler.java#L25-L113",
+          "version": "repo-lines-v1:sha256:fef8e9d1e0d249b4e5442107933a072086afbd44f0eead54089e256687baa2b5:eyJzZWxlY3RlZExpbmVDb3VudCI6ODksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1ZjVmZWMwZmE0ODk3OGVkZDUwZTg1OTE3YTlhOGQwOGVmZWE0NWE1MGFlYmQ0Yzk4NjdkOWFlOTVlZGJhMjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVhMWQ1NjRkYTFmOGY0OGJlNmYwMmU2MzJmZWM5NWZiZDIyMTE2ZDY3ZDg0MDY2YzliNDY5OTE2NjQ1OWQ3Y2MiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJhMGM1YTJjZGQxODg0NTI1MGY5MmNlNjM3ZWEyMGY5MThhYjBiYjczMDVkODI2OTY3ZDhiNjFlYzcyOGM2NWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFiOTM2MmI2NDJlYzcwZTc2MGQ4MjhiZjJiNjdiZDAzZjBmOGYzNjNmMjM5Y2NjYTA2ZDI0ZjY3OTMxZDhiYzkifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-25T07:01:46.974Z"
+  }
+}

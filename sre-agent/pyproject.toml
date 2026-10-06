@@ -15,6 +15,9 @@ dependencies = [
     "kubernetes>=34.1.0",
     "boto3>=1.34.0",  # AWS
 
+    # Database integrations
+    "oracledb>=1.4.0,<2.0.0",
+
     # Monitoring & Observability
     # Langfuse v4 (OpenTelemetry-based) powers both agent tracing and the
     # offline eval harness in evals/.

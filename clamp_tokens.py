@@ -1,0 +1,241 @@
+import hashlib
+import uuid
+import litellm
+from litellm.integrations.custom_logger import CustomLogger
+
+# Fix LiteLLM -> LangSmith integration bugs (HTTP 400 & HTTP 404 fix)
+try:
+    import litellm.integrations.langsmith as ls
+    _orig_prepare = ls.LangsmithLogger._prepare_log_data
+
+    def _patched_prepare_log_data(self, kwargs, response_obj, start_time, end_time, credentials):
+        data = _orig_prepare(self, kwargs, response_obj, start_time, end_time, credentials)
+        if isinstance(data, dict):
+            # 1. Fix 404 Not Found: Remove fake session_id so LangSmith uses session_name (project_name)
+            data.pop("session_id", None)
+
+            # 2. Fix 400 Bad Request: Ensure trace_id matches dotted_order for root runs
+            run_id = data.get("id")
+            parent_run_id = data.get("parent_run_id")
+            if not parent_run_id and run_id:
+                data["trace_id"] = run_id
+                data["dotted_order"] = self.make_dot_order(run_id=run_id)
+        return data
+
+    ls.LangsmithLogger._prepare_log_data = _patched_prepare_log_data
+    print("✅ [LITELLM] Patched LangsmithLogger._prepare_log_data for valid trace_id & session_name", flush=True)
+except Exception as e:
+    print(f"⚠️ [LITELLM] Could not patch LangsmithLogger: {e}", flush=True)
+
+def trim_tool_descriptions(obj, max_len=120):
+    """Recursively trim all 'description' fields in tools schema to max_len chars to save 20,000+ tokens."""
+    if isinstance(obj, dict):
+        for k, v in list(obj.items()):
+            if k == "description" and isinstance(v, str) and len(v) > max_len:
+                obj[k] = v[:max_len] + "..."
+            else:
+                trim_tool_descriptions(v, max_len)
+    elif isinstance(obj, list):
+        for item in obj:
+            trim_tool_descriptions(item, max_len)
+
+class ClampTokensCallback(CustomLogger):
+    async def async_pre_call_hook(self, user_api_key_dict, cache, data, call_type):
+        if isinstance(data, dict):
+            # 1. Strip 15.5k token Claude Code CLI preset from 'system' (Anthropic format)
+            system = data.get("system")
+            if system:
+                if isinstance(system, list):
+                    filtered_system = []
+                    for block in system:
+                        if isinstance(block, dict) and block.get("type") == "text":
+                            text = block.get("text", "")
+                            if "Claude Code" in text or "official CLI" in text or "Anthropic's official" in text or (len(text) > 6000 and "Oracle" not in text):
+                                print(f"✂️ [LITELLM] Stripped Claude Code CLI preset block ({len(text)} chars)")
+                                continue
+                            filtered_system.append(block)
+                        elif isinstance(block, str):
+                            if "Claude Code" in block or "official CLI" in block or "Anthropic's official" in block or (len(block) > 6000 and "Oracle" not in block):
+                                print(f"✂️ [LITELLM] Stripped Claude Code CLI preset string ({len(block)} chars)")
+                                continue
+                            filtered_system.append(block)
+                        else:
+                            filtered_system.append(block)
+                    data["system"] = filtered_system
+                elif isinstance(system, str):
+                    if "Claude Code" in system or "official CLI" in system or "Anthropic's official" in system:
+                        print(f"✂️ [LITELLM] Stripped Claude Code CLI preset from system string ({len(system)} chars)")
+                        blocks = system.split("\n\n")
+                        clean_blocks = [b for b in blocks if "Claude Code" not in b and "official CLI" not in b and "Anthropic's official" not in b]
+                        data["system"] = "\n\n".join(clean_blocks)
+
+            # 2. Strip 15.5k token Claude Code CLI preset & system-reminders from 'messages' array
+            messages = data.get("messages")
+            first_user_text = ""
+            if isinstance(messages, list):
+                new_messages = []
+                for msg in messages:
+                    if isinstance(msg, dict):
+                        role = msg.get("role")
+                        content = msg.get("content")
+
+                        # Capture real user prompt for session grouping (ignore <system-reminder> blocks)
+                        if role == "user" and not first_user_text:
+                            if isinstance(content, str) and not content.strip().startswith("<system-reminder>"):
+                                first_user_text = content
+                            elif isinstance(content, list):
+                                for b in content:
+                                    if isinstance(b, dict) and b.get("type") == "text":
+                                        t = b.get("text", "")
+                                        if not t.strip().startswith("<system-reminder>"):
+                                            first_user_text = t
+                                            break
+
+                        # Strip system preset and <system-reminder> skill/agent list blocks
+                        if role == "system":
+                            if isinstance(content, str):
+                                if "Claude Code" in content or "official CLI" in content or "Anthropic's official" in content:
+                                    print(f"✂️ [LITELLM] Stripped Claude Code CLI preset from messages[system] ({len(content)} chars)")
+                                    continue
+                            elif isinstance(content, list):
+                                filtered_content = []
+                                for b in content:
+                                    if isinstance(b, dict) and b.get("type") == "text":
+                                        t = b.get("text", "")
+                                        if "Claude Code" in t or "official CLI" in t or "Anthropic's official" in t:
+                                            print(f"✂️ [LITELLM] Stripped Claude Code CLI preset block from messages[system] ({len(t)} chars)")
+                                            continue
+                                    filtered_content.append(b)
+                                if not filtered_content:
+                                    continue
+                                msg["content"] = filtered_content
+                        elif role == "user" and isinstance(content, list):
+                            # Filter out <system-reminder> blocks from user messages but preserve skill list
+                            filtered_content = []
+                            for b in content:
+                                if isinstance(b, dict) and b.get("type") == "text":
+                                    t = b.get("text", "")
+                                    if ("<system-reminder>" in t or "Available agent types for the Agent tool" in t) and "The following skills are available" not in t:
+                                        print(f"✂️ [LITELLM] Stripped <system-reminder> block from messages[user] ({len(t)} chars)")
+                                        continue
+                                filtered_content.append(b)
+                            msg["content"] = filtered_content
+
+                    new_messages.append(msg)
+                data["messages"] = new_messages
+
+            # 2.3 Trim tool descriptions in data['tools'] to save tokens without dropping any valid tools
+            tools = data.get("tools")
+            if isinstance(tools, list):
+                trim_tool_descriptions(tools, max_len=120)
+                print(f"✂️ [LITELLM] Trimmed tool descriptions for {len(tools)} tools", flush=True)
+
+            # 2.4 Inject Single-Execution, Fast Completion & Visible Output Rule
+            EFFICIENCY_RULE = (
+                "\n\n[SYSTEM EFFICIENCY & OUTPUT RULES]:"
+                "\n1. Conclude investigations within 1-2 focused queries. Do not run repetitive or guessing queries."
+                "\n2. CRITICAL FOR REASONING MODELS: The <think> block is strictly for brief internal scratchpad only. "
+                "You MUST output your complete final report (Verdict, Event Summary Table, Recommendations) OUTSIDE the <think> tag in regular markdown text. "
+                "Never put tables, headers, or final answers inside <think>."
+            )
+            system = data.get("system")
+            if isinstance(system, list):
+                system.append({"type": "text", "text": EFFICIENCY_RULE})
+            elif isinstance(system, str):
+                data["system"] = system + EFFICIENCY_RULE
+
+            # 2.45 Stop sequences to prevent model from hallucinating <system-reminder> training artifacts
+            stop = data.get("stop")
+            if isinstance(stop, list):
+                if "<system-reminder>" not in stop:
+                    stop.append("<system-reminder>")
+            elif isinstance(stop, str):
+                data["stop"] = [stop, "<system-reminder>"]
+            else:
+                data["stop"] = ["<system-reminder>"]
+
+            stop_seqs = data.get("stop_sequences")
+            if isinstance(stop_seqs, list):
+                if "<system-reminder>" not in stop_seqs:
+                    stop_seqs.append("<system-reminder>")
+            elif isinstance(stop_seqs, str):
+                data["stop_sequences"] = [stop_seqs, "<system-reminder>"]
+            else:
+                data["stop_sequences"] = ["<system-reminder>"]
+
+            # 2.5 Compress OLD conversation history (tool results + old assistant tables older than last 6 messages)
+            messages = data.get("messages")
+            if isinstance(messages, list) and len(messages) > 6:
+                recent_cutoff = len(messages) - 6
+                pruned_count = 0
+                for idx, msg in enumerate(messages[:recent_cutoff]):
+                    if isinstance(msg, dict):
+                        role = msg.get("role")
+                        content = msg.get("content")
+                        if isinstance(content, list):
+                            for b in content:
+                                if isinstance(b, dict):
+                                    btype = b.get("type")
+                                    # Compress old tool outputs
+                                    if btype == "tool_result":
+                                        val = b.get("content") or b.get("text") or ""
+                                        if isinstance(val, str) and len(val) > 400:
+                                            short_val = val[:150] + "\n...[Old tool output compressed]...\n"
+                                            if "content" in b: b["content"] = short_val
+                                            if "text" in b: b["text"] = short_val
+                                            pruned_count += (len(val) - len(short_val))
+                                    # Compress old assistant text & thinking blocks
+                                    elif role == "assistant" and btype in ("text", "thinking"):
+                                        val = b.get("text") or b.get("thinking") or ""
+                                        if isinstance(val, str) and len(val) > 400:
+                                            short_val = val[:150] + "\n...[Old response compressed]...\n"
+                                            if "text" in b: b["text"] = short_val
+                                            if "thinking" in b: b["thinking"] = short_val
+                                            pruned_count += (len(val) - len(short_val))
+                        elif isinstance(content, str) and len(content) > 500:
+                            short_val = content[:200] + "\n...[Old message compressed]...\n"
+                            msg["content"] = short_val
+                            pruned_count += (len(content) - len(short_val))
+                if pruned_count > 0:
+                    print(f"✂️ [LITELLM] Compressed old conversation history (saved ~{pruned_count // 3} tokens)")
+
+            # 3. Dynamic LangSmith Trace & Session metadata tree grouping
+            if "metadata" not in data or not isinstance(data["metadata"], dict):
+                data["metadata"] = {}
+
+            if first_user_text:
+                session_key = hashlib.md5(first_user_text.strip().encode("utf-8")).hexdigest()[:12]
+                session_id = f"session-{session_key}"
+                trace_name = f"Question: {first_user_text[:40]}"
+            else:
+                session_id = "session-default"
+                trace_name = "Agent Investigation Run"
+
+            data["metadata"]["session_id"] = session_id
+            data["metadata"]["thread_id"] = session_id
+            data["metadata"]["trace_name"] = trace_name
+            data["metadata"]["project_name"] = "OpenSRE"
+
+            # 4. Estimate input tokens & compute max output tokens (128k context support)
+            messages = data.get("messages") or []
+            input_text = str(messages) + str(data.get("system", "")) + str(data.get("tools", ""))
+            
+            est_input_tokens = int(len(input_text) / 2.8) + 200
+            
+            max_model_len = 131072  # 128k context window for modern LLM models
+            headroom = 1000
+            
+            avail_tokens = max(2048, max_model_len - est_input_tokens - headroom)
+            target_max = min(4096, avail_tokens)
+            
+            data["max_tokens"] = target_max
+            if "max_completion_tokens" in data:
+                data["max_completion_tokens"] = target_max
+            if "max_output_tokens" in data:
+                data["max_output_tokens"] = target_max
+
+        return data
+
+clamp_callback = ClampTokensCallback()
+litellm.callbacks = [clamp_callback]
+print("✅ [LITELLM] Safe ClampTokensCallback active (Dual-preset & <system-reminder> stripping + Deep recursive tool/parameter description trimming + History compression)")

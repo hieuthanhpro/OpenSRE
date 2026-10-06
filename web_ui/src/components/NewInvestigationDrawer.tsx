@@ -11,12 +11,13 @@
 //
 // API chain is unchanged from the original inline implementation:
 //   useAgentStream -> POST /api/team/agent/stream -> sre-agent /investigate (SSE).
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Bot, Sparkles, X } from 'lucide-react';
 import { useAgentStream } from '@/lib/useAgentStream';
 import { timelineToTurns } from '@/lib/agentTimeline';
 import ConversationTranscript from './ConversationTranscript';
-import ConversationComposer from './ConversationComposer';
+import ConversationComposer, { type ComposerAttachment } from './ConversationComposer';
 
 type Props = {
   open: boolean;
@@ -24,21 +25,40 @@ type Props = {
   // Called when the streaming run finishes so the host page can refresh
   // its own data (run list, dashboard stats, onboarding state, etc.).
   onComplete?: () => void;
+  initialPrompt?: string;
+  initialAttachments?: ComposerAttachment[];
+  autoStart?: boolean;
 };
 
-export function NewInvestigationDrawer({ open, onClose, onComplete }: Props) {
+export function NewInvestigationDrawer({
+  open,
+  onClose,
+  onComplete,
+  initialPrompt,
+  initialAttachments,
+  autoStart = false,
+}: Props) {
   const router = useRouter();
+  const [hasAutoStarted, setHasAutoStarted] = useState(false);
   const { timeline, runId, isStreaming, backgroundWaiting, sendMessage, queueMessage, queuedMessages, stop, reset } = useAgentStream({
     // useAgentStream passes the final output text; callers here only need a
     // signal that the run completed, so we drop the argument.
     onComplete: () => onComplete?.(),
   });
 
+  useEffect(() => {
+    if (open && autoStart && initialPrompt && !hasAutoStarted && timeline.length === 0 && !isStreaming) {
+      setHasAutoStarted(true);
+      sendMessage(initialPrompt);
+    }
+  }, [open, autoStart, initialPrompt, hasAutoStarted, timeline.length, isStreaming, sendMessage]);
+
   // Close + reset stream state so reopening starts a fresh conversation
   // (no carried-over thread_id from the previous investigation).
   const closeChat = () => {
     onClose();
     reset();
+    setHasAutoStarted(false);
   };
 
   if (!open) return null;
@@ -46,15 +66,15 @@ export function NewInvestigationDrawer({ open, onClose, onComplete }: Props) {
   return (
     <div className="fixed inset-0 z-50 flex justify-end">
       <div className="absolute inset-0 bg-slate-900/20" onClick={closeChat} />
-      <div className="relative flex h-full w-full max-w-2xl flex-col bg-white shadow-2xl">
+      <div className="relative flex h-full w-full max-w-2xl lg:max-w-3xl flex-col bg-white shadow-2xl">
         <div className="flex items-center justify-between border-b border-slate-200/70 px-6 py-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100/55">
-              <Sparkles className="h-5 w-5 text-emerald-600" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100/55 dark:bg-emerald-900/40">
+              <Sparkles className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
             </div>
             <div>
-              <h2 className="font-semibold text-slate-900">New Investigation</h2>
-              <p className="text-xs text-slate-500">AI-powered incident investigation</p>
+              <h2 className="font-semibold text-slate-900 dark:text-white">OneBot</h2>
+              <p className="text-xs text-slate-500 dark:text-slate-400">AI Agent by OnePAY</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -77,10 +97,10 @@ export function NewInvestigationDrawer({ open, onClose, onComplete }: Props) {
         <div className="flex-1 overflow-y-auto p-6">
           {timeline.length === 0 && !isStreaming ? (
             <div className="py-12 text-center">
-              <Bot className="mx-auto mb-4 h-12 w-12 text-slate-300" />
-              <p className="mb-2 text-slate-600">Start an investigation</p>
+              <Bot className="mx-auto mb-4 h-12 w-12 text-slate-300 dark:text-stone-600" />
+              <p className="mb-2 text-slate-600 dark:text-stone-300 font-medium">Bắt đầu phiên điều tra / Start an investigation</p>
               <p className="text-sm text-slate-400">
-                Describe the issue and the AI will analyze your systems.
+                Mô tả sự cố hoặc kiểm tra file/context đính kèm bên dưới để AI Agent phân tích.
               </p>
             </div>
           ) : (
@@ -94,7 +114,9 @@ export function NewInvestigationDrawer({ open, onClose, onComplete }: Props) {
             queuedMessages={queuedMessages}
             onStop={isStreaming ? stop : undefined}
             busy={isStreaming}
-            placeholder="Describe the issue to investigate..."
+            initialValue={initialPrompt}
+            initialAttachments={initialAttachments}
+            placeholder="Mô tả sự cố hoặc yêu cầu phân tích..."
           />
         </div>
       </div>

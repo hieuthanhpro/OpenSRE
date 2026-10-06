@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:b2d70c123c3c7f02f2a6fd50d7d0eafb1ee27610da32348151fa2bd859abe290",
+  "claims": [
+    {
+      "id": "claim_a2d9d6ee1a224830abb7cc38628274ce",
+      "statement": "The application entry point is vn.onepay.pspconnector.Main, which loads app.properties, initializes a HikariCP Oracle data source from database.* properties, configures the OnecommPaymentServiceProvider and its handlers, injects the data source into service classes, then starts the Vert.x server.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/Main.java#L36-L104",
+          "version": "repo-lines-v1:sha256:41f28c14a6b02a7826c895da3f19cb3bfe48ad74484acc6c0f44741c286eba72:eyJzZWxlY3RlZExpbmVDb3VudCI6NjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQyYTA2MmZmODg3NzU1YjA2ZGRlZTk2MjcxYmVjYjZhMTk2YmU5Yzg3YzFjZGFhYmY3MmQzZTkwNmE1Yzg3MzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMzNzIwMTQ1M2U4MzE5NzFhNzAxOTM2MzFiMzZiMzVmODA4ODJkY2QxYTU1OWU0YTIzYzcyYzUwYWQ3NGRmNjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1a617d2eec064d7ba3a66b7199502f7e",
+      "statement": "The build is a Java 11 Maven project (groupId vn.onepay.pspconnector, artifactId psp-connector-onecomm-apple, version 20230401) that packages dependencies into target/lib during prepare-package and copies src/main/resources into target/classes; the deployable output is exactly those two directories.",
+      "evidence": [
+        {
+          "resource": "repo://pom.xml#L30-L49",
+          "version": "repo-lines-v1:sha256:3f9aa4b37ff7ee5ae1b7d61d25b7e3488056e1f68f58f845f036eda150c18cf6:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYzZjA1MDYxZTExOWMxZjk0M2Q5OGI0NzhmNWJiNTNkN2NkZTRkYjdjMDlmNzA4N2ZkNDQzNGRlNGU2MDg3M2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU4MWQyNjZlNzI0ZTNhYTc5ZDY4NWRhYmJmZmNhNWFmNzRiMzQ3OWM0ZGNjMTU4Y2M0N2Q4Y2JhNTk0OGJmYzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA0NGM3MmEwNzgwNDNiZTcyYjJlMmNhN2NmNDUwMDYwODAwOGEyNzgyZTI4YjgwYjgyOGFjNWMzZDNkY2Y2Y2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIxYzIzMTI1NjNmZDliMWRiZTUzODhjNTVhNmYxZDliOWIwMTY2YmNlMGJmMzlmNmY3MTZjMDE5NDg5NGNmZTEifQ"
+        },
+        {
+          "resource": "repo://pom.xml#L6-L27",
+          "version": "repo-lines-v1:sha256:4439be627b8b215ab7382a6ab34af274d544c09d279f8dcd730d7204f6e84d24:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3ZGY5YzNiNGQ0NWZhOTU3NjVlYmVlMzM1MmRkYmYxNDZjMTAyYjVkYzk0YmIxYzExYTE2MjM2OTM0NDQyY2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJmNTQ5ZjExM2M1Mzg3NzczNmFlNzFkMWNjNDRlZWVlNTcxMGMyZGM1MDVjYjJkMjAwNGM4Zjg4NDFiMWQxYTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMzOWQ1YWZiNTYyMTVkOTQyZmU3YjcyMzZjYmYzZWI0ZTk0NTRlYjdmNjk4ODkxZDYwZTZhZDA0OWJmNGI1M2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdmZDI0ZTgzMzUyNzhjYjM4ZWNjZTZiMDFmNzE2OWIzNDEwYjAyZGI0NTAxMmQ1ZTEyMjU5OWU2NmI3NTdiNjQifQ"
+        },
+        {
+          "resource": "repo://pom.xml#L72-L92",
+          "version": "repo-lines-v1:sha256:37f36cd84840bdb571a040096b0b81ae8e00b748e94bdcba694c4a0e452b36c2:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYzZjA1MDYxZTExOWMxZjk0M2Q5OGI0NzhmNWJiNTNkN2NkZTRkYjdjMDlmNzA4N2ZkNDQzNGRlNGU2MDg3M2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU4MWQyNjZlNzI0ZTNhYTc5ZDY4NWRhYmJmZmNhNWFmNzRiMzQ3OWM0ZGNjMTU4Y2M0N2Q4Y2JhNTk0OGJmYzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQwN2MwNTllYTRiMTdkNGM0ZDYxYmQ2Y2RkM2VmMjhhMzFhN2M0YzlkYWU1YTE5ZWMyNDdhNmU5OWQ1ZjYyMjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI1NTk5ZTljNDExMjFmY2NkY2NiN2VlNzEyMDEzZjc3YWQxZDBmMTFmYzQ1ZjU1YzQ5ZjgwZTdjMTk4NjI5NTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d7d51a97391e434b84a5552d9c52fd2c",
+      "statement": "Tests are skipped by default in the Maven build via the <skipTests>true</skipTests> property in pom.xml.",
+      "evidence": [
+        {
+          "resource": "repo://pom.xml#L14-L14",
+          "version": "repo-lines-v1:sha256:054cae4f4af66296ff9236c3b8408162bfb52f7df7d4f90c0ef7e4c866f042e0:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDU0Y2FlNGY0YWY2NjI5NmZmOTIzNmMzYjg0MDgxNjJiZmI1MmY3ZGY3ZDRmOTBjMGVmN2U0Yzg2NmYwNDJlMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDU0Y2FlNGY0YWY2NjI5NmZmOTIzNmMzYjg0MDgxNjJiZmI1MmY3ZGY3ZDRmOTBjMGVmN2U0Yzg2NmYwNDJlMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzQwNjJiMTE5ZTJiMGRhNzYyNjVhZDFmOTQyOGRjNzRmZWU0YWEzZWExYjdkMmYzZDM2MDcxOGMzMTFiZmJiZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDRlY2U3MDE2YjhiYWI0YTI5NDlhZTZkNDYwMjE2OWY4MjBhYWVhN2FiYjQ4ZmE0ZTQ1YWE4YzAyMGIwZjdmOSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7327c184d20e46b892b13f0a450b51a7",
+      "statement": "Key runtime dependencies are Vert.x Web 3.9.4, Netty 4.1.53.Final, HikariCP 3.4.5, Oracle ojdbc8 19.7.0.0, Jackson 2.11.3, Log4j2 2.17.1, and the OnePAY OWS signature library 1.0.20180528.",
+      "evidence": [
+        {
+          "resource": "repo://pom.xml#L16-L26",
+          "version": "repo-lines-v1:sha256:667fa5c7da2d72144722b2d27d6fa2440f4892812e5ab85788715e992050d50e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU1NDJlNmQzZDdlOWUyZGU5YWUyNGU4YjljMTlkODQwMDkxN2UxZWE4OWU5MmVjMWFiYzkxYzBjOGIzNTVmNDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ4MzViMjVjNjNjZWNhMDAxM2MzMGQwZmVmZDNlYTQ1Y2Y0NzdjYWE2ZDkwNjFhYjQ3YTRkZDA4YTgwNjQ0MTQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEzMmQ3MzlhZmFkODY5OTRiNzFjY2M0Y2ZhNjM3MTIxYjFkMDRiZGZhNWMzMGMyZWIxNDAwMzVjNjE0OGVmMTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA0NGM3MmEwNzgwNDNiZTcyYjJlMmNhN2NmNDUwMDYwODAwOGEyNzgyZTI4YjgwYjgyOGFjNWMzZDNkY2Y2Y2EifQ"
+        },
+        {
+          "resource": "repo://pom.xml#L95-L239",
+          "version": "repo-lines-v1:sha256:6ecb44279394ca6365c3a6fd4b7cc5665862c4afea6440fce92616528b788f72:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQ1LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIyY2U4ZGYzYzA1Zjg1M2RhNmYwZmVkNTc1ZWZjNjljOGY3YTk0MTdjYmVhMzIxYzg2NTdkZjVhOGM3ZWVkZDc0IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIxYmZhODk3NjRiNTdiYWM3ZDA4ODA5NWZhYjU3ZjZmNjBhYjBkMDNkMGQ2Nzc1YWNlMzFmMTVkYjYxNGZmY2NlIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI4NTUyNmJlYWRiYzJkNmM3Yjk1N2JhYWYwMmE2NTA3NGVhODIzYzA4YThhNTdlYjg5MTI3ZTljNGNkNzU2Mjc3IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MiwiZm9sbG93aW5nQ29udGV4dEhhc2giOiI0Mzk3ZTAxNDE5NWQyZDJjZTNjZTNhYmI0YmI4MmM0ZmNhMDM3MTkxZmQ1ZThmZWRiYjRjOTA4NTA3NzE1ODQzIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_64e9d22b4f5746f9b358186d5c61d983",
+      "statement": "The server binds to server.host/server.port (default 0.0.0.0:38681) and serves routes under server.api.prefix (default /psp-connector-onecomm-apple/api/v1), with the default worker pool size 10 and event loop pool size 2.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/Main.java#L90-L103",
+          "version": "repo-lines-v1:sha256:3ed23a2835a077c1f1c49c084ee1e0e1d1f5ba78429f63cecf95ac42f3e06a0c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI5ZDk1YWM0OGNkNTEyODMzN2FlNjc0ODc1ZjVhY2YzNjdkNGE4ZmU0MTg3ODY3NzA0MTQ4YmZjNTZmZjNmOGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhYWNlOTNlNDM0MTMxMTc5ZTVhNjhkMzliYzM2NGI0MzU5MWI4ZDRkM2NmZDg0YzdmYzAzNDA2ZjU3MTgzYTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRiNWJmOGRhMjVkNzY3M2YxYzQ0NjIwNzg4NzBkODU4ZmM5YzMzNDBhOWE4MTJmNDBjYTRlMWRlNzhlNzg2ZDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM3OTRkMDJhODEyMTk0NGQxNzZkMjY1ZTliYjljYzU5ZjZhYjg5MGJjYWRmOGFlZmRlYmRiYmI0ZjJlYTg0NDQifQ"
+        },
+        {
+          "resource": "repo://src/main/resources/app.properties#L11-L21",
+          "version": "repo-lines-v1:sha256:e26f6ab81e7cda9c20e74d3204ea5678bd1a9e185304c04ab8b9194a0aabd493:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkODAzZmU3N2Q4N2VjZTU0MDdkM2M5NjIyZTY1NzU4ZDAxMWRiMjVkOWNlYjc5MDdkZWZlODNhNDRkOGI1MTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyMzQxYzEyOWM0NDgwOTZkYTY2ZjRjOWVjZTIxNzQ0OTEzYWEwMjg0MjBkNGYzNmNmNDUxNzRhZGZjNDcyZjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ3NWRkZjE2ZDcyOTRlZDZjNTg1MmQ2YjczZWQ4NWUyMmNiOWE4ZDZkMGQzZDNiNDNhOTYzMjA0ZWE0YWE2YzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM5NmM0N2JlYTU2ZWUwNWMyODA4YTExNjM4NWRhNTA0M2ZmMzEzYmQ4OWJlZGZmNzRmMmRkZTMzY2Y2YWVhMjUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_23cf69f239dc47a9b6e76d9d5675fb0e",
+      "statement": "At startup Main sets Vert.x system property vertx.disableFileCPResolving to true and disables HikariCP initialization fail-fast (setInitializationFailTimeout(-1)) so the app starts even if the database is temporarily unavailable.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/Main.java#L37-L50",
+          "version": "repo-lines-v1:sha256:d817971316b121d45a85200046ef6d65d479a1c5d9f075bb1abdc8256af4e39c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNiNWY0NzJiZmUxOWM4NDVmNjM3OGVhMzAxYjgxNzQxMTdiNWQ2NGMwNWM3NzAxNTJkOThhZmY4ZTAwODk5ZDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjllODg5YWQ4NGU2ZmI0NjE2ZDUyOThmMDFhNzdmN2RjZmMxOWJkYjdhNzYzOGE1MmE2YjA0ZTU4OWViMmFjZmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiMmQ4ZjJjYjhjZmM3MDgwYzJhMjgwMDQyYzI2N2FkYzNhMWI4NTRjNjgzZTRmYjQ2N2JiNWUyYWMzYmYxNGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdiMDU0ODc5ODk3MmM0MjkxN2RkZDFmYzI0OTJiMmMxZjQ0YjY3YWFjNjUwZGEwMTBkZGZkNzU2MGQ4Mjg5MzQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7f5c2f1315d14c0d8e75af7be7d98700",
+      "statement": "The PSPConnectorServer creates a Vert.x instance with worker pool size, event loop pool size, blocked-thread check interval, and max worker/event-loop execution times from configuration, then deploys a PSPConnectorVertical Verticle.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/Main.java#L90-L103",
+          "version": "repo-lines-v1:sha256:3ed23a2835a077c1f1c49c084ee1e0e1d1f5ba78429f63cecf95ac42f3e06a0c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI5ZDk1YWM0OGNkNTEyODMzN2FlNjc0ODc1ZjVhY2YzNjdkNGE4ZmU0MTg3ODY3NzA0MTQ4YmZjNTZmZjNmOGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhYWNlOTNlNDM0MTMxMTc5ZTVhNjhkMzliYzM2NGI0MzU5MWI4ZDRkM2NmZDg0YzdmYzAzNDA2ZjU3MTgzYTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRiNWJmOGRhMjVkNzY3M2YxYzQ0NjIwNzg4NzBkODU4ZmM5YzMzNDBhOWE4MTJmNDBjYTRlMWRlNzhlNzg2ZDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM3OTRkMDJhODEyMTk0NGQxNzZkMjY1ZTliYjljYzU5ZjZhYjg5MGJjYWRmOGFlZmRlYmRiYmI0ZjJlYTg0NDQifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/PSPConnectorServer.java#L53-L71",
+          "version": "repo-lines-v1:sha256:dccf12365184ce2013d8feb45f801358069632946fab7d2ece8e958f5237a34a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3YzdkYTUyNzY3NGE4ODEwMGFjZjg4ZWU5YmJlZGU4MTI1YTA5N2Y3MjhmZGFjNDU2NzRkZjRmMmFjNzhmNTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIyNzNiMDIwZmQwMjU4Yzk3ODA0MjI4ZjVkYTViNWViN2VmYmMyMDk1N2RmZjgzNTg3ZDIyNTU5MDc0MzkxOGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg5ZWE2Y2I3NTM4MzdlNDk3OGQ3NTg1ZjM3YzlhZTNkYzRlNjk1MmYxYTNhNzlhYmU4NjZjZGY3N2Q1YzVhZjMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cd211fc6b65a49779e5b9cee4ff21d19",
+      "statement": "Logging is configured via log4j2.xml which writes to a rolling file (path supplied by the 'log' system property) and a Graylog GELF UDP socket at log.onepay.vn:12201; the LogMaskingConverter masks sensitive data in log output.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/LogMaskingConverter.java",
+          "version": "repo-file-v1:sha256:9c92b86222d0c4169581abeeb781818689a4176944a39a5096e211bb9766792a"
+        },
+        {
+          "resource": "repo://src/main/resources/log4j2.xml#L1-L32",
+          "version": "repo-lines-v1:sha256:1f70fc7a9cdb0635c377a4c261c1b4155aa8771bfb7d60c76daa16fef8948780:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBlYjY0MWRjY2YxMDYwY2Y4MjgzMTc3OGFiMDRiMjcwYjk3YjI0NzgwZDA4OTVkNWIwMGQ0ZWIyMTdmYzhhMWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY5YzhkYmFmZmVjYzA2ZjdmODM2MmFlNDdiM2M2YzNiNmQ3ODdkOTFmOGY2MjhkMTBiODM0YTdkZDQzY2NiZDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0df9c8c6810c4ee0a14e83564866d867",
+      "statement": "Deployment is script-driven: sync_prod (production, host dc, SSH port 7100) and sync_stg (staging, host dc, SSH port 7010) each run a Maven build followed by rsync of target/classes and target/lib to the remote staging area and an operator apply step (meld diff + setown); sync_dr_100 performs an rsync-only sync to the DR host 'l' assuming an existing build.",
+      "evidence": [
+        {
+          "resource": "repo://sync_dr_100#L1-L5",
+          "version": "repo-lines-v1:sha256:bf99a83e0fb5caf7eb707782e227c241b5543d880cedcee8943e57c62dd07b4c:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjE4Nzg3NTNhNzY1ZWUzNGQxMGFhODZlNTRmZTM5ZmQ3NjE3OGJhZjBkYTVmMmY1MTE4NmI1ZjI1MTJmYmEzMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTYxZjk4ZTExNzM3NWRhMjM1NGY3MzQyNmM3ZWZhZTM5OWQyOTI2ZWNjZDI1YjI2MDBmNWMwZGE1NWNmMDFhNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjIsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTYwY2RkZGRhN2Y0YzViYWYwZTVkNTUzODdjZjY5YjA5MjYzYjg5YjdiZDE1YmNmZTE5MjE3Mjc2ZDA4NGUzOSJ9"
+        },
+        {
+          "resource": "repo://sync_prod#L1-L10",
+          "version": "repo-lines-v1:sha256:6bb0754fbd73f25c3c23e13ef1d3f4673e194b141d2e1bd52a5428314fefc460:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQzOTlhNzA3MzM2NWFiMjc4YjMyNjk0YmY5ZmJmOGQ1MWViOWQzN2FhODEyYjE4YmExNTk3MWY5MTU2NWJiZDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdmNTBlZGYzOWE5MzNhN2JmMzA2NTBkZmNhZDczZTI2ZTc4ZjYwZjliYWMwY2VhMDU0NjczZmFmY2ExYWRmNTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://sync_stg#L1-L10",
+          "version": "repo-lines-v1:sha256:28d01fda89ba28893db00fb70b404ecb366dd53d6d49875d1a6f50e34ec60b41:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQzOTlhNzA3MzM2NWFiMjc4YjMyNjk0YmY5ZmJmOGQ1MWViOWQzN2FhODEyYjE4YmExNTk3MWY5MTU2NWJiZDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE3YmI1MmJmODliNjQ4OWNjZDRiYmNhZGUxODlhZTU4OGI1ZjFhM2VkYWMwZWM4ZGVmN2EyZWQyMTdjZjlkNWMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3423c2ff8e0f45ff9c1756e1d6151c0e",
+      "statement": "The application uses a single shared HikariDataSource (HikariConfig with datasource class oracle.jdbc.pool.OracleDataSource) configured from database.url, database.username, database.password and pool sizing properties, injected into AuthorizationService, PaymentService, RefundService, and the onecomm DB utility.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/Main.java#L42-L59",
+          "version": "repo-lines-v1:sha256:257b968b042232e169a45d2009c2f9c129005ae97bb4a736a3c64b989188d2ca:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA5NmM5M2JlYWVlMjA2YzY5NzgwMDlhZGU2NGQxNDMwMDcwZjg4MGE2YWYwYTgyMGY0YWYwOWFkMjFmM2M0NDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZlMzYyYWM5N2U0MTA0YmZmMTQyYWUwN2IwYTYyMjg3YzFmNzliMDMwMDljNzE3ZjA2MTcyY2YxMDk5MDBlNzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM0NmFlMWI5NTc2NTUyZTM3Zjg0NjJjNGQwNDA0YTMyYzk5NjU4MDkxNTNkYzE2YjIzMzVkZDE3Mzg5MTRjMGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU0Y2ZjZDZjOTcyOTZjZjUzMTkyZDY2NjU3ZDQwOTY2ZTRmODJhOGEzNTBkZDY5ZTc0ZTczNWRmYzZjZDdlYjcifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/Main.java#L81-L87",
+          "version": "repo-lines-v1:sha256:ef607719b9ada05193549df2f5451367241cbfea15c3808de62248f484ead699:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODYxYTFkZjc4NmE4NzY4YmJlY2YyMzU2MWZjYjNmZmRhMGI5NTA3ZjBiZWE3NGU4Y2I4ZmUxNDJjODRkY2FhZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTI1ODAzYmU4OTg0NTJmOGY0Yjk0YTk4NDYyNjJhODUwNTBhODUwM2NhNGJiYmQ1OWQ3NzdmN2M0YTE0ZjM2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTNmMzVhM2ExMDcwOWMwOTY2OWM5MGQ5ZjUzMGJkOTE3MmJiOWQ1YzVjN2RjNGIyZDIxMmRjMDgzZTc4ZDIyYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTI0ZWYwMzhlNDZkNzY3YmM5OWNjMjQ4ZjAzMGMxMzI0MjExYmFlY2Y4ZjUzNzdmNzFmYmE0NzdhMWI1Njc3ZCJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-25T07:03:17.397Z"
+  }
+}

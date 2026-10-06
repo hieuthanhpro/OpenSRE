@@ -198,6 +198,14 @@ def _extract_team_config(config: Dict[str, Any]) -> Dict[str, Any]:
     if "prompts" in config:
         team_config["prompts"] = config["prompts"]
 
+    # Entrance Agent selection
+    if "entrance_agent" in config:
+        team_config["entrance_agent"] = config["entrance_agent"]
+
+    # Agents configuration (per-agent prompts, sub_agents, tools)
+    if "agents" in config:
+        team_config["agents"] = config["agents"]
+
     # Skills are team-specific
     if "skills" in config:
         team_config["skills"] = config["skills"]

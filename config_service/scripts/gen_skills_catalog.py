@@ -84,7 +84,17 @@ REQUIRED_INTEGRATIONS_OVERRIDE: dict[str, list[str]] = {
     "memory-search": [],
     "metrics-analysis": ["prometheus", "grafana"],
     "metrics-victoriametrics": ["victoriametrics"],
+    "database-oracle-awr": ["oracle"],
+    "database-oracle-monitoring": ["oracle"],
+    "observability-graylog": [],
 }
+
+DESCRIPTION_OVERRIDE: dict[str, str] = {
+    "database-oracle-awr": "Oracle AWR (Automatic Workload Repository) HTML report analysis for SQL performance tuning, SGA/PGA advisory, and DB growth trends.",
+    "database-oracle-monitoring": "Oracle Database live performance monitoring, active sessions, locks, high CPU/RAM/IO queries, high cost SQL, long operations, and tablespace usage.",
+    "observability-graylog": "Graylog log analysis using Lucene query syntax for database alert logs, errors, and real-time monitoring.",
+}
+
 
 
 def required_integrations_for(skill_id: str) -> list[str]:
@@ -167,6 +177,9 @@ def human_name_for(skill_id: str) -> str:
         "platform-vercel": "Vercel",
         "project-clickup": "ClickUp",
         "project-jira": "Jira",
+        "database-oracle-awr": "Oracle AWR Analysis",
+        "database-oracle-monitoring": "Oracle DB Monitoring",
+        "observability-graylog": "Graylog Logs",
         "project-linear": "Linear",
         "runtime-config-flagd": "flagd Feature Flags",
         "streaming-kafka": "Kafka",
@@ -193,7 +206,9 @@ def build_catalog() -> list[dict]:
         text = skill_md.read_text(encoding="utf-8")
         fm = parse_frontmatter(text)
 
-        description = fm.get("description", "")
+        description = DESCRIPTION_OVERRIDE.get(skill_id, fm.get("description", ""))
+        if description == "|":
+            description = "Skill module for " + human_name_for(skill_id)
 
         entries.append(
             {
@@ -204,6 +219,7 @@ def build_catalog() -> list[dict]:
                 "required_integrations": required_integrations_for(skill_id),
             }
         )
+
 
     entries.sort(key=lambda s: s["id"])
     return entries

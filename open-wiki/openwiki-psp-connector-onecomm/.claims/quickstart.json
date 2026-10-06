@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:c8288dd2813bef52c7a1b39d90fd4460c31f6383a30140f6fbc0f972fb4a977b",
+  "claims": [
+    {
+      "id": "claim_6bdaa24a65d242b7ab3e22547a5cff91",
+      "statement": "The PSP-Connector is a Java application using Eclipse Vert.x for HTTP serving and Oracle DB for persistence, exposing a secure API for payment processing (purchases, refunds, instrument registration).",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/Main.java",
+          "version": "repo-file-v1:sha256:683cd3bd8ec7d36eb6cdf3d3753c360d62c4da986a79e8391b960241110f94f1"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/PaymentServiceProvider.java",
+          "version": "repo-file-v1:sha256:6b61f0b68dd7ad67033a45f032f98d1885c44e08e8ea94c5b13754eb52754e89"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/vertical/PSPConnectorVertical.java",
+          "version": "repo-file-v1:sha256:09db38754db7162a0f407f6a23e3d2645d65337278963693db524cfd541fb760"
+        }
+      ]
+    },
+    {
+      "id": "claim_0da85aa06efd447ba9041f348cbd1b43",
+      "statement": "The PSP-Connector uses a pluggable provider SPI layer (PaymentServiceProvider and RefundServiceProvider abstract classes) decoupling HTTP handlers from gateway-specific implementations such as Onecomm and NAPAS.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/Main.java#L105-L131",
+          "version": "repo-lines-v1:sha256:44f7aa91f826941f36b15f5d01b9c63b0be738aa266cb0fcd72a439ffab94c56:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliYzU5OTRhODY3Y2MxNjMwNzUzOTQyZjRmYmM5Zjk3NmZkZDgxODc3OWY4MDQxZDU4MzI1NmRjN2UwYWJlMmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJkNjYzY2NkMjk2OTM3ZjQ4MWE5NmUzMTNhMDNhYjhhNjFiYWRmMGY4MWExOWQxODczMjBmZjViYzMyNDhhOWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAyN2M0MGQ1OTZlYzBiYWM5NDk0ZjkyZDYyMGZhOTdhNGI0OGQxM2UwZmY1YTEzYTQ2YzE2ZjljOGRmZWRjZWUifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/PaymentServiceProvider.java",
+          "version": "repo-file-v1:sha256:6b61f0b68dd7ad67033a45f032f98d1885c44e08e8ea94c5b13754eb52754e89"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/RefundServiceProvider.java",
+          "version": "repo-file-v1:sha256:c67346406c1342f608f091b1667e53a8a41796a1db00235bf71029f9d03be061"
+        }
+      ]
+    },
+    {
+      "id": "claim_33d6e60ac8ba46e3b8d633eb16424098",
+      "statement": "PSP-Connector supports multiple payment workflows including standard purchases, Apple Pay NAPAS purchases, and several refund types (standard, NAPAS, manual, auto, Apple).",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/routing/RoutePool.java",
+          "version": "repo-file-v1:sha256:52dc64aee54b633a8d89da8cc1827b493139093f49ca21583f1e1cc409ebbf32"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/vertical/PSPConnectorVertical.java#L113-L141",
+          "version": "repo-lines-v1:sha256:aa4cccbd61beb6a03e5b1b3de1fbc0f1e21c93dc73e99ee0a4bd538faf0e92ea:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliY2QzNzViNjc3MmE0NmFmOTEzZjIyM2ZhOWU4MmZlZTNmY2JlOWRiOGY0NzFjOGIyNzI2ZDU3NjVmNzI4ODEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3NTE2MzdmMmZlM2ZmMTAyZjgyOTc5OGQ5YTliYWUxMzZmZDczOWNkZWVmODZmM2Q3YjMwMzVlNWU5MWJkYjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ3ZThiZDNiMGFkMzhhNGJmYjM5M2M5NzM2YTZhZjNjZmE1ZTM3YTc4YTRlYmNiMDExMTA4Zjc2ZDdhMGRjN2EiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVjNTgwNWMzZDg2OTU4NjQ5NTkxZWJhM2RhMTk1ZmMzZDA2YjQwN2FiYTQyYWJkOTQ2ZWFkN2U3ZjFlOGVkNzYifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-23T03:50:02.660Z"
+  }
+}

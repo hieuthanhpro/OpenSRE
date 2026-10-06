@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:6c2daa3bfccff1df41371d51d3a0468870fc52f3da8851ada9f07b270c339b25",
+  "claims": [
+    {
+      "id": "claim_68d9edbef4954987b7b0a440c89a26f2",
+      "statement": "DBProcedureUtil is the central Oracle database access utility that executes stored procedures, managing connection acquisition from the HikariCP pool, JDBC parameter binding (input and output), and resource cleanup.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/util/DBProcedureUtil.java#L150-L180",
+          "version": "repo-lines-v1:sha256:eb7c8ee487729ffc16f7db8b9a1c57d5a2302aad036e339e3b226e8dd4b096e5:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVlZDc3ODcwYjJhODIzNGVkMjI5YjYwNGE1YTNhYjRjMTY5NGNhY2ZjNmUzNzZlOTU3NTkyNmE1YTI3ZjM4MGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU3NWQwYTYxNDJjNjFiNDM0N2E1YTY0MGFkYzAwMDA2ODUwYWYyNjcyYmMzNjc3MGNhNWE0ZjUwNGUyYmFhMTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM5YWY1ZWMxZWQyMjAxZmZiNWI1MDViNTBlNTcyYTI2NGFjMjEwNWU2Y2I4YzVmN2IxOWI5OTg1MGRhYTNmZGYifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/util/DBProcedureUtil.java#L20-L148",
+          "version": "repo-lines-v1:sha256:0f68eaaca59afd287f15e6e974a9effb504095bad8600e2a8379811e55fd3fcb:eyJzZWxlY3RlZExpbmVDb3VudCI6MTI5LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI1OGQ0OTczMzlmNjNlM2RjZDA3M2ZiYmIzYWU5OTFmYzI1ZGQ1ZjI5MTdjYzQ0ZWMyZmE4MDU2NGI0MTI4OTdiIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0ODkzZjQwZTM3ODFlYjg5NmM4MmQwNDZhMDgwNjdhMTFlMzVjZGYyZjFkZmFmMjZmZWE5MGI4ZGI2Njc2NDEzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI3NjE1YjNhY2IzYzcwMGU3ZjRhMmIwMjdkMzMyYzJhMWM1OWY1MTM2NzM2NjgxZTVhOTZjMWI1ZTE1MjJmY2NjIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIyOGYzMDhiYzRmOTg0YmY4ZmI2YWRjYzU0YzQwYmM3ZmU3OTMxNGIxMWY2NTgyYzk1MmU1YTdmZjUyMWI2OTIzIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_f6667b243e1b45f6aca3a4b821f11b65",
+      "statement": "Service-layer classes (PaymentService, AuthorizationService, CaptureService, RefundService, VoidService, ConnectorMsgService, ClientService, ErrorService, ClientActivityService) follow a consistent pattern: they bind business parameters into ordinal-positioned input maps, register OracleTypes output parameters, call a named stored procedure via DBProcedureUtil, and translate the response_code into either a successful result map or an OracleException.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/service/AuthorizationService.java#L29-L51",
+          "version": "repo-lines-v1:sha256:fa8714c8b537a89e31751191b362dc5ee01ba5fec5c3033e8474344aed2e80fa:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2M2JiNDEzMGRlYjJmZTEyMmZkNWRiZGUxMmRjMzgxMDUzMzk5N2VhMmQwY2I5M2E5OTE4NDRjMmRmZGE5OWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM0NjcwZWFiM2Q2N2RjNWVmZjliNjI1MDA4ZmYxMTc0NzJkNDg2NDRjMTU5MjUyNjVmZDIwZWE5YzUzMWFlODAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlmMjA4MzBmNjQzN2I5YWMzY2UxY2ZmZWY3NmU1YWFlZGI3MDk4NDM5NDQzYTM0YmZhYzY1NjFjOTA4NjcwOWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE1ZjFiNjU3MTUyY2ZkMjAzMDg5OTU4NTFhMDcyOGUxNTI2NWIwMDVjNGI4YmZmNTFkNDdlYjhjYzM0ODNlZWYifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/service/PaymentService.java#L28-L92",
+          "version": "repo-lines-v1:sha256:c891e1caca91b68ac17b84d6b79f2a9eb42190f19e9f3b6ff3e36f7fec550cf8:eyJzZWxlY3RlZExpbmVDb3VudCI6NjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI3NzYxMWU3N2E1N2RmZTQ2OTQzNmUyYjE3ODAwOGUxZGUzZDM1NTg3ZTkxN2M0OWQ5ZDQ0MWIxMDI3NWRjNTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlmMjA4MzBmNjQzN2I5YWMzY2UxY2ZmZWY3NmU1YWFlZGI3MDk4NDM5NDQzYTM0YmZhYzY1NjFjOTA4NjcwOWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg1OWQ3Njk4ZGE4ZDE1NDZhMTIzYmUxZWRiYjllMTA2YjA5MjdiN2M5MzdjZDBlMDhiNzY0NjlhNWFjZTg0ODcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_33569f15e39943c18e57faf336386030",
+      "statement": "ProcedurePool centralizes all Oracle stored procedure call strings organized by domain package (PKG_PAYMENT, PKG_AUTHORIZATION, PKG_CAPTURE, PKG_REFUND, PKG_VOID, PKG_MSG, PKG_ERROR, PKG_CLIENT, PKG_CLIENT_ACTIVITY), with separate entry points for BNPL-specific payment operations.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/util/ProcedurePool.java#L1-L47",
+          "version": "repo-lines-v1:sha256:9e21d62f2ecd78754cd40a38ffe55c5ab6833a45e2d44c9cc341ae87c18e9850:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhYzU1NjdkZTIyZmY1OGFjNDcxMWE4ZTY2MmQ5N2JiM2EzMGRhZjQ1MDY0NzMxNDdhNGJkNzdlMTRlNjhiNDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5d0c4ba509d44a15a3e49535bd0a2ccb",
+      "statement": "The KBank-specific DB class provides provider-scoped database queries (getOnecreditMerchant, getAuthorIdByMerTxnRefAndPartTxnId) that bypass the generic DBProcedureUtil pattern, directly using JDBC CallableStatement with manual resource cleanup and result-set-to-DTO mapping.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/kbank/DB.java#L26-L87",
+          "version": "repo-lines-v1:sha256:34d380ae0bbf6c1b4ece96b30bcc4da53237a73a8cdeabcf22382feda17c2b16:eyJzZWxlY3RlZExpbmVDb3VudCI6NjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkZmUzYWYzZTk5MWJjMTI4YmQyMTVjODFjZGQ3MjM0MWViMGQyZTQ5YWQ0ZWY1YzdiZjE2MDNhNWNiZWE0ODQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YjA0NDkxNDY5NzIyZTgzNjNhOTRlNDA0NDUzOGUwMTNhMmEyMTdlMzZiMWU1NjhiYTYwYWNiN2I0YzhmMmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjczNzliZDBmZmVkZTNiZWI0ZTc4M2Y4NTIxNTM0OTZhYTgzYmQ1ZTgzNDJjN2NmM2E4ZjQyNGM4YjIxZDU2ZDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQyMDIyZWMyYjEyM2FlNjY1MDI3NjE2ODFlZjU1ZTViNjNkY2FlOTEwNzA0MmU4MDYzYmY5MzE4NTI1YjZmMzYifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/kbank/DB.java#L97-L147",
+          "version": "repo-lines-v1:sha256:b62ddb335944d52388560241ce32ffb771c0e639aa992eb4004cd66658f39a9b:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBhNTYyZmUyNTQxNDhjYTlkMmZiNzY3NzIwMWExMjU1MzNiZDJiNmFjMTEyYzQ1MGNhMmQ0OWFiM2JjN2E1Y2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJmZWUzNzMwZjAwOTk5ZmYwZTE0NDhmMWZjYTgxYWRjMjg1ZTg1YjBiODExZTFiNzBhZDIxMWMyY2RiZjkzNjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAzNGMzMGRjNThhYWY5NWFiNzc5NmFmMTI0MTVhMzMyOTI3ZTYwZTdmNzBmODAwMzEyNDMzYzg1OTgyOTQxZTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e942d362a85f4e548b8407599bcc4cce",
+      "statement": "A single HikariCP HikariDataSource is created at startup in Main.main from database.* properties and assigned to all service-layer singletons (PaymentService, AuthorizationService, RefundService, CaptureService, VoidService) and the KBank DB class, ensuring one shared connection pool.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/Main.java#L37-L76",
+          "version": "repo-lines-v1:sha256:55dc731b8c1672615967c24dff11921cdedabfed9f44f05928f97c9027e9c281:eyJzZWxlY3RlZExpbmVDb3VudCI6NDAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA5NmM5M2JlYWVlMjA2YzY5NzgwMDlhZGU2NGQxNDMwMDcwZjg4MGE2YWYwYTgyMGY0YWYwOWFkMjFmM2M0NDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyNTgwM2JlODk4NDUyZjhmNGI5NGE5ODQ2MjYyYTg1MDUwYTg1MDNjYTRiYmJkNTlkNzc3ZjdjNGExNGYzNmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM0NmFlMWI5NTc2NTUyZTM3Zjg0NjJjNGQwNDA0YTMyYzk5NjU4MDkxNTNkYzE2YjIzMzVkZDE3Mzg5MTRjMGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhlMDBjYTIyNGI5YjAyZGIzOTYxYjJlOTdlZjQwZmI2MjgxOTMwN2QwNTVkYWNlNDk5NWVlNmY4MWU2N2FlNzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d9542da1b746467092e3d69b4aafdbcd",
+      "statement": "All database interactions use a standard output convention: parameter N holds an HTTP-like numeric response_code (200 for OK, 201 for CREATED), parameter N+1 holds a response_desc error message, and parameter N+2 holds a cursor-based result set — services interpret these to determine success or throw OracleException.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/service/CaptureService.java#L40-L53",
+          "version": "repo-lines-v1:sha256:977842c0fe17065c03fba2d3a09c572d14a52955a72d74337303949eb249b948:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdlZjM0ZDZmMWQ5Njc0Y2YwNDdjOGJjMGQ0ZjUyM2JkMmIyZDQ3NDVhOWM2MGUzODYzNTI1OTM4Njk1ZDIwNjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMxZDk4YjQyMmM3YWY0YzlmMDI4Yjk4ZTE0MjAyMTM2MjQyM2IzZjc2YTk1MjQ2MDYwNDQ4ZmI4NzkwM2NhNjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM4ZGFjNTdlNDhjNGY1OGU4NDA5NThmYzIyNTc5MTFjNTdhMjY3MzVlOTM3NzQ2YjhiMDNhYjJhODg0YjY0MjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVlYzQxMDUxNjM5MmFjZTYzZTNlZTAyM2M4ZWZhODM3YWQ1ODg2MjdjNWYwYmM3YWJhMDMxMDAzOTdhZGZhMjQifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/service/PaymentService.java#L66-L82",
+          "version": "repo-lines-v1:sha256:eef51eb98c0f9d29307945485f4ca819a8ddd769632300af3b99d32f6b1206f1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdlZjM0ZDZmMWQ5Njc0Y2YwNDdjOGJjMGQ0ZjUyM2JkMmIyZDQ3NDVhOWM2MGUzODYzNTI1OTM4Njk1ZDIwNjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU2OTliZTAzYWE0YmM2M2M5OTYyMDEwZWM1OWFlNWY4NjVkZjA3Y2M2Njc0YTdkNmM0NmEwOGZhYjIwNGI3NjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA4MjE5NDMwNzUwY2ViOWFmY2RkZWQ4ZmU4NTJhOTNlZDU3MTA2ZmVlMmI0ZmNhNTM1M2MwMzhlOGEzYWUxYWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBhMWQ4NDYwMjQ2ODUwZjUzOGZhYjMyNGE4Yzc5NjA4YmEyZWM0OTYyNTA3YzljMTk0YmMzMjU1NTI5Mjk4Y2QifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/util/DBProcedureUtil.java#L82-L140",
+          "version": "repo-lines-v1:sha256:9793de27f2eb5d02964bcaa31565ef28c9bc098613483e7c1342f7a41b9a096e:eyJzZWxlY3RlZExpbmVDb3VudCI6NTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJlMTAzMzY2NGU0MmZmNDNiZDY3NjlkMTI0NjAwYTA3OTBjODE5Y2Q2MTgxNDU1MjdmZWI1ZTg1MmQ3N2Q1OGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1MjJjNDJjZDE5YzZkMDNkODA4YzQ1MjcyMDU1MjgyNWI3ZWExYzViNDkxYjIxODUxMWNhYzc0MTVjZjlkOWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE3NjFiZjRiZTFiMWZjOTM5NDEyZDdiNjhhY2VkZmUyNjNjMWNiYzIyMjMxMjEyZGYzOTA5YzcyMjljZDE2ZWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNjNDYyZThjOGY0MzM2M2I4NGRmYzc3YzBiZjRmNGE2NGZmMjQxMDM2ZWU3YTc4YmUzNzZlMDA5N2ZlNmE5ZDEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_899e2dec346645b6b81d319adc167d72",
+      "statement": "PaymentService.update uses a BNPL-specific stored procedure (ProcedurePool.PAYMENT_UPDATE_BNPL) that accepts payment state, KBank payment ID, response time, response code, description, and response data — distinct from the generic payment update procedure.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/service/PaymentService.java#L94-L131",
+          "version": "repo-lines-v1:sha256:b9743d112596c38f2f5f4b4f6a63c7a75bf3f002568a754d3f120d8c877bb387:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRjN2NlYWY1ODEzMGRiMWIwZmRmOGMyZTNhYTM1NDljN2ZhYjIyODljMWYxNTNmOGZkOTc2MDkwMGFiZDE2ZDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc0NWNiYjFkZGM3YTVkYmJlMTJlODlmZmYwNjkwZGY5MzFmYTFiMTk2ZjQ5MTYxYTE3ZWY4NTI5NTE5MWI5MzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE3ZDg4ZmQ0ZjljYTE5MmZiOWQ2ZjQ1NWRiNmJmMTRlODNiZGJmY2YzY2Q2OGJiZDhlY2E4MzAwNDMxNTMyYzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bd2180e2964e4ffc8e4174630e986ae5",
+      "statement": "PaymentService.insert masks instrument (card) numbers via AppUtil.getInstrumentMask before persisting to the database, replacing middle digits with 'xxxxxxxxxx' to enforce PCI-DSS-like data protection at the storage layer.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/service/PaymentService.java#L58-L58",
+          "version": "repo-lines-v1:sha256:2a6a95d4f574e7ff5e289388987946415b508e33cb7e249dadc9c471782421b0:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmE2YTk1ZDRmNTc0ZTdmZjVlMjg5Mzg4OTg3OTQ2NDE1YjUwOGUzM2NiN2UyNDlkYWRjOWM0NzE3ODI0MjFiMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmE2YTk1ZDRmNTc0ZTdmZjVlMjg5Mzg4OTg3OTQ2NDE1YjUwOGUzM2NiN2UyNDlkYWRjOWM0NzE3ODI0MjFiMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGJhMTUzZGNjMGU3Mjg2MjBlYWZkNjZmNzkwMDY0OTExZDk0ZWRkZjY3NzE5NDZkODZlNTBhMWY4MTYzMjFhYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWRmM2FmNzA5Nzg3NmRjZThhZDQ1NmQ1ODkyNzNhZjgxODNiZTc0ODk5NzUyNDdkMTUwN2NmMzY0OTE3NWYwOCJ9"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/util/AppUtil.java#L61-L74",
+          "version": "repo-lines-v1:sha256:72695b1892f9aacfa846f853836d0ff8551ec3b3bd612f69478e6e59399cb67b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3YTNlY2RiMjk2ZjUyMzc2MDViMDdiNjc4YjE3YjQyOGQzZjA0ZGRlZDVlMTdhODVkMzlmMmNiYWJkNGU3MzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk5OWJkZWZlZWFjYTYzNDBlMDI5MGRjODZlODg5Yzg5ZDVlMTg5YWE1YmE0NGI1ODViM2I3MDczNGY0YTYyZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE0NTMwMDkxMDEzMDJlMDI5NmZkNzNmN2U2YWRlM2JmZjgyYTZhODU3YTY1Yjk1MzFkNDJlZTdmN2RiNDg0YWEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cbb2fad342ad429a94cbd85a51bfb764",
+      "statement": "The application relies exclusively on Oracle stored procedures for persistence; there are no ORM frameworks or direct SQL queries. The Oracle JDBC driver (ojdbc8) and HikariCP are the only database dependencies.",
+      "evidence": [
+        {
+          "resource": "repo://pom.xml#L15-L81",
+          "version": "repo-lines-v1:sha256:aedfb9ab1f2ea1412622ccc417bfad6c325afcb6ac8fe245311516841c2b5db7:eyJzZWxlY3RlZExpbmVDb3VudCI6NjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkyODA5MzEwMTQwYjc3ZmEwZWVhZjUyNTllZDM4ODMwOTg5NmU3ZWQ1NTgxMjRjMjAyYzc0MzY5YTQ5Zjg2MWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMxNWU3NmRjNzEwODgzYmVlMDYwYjFhZDZiNTllYWQ5NDhmNDJiZmRiN2VhNWI4ZGI1ZDMwZDM1ZWEwZDBkYjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjEzMmQ3MzlhZmFkODY5OTRiNzFjY2M0Y2ZhNjM3MTIxYjFkMDRiZGZhNWMzMGMyZWIxNDAwMzVjNjE0OGVmMTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc3ODhlZTAwNjU0YmEyYjc1YjBjNmJiZmI0MWExODMzZTc1ZmIxNTU4Njg5OGE4MDdjNDQ1MzA1YzY5ZTQwY2IifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/util/DBProcedureUtil.java#L20-L148",
+          "version": "repo-lines-v1:sha256:0f68eaaca59afd287f15e6e974a9effb504095bad8600e2a8379811e55fd3fcb:eyJzZWxlY3RlZExpbmVDb3VudCI6MTI5LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI1OGQ0OTczMzlmNjNlM2RjZDA3M2ZiYmIzYWU5OTFmYzI1ZGQ1ZjI5MTdjYzQ0ZWMyZmE4MDU2NGI0MTI4OTdiIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0ODkzZjQwZTM3ODFlYjg5NmM4MmQwNDZhMDgwNjdhMTFlMzVjZGYyZjFkZmFmMjZmZWE5MGI4ZGI2Njc2NDEzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI3NjE1YjNhY2IzYzcwMGU3ZjRhMmIwMjdkMzMyYzJhMWM1OWY1MTM2NzM2NjgxZTVhOTZjMWI1ZTE1MjJmY2NjIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIyOGYzMDhiYzRmOTg0YmY4ZmI2YWRjYzU0YzQwYmM3ZmU3OTMxNGIxMWY2NTgyYzk1MmU1YTdmZjUyMWI2OTIzIn0"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-25T07:01:46.974Z"
+  }
+}

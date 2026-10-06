@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:c986b4cbf247ab5e29abf30f280de161ffbd67c324eba6853ef211acd0c781ec",
+  "claims": [
+    {
+      "id": "claim_7074ca05c84649b0b186a8a8fdb0c0f5",
+      "statement": "NapasAuthorization provides the input(RoutingContext) handler for NAPAS OTP requests and a reusable render() method, called by Server routes /napasauth and /auth (POST, urlencoded) and by MigrationService for invoice-based NAPAS widget rendering.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/Server.java#L187-L192",
+          "version": "repo-lines-v1:sha256:29b75b8c9fd3f8ba5c1651282d1d32440e0aba6f9777f3a031bacb5e76a15cfe:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmFkYTAxMDFkNmQyNzE4ZmViMTcyNThhNjg5ZmJkYjVlNmI1Y2YyZGI4MTI4MTUyODljNTE2ZDJmNGViNjAyYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjQ3ZWE4YWQ3MDQxZjk2NDE1ODA0Y2Y0NzJlM2Q1Mjk3ZDBmNjFlZjc4YTI1NjljZmUyMTMxNTcwN2UxMThkMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDQyZGVmOGJmYjBlOTI2MGI0OTZmNTQyZjY4N2ZmODg3Y2E4NmVmOTM1OTc0Y2IzNTQ4MmJkODk0MDc5YTE0MSJ9"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/resources/authorization/NapasAuthorization.java",
+          "version": "repo-file-v1:sha256:c5bb4c1d2a61dab7501b8264bf7a94f2b8c452d8dbe7aa38391692e081125c05"
+        }
+      ]
+    },
+    {
+      "id": "claim_73a6a23215374387b2168646048c8da0",
+      "statement": "HelpService.create fetches invoice/payment metadata (merchantId, swiftCode/brand, transaction code/message) and sends a merchant-configurable email via Server.helpMailClient using Config.getHelpMailMessage(merchantId), accepting per-merchant CC overrides defined in help.mail.merchant.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/Config.java#L685-L731",
+          "version": "repo-lines-v1:sha256:f1fd7adea40b385e8c89aec4f8db724f079c27376b600f1cdf6c773e04be832d:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5YzQ3MjI4ZDBhNWE5OWY1M2QwYTU2MmNjYmExNDZlNjRhOThjZGM2OTA4Mzc1YzAyMjVkMDE1NTJkMjY5NzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNjN2E5MjVmNTM5M2JlM2Q2YWUxYjIwYmViYjdjNWIyZGM0ZDdkODc0MTJiYTc3ZWEwMjU3OTI2ZTY3NDJjNDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY1MTczYWY1ODMzNjVhN2VhMTVmMjdhYTY2Zjc2MjdjNWFmNmJkYjljMzJjMmUxOTQzMTQ1YzhlY2E1OTg4MTcifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/Server.java#L122-L122",
+          "version": "repo-lines-v1:sha256:71e131b259068b3b1fcf85e8dc32d037b5dd94be800640ba690e2db22cb39ad9:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzFlMTMxYjI1OTA2OGIzYjFmY2Y4NWU4ZGMzMmQwMzdiNWRkOTRiZTgwMDY0MGJhNjkwZTJkYjIyY2IzOWFkOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzFlMTMxYjI1OTA2OGIzYjFmY2Y4NWU4ZGMzMmQwMzdiNWRkOTRiZTgwMDY0MGJhNjkwZTJkYjIyY2IzOWFkOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDhiZDBkZWE3N2YzNmI0MGViNDEyOGRkMDk4ZTIwNmMzM2MxZTA2NGJhZjIzMGIyNzJiNjAxM2YzMjQzZDI2NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGY3MTExMTU2ZDU2MGM2NTgwYzJhYzgyYmU2YjgyNGVhNzk4Y2QxMjZhMzhmYjMxYTFmOWFkYzU0MjU0MjlkMiJ9"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/resources/help/HelpService.java#L31-L154",
+          "version": "repo-lines-v1:sha256:dd22cc50f7d279b369b2b407269c2ebda6be99da572e5fa2a2866698822c5d8c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTI0LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI5NGJiYzg0Y2FmYjRkZDQ4NDE4NzZhNDg1NGIzZjY5YTFjNmI2ZDZlNzg1YzZlNTU1YTQxY2RlZDRmZmRhODBlIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI4ODRhMmY5MGY0MzA0YjQ5ZDE1ZDQyNGJlM2Q5MjU0ZGJiZjQ1ZGMzNjMwYjJiZTAwYWYzYTBlMTgxMzhkMzdiIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-22T08:58:44.659Z"
+  }
+}

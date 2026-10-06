@@ -54,6 +54,7 @@ from claude_agent_sdk import (
     TaskStartedMessage,
     TaskUpdatedMessage,
     TextBlock,
+    ThinkingBlock,
 )
 from dotenv import load_dotenv
 from events import (
@@ -873,6 +874,12 @@ class TextSegmentBuffer:
         cleaned = (text or "").strip()
         if not cleaned or cleaned == "(no content)":
             return
+        # Strip trailing hallucinated <system-reminder> tags and repeated answers
+        if "<system-reminder>" in cleaned:
+            parts = re.split(r"(?:\s*abc)?\s*<system-reminder>", cleaned, flags=re.IGNORECASE)
+            cleaned = parts[0].strip()
+        if not cleaned:
+            return
         self._parts.append(cleaned)
 
     def _join_and_clear(self) -> str | None:
@@ -1125,20 +1132,22 @@ class InteractiveAgentSession:
             # Build subagents: reachability over sub_agents edges (KI-1 fix).
             # resolve_registered_agents already excludes the root and any agent
             # that is disabled, unreachable, or has no system prompt.
-            for name, agent_cfg in resolve_registered_agents(self.team_config).items():
-                sub_prompt = agent_cfg.prompt.system or ""
-                if ctx_block:
-                    sub_prompt = sub_prompt + ctx_block
-                # Sub-agents get no preset and no append — guidance that is not in
-                # their prompt text does not reach them.
-                sub_prompt = sub_prompt + investigation_guidance_append()
-                subagents[name] = AgentDefinition(
-                    description=agent_cfg.description or f"{name} specialist",
-                    prompt=sub_prompt,
-                    model=resolve_model(agent_cfg.model.name),
-                    tools=resolve_agent_tools(agent_cfg.tools),
-                    maxTurns=agent_cfg.max_turns,
-                )
+            subagents = {}
+            if os.environ.get("DISABLE_SUBAGENTS") != "true":
+                for name, agent_cfg in resolve_registered_agents(self.team_config).items():
+                    sub_prompt = agent_cfg.prompt.system or ""
+                    if ctx_block:
+                        sub_prompt = sub_prompt + ctx_block
+                    # Sub-agents get no preset and no append — guidance that is not in
+                    # their prompt text does not reach them.
+                    sub_prompt = sub_prompt + investigation_guidance_append()
+                    subagents[name] = AgentDefinition(
+                        description=agent_cfg.description or f"{name} specialist",
+                        prompt=sub_prompt,
+                        model=resolve_model(agent_cfg.model.name),
+                        tools=resolve_agent_tools(agent_cfg.tools),
+                        maxTurns=agent_cfg.max_turns,
+                    )
 
             # Authoritative delegation list: overrides any stale static
             # sub-agent table in the root prompt.
@@ -1216,14 +1225,26 @@ class InteractiveAgentSession:
                 options_kwargs["model"] = root_model
                 print(f"🔧 [AGENT] Model: {root_model}")
 
+            # Apply model settings globally via environment variables
+            # Note: These apply to all subagents (Claude SDK limitation)
+            if root_config.model.temperature is not None:
+                os.environ["LLM_TEMPERATURE"] = str(root_config.model.temperature)
+                print(f"🔧 [AGENT] Temperature: {root_config.model.temperature}")
+
+            max_tok = 2048
+            if root_config.model.max_tokens is not None:
+                max_tok = min(root_config.model.max_tokens, 2048)
+            os.environ["LLM_MAX_TOKENS"] = str(max_tok)
+            os.environ["CLAUDE_CODE_MAX_OUTPUT_TOKENS"] = "8192"
+            print(f"🔧 [AGENT] Max tokens capped to: {max_tok}")
+
+            if root_config.model.top_p is not None:
+                os.environ["LLM_TOP_P"] = str(root_config.model.top_p)
+                print(f"🔧 [AGENT] Top-p: {root_config.model.top_p}")
+
         if system_prompt:
-            # Method 3: Append custom prompt to claude_code preset
-            # Preserves built-in tool instructions, safety, and env context
-            options_kwargs["system_prompt"] = {
-                "type": "preset",
-                "preset": "claude_code",
-                "append": system_prompt,
-            }
+            # Use direct system prompt to avoid 15.5k token claude_code preset overhead (required for local 16k models)
+            options_kwargs["system_prompt"] = system_prompt
 
         self.options = ClaudeAgentOptions(**options_kwargs)
 
@@ -1662,9 +1683,10 @@ class InteractiveAgentSession:
                                 yield message_queued_event(
                                     self.thread_id, pending_count=0
                                 )
-                            print(
-                                f"🔍 [DEBUG] Received message #{message_count}: {type(message).__name__} for thread {self.thread_id}"
-                            )
+                            if type(message).__name__ not in ("StreamEvent", "SystemMessage"):
+                                print(
+                                    f"🔍 [DEBUG] Received message #{message_count}: {type(message).__name__} for thread {self.thread_id}"
+                                )
                             # Get parent_tool_use_id if this message is from a subagent
                             parent_tool_use_id = getattr(
                                 message, "parent_tool_use_id", None
@@ -1784,6 +1806,18 @@ class InteractiveAgentSession:
                                     if isinstance(block, TextBlock):
                                         # Buffer only — flushed as thought before tools, or as result at end.
                                         segments.append(block.text)
+                                    elif isinstance(block, ThinkingBlock):
+                                        # Fallback for reasoning models (e.g. DeepSeek) that put the markdown report inside thinking
+                                        th = getattr(block, "thinking", "") or ""
+                                        if ("## " in th or "### " in th) and ("Kết luận" in th or "Verdict" in th or "Bảng tổng hợp" in th or "Khuyến nghị" in th or "|---" in th):
+                                            for marker in ["## Tóm tắt", "## Kết quả", "### 1.", "## 1.", "## "]:
+                                                idx = th.find(marker)
+                                                if idx != -1:
+                                                    report_body = th[idx:].strip()
+                                                    if report_body:
+                                                        print(f"💡 [AGENT] Rescued {len(report_body)} chars of report from ThinkingBlock into segments", flush=True)
+                                                        segments.append(report_body)
+                                                    break
                                     elif hasattr(block, "name"):
                                         # Same-message tool-use: flush narration before the tool boundary
                                         # even if PreToolUse already queued (or not yet drained).
