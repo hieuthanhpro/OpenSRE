@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:68dc247e00b437502de2f122ce9f6d90506d4cb8fa83ff73c64d37cfcf878433",
+  "claims": [
+    {
+      "id": "claim_ba8daff5b7314db992ba943f1ce6a5dd",
+      "statement": "Invoices.create handles invoice creation in two input modes: JSON (routing to ESP e-wallet or ESHOP MSP connectors via Main.mspConnectors) and VPC (decoding Base64 merchant data and dispatching to the first matching MSPConnector).",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/msp/resources/Invoices.java#L134-L164",
+          "version": "repo-lines-v1:sha256:7ebeb3d4b3f5b2a562043208d4451b8a86d0c1f5001c0322ba1f552dd923bbfc:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE0MmU4NjRlYmY3YjcxMTQzYzQ2ZGUzZGI3OTFmZmMzNTAyZmViMzljYzM5MDhlYjMyNjNmMmQ3ZWVhYzEwMTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBjNjQ3OWNjMjMwNDQwZmQ0MWU4MjI0MjE4Njc5Njk4NTU5ZDI4OTNiZDY3YjQzODBhZmFiODExYjM4YTU1YWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhiNWQwMWZkMmRmYzgzMGY1MTZiMGUxY2FhZDg2OWJjZDk1MjFhM2FkNGU2NGU4ZjJhMWNiMjI0NTM3YmZkNGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM5MTVhZGNiZjA4NjgxN2UzNGEyY2I1YTBjOGM2YWRiZWUzZTEyOTkzODc0ZjZjNjQyMjI4OTk4NmYwY2Q4YTYifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/msp/resources/Invoices.java#L1902-L1936",
+          "version": "repo-lines-v1:sha256:1b49cc28574d0fdffec76778ce73a2a83a20d504f23ecf0637409e72a1cf71ad:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkYzA1OWZjOTA0ODAwZGU3ZTBjYjdiNjI2MzAzOTAxZDkwYjkyYmJlODM4N2E5NmUzMDI3YjJlYTVkMGNjZTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyMmU1MmJlZGQwYzE3ZmMzYTAxMzQ5YzkxZjZkYTdmMzMxMjZmZmIxOWUzYTc4YWY5YjRlYmMyOWNiMGU2OTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU0YmNkZjQ1OTExNzU3MzFmNzU4YTg5ZTc2MjRjMTk5YWUwMWNhNjAxODI5MGEyMTRjYzVmMDAxMDIwNjhlMmUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fae93df990ba4774914999166135ab13",
+      "statement": "VPC invoice decoding validates merchant authenticity by recomputing the VPC secure hash against merchant credentials from the DB (including a default hash code) and checking the access code, throwing INVALID_MERCHANT on failure.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/msp/resources/Invoices.java#L1236-L1259",
+          "version": "repo-lines-v1:sha256:e506ebda37cb813d5e030935f09f78ec0a9c639f0d6a5b3e2ba2c018025a278e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhZGUwM2JkMmE4ZmU1NjE5NjViMDUwODk0OTAxOGZlNGRiNmVjN2ExNDEwNTRhNDkwYjM3N2QyNzNkNTljZTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1MjJjNDJjZDE5YzZkMDNkODA4YzQ1MjcyMDU1MjgyNWI3ZWExYzViNDkxYjIxODUxMWNhYzc0MTVjZjlkOWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM1NTQwNzY0MTA1MWE5MWVhMTI5MGM5NDY4YjI3NDhiYTM3MGE5NGIwNTJhOGNjOWY1MTAxOWM1OTE0N2M5NmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkzNzJiZjBiMDJmNGU3NmZkNWM5MTQxOGEzNjRlNTUzMWZiZmExZjMwNTI0OTk2ZTg3YTE5ZDliNDM3ZThiMzMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e8836d5ba9d84c268bd7ad213dde1d8a",
+      "statement": "A new invoice is persisted via InvoiceDB.createInvoice in state NOT_PAID, an INVOICE_CREATED notification is emitted, and if a token accompanies a payment the token is validated (hash lookup, group match to merchant token group, user reference equals customer id, APPROVED state) before a payment is attempted; failure throws VALIDATION_ERROR.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/msp/resources/Invoices.java#L174-L260",
+          "version": "repo-lines-v1:sha256:a535cfd804ede5f5ff972e766ac89b80edbb890e6c32252b0a0c781a25460e13:eyJzZWxlY3RlZExpbmVDb3VudCI6ODcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRlZDQyYzQ0NDlhZTAwZTFhZjY1OGUxNWU1NjNhNzI0MTEyNjQxZmU1MTU1NzNkYjdjOTkwOWMzN2Q0ZWE2NDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM4YWIxOTBjMTY2MjJhM2NlMTZiMjM5NDdkOTQwMGI3NWYxN2IyMDAzNGRjMzFjZjlmYzE5NGQ0NzJjYjEwMzMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgyZjlmZmFiYzc2YzNhNjMwYmY5M2RlOGJmNGYyYTM5MWVhYjZlNjEwZmM5OTYyZGEzMWRjZWE3NzgwZTQ2MmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk2YWU3OTI1MzcxYTRhMTdlZDJiZjJkOTUzM2NiZjdiZWJkMTk1NGM2NzFmNzYzNzgzMTY0NDU2MTYxMWNlZWEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2aec7103c5ba46b198a94d6f59af511c",
+      "statement": "The token payment path calls Invoices.createTspPayment, then on completion updates the payment via DB.updatePaymentWithToken, persists any authorization returned by the TSP, and transitions the invoice to PAID (payment APPROVED) or CLOSED (payment FAILED), setting the merchant return URL and sending PAYMENT_APPROVED or PAYMENT_FAILED notifications.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/msp/resources/Invoices.java#L262-L320",
+          "version": "repo-lines-v1:sha256:32e2f8b2f45f710c69cce701313b080faae8c7fd48149d1fdae3cff420e6fbde:eyJzZWxlY3RlZExpbmVDb3VudCI6NTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBhY2Y0MzYxNGU4NDM5ZTFhMzQyMzBmOTFkMDhkOWQ3NWUwYzc2Y2YyZjhhOWViMzhjYjg4MGM5ZDlmYjQ3NzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNkYWNhM2U0ODI1MzAyYTRlNzFhZjI3OWVjMTEwMjVjNWNkNzM4M2EzOGQ4NGI0YTc3NjAyNTdmYmJkZjU4YzciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQxYWE1N2ExY2JmMGRhMDQyY2NlZGI0ZWJlZWEyMDEzNjQwMDJmYjYxOWQyMzk0M2ExNjVjMTA3MzBmNjdlNDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI0ZjNmZTJlYmU0NzA0NjVkMDI4ODBkMWZhMjU3NWQ2YzFkZDAzOGE1MGFjOGQ2M2Y3MWU2OWMyZWRmNDQ5ZDAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_323f52a20ce04ca4924b9047dade1bb5",
+      "statement": "Invoices.createTspPayment increments the token sequence, derives a dynamic CVV from the token secret via HMAC-SHA256 over token number, expiry, sequence and pay time, updates the token sequence in the DB, and sends a PUT to the TSP payments endpoint; a successful response rebuilds the payment and attaches authorization links when the state is AUTHORIZATION_REQUIRED.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/msp/resources/Invoices.java#L425-L440",
+          "version": "repo-lines-v1:sha256:ee89339e000583c0deefeb97b6a4ed36023530808223735e1207872d07fa68e3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ2NjczYTE4N2RlZTliOGE5NzM4NDlkNjlhOTUzOGVmZDMzNzYwYmQ0NmZlNDIwZDkyZDJjZGI2Nzg4ZWU4NTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBjMGU1OWNiMzQ4N2UyMmViN2JjMDY4MDllNWEwZTQ3NjRjM2MzYjFlZjVhZTBiNzJkMDEzZWRhNTQ4Y2IzNWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI1Yzc5MmJjOTdiMjkxNGYzNjUzNDdhNGNkOTI4YmVmZTBiZTk4ZWI2NjdkMDdkMWY4NjM5YzMzNmJhNGJjZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ5ZTVlMGYwNzAxMDExNjhlMjBkN2ExZjAzMjQzY2U4NDc4MzNhYzZiMWIwNWIyN2JlOGY4MjRlNTJmOWE0YmEifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/msp/resources/Invoices.java#L512-L685",
+          "version": "repo-lines-v1:sha256:611632f9298395b9a1223d968d7e18cb1012b3a895bea3bb26997462fdf13725:eyJzZWxlY3RlZExpbmVDb3VudCI6MTc0LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJmNmE5MWJhMzUxNjYzZDk5OGEzZmQyMTI0NWUxMzk4YjhlOTgzZDYxOWY0ZGEzODQwYmQ2MWU2YTIxNTYxNGRlIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0ODkzZjQwZTM3ODFlYjg5NmM4MmQwNDZhMDgwNjdhMTFlMzVjZGYyZjFkZmFmMjZmZWE5MGI4ZGI2Njc2NDEzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI2ZTIxYjZjM2EzZjVkM2ZiYzc1Y2Q4MzdjNzMxZTQ3M2RhYmZmYjUzM2RhNTY2ODQ0YmI1ZWRlYzk4NGMxOThiIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI2YjdmZDA5NjJjZDEyODQ1OWJjNDU4NjVmY2Q5OTQwYjMxYWYwZmZlOTFlMGMzN2IxNzlkYjhmNDViZTI0Nzc5In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_898799d4717d441583708a404aea79cf",
+      "statement": "Payments.create locks the invoice, requires the invoice to be in NOT_PAID or UNPAID, rejects additional payments when the merchant maxPayment limit is reached or any existing payment is APPROVED, PENDING, AUTHORIZATION_REQUIRED, or MORE_INFO_REQUIRED, and verifies the instrument BIN via Payments.isBinAllow before proceeding.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/msp/resources/Payments.java#L41-L134",
+          "version": "repo-lines-v1:sha256:deb5fb981733ed2f1589c90b9de3d751ebc75ea6f4e277d95c2a77484152d0b3:eyJzZWxlY3RlZExpbmVDb3VudCI6OTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk0YmJjODRjYWZiNGRkNDg0MTg3NmE0ODU0YjNmNjlhMWM2YjZkNmU3ODVjNmU1NTVhNDFjZGVkNGZmZGE4MGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQzYmM5OWQ5ODNlNGNjMGMzYWIwYWFiNzY4OWNlZGRiNjkwZGMzZGZjN2I2M2FmOTUzZjJjNjRhOTM2YzY2ODUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIwMGI2YWRjZjM2MWZjNDQ0ODYyMTMyMmQ5ZGQ0N2Y2ZDhhODMxZGEwY2M2NTIxZTRiNzAxNWRlOGU1MDQ0NjAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cb1e4260919a400c916f152263745051",
+      "statement": "Payments.isBinAllow builds a service identifier from instrument type, brand and swift code and checks merchant card rules from DB, first applying deny/block rules then allow rules; a BIN matching a deny rule or not matching any allow rule is rejected, otherwise the payment is allowed.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/msp/resources/Payments.java#L1779-L1811",
+          "version": "repo-lines-v1:sha256:4712bef26f9221b6e83b3287e997f74d294d49282585b5e661dc6923fd335f06:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI0MGIzNTZlMzQwM2QwYTU3MzJjNjQzNjI5ZGM0NjU4YTEzYmFhNGJlNzAwNWM2MDQ4ZThhZDIwZTY3NjFmNDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFlYTMwYTM0N2EyNjExOTcyNWZiOWNiZWEyNjQxM2FjMjM1Y2YwOTBjZTEzM2FkMGNjOWI1MmMyOGI4ZWI3ODYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ4ZTlkZjQwMDk5OGIwZjA2YWViMGYxYzU2NTQyYWUwNTBjM2QxMTgyOGJiOTViZDE2M2FjMjc1YTQ4OWRmOTAifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/msp/resources/Payments.java#L1824-L1851",
+          "version": "repo-lines-v1:sha256:3215e1daf1db829d4e1b9cd67ba13d8ad0c3ecc8c90e1f0bef63a630e1841a66:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY3ZGI4NGQzYTk1NTcwNGUxZDEwZjk3ZjdmN2YwOTViNzA4MDBiZTdmM2RkN2NhZWIxNjNlNzAzZTNiYTgxMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA0MjM4MzAxZjViMjRkMGM2NmQzNWU0MTg2NjYwYTBhZDk0ODI2Y2QwMTUyMDI3ZjllYWU4YzVjNDRhMTZjMmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYzMjY2MDdlNWUwZDczNWM2MDAyMTdlNzQyYjNhMjAyMmMzMTY1NzdiZDU3OGNlNDk5NWYxMjNlZGE1MGI3ODQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8794ae59fc8d48d8a9e8fc590869c707",
+      "statement": "Payment creation applies three-step processing: createStep1 collects instrument/amount/currency/installment parameters (including installment fee validation and customer fees), createStep2 builds and persists the PaymentDTO via the matched MSPConnector, and createStep3 sends PAYMENT_CREATED and then PAYMENT_APPROVED/PAYMENT_FAILED notifications, closing the invoice on failure when maxPayment is reached or the instrument type is UPOS_CARD.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/msp/resources/Payments.java#L279-L330",
+          "version": "repo-lines-v1:sha256:a20d394f45e739b4337b6a981f012d51a256dac6aa68962d77fbc5c85d926479:eyJzZWxlY3RlZExpbmVDb3VudCI6NTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlkZDIxZTBkYTM2M2JlNWMwZDYzMTdiZWRjYjE2M2Q4ZTVkYzg2YTRlNzY3MTVlNWM5NTk5NjFiYmVhNzczZjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmMDViOTQwMjE3NDMyZTgzZDk5OGY1ODRjODVkMjI4YTU4YjE0NzkwMzgzMzU3N2I1YzgxZGZkZDM3MzBkM2UiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEyY2MwZDQ0ZGRlMzkxMDE4YTQ1OWMwNmIwOTBlZWVjOGRmNTA0MTg4Mjk3MzIwMmQwYTc2NWZjOTM1NjRjYTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYxYTI4ZGY2NWRjNjk3YzkzOWE4MjI2YTkzMDhiNzc3YTEzNDM3ZTMyMjUwOWNiMjQ3NzU2MmFhOTk3ZGQ4ZjMifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/msp/resources/Payments.java#L628-L937",
+          "version": "repo-lines-v1:sha256:63190ee4097f83291d129c5e48fbf4292d347ec87fd05b8fce7169303cbf1e23:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEwLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJjMzkwMmY0Njk4NjEyMGM0YTc5MzUwZDkwODc4OTM5YjY1ODQ5NWE0YWQ5OWY2MDBiYjVmNTBjMTNiNTIyNmYzIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0ODkzZjQwZTM3ODFlYjg5NmM4MmQwNDZhMDgwNjdhMTFlMzVjZGYyZjFkZmFmMjZmZWE5MGI4ZGI2Njc2NDEzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlMmE0OWVhMWE1ODI4NDA5ZjA5ZGZjMzQ5MDY1OWYwZjA1ZDRhNmI0OWIwNDllMDQxYmY5ZTA3OTY4Y2FjMWE5IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI1MDBiOWI3ZWZlNmVkMjMzYjI2YjhkNjgxYzQ5ZmQ4M2Q4YTk3N2ExZTdlNTNjOTQ2NzkxNGJhYTU3NTYzMTFlIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_93ee92a5a12649038f1fdf2759e79b9d",
+      "statement": "Promotion validation for WSP/VPC payments calls OnePAYPrsp.createPayment before the actual payment is created; only on a success or PAYMENT_WITHOUT_PROMOTION result does the flow proceed to createStep1, otherwise an INVALID_PROMOTION error is returned.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/msp/resources/Payments.java#L141-L275",
+          "version": "repo-lines-v1:sha256:33dd3a192f71ebaaa6fd1f61f92dc167415ed969fdfe4b009fcd1cd338b1c7ad:eyJzZWxlY3RlZExpbmVDb3VudCI6MTM1LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIxMmM2YzExMzc2YzMzNmQwMmQwMGZiMmUxYTg4ZmQ2NjZmYmM2NDlhMGI2OWI2MTJmNjNmZjYwNjdjOGY5NmRmIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0ZTQ2MmJkODVlYTM1MjI4MjJhOWFkM2ViMjQwOTliMDMyYTFiNjI3YmVjZmQ3YzU4MzFlOTkyN2Q0YmFjNDBlIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlNzcxMTc4ZmFjY2RhOGYxMjFhNGJiNGM3MmMxOTFiZmZmZTQzY2FjNTM2ODZjNzE0YjU2MTFhNmI2YTQxMmIzIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJhMmNjMGQ0NGRkZTM5MTAxOGE0NTljMDZiMDkwZWVlYzhkZjUwNDE4ODI5NzMyMDJkMGE3NjVmYzkzNTY0Y2E2In0"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-23T03:48:15.044Z"
+  }
+}

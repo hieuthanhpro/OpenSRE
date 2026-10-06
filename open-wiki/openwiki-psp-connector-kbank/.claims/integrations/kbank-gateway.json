@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:63913c3352c516beeec5d18a0e274f6e6bc5677747699b510ba10990ddf40410",
+  "claims": [
+    {
+      "id": "claim_5ea3060002944df09ed1971ecec00952",
+      "statement": "KBankGateway constructs per-request KBank headers with a UUID IV, encrypts the JSON plaintext payload with AES-GCM via KBankSecurity, produces an RSA/SHA-256 signature over that plaintext, and sends KBank requests as JSON {DATA, SIGNATURE}.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/kbank/KBankGateway.java#L323-L341",
+          "version": "repo-lines-v1:sha256:3ddf61b87d958d0b47c3be84b5e629c9447f46a4f0f59c9dadd27790a2e93867:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM4NzhhMDdmNWU3MGFhMjU1NTZlYTAwYWVkZmVhNGRmOWVmOTllZTg2ZDI3NDI3NWUwM2I3ZTk3YjRmY2FkNDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgwNzVlNzc4YWI1Yzk5ODY1NmU3NGE3ZDAyM2U1MzMxOGMwMmE5MWM4ZDk5MzFlZDRjYmIwMzQwMDU3YThmOTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQwNjIyZTQ4Y2E0YWI1NWE3OGVhZjJiZDc0OTYwY2NkMzZmMDhiOTdmNmYzNmEyYTMyMDU1NzhkNDkwNTA1MjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkyZWI2OTEwZDdjYjA4NTgxN2Q3YTk4ZTY0YTRjNTk2ZmI4NDk0MWZjNGUwNmEzNzI2MWQ5MmQwZWJhY2YwMTMifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/kbank/KBankGateway.java#L468-L502",
+          "version": "repo-lines-v1:sha256:4f3ff9e833518e26a7589fd6232f45c4d1856f0d14a7209a750458c67fb795de:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhYmIxZDA3OTUzNTIwY2EwM2I4NTNmMGIxYWY3ZDc2ZTRkZTkyNDk4MDg2OWI5Mjc3NzU4NGIzYmIyZDIyOTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3OGU4NzI5Y2VjNGFhZTExOTY1N2U4OGJmYTY5MmY4NTBmOTM2ODhkYzE0YzU3MzRmYzQ2N2E4ZWU0MWYyMGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk5OWJkZWZlZWFjYTYzNDBlMDI5MGRjODZlODg5Yzg5ZDVlMTg5YWE1YmE0NGI1ODViM2I3MDczNGY0YTYyZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNiY2M4MjJjZGJhNDM1YjdlYzQ1ODAwMGRlMzYzNzNiOGUzODRkYjRiMWI1YjY5NTlkY2YyMWZjY2ZmYTUyNTMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8cd61186573e4f019f0868ae08259f1d",
+      "statement": "KBankGateway.addPaymentMethod orchestrates the add-payment-method request and branches on KBank response codes into an OTP flow via sendOTP or a deep-link flow via getDeepLink before returning authorization_required, failed, or deep-link metadata to the caller.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/kbank/KBankGateway.java#L90-L236",
+          "version": "repo-lines-v1:sha256:8771c688c2859ef6aa189263fb840c9a7138291f2e1bc3d257888ec68e4ac809:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQ3LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJjMTk1ZGUxYTkwOGY5NWFmZjEzOGE5ODRmMjY4MGQ5ODAyMmQwZTZhODU1NWVkYjYyNTkzOGU3NGZhMmE0ZGQyIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIwYzY0NzljYzIzMDQ0MGZkNDFlODIyNDIxODY3OTY5ODU1OWQyODkzYmQ2N2I0MzgwYWZhYjgxMWIzOGE1NWFhIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI5OTliZGVmZWVhY2E2MzQwZTAyOTBkYzg2ZTg4OWM4OWQ1ZTE4OWFhNWJhNDRiNTg1YjNiNzA3MzRmNGE2MmQ4IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlMTVjYTIzZTI2ZDVkODRlMzZjZjg0NmZkNzM1OWMzYWM0MDQ0YTExYzM3NTRlZTA1NDhiMjg2MWEzMzhiODNjIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_718ce307505a413aa1c0981ff614590a",
+      "statement": "KBankPaymentServiceProvider.paymentPurchase inserts a local payment record, resolves merchant MSP configuration, then invokes KBankGateway.addPaymentMethod and persists KBank response states and authorization metadata back through PaymentService and AuthorizationService.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/kbank/KBankPaymentServiceProvider.java#L61-L206",
+          "version": "repo-lines-v1:sha256:a5ddbd29836764d75e9fbe9c9a9bb31734f24109c0d477271c010b3d04ce983c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQ2LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI3NzBkZmU4YWVmYmIyNzg5YTJiOWFhNTdlM2U2NjUwZGE4NDEwNTdjMDk0M2FjY2ZkODJlMWZhN2M4OTNmYWM0IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI2N2NkYTgyZGE2MDYyMzhlMDVlNjIzOTk1NjljNWVlMDM5OTM0MTk2NDhhZTVkNDNhMmJmOGNkNjM0N2Y4MjYzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlNjg3Mzg2OGRhNWNhZWQyMWM5ZmRmNjk4NjJiMGRhNTQwNjllY2RmMTg4MmMyMTY1MzU2Yzc0ZjVhN2QxZDAzIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIzYzlmYzQ3NmRkNjc1YWYxY2I3OTk5OTk3NWNiZWEwYjYzYjhiNzJjYTZmZmMwYmVjYTMxZjEzYWU5MTI3MTY0In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_dc741a6035e54b9b88e3afe8ed3b2687",
+      "statement": "verifyOtp and verifyOtp2 call KBankGateway.verifyOtp against /check-otp, and on success re-invoke add-payment-method to retrieve an accToken before completing payment settlement via KBankGateway.payment and MSP settlement updates.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/kbank/KBankPaymentServiceProvider.java#L297-L523",
+          "version": "repo-lines-v1:sha256:fac63a81befbd433cbf68eef2bb93a6f741884de2946f0efe4a8a374e82a3085:eyJzZWxlY3RlZExpbmVDb3VudCI6MjI3LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJmMDhjYzE1ZDA3NTRiNmYyMWY3MWUwYjAzYjlkZDc4NmJjOTg4MDAzYjJiNTc1NjRjNjA1MGE4MDIyNTE3YzVlIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI2N2NkYTgyZGE2MDYyMzhlMDVlNjIzOTk1NjljNWVlMDM5OTM0MTk2NDhhZTVkNDNhMmJmOGNkNjM0N2Y4MjYzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIwM2YwMTU0Mzc2ODgzOWU5MDRjOTg1YWQwYjIzNDc4OGJkYjBlNWRjZjJjYWRjYzJlMjk5N2RlYjJkMjRlNGMzIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI5NzI2NmNlNmY1ZTU3ZTlmOTA3OTU0YTZkMWNiOGU0MzIyMGIxOWNiZDlhMDQyOTAwZjlkMTA3NWNmYzdiMDk2In0"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/kbank/KBankPaymentServiceProvider.java#L534-L733",
+          "version": "repo-lines-v1:sha256:04998b80514897c5aa1d3a9c4df3e885865960a36376a2f5708d44c02a1a64bf:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAwLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJmMDhjYzE1ZDA3NTRiNmYyMWY3MWUwYjAzYjlkZDc4NmJjOTg4MDAzYjJiNTc1NjRjNjA1MGE4MDIyNTE3YzVlIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI2YTJhM2I3NmUxMmNlMTUzNzlkMDVmMjg2OWRjNDgzMmRlNzU4OTA1M2I0OWJmZjIzN2U0MjVjNzIzNzgwMTU0IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJjYTFiMDdjMzY3ZTUwMDZjYmYzMzgyM2IwOGIzZjNiMDllZmY0ZTlhYmMwZTNiNGEzMjQ1MzUyNTExOTcwYmEwIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIxMWEzZjEyOWY2ZjE2YjM0OTdjZjY0ZjVlNGE2ZTdlNTg3NzhjNGYyMTk2YTcyZmY4MGFhYjU3OGRhNjliYzE0In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_7ca00694a3bb4b36934f96481fef6ff9",
+      "statement": "paymentRefund2 restricts refunds to approved purchase payments, calls KBankGateway.refund against /cancellation, and maps KBank response codes including 018 to approved while mapping signature or other errors to failed refund states.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/kbank/KBankPaymentServiceProvider.java#L208-L295",
+          "version": "repo-lines-v1:sha256:da7266beccaf85a51d3f842305c838fe90cfe449874bfd79e2c4bd5d5b8ac884:eyJzZWxlY3RlZExpbmVDb3VudCI6ODgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYwOGNjMTVkMDc1NGI2ZjIxZjcxZTBiMDNiOWRkNzg2YmM5ODgwMDNiMmI1NzU2NGM2MDUwYTgwMjI1MTdjNWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFjYjVmODUwYmU4YTU3Y2I0ZWFhNjJhZjNhYWJiZjJlOTBmN2I5NjYzMDcxM2Y2ZTQxMDEzYjkwYzMxOGNkMWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEzNDZmZGY4ODZhNmFjOGM0ZGQ1MDJmMDRkYTBhNDk3NmZmMDAxMzc2NDI2MjY1ZTc3YjBlNTc5ODVjOGZmNGEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fdecdae41e3b4b1887f57827c646febd",
+      "statement": "Util.checkSignature decrypts KBank response data with KBankSecurity.decrypt and verifies the RSA signature via KBankSecurity.decryptedPublicKey, returning the plaintext JSON on success or attaching errorsig/kbank_status_error on failure.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/kbank/Util.java#L486-L515",
+          "version": "repo-lines-v1:sha256:a7def4b73df7f9ec4930d720017434cb64f1fbeb7ffee824d887eab962f2cb21:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYxZWZhMTJiNWYwYWRiZGViYjZmNGQ2NmY5ODMwNzFmN2E2MmIyMzJlZGU1ZmExMWUyYjA5NjI5ZWM0YjA1ODYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQyMmZlNWM4NDZlNWExNzYwMWM4MThkMDdjZDhkZWU0ZWVkZDc1MjEyZjViOWRhZDYyM2RmZjEzOTlkNDEzOTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJlNTMyODQyZTYxYWM4ZDk3OGZhYmVjM2I4NmYwMDk5YzViMWQzOTM2Y2RmNGYxOWMxZDk3ZmIxYTVkYmJjOGEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b805b85d16be4ea1bead38bf756f002b",
+      "statement": "All outbound KBank credentials, partner identifiers, and cryptographic key material are initialized once at startup from app.properties in Main and stored as static state in KBankGateway and KBankSecurity.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/Main.java#L78-L89",
+          "version": "repo-lines-v1:sha256:3df16359b91de1578e93654d526cf247819c637498fea0d0a683767be7a7dce9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgzZmVlNGZiNGZlZjc2OWUwZjM2NTYxNzg1ZTgzZjdkM2Q2ZjMxZDZlZWY2ODk5NTE5M2I5YTFmYjUwMzdjZTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRlNWQzYjQzNzY2MmE5Yjg3ZjUzNzQ4NGIzMGZlNTY2ODMxMjlmODFjNDg3OWU3ODBjZDlkZGYyNTAyY2NkNzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY3ZDU4NzkyOGY1MzQ3ZjU2MzQ3MzQ2OWRiMDRjODFkYThiNGI0MDIxYWQ5MGI1Nzc3ZTNiYzgwMjFjNTU1NTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRlMGVlMzVjYThiNWIzOTE5ZWNkZTEzNWQxZmFjZGIxNTZkZmQzZTdjMTQ0YTcwNTNhZWQzOTBkMmI5MGE0N2MifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-25T07:01:46.974Z"
+  }
+}

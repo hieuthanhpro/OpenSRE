@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:816cf64096260fbafee8ce7802adac86c2726a395df6ee4b26711ac6e674e369",
+  "claims": [
+    {
+      "id": "claim_73754e56271c4f32bb0271cdd7109c2c",
+      "statement": "The application configuration is built at startup by reading `app.properties` from the classpath, templating it with a `TemplateProcessor`, and loading the resolved properties into the shared global `Main.p` object. Secret values use `{{ path/to/secret }}` placeholders consumed by the templating step, and a failure here terminates the process with `System.exit(1)`.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/Main.java#L41-L53",
+          "version": "repo-lines-v1:sha256:3bebd3540b4591f8bda2210d7b7c6b167981a5a6626518ea7af98dbc46a28a9c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQyYTA2MmZmODg3NzU1YjA2ZGRlZTk2MjcxYmVjYjZhMTk2YmU5Yzg3YzFjZGFhYmY3MmQzZTkwNmE1Yzg3MzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YjA0NDkxNDY5NzIyZTgzNjNhOTRlNDA0NDUzOGUwMTNhMmEyMTdlMzZiMWU1NjhiYTYwYWNiN2I0YzhmMmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMzNzIwMTQ1M2U4MzE5NzFhNzAxOTM2MzFiMzZiMzVmODA4ODJkY2QxYTU1OWU0YTIzYzcyYzUwYWQ3NGRmNjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMyMTAxN2I4OTI5YWY0MzhhMDVmMThmYTdjMDRkMmI0YjFhM2UwMGYyZDY1MGU1NGJjOTY2YmU2ODk0MWU0NDMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9fa02f1e39094cfc8c791b3ac7074227",
+      "statement": "`Config.java` is a facade for the OneComm provider's system-property overrides, reading values like `uri_prefix`, `onecomm_service_url`, and `fsp-go.service.*` from Java system properties with hardcoded defaults, and is consumed by OnecommGateway, Fraud, and OnecommPaymentServiceProvider.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/onecomm/Config.java#L6-L50",
+          "version": "repo-lines-v1:sha256:dacfc65305fee2c891e2bb53a15afe77606e3cdb2cb8ab75efd9902dcebad2c1:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4NDY4ZDU4NTMxYjg5NDU0YjI0MzVjYmRkM2U2OTRiMzZhMjNiMzFmZGY2NmE5YmMxOTQ0MDc3NDg4ZjNkZmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA4NTQwNjQ3OTAxNTFlMGE0NzUyMjZkMWUzMzQ1Njg4N2RjOGU1ZTYyZWNkODhiNDFiNGJmZTE0N2FhM2Y5MWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c8a810730aa944a1ad8d91a1b0c62fe6",
+      "statement": "The database configuration from `Main.p` seeds two HikariCP data sources: `PSP_CONNECTOR_ONECOMM` from `database.*` properties and `PSP_CONNECTOR_ONECOMM_PAYMENT2` from the `database.payment2.*` properties, each with independent pool sizes and Oracle connection settings.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/Main.java#L55-L96",
+          "version": "repo-lines-v1:sha256:78eb482ef3ab69a71aa0bbe0e56f5390894df6ddfab11e3732f9dba4b4c63e83:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA5NmM5M2JlYWVlMjA2YzY5NzgwMDlhZGU2NGQxNDMwMDcwZjg4MGE2YWYwYTgyMGY0YWYwOWFkMjFmM2M0NDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiYjQ0NTc4ZTdkNTMxYWUxYThhMzg1NjUzZTY2ZDYyMjIzMzA3NDE3ZjZjOGE5NDRiNTlmMzljOGY1YjA3ZTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE1ODYxYTNhZGUwMzMyMWQ3NWMzM2Y4YWEyZDg1ZWIyMmQ3ZGZhMmY1YTQ2N2VmMDcxYzUzMDc2YzVkZDA0MTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY1MzRhZDViMjAxODZhYWU3ZWE3ZmU1ZDI0NWJlODA0YjBlZjJjNmEzMjcyNWExMGMyMGRkMmEwODJlNTc5ZmUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8bc42f9b61ba4fe39ac355340954c647",
+      "statement": "Startup wires `Main.p` values into static handlers and server construction: ClientAuthorizationHandler gets service name/region/auth type/algorithm and the shared Properties object, the payment provider gets the verify-card merchant, and PSPConnectorServer receives worker/event-loop pool sizes, timeouts, and network binding values.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/Main.java#L99-L152",
+          "version": "repo-lines-v1:sha256:897686f0e51e6ef17a0a897108892c480db2c30af0bf0f2ca988f8d8ba1a5718:eyJzZWxlY3RlZExpbmVDb3VudCI6NTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ5NTQ3NWJjNTlhMjMzMzNmMzY2MWVmNTE0NDk2YjRkZjdmMTM1NDk1YjZhOTZmYTFjNTU1NWY0YTBiZmNkM2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhYWNlOTNlNDM0MTMxMTc5ZTVhNjhkMzliYzM2NGI0MzU5MWI4ZDRkM2NmZDg0YzdmYzAzNDA2ZjU3MTgzYTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhkYjBkMjMyZjViNWY1OWE2ZTI4OTQ2MjA0ZDcxNTIwYjRkYzNjZDIzYjBiZmU4MDZmZWQ2ZTU3MzIwY2U0NWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM3OTRkMDJhODEyMTk0NGQxNzZkMjY1ZTliYjljYzU5ZjZhYjg5MGJjYWRmOGFlZmRlYmRiYmI0ZjJlYTg0NDQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8276745ec1ad41b4a3ec2a4b552650a5",
+      "statement": "OneComm response status codes are configured as `onecomm.status.N.code` and `onecomm.status.N.desc` pairs, and OnecommGateway maps transaction response codes to these names and descriptions at runtime, including bank-specific overrides via `onecomm.status.N.bank.M.*`.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/resources/app.properties#L67-L134",
+          "version": "repo-lines-v1:sha256:3b185d95be219d23397b063fc8f26fb705245bfc1f6f163873e4f965875003c0:eyJzZWxlY3RlZExpbmVDb3VudCI6NjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExYjAzMzI1ZGNkZDdmOWZkZWFjMTZhNzNlNzcxYmQ5ZTFhMzY2ZjlhN2MxMDIwZGUyMWZiZjUyMzk5MDNiMWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3MjVkZmY2MjQ1NzkzYTA1ZTYzMjMxNTA4NDU3MWZmNWRmMDA5ODJiZTFiYzgxZjM1ZmJjNDRlZTk1ZDZjOWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRmZDk4YzlhYmY5MTI5ZWRjOTQ5Nzg3NTExNDI5NWNkZWU3Zjg0MDEwNzJmYjg0YjdhYmU4ZDVlNmZmNTE1YTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYyYzQ2ZDdlZGUxNzhjNmY5NmYxNzU4OWY5NjM5ZjQxMTZiMWYxYTExY2UwYjdmNDZiOTllNjg4ZTc5ZjczOGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7325d1aefdc24d10be09204ac73b829d",
+      "statement": "Napas integration is configured per wallet with `napas.client_id.NAME`, `napas.client_secret.NAME`, `napas.username.NAME`, and `napas.password.NAME` entries, and NapasGateway reads these from `Main.p` to obtain OAuth tokens against `napas.oauth.url`.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/resources/app.properties#L212-L231",
+          "version": "repo-lines-v1:sha256:3156c01321c8daceb473843252c0606329a65a09269b99834c905b1e9a7e99e6:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBiNWI1NmY0YThkNjJlOTMyZjAxNDNkNzZlNDFiYjI2ZTkzMzQwNzZkNWI1Mzk0MGVkMmE1MjE2ODU3NzA1YmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM1NjcwYjc0ODczNTFjMjdjMzIyYThiZGRhODk2Njg1ZDM1NDk4NjExMTYyMmM0MmRlMjdmMmEzYTQwN2JlMDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdlZTM1OGJjZjNjN2JmODNiMWM5OWQ2NGYwNmRjNDQ5ZDRhM2Q0MmViZjRkYThiMmYwMTg4ZWZhMDMyM2FlNTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE4MmEyM2JhMTlmN2E3NWIzZjBiNzdmMzU1ZjhkZWM4MzI1MjQ4MjQ0NzBjZjQyMGQ5NTY0M2U2M2VkMjg0YzkifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-23T03:50:02.660Z"
+  }
+}

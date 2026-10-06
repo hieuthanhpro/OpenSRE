@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:22810d6e165709062fc8683096c9cecac7b6296242d441681b560626b5d047d7",
+  "claims": [
+    {
+      "id": "claim_7b06e4f3e39240ecaeda821733b67d6d",
+      "statement": "HttpServerHandler gates both crypto endpoints behind checkSignature; a request whose Authorization signature does not match is short-circuited to 401 UNAUTHORIZED_ACCESS before any routing or crypto dispatch.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServerHandler.java#L136-L214",
+          "version": "repo-lines-v1:sha256:8b1c5f6ddfd32be5c32926a0db1324ecdc7ac258886952b10ba69464cad35a55:eyJzZWxlY3RlZExpbmVDb3VudCI6NzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzMjIwZDI1ZDBmMDA5MjM1NjViYWMyMGFkNTY0ODEzYzg3MzEzYmVmZGE0MDk2MWUxYmY4ZjE2NTM2Mjg4YjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1MjJjNDJjZDE5YzZkMDNkODA4YzQ1MjcyMDU1MjgyNWI3ZWExYzViNDkxYjIxODUxMWNhYzc0MTVjZjlkOWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk5OWJkZWZlZWFjYTYzNDBlMDI5MGRjODZlODg5Yzg5ZDVlMTg5YWE1YmE0NGI1ODViM2I3MDczNGY0YTYyZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlkMmU2ZTBiZGZhY2Q0MGI1ZmEyODQ0YThhZThmZDljYTIzMjY0YjRkOTNhNmY2NmIyYzBkNTkwMmY3Y2Q5YjgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_351d6eaa3d264fabb001a644f2351fe8",
+      "statement": "POST /encryptions with Content-Type application/json decodes data from base64 and resolves the signing/wrapping key by alias: the key field drives SecureKS.getKey, while the public_key field drives SecureKS.getPublicKey; a null key yields 400 INVALID_KEY with details naming the alias.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServerHandler.java#L140-L174",
+          "version": "repo-lines-v1:sha256:ee411fce17f11e4d128a498a9b0a39a8b165fc266c53831b937483b11ac90694:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmMDkyOTEyYTNkMDE2ZDFmMjAxNzRmMjllOTdkZTNkMDQ0M2Y3Mzk3MWUxODZlZjM0ZjNiZjJjYzY1ZTMyY2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3YjRlMWYxY2FjOWJmZDZmZDBiMzUwODY0ZjY1Yjc5ZTcxZmQ5M2YwZWEyMWUwOTFkNDdkNjNhMTg5MGU1NjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM1MDBmMzQ4MWZhZmM0OWQwMjAxYzEzNDFjNDA3YzU0ZDhmYzVlYjQ2ZTU1Yjg2YWNkYThlYTRhMzhhNWM1MDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg2NWMzNDhlNTQ0NDIyMjdjYWY3Y2NlYjRmMDFlYmMzNDdjODk3MTk2ODMyODU5NWU2MzQ1NTc1YWE5OWU3YTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c3c60c205cc841c6a1d434eb40039112",
+      "statement": "The /encryptions endpoint dispatches on key.getAlgorithm: HMACSHA256 routes to Crypto.hmacSha256 with the raw key bytes, AES routes to Crypto.encryptAES with a SecretKey, any algorithm containing RSA routes to Crypto.encryptRSA with a PublicKey, and anything else returns 400 ALGORITHM_NOT_SUPPORTED.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/Crypto.java#L31-L37",
+          "version": "repo-lines-v1:sha256:ef31458cc5568ea6e456eb0d7c6498c738e79ab7bd811edb80550da6d35a79fd:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTY5NDIwNWIxZTcyMWFhZmIwMjkzMDA1N2QxMzdjNTEwM2U5ZDk2OWNkYzEwZjM1MDkzY2NiMzk3MTEwMGQ1OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmM4ZTMyN2IyMDZiNmU0MzU1ZDJiMGUzYmY5NDlkMzU4OTY4MjBkZjUyODVhZDExMTNiMjQwMjc3YTJhZDRlYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjNiOTNhNjg0ZThmNGQ1ZGJmMDYwZTk4NGRkZGM4YTM4OTNlYjYxY2QyMzA2YTQ0MzE2M2ZkMjliZmFlMDVmNSJ9"
+        },
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/Crypto.java#L88-L101",
+          "version": "repo-lines-v1:sha256:9801009b15a682f32ed5fed1a3d1d5897ade048457437b9b3f843b043f8bc8ad:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5Nzg5YTgxOGUyNmNjMGY2MzhjNjk0YTNiYTgxNjc1OTBjNzFiZDJiYzYzZGI4OGY1MjA4ODRkMmE0YWIwZmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZkNDM5MDcwNWY4NDIxZTIyYWIxYjQ4MDhjYTZmNTBjZTc0NzY3M2NlYmU2YmFlZDIxNWM4NjFmMjQ3MGM5YjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjljOTFjYTVkY2FjNjZjMzM3NTYyZDFmOTEwOGNjYWQ4NDFiYWMxNjNlMjc4ZTY4MjA2MWMwODM4NGRiY2ZkYjkifQ"
+        },
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServerHandler.java#L155-L171",
+          "version": "repo-lines-v1:sha256:cdb9c1e2474208666fcaf4d0c531160f6a3a0313a0a866901f14b6803054442d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExNzAzZWRmZTE0MzU4NWM3NWM4ZjJkYWEzZjA1YWZiMmFiNTEwZTZkYWVhYzhmZDcxNTkyZGQwM2YxYWE1MDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhYjIwMjFlYmNlYWViY2JjMGM0N2FjYzUwNjhjMjYzNmY3YmYyZGZiZjA1YTNmNWQ0N2FjNzE0Y2Q1YzRkMjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhlOWE2MTE1MTdmODQyZWUxYWI3ODJlNjgxMDNlNTU1MzQwYzIzOTY1NTVlYjVlNmMyYTFiOGFjYzNkZDA2NmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjViNjgwODBjYWUwMjJkZDhhN2ZlZjQ4NWIzYjU5NzNlMTMxZTgyYjU4OGI5ZjZiYWRmYzlkMzIxYTNhZDU2NTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_58fed9a925314928826997aac816c958",
+      "statement": "POST /decryptions supports only AES: the key field resolves via SecureKS.getKey, a null key returns 400 INVALID_KEY, a non-AES key returns 400 UNSUPPORTED_ALGORITHM, and an AES key drives Crypto.decryptAES to produce the decryption_data field.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServerHandler.java#L182-L202",
+          "version": "repo-lines-v1:sha256:5381f61922f3d6f72a2dd572a2db2a5783ef047785f25306c5539eb70c0ffa73:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQyM2MxYWExNGRjNGJmY2NmZDlmZjljZjUxMTZjNjlhZGQyNWRmYzY2NjBjZTYyYWUxZjYxNDQ3OTUzM2VmMjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3YjRlMWYxY2FjOWJmZDZmZDBiMzUwODY0ZjY1Yjc5ZTcxZmQ5M2YwZWEyMWUwOTFkNDdkNjNhMTg5MGU1NjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk3Nzk4MmY1M2FiNDdlNDE0NGM1NTkwNThkMWNlYmJiZGM5ZjQzMWMzZDc0YjdiMDU1ZjY5ZjI3NmZkYWI0ZGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZlMjg2N2U4N2M1YTJlNGVhMjViMTY1N2ViNGE5NzQ5Yjc2NWVjMTk3ZjA1OWM3MjliOWY5NDdkZmY4NmE5YTkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4d81b57c847e4a9885bf6d6431bfdfcb",
+      "statement": "A successful /encryptions response returns 200 OK with JSON fields response_code 0 and encryption_data as url-safe unpadded base64 of the crypto output; /decryptions returns response_code 0 and decryption_data; AES output carries the random IV prepended to the ciphertext.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/Crypto.java#L39-L66",
+          "version": "repo-lines-v1:sha256:62e8b803deefd1c459dafee22a9727f0a0c1b54cf3f6b509bef5d7dadf48e708:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVjOTA2ZmFhNGNhYzI3MmZiMDU0OTdjNTQ4ZTU4M2M1ZDdlOGUzM2U0NzM3ZmQzMWNmMjAzMDNkMWZjNjZiNWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcwYTcyYjQ3ZjEyYzQyMmVhNWYxNzEzZTQxYzIzM2Q1Yjk1YTkzZmJmODYxYmYxNzI1MTA4MWQxNGQxNGE4NGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU0Y2Q0MzJmYjM0YTBiZWI5NzVlN2ZkMWVjMzcwYTljZDA4OTc0Y2Q4NDc2MDVmY2Q2YTBiZTQzYzliOGY0MTcifQ"
+        },
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServerHandler.java#L157-L168",
+          "version": "repo-lines-v1:sha256:31cf597f25d75ef6278c38ce2f2bc4cfea5b5ddcfc7ed008387cf04de4741ba1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVlZTk1OTg4YjJiNjZlZWRhN2Y5ODZlNzA5YjcwMTUxZWYxZGI3ZmJmYTcwMmRhMDhhM2E2ODRkYjI0MDU0MjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIzODg3M2IyZWRkNWU2NGJjYTgzZTRhNWViOTNkMTQ1MTM3N2JhMjJlZDhmODQzNTE5MDU3OWYzNGM5YzNmYWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc2ODQ2ODRmYTJhYjk1NjhmZjU3MjYxYzE2YjRiNWNkMjE2OTU4YmZjM2ZlOTE2ZmFjMGZhYWQzY2Y5Zjg1OTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdmM2FhN2MzNjIwNGVjMWI2ODc0ZDQyODcwODgxM2MwZGNlNDQxYjI5ZjhiNTZlY2E2M2Y1MjgwYjQ1NGRkYTAifQ"
+        },
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServerHandler.java#L193-L197",
+          "version": "repo-lines-v1:sha256:e60be98096c81e9dd1d2f4e56ec935282b123e40e15fa0ffef099c6fcf12aa05:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmYwZmNlYjUxZjYyMjI1MjcwMmVmOTRkMWZmYjA1NmRkMDEzMjlkMDQ2NzJkYzg2ZmI4OTg5YWEwYTQ1MjNjZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDNlOWFiZjI3MGU2ZmIzYzc2ZTcwMjkzNjkzYWMwZGE0ZTgwYzg4ZWY3NGQ3NzU5ZDM0NTlkZmRkNTAyZjI2MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzQ3NzdiMWNjOTBmMmZkNGI5ZGY1YWZiOWVhMDRlNzgwMjI3YWY3NTUxZjFmYTE0NmRiYWIyZjYzZjAxZTY4MiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYmExMWMyZjMxMDlhZmY0YjhlMGFhYTM2YWJhYzdiNjkxYzk5MmUwMzBmOTA3MDEwNzlmNWZmZThiZjQwZWE5NyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_770ce0d357a44db484887ed458d77149",
+      "statement": "Every error is serialized by writeErrorResponse as a four-field JSON body with name, message, information_link, and details; recognized failures are 401 UNAUTHORIZED_ACCESS, 404 RESOURCE_NOT_FOUND, 405 METHOD_NOT_ALLOWED, 415 UNSUPPORTED_MEDIA_TYPE (non-application/json), 400 INVALID_KEY, 400 ALGORITHM_NOT_SUPPORTED, 400 UNSUPPORTED_ALGORITHM, 400 INVALID_CONTENT_FORMAT for JsonSyntaxException, and 500 INTERNAL_SERVER_ERROR for any other exception.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServerHandler.java#L176-L219",
+          "version": "repo-lines-v1:sha256:07c513bd1da536fbfeff0cdbf171b156bf1770e71de5ea7d99b569954268ce36:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJmYTNjNWE2ZjljMjBlZTJmZDFlODAwM2QxNzY4OWJiMjJmMzljZWNmMTZjMWNhN2I5ZWQ2N2Q0Nzk1NDEzZjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YjA0NDkxNDY5NzIyZTgzNjNhOTRlNDA0NDUzOGUwMTNhMmEyMTdlMzZiMWU1NjhiYTYwYWNiN2I0YzhmMmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJiYWJkYmRlYWI1N2E4N2Y1YTU5Mzg4ZjFhOGQ4MGYwN2JhYjE5MjI4ZjM2NzEyMDhjNzgzZmNiNzA0ZTIxZDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkzNDVlOWVkNzk2Y2M5MzUxOTA3NjYwMWIzOWM5MzQ0OWQwNDZjMTU0ODJhY2VlMWM0ZjAwNTFiZjg1OTJmODQifQ"
+        },
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServerHandler.java#L282-L290",
+          "version": "repo-lines-v1:sha256:be0d2678c04dd091f396c625292ec1cc8a13a9c7ea604712619f5d7c0ec881cf:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzYxOGM5Y2FjOWQ3YzgzZGViNDM5OTM2MTkwNmRhZTIwYzE5ODZiMDc2MTkzZTRkYTQyYmFjNDFiMjE1Mzg0YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTk5YmRlZmVlYWNhNjM0MGUwMjkwZGM4NmU4ODljODlkNWUxODlhYTViYTQ0YjU4NWIzYjcwNzM0ZjRhNjJkOCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWI0NzBlY2IzOGE2NmFhZDZhNmM2ZjgwMmE0MWE0MjE2MzBhNDFjNzUyOTY4MDBhZTZiNzZmMjk1OTM2ZTBkYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_ee9d2a3fc15640ec96b423b264366fd9",
+      "statement": "All responses, success or error, route through writeResponse which sets Content-Type application/json, X-Date in RFC-1123 GMT, an X-Secure-Hash header signed via signResponse over request signature, status, date, content type, and body SHA-256 when a client key was resolved, plus Content-Length and Connection keep-alive for persistent connections.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServerHandler.java#L256-L290",
+          "version": "repo-lines-v1:sha256:4e8e105fdb3b8f49f22eb6741aea29aa4a4a0409ccbdfff017211cca15bbab6b:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlOTRiY2VlZTY0NWUzZWU3YzFiMmQ4M2MwNWY0NmZhN2I4ZTE4OWRhYmJmMDE4NzJjNjRmYTA2NDM5OGZlMDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYwMWU5NmNkMjQ0NWU3NjRjOTg3YmVjOGQ2MDM1OTZjMTNlNjY1YTMzMDU1MTA2MzFhMWFkZjI4OWU2OTJkZjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjViNDcwZWNiMzhhNjZhYWQ2YTZjNmY4MDJhNDFhNDIxNjMwYTQxYzc1Mjk2ODAwYWU2Yjc2ZjI5NTkzNmUwZGEifQ"
+        },
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServerHandler.java#L312-L319",
+          "version": "repo-lines-v1:sha256:08c558761d22baf950b6fe388626713037466f9a9a9b2c0e4052d7a09560d16f:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWY2NDRhZGYzYjNiM2E0ZGJhNzQ0YjAxOTA1YmJmZDZkMWE3ZjM5YTVhNzZkNGE2YzBhYWJjYTExY2U2MjI1ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWM4YWY4ZWQ4NmEyNWRkNTg5YmU4ZTAyYjlhNTkyZTlhODYwNzQxNGU0N2FjNmRlYzkwMDQzZTFlYWI4YTRiNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_28a0c5f377d74fbbbc0b68ab48562473",
+      "statement": "The handler performs no crypto itself: it decodes base64 data with Base64.decodeBase64, resolves key material through SecureKS getKey/getPublicKey/getHttpClientKey, delegates each algorithm to the corresponding Crypto primitive, and re-encodes results with Base64.encodeBase64URLSafeString.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServerHandler.java#L144-L168",
+          "version": "repo-lines-v1:sha256:b3dfa6fe0f4dd660c63b8199575b044756ad595b8ceb2feba017a52a828f4596:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIzZDUwMzY4M2E0OTRiNmQyZmRhNTQ5MGYxZGQzODFhNzRlZjMwNTExNmU3MDNmNGU1ODI0Nzg0ZDcyZGRkOTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIzODg3M2IyZWRkNWU2NGJjYTgzZTRhNWViOTNkMTQ1MTM3N2JhMjJlZDhmODQzNTE5MDU3OWYzNGM5YzNmYWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjViMDRkNTQ3MGViZjkxOTBhMmM3MzRlOTliOTczZGRkNTdhM2Q1MjI4MmY3NmMwZmU5NjQxM2Y0YmViNTM0YTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdmM2FhN2MzNjIwNGVjMWI2ODc0ZDQyODcwODgxM2MwZGNlNDQxYjI5ZjhiNTZlY2E2M2Y1MjgwYjQ1NGRkYTAifQ"
+        },
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServerHandler.java#L236-L247",
+          "version": "repo-lines-v1:sha256:9e10c4a8ad393742b9a717bc254c1c827c86953bd1bcde896ea65cd178efa8ea:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU0ODRlNTE1MTczZDI4YTEzZWIyZDk2OGU0ZTQ1N2JlNzE1ODc2MTg5YzYzODc5NzMzZTRkZTA3Mjg1YWVjZWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkYjMzOWMxN2Q0Y2M1NGU3MGM0ZmNmZWNiNjExYmI5ZTdkMzYzZjI1YjE4ZTA5MjNhMWQzMDZjYzk1OTI0ZTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY1YTc5OTNhMDExMGU5OWViNWQ3OGNkMmEzNWQyMzk3Y2JkMzY1YzNhOWQ5ZDRkZmVkYjRkM2VhNzc3ZGQwMDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFmMzE0N2E4MzA4YmY2MjNmZGI3NGE5NTM2ZDE1NmFmNGRiZjAyZTY1ZGFlM2Q3YTQ5ZWExODBiOWM2ZTFlODMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4a6bcb97343a4a4ea3b30ae137e32b00",
+      "statement": "The /encryptions and /decryptions routes are only reachable as case-insensitive POST requests with an exact application/json content type; other URIs return 404, non-POST methods on recognized URIs return 405, and non-JSON content types return 415.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServerHandler.java#L140-L141",
+          "version": "repo-lines-v1:sha256:9bd23b3dc907dd0d69bcdeb773aac7a1c0cbf116dd800670e5ea6044453f010b:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGYwOTI5MTJhM2QwMTZkMWYyMDE3NGYyOWU5N2RlM2QwNDQzZjczOTcxZTE4NmVmMzRmM2JmMmNjNjVlMzJjYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzc1NjViZGUxNjUzOTQxZjQyNjk5OTFkNWIyYjk1YTJiYjg2NGQ4MTZiM2E4M2RmMDQwNjA4NGIyYWM0M2NmYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzUwMGYzNDgxZmFmYzQ5ZDAyMDFjMTM0MWM0MDdjNTRkOGZjNWViNDZlNTViODZhY2RhOGVhNGEzOGE1YzUwMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWMwMDU0YzJmN2U2YTE3ZGYzOTM0OWQ0ODU5YmE0YmU2MDZhMjQxOTBkYTg0NjA5YTBiYTJkYmQ5Y2M5MzZjZCJ9"
+        },
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServerHandler.java#L176-L181",
+          "version": "repo-lines-v1:sha256:c3bae1b95389c0876d0ab0ea5c4afc27b4c3821cb064dbd3357536219c98a89e:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmZhM2M1YTZmOWMyMGVlMmZkMWU4MDAzZDE3Njg5YmIyMmYzOWNlY2YxNmMxY2E3YjllZDY3ZDQ3OTU0MTNmMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGRiMzM5YzE3ZDRjYzU0ZTcwYzRmY2ZlY2I2MTFiYjllN2QzNjNmMjViMThlMDkyM2ExZDMwNmNjOTU5MjRlNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmJhYmRiZGVhYjU3YTg3ZjVhNTkzODhmMWE4ZDgwZjA3YmFiMTkyMjhmMzY3MTIwOGM3ODNmY2I3MDRlMjFkNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2UzZjQ0ZGZiNDFlNzE5NWJlZGYyMWYyNzZiYWYyZWZhZTY4Y2M1ZjA2NzM4MjlhYmU0MjYwM2YxNTA0NDI1MiJ9"
+        },
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServerHandler.java#L203-L211",
+          "version": "repo-lines-v1:sha256:3cab472d3b7265bda9b09fdf26e1a04c0c35161ab5365a07fc1cc3a1fc2a8ba2:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmZhM2M1YTZmOWMyMGVlMmZkMWU4MDAzZDE3Njg5YmIyMmYzOWNlY2YxNmMxY2E3YjllZDY3ZDQ3OTU0MTNmMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMGM2NDc5Y2MyMzA0NDBmZDQxZTgyMjQyMTg2Nzk2OTg1NTlkMjg5M2JkNjdiNDM4MGFmYWI4MTFiMzhhNTVhYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTVlZDExZDk4YjliM2VlNTNmYjljYzlkOTM0ZjM4YjRkNDM2YmI4OWJiODU0MjQ0ZDBlZTU0ZDViZTFjNDZlZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzMzOGVmOWU1ZDM5ZjExZGE4NDA4YWI2ODE4YmE3OGFlYzNmNzIwOTM4MDdiZDFjNzcyMGNmNWM4MjY3ZTZjOCJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-24T11:53:15.318Z"
+  }
+}

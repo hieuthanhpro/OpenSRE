@@ -1,0 +1,174 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:da4d66684db248a50a1a8d65e96bbbeeef704d38dfb01147d2cf258f343907c0",
+  "claims": [
+    {
+      "id": "claim_8b174e8bfcd34715966fb9de3600f165",
+      "statement": "config.Load reads config.yaml (name \"config\", type \"yaml\") from the \".\" and \"./config\" paths; a missing file is tolerated in favor of defaults and environment, while any other read error aborts startup.",
+      "evidence": [
+        {
+          "resource": "repo://cmd/server/main.go#L29-L32",
+          "version": "repo-lines-v1:sha256:8cb7fce118b8bb14a7c3024241b05bd998f854b11d5a9ffc64fdc7f9ffd25d06:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2JmZjAwNzA3MzU3MmQ5YTA0NDU2MTU3YWQ2YjYzMDJjNTdjYTM1MzRiY2U5ZmQzNzQ1NzNlZWFjZDIzZDAyMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdjZGE4MmRhNjA2MjM4ZTA1ZTYyMzk5NTY5YzVlZTAzOTkzNDE5NjQ4YWU1ZDQzYTJiZjhjZDYzNDdmODI2MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzYwZmU5MjcxZDY0YjczODIyNmZjNjE5NTg4NGZlODY2NTIxZGU2MmUzY2JmNzZhODkyMWI2MTQ5ZGFiYTQxMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmU4YTFjMGRiNDhiMTNhNGFlNWQ0MTliOTU3MzFiYzMyZTYxN2MyYzRiMGVmMDU2MjhiM2Q2MDVlM2RiOGU2NiJ9"
+        },
+        {
+          "resource": "repo://internal/config/config.go#L68-L108",
+          "version": "repo-lines-v1:sha256:bd82cf0f1b014157e87cea88abf3ec958f6e59cee8839c7aaa78717b659744c5:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhMzY5MDU4OTk0MDc0YTliNDk5OWI1ZmI4MGMxZDdmOWRlNWNiMWQyY2IyNjRhNjc4ZDBlYzY1MzdmYzVmMTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxNzg1YzM2YjUzOGU5N2VhZjcwMTYyZDRhYWM4MjA3YmRhMzI2Y2M0ODNhMzRhM2ExYjQ1MzAyZDIyZWU3NTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFiMzdmM2FkMWU2ZWY0OWE2MmE0ZmI3NDQzZmM3NmI3M2E0ZTAxZjlmOGVlZWRlZTEzOWExY2U4MTEzMThkY2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYzMDM2NGUwMDZhZmNlYmU5Y2YzMDJlN2RhOTE4MjVkOTE2ODM5MTVlNGEzNjc4NjRkZTQ3N2VhNzEwZDIwOTcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_404168c24c074d6b85b6a846c78427ab",
+      "statement": "Environment overrides use the SCSP prefix with a \".\" to \"_\" key replacer and AutomaticEnv, so a key such as postgres.password is supplied as SCSP_POSTGRES_PASSWORD and takes precedence over the config file.",
+      "evidence": [
+        {
+          "resource": "repo://internal/config/config.go#L86-L89",
+          "version": "repo-lines-v1:sha256:81d7a1832e573fbec5e5ebac4cd07891a6de6b7f47e21505e7efb9be7d3c1930:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjRhMzE5NjdmYThmMmQ2NGRiMjdiMDVjMzk4ZjgwYTU2MGFjY2ZmZjRmMzM4OTNiMzJmY2JkNDFhMmQ2NTI1ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTJlNmRjNGRjZDI2MmI2MWY2Mjc4MTk1MzVhNzk4MmZlNzAyZGZiYzZmNGU4ZGZhYTI5ZmZkZDRhMWNiZjFkNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDE2OTIxZGI3NTQ3YjE3YTM0NWU5YmExY2JiOGY4ZTNhNTExZGUxYjQyYWEyNzdlMjcyMTkxM2M3OTBhYTA3NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiY2MzYjljNjQzYTI0ZmY5NTIwYzRiMTdhNGE5ZGI5MjhiNDQyMDAzMTUzNjkzNDkwY2ZmMzc4YzE1N2I3NzdlNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_ba245e4fe027449b884c582d13436949",
+      "statement": "The Config struct is grouped into Server, GRPC, Postgres, Vault, Cache, and Tracer sections, each populated by explicit v.Get* calls rather than Unmarshal, so only explicitly read keys are honored.",
+      "evidence": [
+        {
+          "resource": "repo://internal/config/config.go#L11-L65",
+          "version": "repo-lines-v1:sha256:e8da584ebbc88d54bbffbc292fefb9d8824ffa7d741f966748b29461333158a2:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMxNjY4MTQ2Mzk0YmY2NjQ0ZDJjYWExYzdkYWQ5ZGU1MWUzY2RiZWFhYjY1ZGFiNWYwYTE1ZWU4OGRkOTRmNDEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZmYmYzNWY0YjYxNTYyZGMyNjk0ZjhiMzZjZmVjYTQ5YTRmZTdkNWU5NmMxOWJiNThkM2I5ZTU4ZjAyZjUxZWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg0YTlkZmY0ZjYzMDg4MDc2YzNkNzkwOTc4ODE2ZTQ0YmJmN2I0MGE0MTViNjhkYzMyNzBhYTZmZWI5ZmMzNTEifQ"
+        },
+        {
+          "resource": "repo://internal/config/config.go#L110-L147",
+          "version": "repo-lines-v1:sha256:365d2ce0b298dbd0da55d0938f06a3f015e5c0b8e5891e0eec66e13173fcc6b1:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJmNjRkYWQ4ZjMxYzcwYWVmODI5ODJhYzRiNGM0Y2FjZDc0ZDZlYTg3NGU0NjliOTk2MzZmZDg5NjFkM2Y5ODIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVlZWMzZTE2MzA4MjAyZTRlYjdlMmYxMWNkODg1YzgwYTFjMzc4N2Y3OTlhNGIyODE4YjYxM2VjYjk4ZTVmOGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJmZjBlYTRjZjc0NjliMzBlMDk3MjQxNmRmN2Q5YjM3MjZjMGE3YjlhMjE0NTAyNzNiZGQ5Y2JmNTEwNmIwODUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b9b80659bab34b2a879b21345923e604",
+      "statement": "Built-in defaults cover server port 8080, prefix /api/v1, gRPC port 50051, Postgres host/port/user/dbName/sslmode, Vault host http://localhost:8200, cache sizing and TTL 300, and tracer endpoint/service metadata; the deployed config.yaml overrides many of these.",
+      "evidence": [
+        {
+          "resource": "repo://config.yaml#L1-L31",
+          "version": "repo-lines-v1:sha256:1f18c8a817ec21a3403a1f41328c1adc812fdba1b37a2195bf7c0ad4ca76ae82:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmN2FjMWY3OTE5Y2RmOGNlNmE4NWU1NTRkY2ViOTMyNTc5MGE2M2NmNzMwN2UzNjgwNzZjOWYzMDlmZDljNGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVlNjBkNTFiMmQ0MzY3YjZhMWRjMTk0MmRlYWUzNjFlNjQ3MDYxMzUzMjkxNTY1YWEzMTE2OWNlYzZiYmQ0YjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://internal/config/config.go#L91-L108",
+          "version": "repo-lines-v1:sha256:8d6e0b9c23120fa934a9f32f64be15ecb64b22f226ea9d4d6227350c6c9272ae:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZkZDI0MGRlOGY4YzM3MTEwYmI0MTk0NTVlZDM3NzJmZjU0NGE5MzViZTNjZDE0YTczMWJkNmJiMDc5OGY1ZmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxNzg1YzM2YjUzOGU5N2VhZjcwMTYyZDRhYWM4MjA3YmRhMzI2Y2M0ODNhMzRhM2ExYjQ1MzAyZDIyZWU3NTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU3YWZiMTdjZTBkMzBmYTM5Y2ZjMmIzMTY3YWIyYmI2MjQzNzUzMzIyNWFmZTJhZjMzZDRiODdhMTAyM2JiYWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYzMDM2NGUwMDZhZmNlYmU5Y2YzMDJlN2RhOTE4MjVkOTE2ODM5MTVlNGEzNjc4NjRkZTQ3N2VhNzEwZDIwOTcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5f95276e6b30423390111e9a65d04854",
+      "statement": "Cache TTL is clamped in Load: non-positive values become 300 seconds and values above 86400 seconds are capped at one day; the cache adapter applies an additional 5-minute fallback for non-positive TTLs.",
+      "evidence": [
+        {
+          "resource": "repo://internal/adapters/driven/cache/ristretto.go#L36-L39",
+          "version": "repo-lines-v1:sha256:8f3b588445a8d10841193f1203d4ccfd70762ec8ad2945e811d1888cca37f3cd:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjg5YzZkYzdkMDhlNTljMDA1MDZmNThmN2QzNDliZTZlZmExNWYzZDBkNDMxNzY1NmFlZmFlNDJkZTAxNjliYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdjZGE4MmRhNjA2MjM4ZTA1ZTYyMzk5NTY5YzVlZTAzOTkzNDE5NjQ4YWU1ZDQzYTJiZjhjZDYzNDdmODI2MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjkxYzhmOWE1NjI1YmQ5NGQ3YjllODVjMzM0OGJjMDNlYzRmM2FmZGQ0NDA1OWE1MmQxYmI2NzQzZjYwZTg5YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNmZkZDNkYTE1MGUxOTE5NzJlYjhmYTFiMmZkZGU2NDdiNzc2MTBkM2Q4NGFlNWUyYTYyYTMzMWQ5MDYxMDE4YSJ9"
+        },
+        {
+          "resource": "repo://internal/config/config.go#L149-L154",
+          "version": "repo-lines-v1:sha256:5f6386ab0689ba75484aa5c0c8c67be7aa3dc5a0491251e2321deb9a67aa226f:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNThhYjVkNDFmZmM2MjBmMWI3MGRjMjI5ODExMzg4YTk4OWJmNzNmM2JmMDAwYmViNWViNWNiNTIyNDBhYzk5YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNjdjZGE4MmRhNjA2MjM4ZTA1ZTYyMzk5NTY5YzVlZTAzOTkzNDE5NjQ4YWU1ZDQzYTJiZjhjZDYzNDdmODI2MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWEzZTEwYjZkNTE3NGExMDUzMGE0Mjc5OTVhYzg3YjVmZDJiMGIxYjhjZmIyMDQ4NTBlN2IyNjc0Yzk1MmMyMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGEzZTUxYTYyYzkxMDY5MjNkNDk4OTBhN2I5NDE1N2ZmODRhOTJjMDAzYjcyYzFhZjFhZWYxNTc2OGQ3OTk5ZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_abffe7695e944999a0be98c84f326ea8",
+      "statement": "Secrets have no defaults and must be injected via SCSP_POSTGRES_USER, SCSP_POSTGRES_PASSWORD, SCSP_VAULT_TOKEN, SCSP_VAULT_ROLEID, and SCSP_VAULT_SECRETID, as documented by the commented-out entries in config.yaml.",
+      "evidence": [
+        {
+          "resource": "repo://config.yaml#L6-L20",
+          "version": "repo-lines-v1:sha256:0c9693c09085109da306604561ea7506264ddad785e7f0d66a1549b6be59c74c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJlMzhhYzNlZjZmOTUwYjAyZWMwZjNhODM1MzU3YTU3YWEzN2IwM2JhN2I4OWQ2NzM3NmFlMDIwNmMzYjJkYTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNlNGFiMDFlZjY3ZWUyYjBjY2NjOWM4M2ViNjljMGQ3YTAzOTI5NzQ2NTEzYTYxZjMzN2M2MWY5MWNhOTM4ZWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUyMDY2MDVhNTYwY2ZlOTAyYmZhM2IzNjhlMzEwN2Q1NjA0M2NiNTMzMjA4ODIxNTFlYTViZjExMTgxMTI4MjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBkMjAzZmM2YjZlMjQ5MGFmNWYxMzBlYzBjMzJmOWYzOTQ5OWRhZGY4OTlmYzhjMjU4YmFlMDc5MWIwODY5MDYifQ"
+        },
+        {
+          "resource": "repo://internal/config/config.go#L92-L108",
+          "version": "repo-lines-v1:sha256:08eb7fcb7812e535b53da1a05c07a8077944d0e1f8279b46760b14da756f50b1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVmZDJlZTg5MzBiYTJjZmIzYTg1MTViODI5Yzk5MTllZWMzNDZjMDZhMTRjMmM1NjQ1ZGM2ZDYwMzA1MzE4NmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxNzg1YzM2YjUzOGU5N2VhZjcwMTYyZDRhYWM4MjA3YmRhMzI2Y2M0ODNhMzRhM2ExYjQ1MzAyZDIyZWU3NTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiMDAyZjA4MTEyZmI2OWI3MjYzZjAyNmM0MzdiYTVjM2IwNWNhNGFiMGU3MjRlZjJkMTgwMmM3NzUwMWFjMjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYzMDM2NGUwMDZhZmNlYmU5Y2YzMDJlN2RhOTE4MjVkOTE2ODM5MTVlNGEzNjc4NjRkZTQ3N2VhNzEwZDIwOTcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_dcbb17097dbd42f3a6a566cca3342b13",
+      "statement": "Vault startup requires either AppRole roleId+secretId or a static token; with neither the adapter fails construction with \"no authentication method provided\", and AppRole credentials drive a background token renewal at 80% of lease duration.",
+      "evidence": [
+        {
+          "resource": "repo://internal/adapters/driven/vault/vault.go#L102-L119",
+          "version": "repo-lines-v1:sha256:239e8ba336f4eb3ffe840c5c1580282a22c89d33485ef692b1d6fd5033037928:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI4YzQ0Zjk1ZWY3NDg5MzRjNDk1ZDllYzFjY2ZhNmFkZGQwYTE2NTEwMGNlZTczMWNmYTY2MmVhNmJlMzJmZjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkNDBmNTkzODRlZGIzYmMwOGRmOTc0NTNhNmQ2MGZjMjY3YTlmMjNlZWY3NDgwYmJjNzI2YjVkYjRkY2ZkYjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNjMDZkZGNjMDRmZTVmZGM2OGViNjA4MTc2MjNmMzFiNjUyNjY0MTEyYWYzZWJiMGE4YzE4YzRjMzk4MTEzYTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY1Y2Y0OTZmYzEzNGJmZWEzZjhhNGFiODc4YTIzNWEwYWM3ZmUwMWVmMjkyNDU3YjI5ZWE1NWE0NWJjNThlN2YifQ"
+        },
+        {
+          "resource": "repo://internal/adapters/driven/vault/vault.go#L54-L74",
+          "version": "repo-lines-v1:sha256:fbaeb6c9b11d6f2d3e21891d2020ba51aec2843e9f6defb1d0d618a737147408:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRlODNkNWQxOTczODRhN2Q2YjBjOTA0MjNlNDM3Yzc3MWNhN2Y1NGM0ZTRhNjQzZGNiMWZjYjQ3YjFhODQ2MzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY4NTFjMWUxZTQ1MjFlNjIzYTAwM2U5OTk5YzllYjMwMzY1YTJiMWY0NDM4OGJiYjA0OTVhOThhMDlhYjM2YWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlhYWY3ZDQ5ZTFiMjdlZDdjZmNiZWJjM2I1MmRhYjkzYzJmZjU4ZWU2NDFmZjg4ZjFhZjNjNjhkOWFlOWI1NDQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0341bd10498248fa979801517f00631e",
+      "statement": "main passes loaded config to tracer.InitTracer, vault.NewVaultAdapter, postgres.NewPostgresAdapter, cache.NewRistrettoAdapter, and rest.NewHandler, aborting via log.Fatalf on any adapter initialization failure.",
+      "evidence": [
+        {
+          "resource": "repo://cmd/server/main.go#L34-L80",
+          "version": "repo-lines-v1:sha256:65ba80b4047c45892e3ff4660566da26998cef8e73a7e784049a7deacd531385:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYyMzQ5MTUyYmZjMmRiMjVhZTVkNWJkNzY5NTAzNjE0ZTUyZjU0YTA0YjU2ZGI5MmNhM2QyMzdiYzc5MTJlM2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmNTU1YjgzMjg5M2JjZDZiNzdhM2Y4N2FjNjRmZTg5YjMxZDRjOWViNTdjYWVhMTliNWIyMjQxOTYwZjEzZmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIxYTZjMzVmZjk3OWJkMDU5ZWM5MDAxN2U4OGZiMGMzYjE5MWZkZjQyN2Q4Mzg0YTY4YTI4NTAwNTAzYjZkZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk2M2ZkZDZmNzYyMmEwODMxMmNkNTAyMTJkNjA1N2I5MzEyYzY0NGM0NTVmMGNhZDQ0NTkxYTM2YjYxMTRlOTQifQ"
+        },
+        {
+          "resource": "repo://internal/adapters/driven/cache/ristretto.go#L24-L44",
+          "version": "repo-lines-v1:sha256:9de1447ed6d8b390fcbf2d319699510df3049c1d460b2d0d8667f0342a8710c7:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxNDkyMzIyMDAwY2QxZWExMTA3MjNlODZiZjQzYTRjNTFiOTRmMDEyZjViYzY0MjZiZWZkYWVlYTg3OTAzMjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjljOWJiNmZmNmJjMGE2MDlkMmUzYzFmMDg2ZDMxYmFlZTNjYjAwNGVlZGZkNjA3NmFmOGI2MzY5NzBhY2Q2ZmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVhMDgyNzRlYTUzNjg2OGY1OWY2YjFiYTAzM2IzMjBjYWFkNGMwN2ZhYTZlYjE0NTJiZmQyMmI0MGZkNWE4ZTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRmZWUzZmYxMmE2NWU0Mzk5MjA0OGQ1YzBhOTQ0ZTg5NGU2OGQ5NjRjNzAwNTEzNzFmNmE0ODBhNDZlNWYyNDIifQ"
+        },
+        {
+          "resource": "repo://internal/adapters/driven/postgres/storage.go#L23-L39",
+          "version": "repo-lines-v1:sha256:bb65aa83321cacb02ea6838f07d8ec9715290cf266674d32342f3a40b2bf49ed:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJjZTFlZTdmYjM2YmNkY2RhMGM2MDhiNTE5NzYwYmYzOTIwYjQ2YzNlOTJiMmUzYzk2YWVhM2U2YTI5YmY3YjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ5ZTY0YTQ2YmI5NWEwNjBjMDFlYmIwOTVmYTUyOTljNzU4ZGU1MjcyMjNjNGFiNWJiNTExMmE0YTkyZTJiYmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk2ZDcyNzgxODJmN2EzZjJhODYxYmE5ODJhMzVhZjYyNWU4YzI0Y2E5OGQwYjM1ZGE2ZjliNzYxYzIxYzY1YjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNhM2Y4MWJiYWI2ODQ4MjE1ZjRlY2YwMjk4YzI1NDA1M2U0NmQyZmI4NjViMTJmM2I2YTFhYTI0Yjk0NGE5N2UifQ"
+        },
+        {
+          "resource": "repo://internal/tracer/tracer.go#L23-L66",
+          "version": "repo-lines-v1:sha256:ee6b25a924183e941769fa385bcb16fd39095939a7d164d678e97e8e21a33752:eyJzZWxlY3RlZExpbmVDb3VudCI6NDQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4YjExMGVjNzlmOGY0ZGQxYTg0N2ZjNDE0Y2Y1ODM2NTNiZGExZDM1N2VjOGNiMjA5M2RiYmExMTNlYjk0MWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRhYzgxOThmNGM0ZTIzZDhlYTljYzZkMDM4NGZkMDM0NmRkZmYyZDVkNGNiYTFkZWUwMDYzY2ViZTE2YzJkNmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZjMWI5ZWJiZjAwYTI3NmVmYzdlNjc0NzgwZGY5Y2IwMDE5YTRmY2EzYjJkNDY0MWM0ZDg5MDk4ZGMwNGFjMGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_97d4eac2cfed4455af200df17611667e",
+      "statement": "The Postgres DSN is assembled as postgres://user:password@host:port/dbname?sslmode=... from the Postgres config fields, and the DSN including the password is written to logs on connection failure.",
+      "evidence": [
+        {
+          "resource": "repo://internal/adapters/driven/postgres/storage.go#L24-L31",
+          "version": "repo-lines-v1:sha256:8a25c59db5275d87e7b3bfefae7f7e5ca6c45cd8d2e2e5e2165e3f2f880799ba:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMGMzNjRkMWViNWE3MzUzYjdhZWQzMDZiMDg4OWZlOThjYTQ0YzhjZjMzZGRiY2JjMmVmZmY3NzU2YjQ3Zjg4YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiY2ZhYzE4YTNiNTQ5ODY5MDRjMjc3OGE0MGNmNWRlYzRmZWJjNTYyY2U1ZGE5OGU1NjcyYzFlYzY3NjlhYjYxOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTc3NWQ5ZjNlYjU2NjM3MWFiYmNjZmNiY2M4MmI4M2ZjZThlYWQ0MDI5NzdjMTExYmQxMmUwMDUzMTc2ZjIzYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTRlYTAzMGE1ZTExNjBiN2ZjMjM5MDM2OGQwNmI4ZDI0MTNiNDQ2YTkyNzllMDRlZTBjYWI5Y2UwZTUwOWExNiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7953e1fb57c34b9faae053af378d9114",
+      "statement": "CacheConfig only sizes Ristretto (NumCounters, MaxCost, BufferItems); the TTL is converted in main into a time.Duration passed to the use cases, not to Ristretto itself.",
+      "evidence": [
+        {
+          "resource": "repo://cmd/server/main.go#L70-L74",
+          "version": "repo-lines-v1:sha256:4aa8c739ca5088a63ba877b4dc13b32b8352092d15076aa141a07a0ee3a5905f:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGJkNTA1NmI1N2Y1ZDcyMTZkYTQyZmE0MTc0MGVlODk5ZjM4NDU3MGQxNzM4ZDhkNGVhZGE3YjcwMjQ4ZWY1NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDM3ZTllNzU5ZWQxNzcxODBkYjJkYjE0M2YzMDFkODM3ZWJmZmViOGZhNTVjYWI4NGEwZTM1MmEzZDdjMjkyMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWEzNjBjYzIwYTkwYzc3NWI3M2M1MGIwZmNkYmUxNTJkOTQ4NTkzZjI4Y2UzYmM4NjU1MzM2MjY0MmJmMDU2NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGU0NTUwODg5YTliYmFkMzM5YWE3YTgxYjhiM2Y0NDgxNzYwMmYyODczNmE4MzkzNjhlZmIxM2VlOWFlNzdlOCJ9"
+        },
+        {
+          "resource": "repo://internal/adapters/driven/cache/ristretto.go#L26-L30",
+          "version": "repo-lines-v1:sha256:8e83afadc9b20de31840a3963219320181132b1629daff131dd02b0751f7325a:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzE5NThmOGRkNzE4MGIzMGQ4MjZjMjU4NzQwODJkODYyYjYwNDRlNWU0MjMyODdlYjQ5MGIwMjY4NTEwZTY4NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzdhOWI1ZTkwMTljOGRiODc4M2VjOWMzZmViYjBhMmM5ODYyZjYxYTA1YzMwOGZlODk1ZTRhOWJlZDAzZWRiMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzVjYTU1MjU2NDUzZTA0Y2Q2ZGI3ZGE3ZmQ5MzcyNzQwYzE3NGZlMGM5NjYwOGZjNTFlM2ZiMjlhYzNhNmMyZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2JmOWUzZWZmZmU4MDhhMzI2M2ZlYTcyNmM3OWQyNTBjNmQ2YWVmYzViOGMwYmU1ZTFmNzgwNTQxMTU5YTk1YiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b1df365569004aba84aeb5db1af43f95",
+      "statement": "The configured gRPC port is loaded into Config but is not consumed by the server, which only starts an HTTP listener on server.port.",
+      "evidence": [
+        {
+          "resource": "repo://cmd/server/main.go#L77-L95",
+          "version": "repo-lines-v1:sha256:858e71802759ed77716457b85d2cc197fb841154a56e567a6511dd87e168ee47:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3NDdhNTdlZjM2MDJkMzMwZjk0YTNjZjk5OTFiMmZkOTllNDgyMDAwYzVkOTY0YTdjOWU4ZmZiODNkYzdiMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM4MzBkNTRhMGJmYjE5ZjFkZTRjYThhOTBiZjFjYmM5YTBhMzMzNDZlM2U0ZjFhMWU5MjYwOWNmZjc4ZGJiZjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhiYjIzZTE4OTNkOTBiZDk2ZDYyZWRkZTljN2QyODVmYjYzY2ZhZDgyNjcyMzhjNTEzZGQwZThmZDM4OTMzNzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQwMGY2MDk1YWNjZWFlY2EzOTEwNjRiYmM5NjhhM2RhY2I5ZDE4MDdiMTUwOTY0ZGY5MGY0YTA5MjM1MTVmMjAifQ"
+        },
+        {
+          "resource": "repo://internal/config/config.go#L94-L95",
+          "version": "repo-lines-v1:sha256:4346c6601d7641e80212cadbe623fa5ec674040499b5ddcd7fd45535b7d1be7e:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjUwOGRhYjY3ZGIzYzFjYzdkOTFiYWYxMzg1NDc3Yzk5ZGI5NzZiMGE1MWMyNjg0ZjM0YzAzNjdhMjMwNDQzNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDkzMjdmNTkyNDJhYWRkZjZkYjRkNTYzOGNjOGRiMmMxODIxYTY3MWNmNGUzNmY0ZWRmYWMxNjY2OGFkOGYwNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmZhY2NlMzFmNmY5ODUyMzA2NGEwZjYzYzc5Mjg4ZDhmYjYzNTI2YjUxYWQxZTgyMzhkMTFhZTBkYjBlMDg2YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYWJkY2ZmODQxNzAyMzg1OWQyYWEzNTFjMTFmNGJhNjIzNjdlNjhjNjA3ZDAyNzQ1ZmE5NzFlNmJhOTg2ZGE5MCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_85a7cffbd5fe4032becdd94c5131afb4",
+      "statement": "Tracer configuration sets the OTLP gRPC endpoint, and service name, version, and environment become OTel resource attributes including deployment.environment.",
+      "evidence": [
+        {
+          "resource": "repo://internal/tracer/tracer.go#L23-L46",
+          "version": "repo-lines-v1:sha256:499d546e7ce0883ba2e592af3b50a6a80411d8dfafbc8f042d00c1c73d2a0d8c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4YjExMGVjNzlmOGY0ZGQxYTg0N2ZjNDE0Y2Y1ODM2NTNiZGExZDM1N2VjOGNiMjA5M2RiYmExMTNlYjk0MWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5MzY2Nzk3MmU1ZDliYjkwN2YyNDU0OTI0ZTkyMDM0YjM5Y2Y5ZTQyMDFkYTg3MDMyMjZhYTIwOWM5MmYxNjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZjMWI5ZWJiZjAwYTI3NmVmYzdlNjc0NzgwZGY5Y2IwMDE5YTRmY2EzYjJkNDY0MWM0ZDg5MDk4ZGMwNGFjMGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg5NzAyNzU5ODhkNTExOGYxNDFkZTg2MzNiNGU3MGViOGFmM2E3Y2EwZjRjYThkYmU3OWEwOTRhMjgzYTQ0YmYifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-10-06T03:44:01.257Z"
+  }
+}

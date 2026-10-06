@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:a654a8cbf6758e0fe3c9ffbcd7a5baf40b2bde184d09676c06e06590a4853e86",
+  "claims": [
+    {
+      "id": "claim_09eec49bb6834aa1965ab48217d3fde0",
+      "statement": "The InstrumentRegistrationHandler serves as the HTTP entry point, validating the POST request to /instruments and delegating to PaymentServiceProvider.instrumentRegistration.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/handler/instrument/InstrumentRegistrationHandler.java#L21-L34",
+          "version": "repo-lines-v1:sha256:7d6ccc02d67ea087ea58ba54c0d8cb49e26a56c8a14f99500bbffe619b3472c9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1ZjVmZWMwZmE0ODk3OGVkZDUwZTg1OTE3YTlhOGQwOGVmZWE0NWE1MGFlYmQ0Yzk4NjdkOWFlOTVlZGJhMjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyNmRjMTRkMDYwYzA3ZWQ0YmRhNWMzY2I3YTg2ZjRiNzhmMzkyYjhhMzdiYWY1ZDIyZjhiZDhmODY1OTI4OWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/vertical/PSPConnectorVertical.java#L111-L111",
+          "version": "repo-lines-v1:sha256:fb55964d984a3b4f7e9cb4f72567dd06dfaba176f467218019ca13770b1b92dc:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmI1NTk2NGQ5ODRhM2I0ZjdlOWNiNGY3MjU2N2RkMDZkZmFiYTE3NmY0NjcyMTgwMTljYTEzNzcwYjFiOTJkYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmI1NTk2NGQ5ODRhM2I0ZjdlOWNiNGY3MjU2N2RkMDZkZmFiYTE3NmY0NjcyMTgwMTljYTEzNzcwYjFiOTJkYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjFkZDJhNzgxNTkzMzU1ZDQ3OTIxOThmNGZjOWY1ZTI1MDQ0OWEyOGZhMjFjYWZiZDI2NmE3NzE3ZDU2MTM4NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjhkZDMzZTA2NWJhMTY5YjA4ODczYmE2NGQ4OWRjYjdjYjBjZDQzZTViZGZhNDY4Mzg5YTk2YzAxMmZjNjA0YiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_e7dff6ad6ac94a8f8a698ce0c7010d35",
+      "statement": "OnecommPaymentServiceProvider routes the request based on the presence of a 'transaction' object: either looking up instrument details via a past transaction (instrumentRegistrationByTxn) or performing live card verification (instrumentRegistrationByCard).",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/onecomm/OnecommPaymentServiceProvider.java#L130-L186",
+          "version": "repo-lines-v1:sha256:42fd185316ff3b69cc04f594be7395f42f41214769b8f8632af39943d3c75842:eyJzZWxlY3RlZExpbmVDb3VudCI6NTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAyMDRkYTU0NTA1OGFlZjU0NzRjYjIxN2FkMzVlMjBkZTkzMjk5M2YzYzg1NDNjZDA1MzE3OTdkZTM4OTNmZTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5YzEzNTkwNjY1NjMyM2QxYzVlYTQxNjU0ZWU2NmFmYjU4NWFjZGNmYWVhY2ExMjFkNWUzMGJmMTkzZWVkZDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJiYWU2ZWVkOTgzY2Q3OTNiY2IyMzdmOGNjYjcwOWRmMGVmNDNlM2U5YTgyYmM0MDBhYTA2NDlkOTE3OTA1NzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM2OTQ2ZTEwMWU1ZTc4ZDkwYTUxMGM2OWYyNjZlZjc2NTQwZDMwOWIxYjgyMjY5NWI1MzE3MmVkMmNhYTAyNTkifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/onecomm/OnecommPaymentServiceProvider.java#L67-L78",
+          "version": "repo-lines-v1:sha256:88fd041a866933f39b0fc6945f7f6afd47abb8affedf9edabe04e013dbcc2434:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJhYjViNDI2MTg4MDBiMzllYjgyMzcwODA3MTAzNmI4MTcyZTg2ODE4NTk3YThkNTY3NWE3ODdhMjgwOWE5MmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImM5ZmExNzQ1Y2YzYjk0YzRjMWUxYjliYzg1MzY5MjZlNDYwNjg4MGY5MzJkZjc2NzY4MjE4MzI0OTAwZDBiZGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEzNWJjNTUzNTBlZDVjNWZiMDczNTdmY2FhNDhkODlkNzljYjAwYzY2MmNiNjdlMDk0OGM3ZWI0ZGViYWJhMGQifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/onecomm/OnecommPaymentServiceProvider.java#L80-L126",
+          "version": "repo-lines-v1:sha256:0b705aa0d5881e63cf201cdb60459705abde42585f7647d919fb581e2037812b:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJjZTM5ODNlMjFjMWNmODdjNDhhMjlhOWYzZTYyYTkwZjIxYzY2MzYwNTE3NjYxODJiNjg4NWE1NjhlMDY4YjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEyY2MwZDQ0ZGRlMzkxMDE4YTQ1OWMwNmIwOTBlZWVjOGRmNTA0MTg4Mjk3MzIwMmQwYTc2NWZjOTM1NjRjYTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJiYWU2ZWVkOTgzY2Q3OTNiY2IyMzdmOGNjYjcwOWRmMGVmNDNlM2U5YTgyYmM0MDBhYTA2NDlkOTE3OTA1NzAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e3fb493130da42fdbf070eb890cf2d6a",
+      "statement": "Instrument lookup by transaction queries the database for an existing approved transaction and extracts the stored instrument details.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/onecomm/OnecommGateway.java#L1200-L1217",
+          "version": "repo-lines-v1:sha256:45180bf1b2a28f17b967b81ac3bb9ff079049136864da57dd3ed56fc3a5fb779:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0NDI4NGQxMDQ1MWE4M2NhZjY5ZjZiNDQwNDEwODExYmZmYmZjYmFkNmRhMWJlNGEwNDhlMDcyYmI0ZmE0NGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzMTY5ZDhiOGFmYTY0YmQ4MWQ1YTcwMDUzYjcyYmZiYzExMTBhM2Y2MjY3MzRlMjY2NTYyMGJjNGRkYmNlZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgyOWIwMzNlN2YwMjQ0NzlhMGU3MzA2OGI3MjMzZDdkNGY1ZWNiZDg0MjAxNGQ0MzQ0M2Q3Y2NhYTJiODFhZTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1c190bbcedc943c08beafa921a9037b8",
+      "statement": "Live card verification initiates a nominal transaction flow via OnecommGateway.verifyMerchant, which signs the request, checks bank eligibility, and routes to either OnePay, the bank site, or Apple Pay.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/onecomm/OnecommGateway.java#L1447-L1569",
+          "version": "repo-lines-v1:sha256:07122b5907299d1b0554570e810d9190afdfc76a0815f5ed255a5bde2b915b34:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIzLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIzZmNlNDYwYWU1NjJjOTc4NTVhZjQ1MjYxYTliZGUzN2ZjMmE1OTExNmYwYjYyZDRkZWEyMmRjYzVkOTAyZDE1IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0ODkzZjQwZTM3ODFlYjg5NmM4MmQwNDZhMDgwNjdhMTFlMzVjZGYyZjFkZmFmMjZmZWE5MGI4ZGI2Njc2NDEzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI5OTliZGVmZWVhY2E2MzQwZTAyOTBkYzg2ZTg4OWM4OWQ1ZTE4OWFhNWJhNDRiNTg1YjNiNzA3MzRmNGE2MmQ4IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIwMDVmMTEyOWI1MjBiZGJkYzIxN2JhZGQwZjBmMDkxMjIzNGYxYWM0ODk1NjU1MGZmZTIwYzU2NzAyMDNlZjhmIn0"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/onecomm/OnecommGateway.java#L57-L159",
+          "version": "repo-lines-v1:sha256:7042f081b50428cfea0b17b3b5e33bade7f70df3d61acf304c99ed21557185ab:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAzLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIwODgwYjJkMmIwYTk1MWZjYTZiODFkNGYzZGEzZjc5ODVlMjQ3MDMxMDYzN2FkNjAyMGQ0MzJiMTE2NjViODRlIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0ODkzZjQwZTM3ODFlYjg5NmM4MmQwNDZhMDgwNjdhMTFlMzVjZGYyZjFkZmFmMjZmZWE5MGI4ZGI2Njc2NDEzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJkNWY5NGM5MGE4ODA3NDA2MDYwMzQ1Y2UwYWQ0MGNjMzE2ZjI1ZTM5YmE3ZjRiZDkzMGQwMDg3OGIxMGUxNTIwIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJiNjIxMDE5MDQ1OGZiNWZhZGM0M2YxMWU4NmViMzY1N2VhNTM2Y2NmMTYzZWE3ZTU4NDMzZDY5YmMxZTliMTM3In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_9bccf17417714e34a7cc8385d979ea58",
+      "statement": "The verification result determines the final instrument state: AUTHORIZATION_REQUIRED is mapped to APPROVED, while errors or fraud result in a FAILED state.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/onecomm/OnecommGateway.java#L239-L400",
+          "version": "repo-lines-v1:sha256:af856fb83ad9a1d701dcdb2a23302eeb8c9cfeee4199268c950c1924df47e84e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYyLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJlZTY2M2E2ZmY1YjMzNWZlMjE2MTQyZDdlZjVjZDlhZDU2MjIxMWZhYzk1ZGU4YTgwZmY5OGZlZTg1ZjE3NjIwIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJmN2M3YWRjZThjNGQ1MDNlNTY5YjBmMTU1OTI0OWMwZmQzZDQ1ZjUyYzAxZjQ0ZjMwM2Q1ZmU0ZmE3ZTIzMzc0IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI4N2FiNzlhM2ExZDMxZjYzZTNkN2I3MmNiN2IzNTkwYzE0YzBiNTdjZTcyYzcyOWEyM2Q4ZjJiMmNiZTRlODJkIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIyNWY1ZmIyY2ZkM2ZhMTE4NDY0ZmNkZTc5ZGJhYmJhNWVhNzhmNzY2YjE5YjFlOTc1ZDgyZDAxODExNmZlMWQ2In0"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/onecomm/OnecommPaymentServiceProvider.java#L171-L186",
+          "version": "repo-lines-v1:sha256:e5bbfa14663495d401122e6eaeb29881a0859c6c3a907a36a3307b166ea89cc5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkyODQzNTgzYjBmODY4NTkxMTIwYjkxYmE0ZDRmODlmOWIyMTA2OWRiMzgzNDMxM2RlMTVhMDhhMzVkMjBlNzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5YzEzNTkwNjY1NjMyM2QxYzVlYTQxNjU0ZWU2NmFmYjU4NWFjZGNmYWVhY2ExMjFkNWUzMGJmMTkzZWVkZDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA3ZjNhNWM1NTk0OWVlZGYyOTZkNDA5MWJkZTE2MjljYjU1NThlZjhiYmY2NDJiMGUwNjkxZmQwNTdkYmFhZjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM2OTQ2ZTEwMWU1ZTc4ZDkwYTUxMGM2OWYyNjZlZjc2NTQwZDMwOWIxYjgyMjY5NWI1MzE3MmVkMmNhYTAyNTkifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-23T03:50:02.660Z"
+  }
+}

@@ -10,9 +10,10 @@ import {
 } from 'react';
 
 type InvestigationLauncherValue = {
-  open: () => void;
+  open: (prompt?: string | unknown) => void;
   close: () => void;
   isOpen: boolean;
+  initialPrompt?: string;
   /** Register a page-level completion handler; cleanup on unmount. */
   registerOnComplete: (fn: () => void) => () => void;
   /** Invoked by AppShell when a drawer run finishes. */
@@ -28,9 +29,22 @@ export function InvestigationLauncherProvider({
   children: ReactNode;
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [initialPrompt, setInitialPrompt] = useState<string | undefined>(undefined);
   const onCompleteRef = useRef<(() => void) | null>(null);
-  const open = useCallback(() => setIsOpen(true), []);
-  const close = useCallback(() => setIsOpen(false), []);
+
+  const open = useCallback((prompt?: unknown) => {
+    if (typeof prompt === 'string') {
+      setInitialPrompt(prompt);
+    } else {
+      setInitialPrompt(undefined);
+    }
+    setIsOpen(true);
+  }, []);
+
+  const close = useCallback(() => {
+    setIsOpen(false);
+    setInitialPrompt(undefined);
+  }, []);
 
   const registerOnComplete = useCallback((fn: () => void) => {
     onCompleteRef.current = fn;
@@ -47,7 +61,7 @@ export function InvestigationLauncherProvider({
 
   return (
     <InvestigationLauncherContext.Provider
-      value={{ open, close, isOpen, registerOnComplete, onComplete }}
+      value={{ open, close, isOpen, initialPrompt, registerOnComplete, onComplete }}
     >
       {children}
     </InvestigationLauncherContext.Provider>

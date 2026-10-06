@@ -14,6 +14,7 @@ import {
   ListChecks,
   ChevronLeft,
   GitFork,
+  Compass,
 } from 'lucide-react';
 import { clsx } from 'clsx';
 import { AccountMenu } from '@/components/AccountMenu';
@@ -22,6 +23,7 @@ const teamNavigation = [
   { name: 'Dashboard', href: '/team', icon: LayoutDashboard },
   { name: 'Investigations', href: '/team/agent-runs', icon: ListChecks },
   { name: 'Trace Visualizer', href: '/team/trace-visualizer', icon: GitFork },
+  { name: 'OpenWiki Visualizer', href: '/team/openwiki', icon: Compass },
   { name: 'Agent Topology', href: '/team/agents', icon: Bot },
   { name: 'Tools & MCPs', href: '/team/tools', icon: Server },
   { name: 'Knowledge Base', href: '/team/knowledge', icon: BookOpen },

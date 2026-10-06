@@ -1,0 +1,178 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:fa4d47f1847b233317c447b57b92eacbfb3d6289c307b022e54874a7d35fadc7",
+  "claims": [
+    {
+      "id": "claim_fcfd6164e5014f6c8ffb24e6eb19bd46",
+      "statement": "Main.main chooses between immediate startup (when app.master_key is set: SecureKS.load then startServers) and deferred startup (when absent: register ConsoleMXBean com.onepay.onesm:type=Console; a later JMX setMasterKey call triggers SecureKS.load, and on success startServers plus unregisterMBean).",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/Main.java#L20-L34",
+          "version": "repo-lines-v1:sha256:e0a2e09f43c52f2dd75ce21eea8dcb09a6b9f7b791af92044cbf1546714f6adc:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQyYTA2MmZmODg3NzU1YjA2ZGRlZTk2MjcxYmVjYjZhMTk2YmU5Yzg3YzFjZGFhYmY3MmQzZTkwNmE1Yzg3MzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRlZmUyMTdkYmQxNmEyYjQzNDhlN2UyNWUxZWE2ZGZiNTQyYmY0MGY5N2ZmY2E5OWFmN2JhMWNlMGMzZGNjM2YiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU0ZTU1OWRjYmQ3Yzg2MTQzZGQzMTBmYWU0NWQ4YWYzYTYyNDUwMzA1MTdkYTYzZjc5YzkyMGQ0NmY3NTdhOTEifQ"
+        },
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/jmx/ConsoleMXBeanImpl.java#L12-L20",
+          "version": "repo-lines-v1:sha256:ddf77daafebf8f2dee7e4fc9c3a8a746f8f63cfaa73b7708bbd40abfc4ea2de5:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDU5MTBjMDU0MTVkMmU0ZjBhODQ3YjI3Yjg0ODBiZmIxNGVhMTU4ZmMxYWRkZDIwN2MyY2EyMzUzZGM2MjAyNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmVkN2I0YzQ5ZGE1MzI1YzRhYzFiNjA1MDE4MTNhOTMyYTNlYjNlNDJlOWNmZDM3Y2IzNmU0YTYxZDBlYjcwYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7f513a6874754643b7d03bb7fec2b8ff",
+      "statement": "startServers reads app.port (default \"0\") and only starts a Netty HttpServer thread when the value is greater than zero, so port 0 or absent skips HTTP; the HTTP server binds the configured port on a dedicated thread.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/Main.java#L47-L61",
+          "version": "repo-lines-v1:sha256:73d4dd479896c3f80941b19e84a0d8d5496dfa46770c901fe571595faad9bd2e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ3YzkxMDQyYmE4YmIzNmZlYjEwMjY3ZjQxMmQ0ZTNhMWM4ZmZiMjk2MTA2Zjg0M2VhNWU4ZTU2NGY1YWFkNzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk5OWJkZWZlZWFjYTYzNDBlMDI5MGRjODZlODg5Yzg5ZDVlMTg5YWE1YmE0NGI1ODViM2I3MDczNGY0YTYyZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServer.java#L24-L49",
+          "version": "repo-lines-v1:sha256:4b7fa786a3147d6c87651f7de2d52e9b230910d3cc1a1770358e04e256d3e4dd:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVkYzJiMzExYWJlODc1NzJlOGE3Y2MwZDk5NmE2NTg0NDA3NmU1MjMyZDIxYjdhODU0NzVmOWI0MDU1Yjc0OTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImViNDQyMzQzZTI2MGMzODA3MmRjNDkyNTlkYmUzZDgyM2M0NjVkZTQ3NzhkNDNhNGNmMWU5Y2IxYjMwOTU1YjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_69406c384e6948e293fcfbab6bd0016f",
+      "statement": "System configuration is supplied as JVM system properties in the service descriptors: app.master_key and app.port (set to 4n8c8f5t and 8880 in all shipped packaging), plus the JUL-to-Log4j2 bridge -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager so java.util.logging calls route into Log4j2.",
+      "evidence": [
+        {
+          "resource": "repo://service/onesm.service#L7-L14",
+          "version": "repo-lines-v1:sha256:581aec4b3964f8efaffe5a3d4b293795de03047ceae11d9f55eb96eb46fb8083:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjg5MjlhMmQ1NjBlNWFmNTc0YThiNWY4YmUzMGVkYmViZGIwNDY1ZmMwZDNiNTc4MTE4ZmY3MDljYzc1OTkzNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMThjNWQzYTVhZGUyNDM3ZWViMzJiYTczZDkzOWE2ZDdiNDY1NjBjMjI3OGQ4NTJjNmI2OWM5ZmRkNzlhMWQwNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2QxYTNlYTJmMTYzMzU4Y2I5YjA3ZGU2NzYxMjlmODM2YTJiOTY3ZjA0NWI3M2NkODg0ZjVkYTIyNzkwNDM0NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzcxMTA3NzVhNzlmNzU5ZDE3MTc3YWFjMWRhNDQ1MDYyZTJiMDkyZDhjZTRkNTQzMWM0N2I2OWE5YTY4MTkwMCJ9"
+        },
+        {
+          "resource": "repo://src/main/service/onesm-server-install.bat#L1-L12",
+          "version": "repo-lines-v1:sha256:1535cc0838fb1a0a365f0f6de127be74a4c15850086316d1711630c1af1687af:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRjOGY3NDNlNDU2ZWVjZGYwOTY5MWFkZDk1ZWZlMjk2YWZiYjZhMTRhNzAzZDBmNTZkOTQ0YWI1YTFlMTlhY2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIyMmEzYzEwMThiYjI1YTgwNzE2NTViZjIzOWVjZDMwOTAzYzlhZDhjMDY5MjMzZjNlYTAyOTAyYzYxNTUzMzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/main/service/onesm-server.jsvc#L61-L65",
+          "version": "repo-lines-v1:sha256:1722b7902e328439073f196158e1c5c367e620b86bc3367876f4cbea35abc72a:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjNjMGJkY2Y3YjRjY2I0NjhkMmMxM2NkNWYyNGE1NGM0N2U4NDU0NzQ3Y2RjODFjNDYxMmJiMmQ3NzVmMzdkOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDU3MmY1ZDUzYjhkNzMxMGE0Mzc2NGFhODM3YzRiMzcwYjNlMDFkZDE0OTFjYzdkNzdiN2ZkYmZiZWQyZTk2NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWE3MGQ3MWE5MzA2NDQ3ODJlMzE2NzVhZGI5OTJhNTYzZWVkYWMwMGYzNGFlYWMwNjliZDU2Yjg5YTNhYzIwZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTMwZmVhMmE4NGIzYmQzNDNjNjJkMTg2MmUzZGZjMzRiODkzNjNiODljMWYzZDFiNGYzODA4NWU4ZDBlY2YzMSJ9"
+        },
+        {
+          "resource": "repo://src/main/service/onesm-server.osx#L1-L9",
+          "version": "repo-lines-v1:sha256:194b8a524ca3d506053279f18d5623d20b7093d16a26770752b330c9d5242352:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTgwNzZkM2QyOGQyMWUwMjAxMmIyMGVhZjdkYmY3NTQwOWE2Mjc3MTM0NDM5MDI1ZjI4MmUzNjhlMzMwNWFiZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDI1ZDg4M2ZhYzkwMTZiNDUzN2UwNjZkMTIxZDcwNGI4ZmQ4YmE1OTQyMzRiMzYxZjI3MjYxMTFiM2IzNWE4NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_d025a654d4a34c4aba43d067cecec389",
+      "statement": "log4j2.xml defines the RollingFile appender driven by ${sys:app.log} (fileName and .gz filePattern) with TimeBasedTriggeringPolicy, AsyncLogger for com.onepay at debug, AsyncRoot at info, and monitorInterval=30; the Maven build copies src/main/resources into target/classes and dependency jars into target/lib, backed by the LMAX Disruptor dependency for async logging.",
+      "evidence": [
+        {
+          "resource": "repo://pom.xml#L22-L66",
+          "version": "repo-lines-v1:sha256:42490a48af84f6e1061f5aa62bc01508facc624578ae414ee0d159b5faf1f474:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiNmI2MGFjNTcwMjliZGExM2M1ZDcxNTJmODI0NGI1ZThkNTdjYmI2Mjk0Y2UzODQwMmY3YzA4YzA3YjZjZmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZlMDFhMjQxM2U4MDVlMTA2NDM3YmZmYzcyMTRkMmFkYmNkYjI1MTVmMjdjZGM4N2IwZmE4MzE2ZWViMWQ1YmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFiYmQzYmFkYjY5NGRjODNmNDZlMDk1OGY3ZThmMGZlYjhkZWJmNzgyNjE2NjVjYjExMWM3MDIzMDhkODU4N2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU1YjRlZDRmNzBiNTdlZjRiMWEzNWZiODA2MTM1YTc4NGZhMmYyMWQ1ZWI2MDNmOGE2ZGEyNzMzNTRhYTExODQifQ"
+        },
+        {
+          "resource": "repo://pom.xml#L70-L94",
+          "version": "repo-lines-v1:sha256:05960267d4b9755cc9b2496cf201c22e6c48271ade1a119333d13f82d96dc626:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMzMGZhMzY2Y2I4OTllODlkYjkyNTM5YWRlNzFhZGFmODg3ZjJmMGY0Yjc4NjAyZWE5ZmVhYTJkNmE3NWE5YTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMxNWU3NmRjNzEwODgzYmVlMDYwYjFhZDZiNTllYWQ5NDhmNDJiZmRiN2VhNWI4ZGI1ZDMwZDM1ZWEwZDBkYjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU1YjRlZDRmNzBiNTdlZjRiMWEzNWZiODA2MTM1YTc4NGZhMmYyMWQ1ZWI2MDNmOGE2ZGEyNzMzNTRhYTExODQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkyNGJiNGU0M2NmN2YyOGVkZGQ4YWVmYjE5MjhiZWNkYjQ4MGI5ZGU3Njg5ZmY2MThjZTBiZWE5ODEyMGEyYjgifQ"
+        },
+        {
+          "resource": "repo://src/main/resources/log4j2.xml#L1-L21",
+          "version": "repo-lines-v1:sha256:5b46eebc3f826c5a4806a7ca4621b529110e2df7fa440b6f69753179021c9573:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBlYjY0MWRjY2YxMDYwY2Y4MjgzMTc3OGFiMDRiMjcwYjk3YjI0NzgwZDA4OTVkNWIwMGQ0ZWIyMTdmYzhhMWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY5YzhkYmFmZmVjYzA2ZjdmODM2MmFlNDdiM2M2YzNiNmQ3ODdkOTFmOGY2MjhkMTBiODM0YTdkZDQzY2NiZDAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6233b1d4760b4b429910b5eaf302fd85",
+      "statement": "The Linux packaging is a systemd unit (onesm.service, copy at onesm-server.service) launched with G1GC, -Xms20M -Xmx100M, -Dapp.log=/var/log/onesm/onesm.log, app.port 8880, app.master_key, classpath /opt/onesm/classes:/opt/onesm/lib/*, running as user/group onesm with LimitNOFILE=20000; onesm-server-install.sh copies the unit into /etc/systemd/system and runs systemctl enable onesm.",
+      "evidence": [
+        {
+          "resource": "repo://service/onesm.service#L6-L21",
+          "version": "repo-lines-v1:sha256:49f05726870ecc73479e712bf159c38fc584a69d4c22ba572eace94125ee23ec:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQwZDhiYWFhYmFjODVhZDhhYzVhMmVjNDBkZDA2NWI0ZWEwZmI0N2MyNWNlM2RkYWQ0YzI5MGQyMjUwM2M5MGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhMzQzNTc1ZWQ2MDNlNjFjOTg0MzkwMjA5NzliNmQ2ZDRiMTQ3MmUyN2E1NDljZWVmYjZiY2U4NzhmYmE4YzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZhNGMyMzcxNTIyYmRkNWMzNjQxOGRhYjRlMjU0ODIwZGVlMDg2MTlhYjIwODM1MDM5ZTliMmY4NGUxNzgyMzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/Main.java#L20-L21",
+          "version": "repo-lines-v1:sha256:1310528373d9aab1b850c65cdcb97454af5f92b5f4801a8cb17472ff590faed9:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDJhMDYyZmY4ODc3NTViMDZkZGVlOTYyNzFiZWNiNmExOTZiZTljODdjMWNkYWFiZjcyZDNlOTA2YTVjODczMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTlhZGJmNmUyMDgyNWQ1NjQ5ZTVmNWYxZjljZTU2MDFjNDdjODc5MzhmNzVjZWM0ZGJhMmI3ZjVlNGY5NzU4MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGVmZTIxN2RiZDE2YTJiNDM0OGU3ZTI1ZTFlYTZkZmI1NDJiZjQwZjk3ZmZjYTk5YWY3YmExY2UwYzNkY2MzZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjRjMzgwZDUyOGY3NGYxZmVmMDBkM2FiYWY1YWE1NjY1YTUzMDQ0OTFlNWQzZDcxZGJhZWE0ZmZkZTYzMDBiZSJ9"
+        },
+        {
+          "resource": "repo://src/main/service/onesm-server-install.sh#L1-L3",
+          "version": "repo-lines-v1:sha256:cc0355ec190762355e2836bf07040089d44876403694ee40741026caa39de86e:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWQ5NWZjMDRhODBjOTUyZjQ5Y2U0MTg4NjI3YzUzYjBmYmU4YzQ0MDQxYjk1MmQ1OTJhY2QxZGU5OTg2MTQ2NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGNlNmM3ODgwNDg2NjI3NTAwNzA2M2JjODM5NjQzOTYyZDllYjc1MzhjYWQ5ZmU5ODJiZTNhOGYyMDdiODI4ZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_a791af0d63f941458fe181bd81f6176e",
+      "statement": "The macOS packaging is a /etc/init.d-style jsvc shell service (onesm-server.jsvc) that execs jsvc with -home, the JUL Log4j2 manager, -Dlog, -Dapp.port, -Dapp.master_key, classpath, run user, outfile/errfile/pidfile, and start|stop|restart actions; a simpler onesm-server.osx variant runs java directly. The jsvc script's CLASS constant com.onepay.onesm.OneSMMainLinux does not exist in the current source tree.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/service/onesm-server.jsvc#L1-L105",
+          "version": "repo-lines-v1:sha256:1f8d8c17d9b82eb4e600a8ad21975678d16c01dde6d53edb14a4904e5c4b5efd:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA1LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIxYTdjYzc3ZTg4Y2MxNWI0Y2JiZGM4NTQzYTM0YTQ0NWZiMzg2YzQxYjFmYjU3YmFlOTQ1NDhkZGExOTk3MmY4IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJkOGQ4MTdhM2RiNWEzMjVkMjk2YjIzY2U0YTUxNWM2OGZkMGQzZmI2OTBhMDJmZTM1MDkxMmQ4MjdjNjI3NDE3IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MCwicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MCwiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1In0"
+        },
+        {
+          "resource": "repo://src/main/service/onesm-server.osx#L1-L9",
+          "version": "repo-lines-v1:sha256:194b8a524ca3d506053279f18d5623d20b7093d16a26770752b330c9d5242352:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTgwNzZkM2QyOGQyMWUwMjAxMmIyMGVhZjdkYmY3NTQwOWE2Mjc3MTM0NDM5MDI1ZjI4MmUzNjhlMzMwNWFiZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDI1ZDg4M2ZhYzkwMTZiNDUzN2UwNjZkMTIxZDcwNGI4ZmQ4YmE1OTQyMzRiMzYxZjI3MjYxMTFiM2IzNWE4NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_02364a6bca604557974fa2bd4f08a863",
+      "statement": "The Windows packaging installs a prunsrv service (onesm-server-install.bat) with prunsrv.exe //IS//onesm, StartClass com.onepay.onesm.Main, StartMethod main, JVM mode, JVM options carrying app.port, app.master_key, locale, JUL manager, and -Dlog, classpath ../classes;../lib/*;prunsrv.jar, and StopClass Stop; onesm-server-uninstall.bat removes it with prunsrv.exe //DS//ONESMServer. The referenced Stop class is absent from the current tree.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/service/onesm-server-install.bat#L1-L12",
+          "version": "repo-lines-v1:sha256:1535cc0838fb1a0a365f0f6de127be74a4c15850086316d1711630c1af1687af:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRjOGY3NDNlNDU2ZWVjZGYwOTY5MWFkZDk1ZWZlMjk2YWZiYjZhMTRhNzAzZDBmNTZkOTQ0YWI1YTFlMTlhY2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIyMmEzYzEwMThiYjI1YTgwNzE2NTViZjIzOWVjZDMwOTAzYzlhZDhjMDY5MjMzZjNlYTAyOTAyYzYxNTUzMzAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/main/service/onesm-server-uninstall.bat#L1-L1",
+          "version": "repo-lines-v1:sha256:98f4d23d2bec05c3ee65ab107989ae60b5ba5cd8ee0381a000d0707dcdc2da2c:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOThmNGQyM2QyYmVjMDVjM2VlNjVhYjEwNzk4OWFlNjBiNWJhNWNkOGVlMDM4MWEwMDBkMDcwN2RjZGMyZGEyYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOThmNGQyM2QyYmVjMDVjM2VlNjVhYjEwNzk4OWFlNjBiNWJhNWNkOGVlMDM4MWEwMDBkMDcwN2RjZGMyZGEyYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_ea0a37209ac149e3904055e467aa906d",
+      "statement": "sync_prod performs env JAVA_HOME=/usr/java/jdk-11 mvn clean then mvn -U package, rsyncs only target/classes and target/lib (with --delete, ssh port 15440) to root@dc:/root/tmp_deploy/onesm/, then sshs into the host to run meld comparing the staged tree against /opt/onesm and /opt/onesm/setown to fix ownership; tests are skipped in the build.",
+      "evidence": [
+        {
+          "resource": "repo://sync_prod",
+          "version": "repo-file-v1:sha256:4539dc13cac2e9ee3b6a495acd48050f66879f8e0ac59a9ae74980ed37c35ea0"
+        }
+      ]
+    },
+    {
+      "id": "claim_68ebc2c0f2d646b2861173b25ed5a5d7",
+      "statement": "The shipped packaging hardcodes the master key 4n8c8f5t and splits log configuration between two property names: systemd units set -Dapp.log (matching the Log4j2 ${sys:app.log} placeholder) while jsvc, macOS, and prunsrv files use -Dlog (which does not match that placeholder), and the jsvc/prunsrv stop configurations reference classes (OneSMMainLinux, Stop) that do not exist in the current tree.",
+      "evidence": [
+        {
+          "resource": "repo://service/onesm.service#L10-L10",
+          "version": "repo-lines-v1:sha256:c1dee4b593cedf62a94ddc2489568580f9ccacd5d6babac54aa55622f28c0365:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzFkZWU0YjU5M2NlZGY2MmE5NGRkYzI0ODk1Njg1ODBmOWNjYWNkNWQ2YmFiYWM1NGFhNTU2MjJmMjhjMDM2NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzFkZWU0YjU5M2NlZGY2MmE5NGRkYzI0ODk1Njg1ODBmOWNjYWNkNWQ2YmFiYWM1NGFhNTU2MjJmMjhjMDM2NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzk1ZjI0MmFhMGNhMGFhMjkzY2JiNjljZjk1MjExMmFhMDU2OWU5ZTIwM2I3ZjFlZDczZWI2ZDIxM2QzZGZiMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTJkOTM3NzEwYmRlODRmODM4YWNmY2JmYWQ0M2U3MmIzNDYxYWQyNDBkOWY3Yjc0MzhlOGU5NDViZjA4M2M0OSJ9"
+        },
+        {
+          "resource": "repo://src/main/resources/log4j2.xml#L4-L5",
+          "version": "repo-lines-v1:sha256:903fb150dd920baf26fdf564683650d029d8fff48a8ef0786b4e507e51cddb55:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTQ0OTM4NTZhNjAzODc5NGU5MjgyMjhmMjIwOGQyYjRmZGRiNzVlN2EzN2VjMmVhNDM1N2Y3YWRlOTZhMDBlNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzE3ZjNjMzg0ZDU3MTQ1OGM1OWQ1ZDJmNzk1NjRmN2Y0YTEzOTcwODZmNDk0YTE2ZDk0MjdjNmI1MWEwNWQ5OSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODIwYmZhZjY1MzQ1ZmFkNTBhNDZjYTU1MDkwOTliY2RkZTExMjBlYTBkY2FhMGRlNWNiNmE3MGFjNTgwZDc2MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTgyYmE5ODNjMjJlMTczZDFkMmU4MzJhYjc5YjU4YjgyNjY0ZjFiYzFjMjRlNWI5MjFlOGE3MWVhZTI3OTVjOSJ9"
+        },
+        {
+          "resource": "repo://src/main/service/onesm-server-install.bat#L10-L12",
+          "version": "repo-lines-v1:sha256:1cbcbaba3b8cc2a2ec459174a5b01c8daad5fc2759bda2ff2713722d2a6885f6:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzAyY2I1YjYyOTZjMjU0NTE5ZDg2NDkwZjFkZDFmMzI2ZWM1OWY0ZTRhODAwNDBmYTg3NTllYWRhNmI3ZDExZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjIyYTNjMTAxOGJiMjVhODA3MTY1NWJmMjM5ZWNkMzA5MDNjOWFkOGMwNjkyMzNmM2VhMDI5MDJjNjE1NTMzMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTI3MmY1MzgwY2NlYTM1YTQ4YjE5NjEyNTU5MjEwOTdmNWNiNDhjYTExZGZjY2MyYjFhYmRhOGQ2ZTgzMTg3NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://src/main/service/onesm-server-install.bat#L6-L6",
+          "version": "repo-lines-v1:sha256:2210f324c6f52dcd9aedfcf464328f85cae270cc779c7a3c3771f0d3fbad7278:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjIxMGYzMjRjNmY1MmRjZDlhZWRmY2Y0NjQzMjhmODVjYWUyNzBjYzc3OWM3YTNjMzc3MWYwZDNmYmFkNzI3OCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjIxMGYzMjRjNmY1MmRjZDlhZWRmY2Y0NjQzMjhmODVjYWUyNzBjYzc3OWM3YTNjMzc3MWYwZDNmYmFkNzI3OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjM5MWQ2ZjMyMDA5YThlZGU5MmM5NzRmNjEwYWE3OTE3YjkzYWRmM2Y1NzExNzA1MDg1YjYxYWZhYWI2YTI4NyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTI3MmY1MzgwY2NlYTM1YTQ4YjE5NjEyNTU5MjEwOTdmNWNiNDhjYTExZGZjY2MyYjFhYmRhOGQ2ZTgzMTg3NyJ9"
+        },
+        {
+          "resource": "repo://src/main/service/onesm-server.jsvc#L50-L64",
+          "version": "repo-lines-v1:sha256:e4656dc83f9b23605e1059850b6bae197306fd370005659d50432b0c679a95da:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQzZDhjNmQwMjI1ZDZhMDk4N2M4YjllNjYyNzk1MjJkODMwMDVhNWIxNzU2NGVmNjBmYTVhMmQ1ODJkNTIwMWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIyM2NiNmViOGQ2YzE2NGVlMmFiNmQ3NWViNTc0MDhmN2FkZDdhNTdmYzk2YmFmNWMwNTg3NGZjZTA3YWEwMGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkzMmZlOTU0MTg0NmJmNDFjMjY0MTcwZWQ3ZDkxNDNkYTVhOTIxYzhkN2YyOTgzZGQyOWUzZjViMzk4YTZhOTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkyY2MzYWU4Mjk4YzY3N2NhNmZkMTI4ZDZmMGQyOTQ3MTVhMmFhMDFlNTUyMjNkZmEwOGY0YzkzMDA3YmMxMTkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9852b21f5fc74b6eaeb19ca7a3931704",
+      "statement": "Server startup is gated on SecureKS.load returning true: a wrong or missing master key leaves the process waiting on the ConsoleMXBean (or logs SEVERE and returns false) without starting the HTTP port, and after either startup branch Main starts a MainThread that blocks in wait() for the lifetime of the JVM so shutdown is externally terminated.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/Main.java#L36-L45",
+          "version": "repo-lines-v1:sha256:6d448b0d32e7c59a88ff48bc38baa41346e69afe4008e95d9f0201e37d6c9d57:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVkYzJiMzExYWJlODc1NzJlOGE3Y2MwZDk5NmE2NTg0NDA3NmU1MjMyZDIxYjdhODU0NzVmOWI0MDU1Yjc0OTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIxZmQwZGI2OWIzY2ZiOWQ1ZDQ0OTJmYjZkM2ViYWQzZTAxOTMwZGQyZjVhNjk0OGQ5NmNhMDYwYzhiYjQwMzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUwODNmMmZhYzdiZGU5NzVjNmUzYTk0OWY5YTk1YjVhMGM5OGJlZTk3NjA4MDliNDNhNGI2MzU2ZGE0MzA1MTYifQ"
+        },
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/SecureKS.java#L25-L70",
+          "version": "repo-lines-v1:sha256:93288acdd42711c75fa577e38b853f11cb540c8ed27b53b19f2cd0b1047c57eb:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczMjdmZGQ3ZTkwZjAwYWQ5ZjM2YjkxYjhmMDg2YWZlMmRkZmVhMGMxY2Q4YTAwMTZlMTY3YjY4NjA4ZWRiNjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRlZDYxNDc0MTIyMThmOTlhZmUwNjY3ZjA0MzkzMGQxY2NkMjliOTkyOTA3ZWFjNDM0YTFkNzI3NTM3MjBhNDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ3NDZiOGUxZWIyYjg0NGNlZDk4ZDA1NTQzMGVhN2VkZDUwMjE5NGRkZDk5NjliMzU3MzNkNDE5NzBmZGVmZjYifQ"
+        },
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/jmx/ConsoleMXBeanImpl.java#L14-L19",
+          "version": "repo-lines-v1:sha256:ed3c547ad0686837d159ab53b58eedff120aae90c5c5e181cddb6d04be628614:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmJhN2RkNDk3ZmI5NGQ1YzBhOGRjMTQ1Zjc4MGRlMGNmZjg2YTBkODY3YTYyMDQwMTZhZTUwNDdkZjVmNzIwMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTZiMDQ0OTE0Njk3MjJlODM2M2E5NGU0MDQ0NTM4ZTAxM2EyYTIxN2UzNmIxZTU2OGJhNjBhY2I3YjRjOGYyZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGQ5Y2MzMjNiMjVlMDY4MTI4Y2Q5Nzg3ZWYxNGRjOTk1NWVhOTViNjc5YmM2MGIyNGI5ODg4ZDE1NWYyYzU2MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjIsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzc5NGQwMmE4MTIxOTQ0ZDE3NmQyNjVlOWJiOWNjNTlmNmFiODkwYmNhZGY4YWVmZGViZGJiYjRmMmVhODQ0NCJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-24T11:53:15.318Z"
+  }
+}

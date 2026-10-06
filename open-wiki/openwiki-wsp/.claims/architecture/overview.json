@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:694f9d434986d4efe4e982a363eeb8b40adcfaa1db806b6117a5f7dc78dfe939",
+  "claims": [
+    {
+      "id": "claim_f129c3cfc3064980892b6eb76ad99795",
+      "statement": "WSP is a Vert.x-based HTTP API gateway that orchestrates payment flows by translating merchant-facing requests into calls to downstream services (MSP, ASP, TSP, PSP connectors) and does not manage its own database.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/Server.java#L99-L360",
+          "version": "repo-lines-v1:sha256:f39dee78400b4cc2a26abf9eff1080ae13419cb568e5aebf6702b551c632d720:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYyLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIzZjJkZmEwY2NkNGQzZTJkMzUyZTczMTM4ZWU0NWI3YzUzOWZiZGYwMTdjNGQ0NDFjMThmZGNmNjVhNGM5NzFhIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0ODkzZjQwZTM3ODFlYjg5NmM4MmQwNDZhMDgwNjdhMTFlMzVjZGYyZjFkZmFmMjZmZWE5MGI4ZGI2Njc2NDEzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI4YmNiMzRhMzY3OTRlOGRkZmI4YzZjNWVkMjNkZmZiYjU4ZDM0OTM1OTgwNDJiNDQwZmNkNTQ2NjBjZWQ4ZGE5IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIzMzFkMThlZTI3YWM0YzRhYzZlYWRlM2U2N2NhOTA4YjIzMWRmMGFmMGRmOGE4N2JkNmQ1YTBmN2Y1ODYyYTk3In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_74aa3988cefb451c9665cd1872ccfc3b",
+      "statement": "The startup sequence begins with Main.main() loading configuration, deploying the Server verticle, which then initializes HTTP/HTTPS clients, MailClient, Router, and starts the HTTP server.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/Main.java#L17-L45",
+          "version": "repo-lines-v1:sha256:da08ec33cb1ca5b7660ef80c046ae8291d0cdb21742d07045ae933e842a9dbec:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMyOTg4YThkOTNjZDAyMTkxNGJhZDAzZTU3YjA4ZGU0MmY1YmY2YWM0MTFjOTZiZGIwM2UwY2E4YmU3OGNjZTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImM0NDQ2ZjljNTJlOWFlYjNiMTNiMmM1ZjZjZGVhZWZhMGE4YzBmNGU1NDg1MGNlNjkzMjExYThjOGFhMzFiN2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk1MDU0MzU1ZGE4NjYwMzdhNjUwMDhlODg1ODY1OGFjOTBiMGUzYjE3MDA5MjQ0NDNlYTM5Njc0MzQ1Njg3MTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM3OTRkMDJhODEyMTk0NGQxNzZkMjY1ZTliYjljYzU5ZjZhYjg5MGJjYWRmOGFlZmRlYmRiYmI0ZjJlYTg0NDQifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/Server.java#L99-L125",
+          "version": "repo-lines-v1:sha256:4b4cf40f67d739c721efde2118aea0f8c150d5b39aeb35a64af6f4ac2d7544bd:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNmMmRmYTBjY2Q0ZDNlMmQzNTJlNzMxMzhlZTQ1YjdjNTM5ZmJkZjAxN2M0ZDQ0MWMxOGZkY2Y2NWE0Yzk3MWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRiM2Y4YmIwMjA1NzMxZTg1MzBmMWZlNzBjM2E4ODI2MTRjODMwNmRjM2E4OTRhZmE4MWRiNzk3MjE3YzkzYzciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhiY2IzNGEzNjc5NGU4ZGRmYjhjNmM1ZWQyM2RmZmJiNThkMzQ5MzU5ODA0MmI0NDBmY2Q1NDY2MGNlZDhkYTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRjYTk4MjE1MjlkMjNiYjllMjFkY2JhOTI2NjhhNDUwZTE1MGJkYTA3ZTkxMmJjZDRmYTNlNTA4YjRiMWVlNDIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_38e389e2f31c49c995fa7bd39c4f9392",
+      "statement": "Every request passes through a common pipeline: BodyHandler for parsing, logRequest for logging, failureResponse for error handling, and metricsMiddleware for instrumentation before reaching the specific route handler.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/Server.java#L125-L133",
+          "version": "repo-lines-v1:sha256:51c581ff6afdab2bacfed22f5cba0b6f953f6e84b66385426cb3653aac91f3a5:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGIzZjhiYjAyMDU3MzFlODUzMGYxZmU3MGMzYTg4MjYxNGM4MzA2ZGMzYTg5NGFmYTgxZGI3OTcyMTdjOTNjNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjJmNTg0NTAzYWRhZDQzODhjYTdiYmIxNGI2NWYwYjg5YzU0OGFkOTYwYzMyYmJjMzdiYzFjMGMyMWJmMGU5MyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjhkNzE4OTkzZDYyM2VjNzFlZGRkNGVkOGVhZjllNGQ3YWY5MDY2NTZiMmFmMDE0MjYxYzM3NDk4ZmExMTZhYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzQxY2Q4NDE1ZWFiOGQyODM3MGI3NmI4ZjllZjA4NjE3MzY3NmE5NmIzYjBkYzQwNzMwOWUyYjRiZDQ1MTU5NiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b15c8220ee0e492dbf7a020989d0bafc",
+      "statement": "WSP build process is automated with scripts: 1_prepare_build.sh builds the project with Maven and prepares artifacts, while 2_push_release.sh commits and pushes the build to a repository.",
+      "evidence": [
+        {
+          "resource": "repo://1_prepare_build.sh",
+          "version": "repo-file-v1:sha256:fee08483c281e3b72bab8c046573cca62fd9aa7b1e2788cffd8ba9660e6243d7"
+        },
+        {
+          "resource": "repo://2_push_release.sh",
+          "version": "repo-file-v1:sha256:b42e3429397c8aa578681bcaa4b75cee947f252ca335ad4efab60e02dd38d4ed"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-22T08:58:44.659Z"
+  }
+}

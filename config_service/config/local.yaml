@@ -264,6 +264,14 @@ agents:
            2. Xuất diagram Mermaid flowchart trong câu trả lời kèm bảng phân tích chi tiết: Client → Services, Method, Endpoint, Status, Duration, DB calls.
            3. Sinh file HTML tương tác: `python .claude/skills/observability-jaeger/scripts/visualize_trace.py <trace-id> --output /tmp/trace_<trace-id>.html`
            4. Nhắc người dùng có thể xem trực quan trên Web UI tại menu "Trace Visualizer" (/team/trace-visualizer) hoặc mở file HTML.
+
+        ### When to use `openwiki` skill:
+        Questions about **OpenWiki documentation, microservices architecture, business workflows, payment/refund flows, service integrations, or system concepts**:
+        - "tìm hiểu về msp service", "kiến trúc [service]", "luồng thanh toán", "trace flow theo wiki", "tài liệu [tên]", "flow [tên]", "wiki [service]", "sơ đồ luồng nghiệp vụ"
+        → Use `openwiki` skill.
+        → Step 1: Run `python .claude/skills/openwiki/scripts/search_wiki.py --query "<service or topic>"` or `python .claude/skills/openwiki/scripts/list_services.py`.
+        → Step 2: Read the detailed markdown document with `python .claude/skills/openwiki/scripts/get_wiki_doc.py --service <service> --path <doc_path>`.
+        → Step 3: Present the architecture, workflows, sequence diagrams, and endpoints clearly to the user.
   planner:
     enabled: true
     name: "SRE Planner"
@@ -419,13 +427,14 @@ agents:
 # Skills and Tools
 # Enable or disable specific capabilities
 skills:
-  # Enable Oracle DBA + Observability skills: AWR analysis + Graylog + Jaeger Tracing
+  # Enable Oracle DBA + Observability skills: AWR analysis + Graylog + Jaeger Tracing + OpenWiki
   enabled:
   - database-oracle-awr
   - database-oracle-monitoring
   - observability-graylog
   - observability-jaeger
   - memory-search
+  - openwiki
   disabled:
   - '*'
 security:

@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:fcf63d594a59f1f229aad8ad87a2b5ba0ee360e8b1c84106b3b70d916f629f5e",
+  "claims": [
+    {
+      "id": "claim_320d0b3ff69c4be3b8c78f7296d08e66",
+      "statement": "The project is built with Maven using Java 11 source and target levels, and tests are skipped by default (`skipTests=true`).",
+      "evidence": [
+        {
+          "resource": "repo://pom.xml#L13-L13",
+          "version": "repo-lines-v1:sha256:054cae4f4af66296ff9236c3b8408162bfb52f7df7d4f90c0ef7e4c866f042e0:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDU0Y2FlNGY0YWY2NjI5NmZmOTIzNmMzYjg0MDgxNjJiZmI1MmY3ZGY3ZDRmOTBjMGVmN2U0Yzg2NmYwNDJlMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDU0Y2FlNGY0YWY2NjI5NmZmOTIzNmMzYjg0MDgxNjJiZmI1MmY3ZGY3ZDRmOTBjMGVmN2U0Yzg2NmYwNDJlMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzQwNjJiMTE5ZTJiMGRhNzYyNjVhZDFmOTQyOGRjNzRmZWU0YWEzZWExYjdkMmYzZDM2MDcxOGMzMTFiZmJiZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMjI0MTQxODE5YjM0YmU2ZjBlNzRhMjU3NGQ2ZjkzMDc3OTE1ZjQ3MDgwNDE3YTgzZWVkZTJhZjEzOGIzZjk1MSJ9"
+        },
+        {
+          "resource": "repo://pom.xml#L9-L24",
+          "version": "repo-lines-v1:sha256:363c15db337ddc0d35e6fb1e85a18721229b7114b913728bdff969d70ddf7f8a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQwNDAxMmFjM2FiMDYxMTUyMDRiOTZjNzJlMzUxYzFlNTZkMTRiM2FkODkyYWEzNWY5MGZiZjhlMjQ0NDNiY2YiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJmNTQ5ZjExM2M1Mzg3NzczNmFlNzFkMWNjNDRlZWVlNTcxMGMyZGM1MDVjYjJkMjAwNGM4Zjg4NDFiMWQxYTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJhY2EyYjM5OWMyNmZkMDgyMzgyYjBhZTQwOTEwOWI5ZDQzZGNiZDBjOTUyNzk2N2U1YWMxY2ViYmIwMTQ4NzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEyNWMwMDE2OGQzODk4MTEyYjVhZTAyNTZlMDlhN2JjYTllOGIxY2UyMDQwNzJmMTgyMmZhYTMwNDQzYjk5MjYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a042e39fb4bb40ec9922b7fc92432883",
+      "statement": "Build produces a non-fat JAR layout: compiled classes and resources in `target/classes` and runtime dependencies in `target/lib/*` via the Maven dependency plugin.",
+      "evidence": [
+        {
+          "resource": "repo://pom.xml#L103-L121",
+          "version": "repo-lines-v1:sha256:b56b8e9734a8c695b88db7d88e367bba026a0fa2cf90353e5b75799418c953bf:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYzZjA1MDYxZTExOWMxZjk0M2Q5OGI0NzhmNWJiNTNkN2NkZTRkYjdjMDlmNzA4N2ZkNDQzNGRlNGU2MDg3M2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY3ZDk3NjEyNGRiYTU1NmNiMDkzN2MxMzQ5NzBhZGFmZDVhYWZjZGQyZDY5NWI3NzdmYjgyZGNjZDE1ODNhYjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjNWFiYzY1YjdhNjRlYjZjOWE1MzRlMTk0ZjU2YjU0YWIzNmVjODk0MWEzN2JhZDdkMmU5N2NkZjk4NzdkY2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg5ZGI0ZDQzOWVkNjkyODE1MjJhY2VmZGNlODczNTljZDUxZTA5ODU3ZTUzN2EwNDA5MWVhODhlZWZlNTQ0MWYifQ"
+        },
+        {
+          "resource": "repo://pom.xml#L123-L143",
+          "version": "repo-lines-v1:sha256:37f36cd84840bdb571a040096b0b81ae8e00b748e94bdcba694c4a0e452b36c2:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYzZjA1MDYxZTExOWMxZjk0M2Q5OGI0NzhmNWJiNTNkN2NkZTRkYjdjMDlmNzA4N2ZkNDQzNGRlNGU2MDg3M2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU4MWQyNjZlNzI0ZTNhYTc5ZDY4NWRhYmJmZmNhNWFmNzRiMzQ3OWM0ZGNjMTU4Y2M0N2Q4Y2JhNTk0OGJmYzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM5MDNiYjA1MTYyOTRhOTMzOWI0NzljNjJiYTM5MjQ1Y2NiNzVmY2ViZTM5YWE4ODljMjBkZWI3NGEwM2IzNzMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU1MzZhMmUxNzdmNzg1MTY3ZTc5MDA5NDA0ZDVhMTg2YjczZGM1N2Y0OTBiYzg5YWIwODEzZjZkZTAzODdiOGIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4ea137ccdae64fb8ad8d19bff837cc2e",
+      "statement": "The checked-in systemd unit starts `vn.onepay.pspconnector.Main` with a classpath of `/opt/psp-connector-kbank/classes:/opt/psp-connector-kbank/lib/*`, working directory `/opt/psp-connector-kbank`, and JVM flags for GC, logging manager, and log path.",
+      "evidence": [
+        {
+          "resource": "repo://service/psp-connector-kbank.service#L6-L14",
+          "version": "repo-lines-v1:sha256:69f361485d3246b25db276cf3e41a19f45579d3f86cb1d284297547d8d5ac45b:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDBkOGJhYWFiYWM4NWFkOGFjNWEyZWM0MGRkMDY1YjRlYTBmYjQ3YzI1Y2UzZGRhZDRjMjkwZDIyNTAzYzkwZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTNiMTE1ZTBhZWQwNGQ5YTJiNDA1ZTVlOWNkZjk0YzAyMWY0ZDk3ZmU0ZDQ4MGY0MjhkZmMxYmIxZmI1ZjhhOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGMxYzRjMmFkMzE0N2JmNWIxY2NhZWJkZTJlMDFkNTVlY2MxMjAxYzlkYmRhNGUxYmEzNzY4YjVkZmQ0MGUwOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2RiMTIyOWU2MDliZTZlOTI5N2YxN2ZiODM4YzE4MTAwZWQ3ZjExYTFkNGZlYmU2NmMxYTk4ZDNmYWFkNjZiYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_fbe51b3e58584f978be20fd120f8a4f1",
+      "statement": "The service runs as user/group `tsp`, sets `LimitNOFILE=20000`, and starts after `network.target remote-fs.target nss-lookup.target`.",
+      "evidence": [
+        {
+          "resource": "repo://service/psp-connector-kbank.service#L4-L18",
+          "version": "repo-lines-v1:sha256:39fdc6c1f8e46d907cf719ec0ad17e8c6d9995950347d62f5d6feb01361e7219:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgzYWQyNjExZWUyOTlmYWMxNjQxNzA4MzNmMzRmNzUxZGQ3MGJkZDgwZTVjN2JiYjI0MzYxNDA0OGVhYmU1ZGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFjY2NlYzE1OWIzOGM5YTdlNDM5ZTkyMjkyOWFjNzMwNjc1OWY5NWU3NDJjOWQ5ZDI0ZGVjNGZkN2NhMjUyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk4ZWVkZTVkYzcwN2EzY2Q3ZjE0YjIxOWQ0YTQxMzk4NjYwMjI2Y2RmNDA1NGNjYTZhMzM1MzczNTBlMGUzY2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZhMjQ1YjJlZGU4MjE1MTJkYmY0YjMyNTQ2YTViZWFmZTA2MDVkYjU5ZDgzYzdjNzUzODE2YzE1NDYwNGNjZjAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ef1710c532534de899a229acf2a6d5b6",
+      "statement": "There is a Java version mismatch between the systemd unit (`ExecStart` references JDK 8 at `/usr/java/jdk1.8.0_131/bin/java`) and the POM compiler settings (Java 11).",
+      "evidence": [
+        {
+          "resource": "repo://pom.xml#L10-L11",
+          "version": "repo-lines-v1:sha256:5cef9e8346e1ce31e74671c3243fad299d32765a12dd4b00dbcc6c11920ec9dc:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjI2MDVlOWYyMzliM2MwZTAyNGM0NjEyZGZlYzllOWY5MmZjZThmOTcxYmJkYzMzZjIwY2E5MTUxNTM0NzcyYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMmZmZmUwYzAxNzNjZTk0MzU3MjRiODE3YzQxNWZlMTBmMmJlYWE3Y2QxNDhlY2ZhMzJkMjgwZDQ0YTQ3ZjQ0OCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjE4MmMyZWZmYTgwMTE4NThhNThmNGVkNTY4YjNlYTQ4MjA4YTdiYmM3NWRhNjE4NTJkYmE2NzRlYWQxOTk4YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTMyZDczOWFmYWQ4Njk5NGI3MWNjYzRjZmE2MzcxMjFiMWQwNGJkZmE1YzMwYzJlYjE0MDAzNWM2MTQ4ZWYxMSJ9"
+        },
+        {
+          "resource": "repo://service/psp-connector-kbank.service#L7-L12",
+          "version": "repo-lines-v1:sha256:e39756070a503c62aa9f52723646deea1b54ab05331704019778cd297fc51310:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjU5ZjNiYTY2OTg0YTAxMThlYmM4NTFiZDBhMjYwMTJjNjBkNDM3NDBkOGVhMmI3MjE0MjRkODRlYjMyMDdmNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTMzNGM5NDkxYTVkYzkwODI1ZTI1YWQzNjI1YTY3ZTYyYjdjYzFhOTZmNDA5NmNiYWY1NmFhN2FlMzA5ODVkYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2QxYTNlYTJmMTYzMzU4Y2I5YjA3ZGU2NzYxMjlmODM2YTJiOTY3ZjA0NWI3M2NkODg0ZjVkYTIyNzkwNDM0NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzRiYWUzMmQ0YWVhY2IyYTRiYzIzZGE1MTU2Yjk2ZTYxNWExZTM4MGMwNTFhMzdkYzMyMTZmOGFkNzJmZTkyNyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_9e60bbd59ca44cd6a0cdf9f6e2ab8d78",
+      "statement": "Deployment is performed with `rsync` over SSH, staging uploads to `/root/tmp_deploy/psp-connector-kbank/`, then visually diffing against `/opt/psp-connector-kbank` with `meld` before running `/opt/psp-connector-kbank/setown`.",
+      "evidence": [
+        {
+          "resource": "repo://sync_dev#L1-L10",
+          "version": "repo-lines-v1:sha256:4902e6663fe97a030ffa188ed7687b95ec5323420eeeed58d69a0b8526337dc9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU5NzhiZDhkZGVhOGUwNTVlMzFjZmQ5MmVmZTNkNGQ1Zjk3MjJlNjZjZWY0NjI5MzllZmI3ZDBlZmYxZWRiZTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMwNTBmNjJmYTQzOGI4OWVkMDBiODY2MTQxMDAxYTg2ZTFiM2JiMTEzN2Q5NGNkMGNmYjA2MjFhOWE2MjMxNjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://sync_prod_100#L1-L12",
+          "version": "repo-lines-v1:sha256:c250dc908da29be82628c9a26e15bdec2376622bdc8284efc9636ecf2c40b7b5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU5NzhiZDhkZGVhOGUwNTVlMzFjZmQ5MmVmZTNkNGQ1Zjk3MjJlNjZjZWY0NjI5MzllZmI3ZDBlZmYxZWRiZTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcyMWVlODE3ZGJkZmU3MWVmZTU0MGNlNTBlNDM5OWJhZWM1YTRjYjQ0MzdmZDFmNzJhNzcwYjIzOWE3Y2VjMWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://sync_prod_101#L1-L12",
+          "version": "repo-lines-v1:sha256:a9d6c2b2276f7274390c684f5889297521fabfe95a83239637ef0a1462811e39:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU5NzhiZDhkZGVhOGUwNTVlMzFjZmQ5MmVmZTNkNGQ1Zjk3MjJlNjZjZWY0NjI5MzllZmI3ZDBlZmYxZWRiZTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5OGY0YzVlYzZlNTIyZjAzM2MyMzQ1MzdlYjI5NGRhZGM2NmZmODE1MTgzYWY0ZDBkNTY1ZWQxYzdjZjljYjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://sync_stg#L1-L12",
+          "version": "repo-lines-v1:sha256:a9d6c2b2276f7274390c684f5889297521fabfe95a83239637ef0a1462811e39:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU5NzhiZDhkZGVhOGUwNTVlMzFjZmQ5MmVmZTNkNGQ1Zjk3MjJlNjZjZWY0NjI5MzllZmI3ZDBlZmYxZWRiZTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5OGY0YzVlYzZlNTIyZjAzM2MyMzQ1MzdlYjI5NGRhZGM2NmZmODE1MTgzYWY0ZDBkNTY1ZWQxYzdjZjljYjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5eec5e3510924a58a37c197aeb5e0618",
+      "statement": "Different environments use distinct SSH ports: dev uses `-p7100`, staging and production use `-p7101`, and prod targets host `dc`.",
+      "evidence": [
+        {
+          "resource": "repo://sync_dev#L4-L9",
+          "version": "repo-lines-v1:sha256:380ce9be60ca3f1c9a1a00135400177eeadedf1d024c61913b21b5b6b15ca6e3:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjE4Nzg3NTNhNzY1ZWUzNGQxMGFhODZlNTRmZTM5ZmQ3NjE3OGJhZjBkYTVmMmY1MTE4NmI1ZjI1MTJmYmEzMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDc4MTNkNWMxY2RiNjRmZjE1MjQyYjRkMDg2ZDQzOWVkMjQ0ODdmMGM5Nzg0MjlhODI1OGQ1NWE2Y2MxMDI0MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDExMTgyOTE5Y2E1MGNiZjBjNmE4NTI2OGQxZWZmNGQ4ZDljMGI2YjI4MDIwY2YyYWEzZTZlZWNlYjNmNDRjMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzA1MGY2MmZhNDM4Yjg5ZWQwMGI4NjYxNDEwMDFhODZlMWIzYmIxMTM3ZDk0Y2QwY2ZiMDYyMWE5YTYyMzE2OCJ9"
+        },
+        {
+          "resource": "repo://sync_prod_100#L4-L11",
+          "version": "repo-lines-v1:sha256:2cbd3a7a1ddb789bfb889f905b6336c9be2b1759dda1ec4be59d14f5e81f56a8:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjE4Nzg3NTNhNzY1ZWUzNGQxMGFhODZlNTRmZTM5ZmQ3NjE3OGJhZjBkYTVmMmY1MTE4NmI1ZjI1MTJmYmEzMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDExMTgyOTE5Y2E1MGNiZjBjNmE4NTI2OGQxZWZmNGQ4ZDljMGI2YjI4MDIwY2YyYWEzZTZlZWNlYjNmNDRjMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzIxZWU4MTdkYmRmZTcxZWZlNTQwY2U1MGU0Mzk5YmFlYzVhNGNiNDQzN2ZkMWY3MmE3NzBiMjM5YTdjZWMxZSJ9"
+        },
+        {
+          "resource": "repo://sync_prod_101#L4-L11",
+          "version": "repo-lines-v1:sha256:b734b4e1b319de84057de8204ff6ad094a5d58bf77c124e1d219dc12e81b546b:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODJhNzg1ZjU0ZDc2OGY2YzgwNTgwNDM2MzAxNzFiN2VkMzYwZTk0ZmRkYWRiZDYxMDkwNTI5ODRlYjY1YWEyMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDExMTgyOTE5Y2E1MGNiZjBjNmE4NTI2OGQxZWZmNGQ4ZDljMGI2YjI4MDIwY2YyYWEzZTZlZWNlYjNmNDRjMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjk4ZjRjNWVjNmU1MjJmMDMzYzIzNDUzN2ViMjk0ZGFkYzY2ZmY4MTUxODNhZjRkMGQ1NjVlZDFjN2NmOWNiMSJ9"
+        },
+        {
+          "resource": "repo://sync_stg#L4-L11",
+          "version": "repo-lines-v1:sha256:b734b4e1b319de84057de8204ff6ad094a5d58bf77c124e1d219dc12e81b546b:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODJhNzg1ZjU0ZDc2OGY2YzgwNTgwNDM2MzAxNzFiN2VkMzYwZTk0ZmRkYWRiZDYxMDkwNTI5ODRlYjY1YWEyMyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDExMTgyOTE5Y2E1MGNiZjBjNmE4NTI2OGQxZWZmNGQ4ZDljMGI2YjI4MDIwY2YyYWEzZTZlZWNlYjNmNDRjMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjk4ZjRjNWVjNmU1MjJmMDMzYzIzNDUzN2ViMjk0ZGFkYzY2ZmY4MTUxODNhZjRkMGQ1NjVlZDFjN2NmOWNiMSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_65b5f32c9b314853aebb461f2108323d",
+      "statement": "`Main.main` loads `app.properties` from the classpath and wires all runtime singletons from that file, including the Oracle HikariCP pool, KBank gateway credentials, KBankSecurity encryption material, MSP settings, and Vert.x server options.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/Main.java#L30-L105",
+          "version": "repo-lines-v1:sha256:5d8dd9ea2ac3de9bb89bc6716c6fe5e2987ae6945c0db623bda333a3da133cb5:eyJzZWxlY3RlZExpbmVDb3VudCI6NzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE0MzEzODc3YjZjN2U0ZTg5NzQzMGViYTljMGY4ZjM3NTMxYzcyNjZhZmJhZTA3ODE4MDc1MDdjZTVhMzM1YzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEwZjBlMTE1ZGU3MjgyNzZjYTgwZmFiNjhlMDc5NzE1ZmI3NDI5NTUzZjFhNGE1ZjIxNDI1Y2RiNDQwMjVkYzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ0YzkzMjAyMmFjNjJiMGYwNGQ0ZjdjYWZjZmQ1NjYxMmVmYTZlYmExZjJjYWM0ZjgyMDk2MGU2Zjc0Zjg4NDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM3OTRkMDJhODEyMTk0NGQxNzZkMjY1ZTliYjljYzU5ZjZhYjg5MGJjYWRmOGFlZmRlYmRiYmI0ZjJlYTg0NDQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2124a6bd346f4a3db125baf3f65d879d",
+      "statement": "Database initialization is configured with `initializationFailTimeout=-1`, so the service can start even when Oracle is temporarily unreachable; failures surface later when handlers query the pool.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/Main.java#L37-L54",
+          "version": "repo-lines-v1:sha256:257b968b042232e169a45d2009c2f9c129005ae97bb4a736a3c64b989188d2ca:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA5NmM5M2JlYWVlMjA2YzY5NzgwMDlhZGU2NGQxNDMwMDcwZjg4MGE2YWYwYTgyMGY0YWYwOWFkMjFmM2M0NDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZlMzYyYWM5N2U0MTA0YmZmMTQyYWUwN2IwYTYyMjg3YzFmNzliMDMwMDljNzE3ZjA2MTcyY2YxMDk5MDBlNzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM0NmFlMWI5NTc2NTUyZTM3Zjg0NjJjNGQwNDA0YTMyYzk5NjU4MDkxNTNkYzE2YjIzMzVkZDE3Mzg5MTRjMGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY5YjFhYzgwMDk5NGExMzVmMmFiYWFlNDhjYWU1NmQ5YTk1YTk2ZWFmZjg3Y2NlMjRiNWJlMzJjMGI1YjI0YmMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0b4ffbf8e1554189bf7ff24a8730a8ed",
+      "statement": "The logging configuration requires the `app` environment variable and the `log` system property; if either is missing, log routing and file path placeholders degrade rather than failing hard.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/resources/log4j2.xml#L1-L31",
+          "version": "repo-lines-v1:sha256:4484bdb30aa8bf5dd26728825c32d68db101741c87e6235a2ff88d9e08c143df:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBlYjY0MWRjY2YxMDYwY2Y4MjgzMTc3OGFiMDRiMjcwYjk3YjI0NzgwZDA4OTVkNWIwMGQ0ZWIyMTdmYzhhMWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIzM2QyMDMwZGQ1ZjA2ZmQyYTYzOGFlNmUxODc4MmQyNjczMTZlMWM2ZjVmMjliNzVmNWJlNTcyNjEyMjdjZGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY5YzhkYmFmZmVjYzA2ZjdmODM2MmFlNDdiM2M2YzNiNmQ3ODdkOTFmOGY2MjhkMTBiODM0YTdkZDQzY2NiZDAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_43a4bc8a4f3445c38cbcb8abbf5c4f72",
+      "statement": "The repository contains no Dockerfile, Kubernetes manifest, or containerization support; deployment is host-based with systemd and manual rsync updates.",
+      "evidence": [
+        {
+          "resource": "repo://pom.xml",
+          "version": "repo-file-v1:sha256:0a6e05300adb05a19d5ee5b0f2facac9d0ce43b3ee5dcbd00a3543cd82228674"
+        },
+        {
+          "resource": "repo://service/psp-connector-kbank.service",
+          "version": "repo-file-v1:sha256:8e0d26b78d09873b013c60b2c0701db2a965d38a6b90a75b10d4ea3818da9c9e"
+        },
+        {
+          "resource": "repo://sync_dev",
+          "version": "repo-file-v1:sha256:4902e6663fe97a030ffa188ed7687b95ec5323420eeeed58d69a0b8526337dc9"
+        },
+        {
+          "resource": "repo://sync_prod_100",
+          "version": "repo-file-v1:sha256:c250dc908da29be82628c9a26e15bdec2376622bdc8284efc9636ecf2c40b7b5"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-25T07:01:46.974Z"
+  }
+}

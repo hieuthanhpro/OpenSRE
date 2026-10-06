@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:e5bdb198cfccc81d75fa83f6386bd37e8431ee836244a865ed36aa3fea8b3300",
+  "claims": [
+    {
+      "id": "claim_089e468bc2fe437a9cc374137438ad8e",
+      "statement": "Write and delete routes are registered under the handler prefix group with authentication and per-role policy middleware: POST /key/*key-path (create), PUT /key/*key-path (update), DELETE /key/*key-path (key delete), and DELETE /keys/*key-path (path delete).",
+      "evidence": [
+        {
+          "resource": "repo://internal/adapters/driving/rest/handler.go#L571-L582",
+          "version": "repo-lines-v1:sha256:0cbb9b87ddd4bb38525ad1ae2636aa459eda9d5c303fb643dfab08a9ed475b28:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNkMTE3NThhODc5M2M0N2IyOWRiZWE5MmIxMzU4YmI0NDZhZWM4NGIwNTc0NDFiZjY3ZTdiOTQyYjRjNjY1Y2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhOTUwMTc1MWE0ZWFiNzVmYTEyZmZiZWNkMzc3NzAzZDZlMGYwN2RiYjc3MDYzOWM2MzJkZjJjNTk4NTBiMWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjViNzdmNzExMGVmMWRhYTgzOTMyYThiM2Q4YjBlYTBjYmIzMWY1MjExNjU3M2QyNTU1MGMzNjdiODBkYWNiMDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_062279116db1413e8012a49c93ce58bb",
+      "statement": "Create encrypts the plaintext, starts new keys at version 1, requires metadata marshaling to succeed, and persists through storage.Save; no cache entry is populated on create, so keys enter the cache lazily on first successful read.",
+      "evidence": [
+        {
+          "resource": "repo://internal/domain/usecase/secure_key_usecase.go#L62-L93",
+          "version": "repo-lines-v1:sha256:c08e11f44b9494a36282d351ae6b1b3ac82d4a2ac40757fcf774ec2b61cb3665:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3YTY0MTY5YzM5MTJmNjQ4NGVjOTNhZWM5ODYyYmI1MDRlYmQ5NDIyMTI3ZDg4NDQyOGQ4NzlkMjgzYTkwYzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVkY2JiM2FlM2I2MjE4YzI0MDg1NzU0MzJjYjVmMDAyMjAwNWJmMDgyNTJjMWE0ZWIwZjE0NWNjOGJhOGEwZjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY0OTU1Y2M0NDc1MDcyZDhkMTIxNTc2MmU3YThmNmJkZGEyODQ5NTEyODkxNzgwYmE5NzFiYThjZWJmZjJmZTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f797277f824f475db84665194d6880d7",
+      "statement": "PostgresAdapter.Save runs in a transaction, rejects a second live row for the same (s_path, s_key) with port.ErrKeyAlreadyExists, and maps unique-constraint INSERT failures to ErrKeyAlreadyExists as a race-condition fallback.",
+      "evidence": [
+        {
+          "resource": "repo://internal/adapters/driven/postgres/storage.go#L65-L120",
+          "version": "repo-lines-v1:sha256:569db9c9e45e0f4f26a52a3f905cb70cea5f258cab565ed95fbdb4d034c8914c:eyJzZWxlY3RlZExpbmVDb3VudCI6NTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI4ZDdhMTZlMjkwYzY5YTVkNmJiMWJiYzYwMWUwYTI3NzFlOWU1MDFlMjg4NjZkMmI2NmI5OWY3MmQ1MTdiYmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1MGM5NjA4YjcyODkyMDY1NDU0ZDhmNTNhZTFkZjI3ZWMyMDY2MzhiZWQ3NmY2ZTM1YTVhZWVlOWMzYjhhOGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAzODIwYzEwNWFiZDU3NjI2NTNlYzgxOTAzOGRlOTBjMjc4YjI1ZDhlNzA2YmI2OTAzODBkY2ZiODU0NDk4MDMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_10bae04461754234996ddfa4e7dea6aa",
+      "statement": "Update defaults the client version to 1 when omitted, encrypts the new value, and on success invalidates the path::key cache entry; storage errors are surfaced as ErrKeyNotFound (404) or ErrVersionConflict (409), with cache invalidation failures logged but non-fatal.",
+      "evidence": [
+        {
+          "resource": "repo://internal/adapters/driving/rest/handler.go#L234-L271",
+          "version": "repo-lines-v1:sha256:8dc665e1796341b8230f1a2602ad0256e9435b4b1b7de55c90303a6892757087:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0YmU0MzhiYTU5NDI0OWI5ZTI0MDYyNjgzZWY2MmE3MDZhNGQ2MGEyMzVlYmNjMjdhZmM1Mjg3ZTgxODM1OGYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE3ODg2OGNmMDM5YzhmMTcyOWEyZGJiODUyYzQyZjI2ZGEzNTRjMTZiMDE4YWM2YjI0YjNmOTFhYjZhMWVhMTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjViZGI5NjViNDdmMmE1YTI2MzBkZjc4MTljYWNkYTZhMWY5NzlmOTc2MjZjYjM5YTk4Y2ZmY2UwZTQzZmY2M2EifQ"
+        },
+        {
+          "resource": "repo://internal/domain/usecase/secure_key_usecase.go#L95-L140",
+          "version": "repo-lines-v1:sha256:1b9f176e84ff68251fafb8055b59ebdab1ce0c9cfe7e75ee32aeda2ac742a77a:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhmNDY5OTYxMTZiYTM1NjNlNmMxMzk2ODNkNDdhNGM5OTg3NzZkZTA1ZDJlNzYxMmM5NDE4NDllNTQ2MzVhMzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg1MGJjNDAwNTkyMzllYjczNWVlNWQ1ODk4MjY0YjhjMDRjZDA4ZDFlYTViOTVkNWEwMGUzYTY5NmMzMWUwMGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIwMzc2MmMwYzE5Y2VjNmI0Y2JlN2U3ZDUxNjg5MGM2NDcxMzgwYmEzNzA3NTc0NTU0YjNjOGVhZTBhZWU1YzEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2f48e6b92ace49a981580e06172f3493",
+      "statement": "Optimistic concurrency is enforced by a conditional UPDATE that increments n_version only when the stored n_version equals the caller-supplied version and s_state != 'DELETED'; a non-matching row is disambiguated by a follow-up SELECT into ErrKeyNotFound or ErrVersionConflict.",
+      "evidence": [
+        {
+          "resource": "repo://internal/adapters/driven/postgres/storage.go#L122-L182",
+          "version": "repo-lines-v1:sha256:cbbfc29354089b2401ca36368b38adc0629c88e4f5c503d327a07b8eaaf91cd1:eyJzZWxlY3RlZExpbmVDb3VudCI6NjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY0N2M3MTI4NzNiMGNiZmE4ZTVjZDFjZDdhMjhmOWEyNDcwYTEzM2ZkYmY0ODEzN2U2Y2JkNDUyYWYwMDgzYjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjllZWI0NmUwYzQ0NzhiM2RlNDM3YzQ2N2IwY2ZjZWI2MzA3NWIxMGI1NDVmYzhhNmUyZmJiMDBiYWM3M2MzZTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY0MWU1NTUwYjI2NzJiNDQ2ZjBlMjVmYWI3OGFmOWNjNmI4ODI1ZDhhYzEzOTI3MTM5YjgyNzhjYmE4NTljMWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2b146ce2915a4d9ebb19130738457569",
+      "statement": "Create maps port.ErrKeyAlreadyExists to HTTP 409 and other failures to HTTP 500, returning version, custom_metadata, and created_time on success.",
+      "evidence": [
+        {
+          "resource": "repo://internal/adapters/driving/rest/handler.go#L190-L231",
+          "version": "repo-lines-v1:sha256:62c86172be48f9b131d7323edbb15857e85867739749043ff770067604e1e4df:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNkOTI1NmQ4NDUzYTgzOWQ5NTk2YmZkYmYxM2I1NTY2YTE3MjQyYzk3NzcxYTIwMmNmYjdmMjkwN2MzMjE4NzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ4OWU2ZDliMGVlYTUyNTk1YWIxYzMzMmQxMWVmYmQzM2MzY2ZhNDg3OTMyZDMyMGY0NmJiNGUyYjQ3NDBmNjIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_31ac2f104c4741e085da5af1604f5df8",
+      "statement": "Deletes are soft deletes that set s_state='DELETED' and d_delete; key delete returns 404 when the row is absent, path delete clears the entire cache via keyCache.Clear, and zero-row updates map to ErrKeyNotFound.",
+      "evidence": [
+        {
+          "resource": "repo://internal/adapters/driven/postgres/storage.go#L300-L332",
+          "version": "repo-lines-v1:sha256:30f0a6793ce22a7df9b34963bd1a1e7e7ef8c98d074e98c0718ca972a220c409:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4ZjU2YTQwMzIyMjJmY2Q5NzE3NGViNGRmNjI1MTBmNDRhMzc5NzljZWFmOGUzMjI1OGE4NTY4OWI1YzQ2NzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNkZTAxMDg1NGU4ODFiYzNkNWQ4NGY1Nzc3MDc0ZjlhNjdiMmYwZWU3YWJlYzEyNjczNmYzYzBlNDE3NjYxZDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjczYWFmZmJkNzAzMWRkMWM1OTM3OTlkNjYwZmI5ZGZmMjJmZDlkMDM3NDYxZTQ1OGVkMDMyMTg5NDQyYTZmNDAifQ"
+        },
+        {
+          "resource": "repo://internal/domain/usecase/secure_key_usecase.go#L264-L316",
+          "version": "repo-lines-v1:sha256:98f77b5b777564a04ed93f944a72cf23eaa7f86a0302e28115780f970dd5ae80:eyJzZWxlY3RlZExpbmVDb3VudCI6NTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczMjAxNWQ1ZGNkOGE4NGNiMWY3ODg1YzJhMDY4ZTc4NDBlMzA3ZThkNmQ2YzhjMTViNDYxYmYxZDJlNjRlZGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE3YjYxNWIyOGUyZTU0ZWI1MTUyODQxNDAxZWRjMTQ1NGZmODRhM2I2NTk3ZTg2YzFmZGRhOTg5ZmQ2ZTAyZWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-10-06T03:44:01.257Z"
+  }
+}

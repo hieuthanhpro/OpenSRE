@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:cd89f83993231b9b620d97ccaba7dfa6ce47a1d0f42ea0bad86c27747152d770",
+  "claims": [
+    {
+      "id": "claim_325ba971afc44cb1b1cfaa6064b13762",
+      "statement": "PSPConnectorServer is a Runnable that creates a Vertx instance with configured event loop and worker pool sizes, then deploys a PSPConnectorVertical verticle; its init() method starts the server on a new thread.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/PSPConnectorServer.java#L53-L71",
+          "version": "repo-lines-v1:sha256:dccf12365184ce2013d8feb45f801358069632946fab7d2ece8e958f5237a34a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3YzdkYTUyNzY3NGE4ODEwMGFjZjg4ZWU5YmJlZGU4MTI1YTA5N2Y3MjhmZGFjNDU2NzRkZjRmMmFjNzhmNTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIyNzNiMDIwZmQwMjU4Yzk3ODA0MjI4ZjVkYTViNWViN2VmYmMyMDk1N2RmZjgzNTg3ZDIyNTU5MDc0MzkxOGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg5ZWE2Y2I3NTM4MzdlNDk3OGQ3NTg1ZjM3YzlhZTNkYzRlNjk1MmYxYTNhNzlhYmU4NjZjZGY3N2Q1YzVhZjMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_715bb1babb2c47ddaabd6f7503ba9bbf",
+      "statement": "PSPConnectorVertical defines the Hypertext request processing pipeline by registering on the router (in order) BodyHandler, ResponseTimeHandler, TimeoutHandler, RequestLoggingHandler, and ClientAuthorizationHandler, followed by route-specific endpoint handlers, then ResponseHandler as the last handler and ExceptionHandler as the failure handler.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/vertical/PSPConnectorVertical.java#L80-L140",
+          "version": "repo-lines-v1:sha256:f7a41a2bcbb3febbf8e61302ba1db9a4e64c1028fae1692e9d7b55eb8dea9a51:eyJzZWxlY3RlZExpbmVDb3VudCI6NjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVkYzJiMzExYWJlODc1NzJlOGE3Y2MwZDk5NmE2NTg0NDA3NmU1MjMyZDIxYjdhODU0NzVmOWI0MDU1Yjc0OTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdkOTllN2M0OTcxM2MzMzc2Njc3MTI5MWRiY2NjMzc2NGM0OTk1N2U5N2U0NjgyN2U3ODIxMzliM2FiZjk5NDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIyNzNiMDIwZmQwMjU4Yzk3ODA0MjI4ZjVkYTViNWViN2VmYmMyMDk1N2RmZjgzNTg3ZDIyNTU5MDc0MzkxOGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNmNTc0ZjE0MWRmOWVkOTc3Y2E2NzMzMmI4ZDZkZGRlZmRkMTQ3MDZmY2I0NmE3YTQ1ZjhhMDlhYmJkYmNhM2QifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/vertical/PSPConnectorVertical.java#L92-L124",
+          "version": "repo-lines-v1:sha256:fccdb884418a75fbae738197ac95b150ae0fcd58869a3505b63990455824452e:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIzZGJhYjM0ODBjMzE3YzEyN2VkMmM5MDBjN2IyYWUwNDllM2ViNjI5MDkzNWQ1NmFjZmRhOTM2NmE3ZjRkNGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQwNDZmMzRhOGY3ZWI0ZWM4YzNkYjkzMjgyNGU3Y2Y1MWYwNTg5ODQzNzdiOTI3ZWFiMGJkZDljZWMyOGFlOTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIxMDE1NTQyMGRjMWUxNzVjMjRiYWM4NTY0YWQ3OWE2ZWZiNzQ1YjRlNzdhOWFlMGM3NWIyMjlhMGNhYzYwZTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyZGZiZThkMDQzNmI5NTU1YmNiNzhmZGQyMDE0ZmE3MzAyZGMzM2E3MDViYmY4ZjZjMDc3NGZiNmQ5YjA3YzgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_725511ca70fb492698a44788cd67f002",
+      "statement": "Main wires the server configuration from app.properties, setting up a HikariCP Oracle datasource, the OnecommPaymentServiceProvider, and the ClientAuthorizationHandler service properties (serviceName, serviceRegion, serviceAuthType, serviceAuthAlgorithm) before starting the server.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/Main.java#L36-L103",
+          "version": "repo-lines-v1:sha256:d2784d603545496e7a11b75f75be9ef2e163a0b6e0089072daea52500d44dcd6:eyJzZWxlY3RlZExpbmVDb3VudCI6NjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQyYTA2MmZmODg3NzU1YjA2ZGRlZTk2MjcxYmVjYjZhMTk2YmU5Yzg3YzFjZGFhYmY3MmQzZTkwNmE1Yzg3MzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhYWNlOTNlNDM0MTMxMTc5ZTVhNjhkMzliYzM2NGI0MzU5MWI4ZDRkM2NmZDg0YzdmYzAzNDA2ZjU3MTgzYTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMzNzIwMTQ1M2U4MzE5NzFhNzAxOTM2MzFiMzZiMzVmODA4ODJkY2QxYTU1OWU0YTIzYzcyYzUwYWQ3NGRmNjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM3OTRkMDJhODEyMTk0NGQxNzZkMjY1ZTliYjljYzU5ZjZhYjg5MGJjYWRmOGFlZmRlYmRiYmI0ZjJlYTg0NDQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_52d5b711fe584f88af85abaa9bb2ddef",
+      "statement": "The TimeoutHandler uses the connectionTimeOut property configured on PSPConnectorVertical to terminate requests that exceed the processing deadline.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/vertical/PSPConnectorVertical.java#L94-L95",
+          "version": "repo-lines-v1:sha256:fc8dbcefdd18c91a8ce71a57bdffba43451bf25220943c8cb90f7d1556ae99fa:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzBiMzAxN2EyZjg1OGM5MjdhZGQ2Y2IxMDQwMjhkYTBjNTYxN2UxOGFiNzU4MzQ0NDhiMGE5YjU2MGVmMTVmNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODU4N2U1OGYyMjlkOWJmODQzNTc2NTlkZjkxNmRhNDQ0OTcyZmM3ZTYyMmY4NGIyMTdmZGEwNzJiMDMzMGM3MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzRlOGJmNjU2YjM1NDYxODMwNWJlMTc2MWNhMTZlZDUwMDEzNjU2ZDFlZDNmM2ZmNDNlM2I2NzY1MzJmNzZlNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGM5NzJiNjVlZjU4MTlmNzhkMjM5OTQ4ODk5ZjAyOTg5MDE5M2Y1MzZmOGZkNTQwZjFhZDdjMmJhMzU5OTYzZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_965e993dae50425299459b248bd6c756",
+      "statement": "The HTTP server is created with port, host, TCP keep-alive, and connection idle timeout from server configuration, and the router is attached as the request handler; startup success or failure is logged asynchronously via the listen callback.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/vertical/PSPConnectorVertical.java#L126-L140",
+          "version": "repo-lines-v1:sha256:c2c7574f726d3b49dbd4415eab8bc3e163d19a1497ac8cf05035791a1c628fb4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYxZjA1ZGVjZmMwYTk3ZDZhNWY4ZWRmOTBhZWY5ODc1ZDU0ZWI4ODdiNjljMWU1ZTkxYjhlODEwZjRlMmIzN2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdkOTllN2M0OTcxM2MzMzc2Njc3MTI5MWRiY2NjMzc2NGM0OTk1N2U5N2U0NjgyN2U3ODIxMzliM2FiZjk5NDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVjNTgwNWMzZDg2OTU4NjQ5NTkxZWJhM2RhMTk1ZmMzZDA2YjQwN2FiYTQyYWJkOTQ2ZWFkN2U3ZjFlOGVkNzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNmNTc0ZjE0MWRmOWVkOTc3Y2E2NzMzMmI4ZDZkZGRlZmRkMTQ3MDZmY2I0NmE3YTQ1ZjhhMDlhYmJkYmNhM2QifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c11fc404e6d74a2680544a3c075f13c2",
+      "statement": "RoutePool defines the URL path constants (e.g., \"/users\", \"/instruments\", \"/payments\", \"/authorizations\", \"/settlements\", \"/refunds\", \"/refunds2\") that PSPConnectorVertical prefixes with the apiPrefix when registering routes.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/routing/RoutePool.java#L8-L25",
+          "version": "repo-lines-v1:sha256:cad5614e3b1d6576c0f4462e6de5b5206424720465827b398d6475238802d0dd:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1ZmI0YjkyZTNlN2IzNGQ4YTY0NzA4YzE5ZTNhZjFjYzk0YjJmODU2ZGU3ZjgxMTg3OGEwNTllZmMxMzJlYTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEyNjRlNzU5NDY4Y2MzMTdmNjRjYTQyODg0OWM1NDNmOGJkODdkZGNkN2U1YjNlNDliZmI4NmVkZmYxYjJmOWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU0YjlkN2VkNTc4YWI3MmE2MjZmOTc4N2E3NzljODQ4NmVhMTBhOTc5M2ZmOWExYTFlMjA1ZGE5OGJkNjA1MjEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/vertical/PSPConnectorVertical.java#L99-L124",
+          "version": "repo-lines-v1:sha256:db267d3ad0380250f4597f345951a774d8f7888d5299eb7661874b0a4dabeea7:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxNWIzMjA3ZWUxOTU2OWEyZDE4ZmE4Y2FkMDVkYjczMDk3N2EwNGQxMDBmMTUyOTJiZjA3MDcwMjk2YTA4NzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQwNDZmMzRhOGY3ZWI0ZWM4YzNkYjkzMjgyNGU3Y2Y1MWYwNTg5ODQzNzdiOTI3ZWFiMGJkZDljZWMyOGFlOTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRjOTcyYjY1ZWY1ODE5Zjc4ZDIzOTk0ODg5OWYwMjk4OTAxOTNmNTM2ZjhmZDU0MGYxYWQ3YzJiYTM1OTk2M2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEyZGZiZThkMDQzNmI5NTU1YmNiNzhmZGQyMDE0ZmE3MzAyZGMzM2E3MDViYmY4ZjZjMDc3NGZiNmQ5YjA3YzgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c5c392cb8cb24f81876846834ff3fe38",
+      "statement": "Endpoint handlers perform input validation and then delegate business logic to a static paymentServiceProvider field that is wired once at startup in Main, except for SettlementHandler which only performs validation and does not delegate to a provider.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/Main.java#L71-L78",
+          "version": "repo-lines-v1:sha256:4ef178264cebf5ada7326814634b98aa087fad702fde2a85b34af194556d7b9c:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTY3OWRkZmI2MTQ5NmQ5MmE3YWNlNDYxMDQxOWJmMDg5MGI0M2M1MWJiMTE1ZjI5YTRiOTNiOThiOTA1OGU5MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYzk2OGI1NGRjMWY1MmFlZDViOWRhYTA5YTQ1YWE2MDk5OTRkMzk1YzhhMzI4ZDg3MTcxNzZlNjhlYmJhYTU2NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGI2MTY4MzQxZmExY2E4Mzc2NDZkMGU4YWNkMGNiMWRhOTk4MDc2YjFmNGViMjU4ZDFiZTQxYTUyZDU3Y2JhNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGNmZTA1MGQ4NmI4NmI0ZTA3YTk0NmM5YTNjMDg0ZDhmODM2NDg4NjUyYjE1NGIwMTY4ZDRhMTE0ODg3ZDE5YSJ9"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/handler/payment/PurchaseHandler.java#L19-L41",
+          "version": "repo-lines-v1:sha256:ce6101df355a8108187fa11d110aa95cb252057d377927f52a10990cc097f897:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdmZDUyMDE4NTVlZmRjNDIyYWMxZTEzZTM3ZGU1MTQwZDM1YWZlYWY3MTk0NTBlMGM3OGI2NzA4ZGQ5NGU0NzciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YjA0NDkxNDY5NzIyZTgzNjNhOTRlNDA0NDUzOGUwMTNhMmEyMTdlMzZiMWU1NjhiYTYwYWNiN2I0YzhmMmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE4OGI0ZmUyMWMyNzI3OTQzYzIzMDlmMmJkYWI4NDllZDUyMmQ0MTk5ZmIzODg5MTAxNTI3MTg1MGJjY2NhNzMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdmMjdmMDBhMGM0NTJkYjU3OTQzZTQ3NDg1Y2E2YTUzNWYzOGRkMTQ3OTE2MDA4NWU1MmVkYTU1OGMxZDNjOWQifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/handler/payment/SettlementHandler.java#L25-L41",
+          "version": "repo-lines-v1:sha256:1aa592a3ef6084c62fd3cc719593ab1dce2689b72193dce9c1afb6fa6fabd1f9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1ZjVmZWMwZmE0ODk3OGVkZDUwZTg1OTE3YTlhOGQwOGVmZWE0NWE1MGFlYmQ0Yzk4NjdkOWFlOTVlZGJhMjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YjA0NDkxNDY5NzIyZTgzNjNhOTRlNDA0NDUzOGUwMTNhMmEyMTdlMzZiMWU1NjhiYTYwYWNiN2I0YzhmMmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM0YTE4Y2RhNjI0NTQ0MmE5MzZlNzc4NmRjZGQ5NzRmNDU2ZmYxYjAyMmY3NjExY2Q0Zjc0MGU5ODAxNDU4MzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI1M2VmMDFkNWE0MGJhYjIwOTlmNGE3NjI5MGRjYzIzZjRjZWFhZTNiMGVjM2Q3YjExMGRmMzg3YmM4OTBhYTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_fd0aca11158742feb78ca9296b081034",
+      "statement": "ClientAuthorizationHandler requires Accept and Content-Type to be application/json, validates X-OP-Date, X-OP-Expires, and X-OP-Authorization headers, compares service region, name, auth type, and algorithm against server configuration, and verifies the HMAC signature using the client's access key from app.properties.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/handler/common/ClientAuthorizationHandler.java#L33-L146",
+          "version": "repo-lines-v1:sha256:a9cd0acfcb3ffa0b65990e9db098e466992ef90c28639843546ca6fcf9ca80aa:eyJzZWxlY3RlZExpbmVDb3VudCI6MTE0LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJmNWY1ZmVjMGZhNDg5NzhlZGQ1MGU4NTkxN2E5YThkMDhlZmVhNDVhNTBhZWJkNGM5ODY3ZDlhZTk1ZWRiYTI3IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIzNjRhNzg1YTg0Njc1MGYzM2VlMDhiMjg5ZWQ1ODQxMjk5YTQ4ZWMyODhmMjU3ZmY2ZjQ4ZDZjOWFhMTE5YzI4IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI0MmQwNDhkNTU2MmE0NGFhOTEwYzA0ZWU1MWJmZjE2ZDVjZjI2Y2M2ZWE1ZGYyNjYyMTBhOGQxMGU4MGQ2NDQzIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI4ZmRlODNhZDA2YTdmNDc0Y2IwZTU2NDA0MjNkNjY1YmMwZDkyMzAzY2NiYzNhMmQxN2YyYzc2MmFhMmQ1ZDFmIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_f2f5f8bb887847a1bfae3dface1d707a",
+      "statement": "ResponseHandler serializes the response data stored in the routing context (code, description, data) into a JSON body and sends it with appropriate Content-Type and Content-Length headers; ExceptionHandler transforms thrown SystemException instances into SystemError-based JSON errors and returns generic HTTP 500 for unknown exceptions.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/handler/common/ExceptionHandler.java#L27-L71",
+          "version": "repo-lines-v1:sha256:ec95c538407f911d5c96d930e1ff9cd9788bd186d28cc33f385d3ac9f5da2bd0:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1ZjVmZWMwZmE0ODk3OGVkZDUwZTg1OTE3YTlhOGQwOGVmZWE0NWE1MGFlYmQ0Yzk4NjdkOWFlOTVlZGJhMjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI1MDg5OWM0OWZlNmQxZjRmZGMwM2JiOWIwOTA3YjRiNGE0ZGJlYzBmMmY0ZWYwNTc2ZWM5NDA4MzEyMDhjZGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJhMGM1YTJjZGQxODg0NTI1MGY5MmNlNjM3ZWEyMGY5MThhYjBiYjczMDVkODI2OTY3ZDhiNjFlYzcyOGM2NWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFiYjgyMjJlNGU2YWNmZjk5NjEyNzBhMjI2Y2Y4MmViNWY2ZGFjYTRmNmQyZTFiY2M5NjJiNzY2NjY5M2U1NDYifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/handler/common/ResponseHandler.java#L23-L71",
+          "version": "repo-lines-v1:sha256:bcabfb07133488c3606544251ee35415a3fb5ce04575c1148c8cb01a19066d85:eyJzZWxlY3RlZExpbmVDb3VudCI6NDksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1ZjVmZWMwZmE0ODk3OGVkZDUwZTg1OTE3YTlhOGQwOGVmZWE0NWE1MGFlYmQ0Yzk4NjdkOWFlOTVlZGJhMjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI1MDg5OWM0OWZlNmQxZjRmZGMwM2JiOWIwOTA3YjRiNGE0ZGJlYzBmMmY0ZWYwNTc2ZWM5NDA4MzEyMDhjZGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ2MmM3MmE1NGU5MmQzMDU5NTYwZWQ5NDRkZjNiODk3ZmI0OTQwMmE3ZDExZDQ2NTc3Mjk5ZThmNGVmZjRhOTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc2YTI0ZjgzMmVhOTY4MWFkMzM2MTU3Mjk1ZTk3MWEyOTQ4YjI3OTFlODhmNWYyMDMzZWM2MTY1MzYxZTNlM2YifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-25T07:03:17.397Z"
+  }
+}

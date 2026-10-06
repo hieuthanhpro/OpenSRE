@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:4eb174896cf414eb2ba035b6c4a907c38f3f5b052ab7b73ef641bad83706f9cd",
+  "claims": [
+    {
+      "id": "claim_a36b9c290bbd45bc8e2b2c4e7883ca1c",
+      "statement": "DBProcedureUtil.execute is the sole generic execution interface for invoking Oracle stored procedures in the PSP Connector, handling connection acquisition, CallableStatement preparation, parameter binding, execution, and result extraction.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/util/DBProcedureUtil.java#L20-L33",
+          "version": "repo-lines-v1:sha256:ac824f390d3120994c8efa89d2924fa2d344100e31d9f55fae78394eaa1a74f3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU4ZDQ5NzMzOWY2M2UzZGNkMDczZmJiYjNhZTk5MWZjMjVkZDVmMjkxN2NjNDRlYzJmYTgwNTY0YjQxMjg5N2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM1ZWMyMGEyYWE4NGZhMGYwOTExNTIzMWM2MjI4MGQxZGMwMTYwOTdkYmMyZTU5NDc3NzI0OTJkZTA0NGQ2ZjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc2MTViM2FjYjNjNzAwZTdmNGEyYjAyN2QzMzJjMmExYzU5ZjUxMzY3MzY2ODFlNWE5NmMxYjVlMTUyMmZjY2MiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk4ZjE2NjQzM2IwZGQ4ZmVmY2MyYjJhMzM1ZWFiZWE2NmUxMjZhNjA3NTdlMWZlNjBjODczNTVhZmIwNmFkZDgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2c9548c55e404f3084f8b619494a2f76",
+      "statement": "Input parameters are passed to DBProcedureUtil.execute as a Map<Integer, Object> keyed by 1-based parameter index, and values are type-dispatched to CallableStatement setter methods for Integer, Long, Float, Double, Boolean, String, Timestamp, and java.util.Date types, with unrecognized or null values bound via setNull with OracleTypes.NULL.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/util/DBProcedureUtil.java#L35-L79",
+          "version": "repo-lines-v1:sha256:f89e204fb8e911190608e1310a160e61d0c3f74c87e8cefac9d34397b3f0fc97:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkzN2Q3MTU0ZmM1Zjc4ODg1MDdiNjIxMjI3NjgzODc5YzNmMmQ3MGNmNWYzN2NiODcwYzEwMWQ3NTlhNDAwZjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBjNjQ3OWNjMjMwNDQwZmQ0MWU4MjI0MjE4Njc5Njk4NTU5ZDI4OTNiZDY3YjQzODBhZmFiODExYjM4YTU1YWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ3MzhiY2YwMjdhOGIyODkwNmE2NTliMjUxZjIwNjc1ZWRiZDU4ZDQ5NWMxZjAyMTYyOWRkMzZhN2JiZTVjNzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgwZTdjNjRmMThkNWMzZjk1NzI0YTZlNWE1ZmZjNjAyNmQ0Y2JjNDgyNDQ2NTFkM2UwNjJhZmExZWIyZjNiMDUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7725d0099b81447d93f1a9fe8fb7beeb",
+      "statement": "Output parameters are declared as a Map<Integer, Integer> (index to OracleTypes constant) and registered via registerOutParameter, while a separate Map<Integer, String> assigns each output index a logical name used as the key in the returned result map.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/util/DBProcedureUtil.java#L82-L91",
+          "version": "repo-lines-v1:sha256:a0699f28c8718df1f19cdd8f2dae17f2c1ea3e56c2f027718bf23b820587e2bd:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJlMTAzMzY2NGU0MmZmNDNiZDY3NjlkMTI0NjAwYTA3OTBjODE5Y2Q2MTgxNDU1MjdmZWI1ZTg1MmQ3N2Q1OGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1MjJjNDJjZDE5YzZkMDNkODA4YzQ1MjcyMDU1MjgyNWI3ZWExYzViNDkxYjIxODUxMWNhYzc0MTVjZjlkOWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE3NjFiZjRiZTFiMWZjOTM5NDEyZDdiNjhhY2VkZmUyNjNjMWNiYzIyMjMxMjEyZGYzOTA5YzcyMjljZDE2ZWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMzZjcxZGU2ZDIwZGNiNTYwYzFmOTVhZWJmODdlY2U5MDFiMzA2ZTI1ZjIzNGJhMTI4Y2RmNDZjODI1NWVkOTYifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/util/DBProcedureUtil.java#L95-L100",
+          "version": "repo-lines-v1:sha256:da44c187bfbabb5a1613f5672b9c21ca5109ff5a92ded13c7d464266349b8ef2:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNmI4YTI4YWYxMDFjMDczNzE0NWIxMTE3MDBhZDU5MmEwOThmOTg5OWUzYTk2ZWIyNWQwYmY4MzRhMGIxNGE1MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZWJlNGM0NTY4MmJjMDE3NGViMjBjZTgxMGMzNzJiODUyMDE0NzZkZjRiN2UzYjFhNTNiYmMzMWJiMGMzMjVlOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzNmNzFkZTZkMjBkY2I1NjBjMWY5NWFlYmY4N2VjZTkwMWIzMDZlMjVmMjM0YmExMjhjZGY0NmM4MjU1ZWQ5NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTMyZTM0NGRiMzczNDA2OWFjZjc3ZTEwZDVhYTQwYmFjZjBhOTBjMjBmZTdlNTkxYWY5YWU2YmNkMWZmNjY2ZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_1bf41759488e420388fe1b3754abb687",
+      "statement": "Cursor-typed output parameters are fully materialized: the ResultSet is iterated and each row is converted to a Map<String, Object> keyed by column name, collected into a List, and stored in the result map under the logical output name; oracle.sql.TIMESTAMP column values are converted to java.util.Date during this processing.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/util/DBProcedureUtil.java#L106-L134",
+          "version": "repo-lines-v1:sha256:8eb8011a2c46afce494666dab3942f68bc540acaed5b15f02d52d3c38249bb05:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRiMTViOGZiMDFiYzQwZjUyNjVlOTUxZjNmYWY4YzAwMTYwZDBkZGQyNGI1OTA3NmFjMDM3ZDI4ZWMwNWU5MzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkYjMzOWMxN2Q0Y2M1NGU3MGM0ZmNmZWNiNjExYmI5ZTdkMzYzZjI1YjE4ZTA5MjNhMWQzMDZjYzk1OTI0ZTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkwYjZiY2U4ZTllZDBmZmQ1YWZhODViYTNhM2ZiNDE3MzZmMGI2ZDdhNjJjOTQ1NGU3OGVlYjQ2NTU0MmE2MjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA3MDI2OWNmZWQxOTZjODI1ZTM0YjBlZjE2OTljODVhZDE2ZTExYWIzZTZiOWY5ZjI2YTIzN2UyMTUwZTI1MzMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8c749188854a4bc5a082978db16274e1",
+      "statement": "Scalar output parameters of type NUMBER, INTEGER, or VARCHAR are extracted via getObject and placed directly into the result map under their logical name; the execute method returns a LinkedHashMap preserving insertion order.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/util/DBProcedureUtil.java#L136-L140",
+          "version": "repo-lines-v1:sha256:13f68927318c16b0d64ba2dbf4f96f426f9d328fc84927a14aec908d4f367f37:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTcxMDE2OTMxNjcyY2YyNmI2MjAwZmJmMzY2OGQ5MzdmMmQyMDU4ZTZiM2FkODUwMmJjNjkyYmVlODJhNzhjZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTUyMmM0MmNkMTljNmQwM2Q4MDhjNDUyNzIwNTUyODI1YjdlYTFjNWI0OTFiMjE4NTExY2FjNzQxNWNmOWQ5YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTE4ZjcxZjcwMWU0MzUzYTUzNzc0N2Q4MTEwMjQ1ZDIzZGJkNzRkZGYwMTMwNmE0NWIxNjI0OGUyY2JkYmZhNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2M0NjJlOGM4ZjQzMzYzYjg0ZGZjNzdjMGJmNGY0YTY0ZmYyNDEwMzZlZTdhNzhiZTM3NmUwMDk3ZmU2YTlkMSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b9577cf68a7749d18757c5967f12f191",
+      "statement": "DBProcedureUtil.execute logs severe exceptions on failure and unconditionally closes the ResultSet, CallableStatement, and Connection through closeObjects; closeObject dispatches on the JDBC resource interface type.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/util/DBProcedureUtil.java#L142-L180",
+          "version": "repo-lines-v1:sha256:bcce38503397e6ea65a0c0a7f89833e8494f7e844c7657484f7ddde2e4102399:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0NWE4NDhmMGUyNjU3MjUwZmRhYWM2OGFjNWUwMTgzM2VjNGRmOWI3YmYwOTk0YTViNmEyNzMzNTdjMzQzYmQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE3NjFiZjRiZTFiMWZjOTM5NDEyZDdiNjhhY2VkZmUyNjNjMWNiYzIyMjMxMjEyZGYzOTA5YzcyMjljZDE2ZWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM5YWY1ZWMxZWQyMjAxZmZiNWI1MDViNTBlNTcyYTI2NGFjMjEwNWU2Y2I4YzVmN2IxOWI5OTg1MGRhYTNmZGYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_14af50615324434ebe039d344b8a36fc",
+      "statement": "ProcedurePool is a central registry of stored procedure call strings for the PKG_CLIENT, PKG_CLIENT_ACTIVITY, PKG_AUTHORIZATION, PKG_PAYMENT, PKG_MSG, PKG_ERROR, and PKG_REFUND packages, covering get, search, insert, update, and error-lookup operations.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/util/ProcedurePool.java#L6-L33",
+          "version": "repo-lines-v1:sha256:ec8837e6aa56d6d8a4cc7ea5aaf385cab51968b2241814b802a695312ae8ceb2:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUzYTUyMTdmNjRhNzMzNDhkMjA2MGRhMGVlOTJjMWM2MjkwZWJhOTdlZjAxOWQ4NjgxYTNiOTNkYTY0YTU3ZmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY2OWI0ZTY4MTdhOTMwNzQ3YWZjZDE0MzRiMzAzODNhNmQ1Y2QxZGZjNTdhM2VlMzdmOThmNTVmOGYyYTU2OGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5ae4ab6fd2274e05b366a0a999d59480",
+      "statement": "Domain services following the common literal contract pass output parameters so that index maps PROCEDURE code/desc/data to OracleTypes NUMBER/VARCHAR/CURSOR and name them response_code, response_desc, response_data; services then check the response_code against HTTP OK (200) or CREATED (201) and throw OracleException on failure, and format the first cursor row into a domain JSON structure.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/service/AuthorizationService.java#L29-L60",
+          "version": "repo-lines-v1:sha256:f01ab226b2faefe3726e688accea2384939cb2f587f04b41549340c0c9dbc740:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2M2JiNDEzMGRlYjJmZTEyMmZkNWRiZGUxMmRjMzgxMDUzMzk5N2VhMmQwY2I5M2E5OTE4NDRjMmRmZGE5OWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU4ZTdhNjgyMWQ0YzlhMWVmZTYwYjRhMzMxMzk4YjNjNWE1OTYyY2Y5MDUxMmNiOTZhZTZmMTExNDRhNDNmMDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlmMjA4MzBmNjQzN2I5YWMzY2UxY2ZmZWY3NmU1YWFlZGI3MDk4NDM5NDQzYTM0YmZhYzY1NjFjOTA4NjcwOWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQwN2U0OWY3OThiYzYwZTA1OGZiOGQ3MjdjNzRhMjYyYzYzNmQ5NzcyMjNhMjZkNTZhYTIwMmFjMmYxMDJjYzIifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/service/RefundService.java#L28-L58",
+          "version": "repo-lines-v1:sha256:be4d9fc8624ca34adcaa19dacc7c6c82d312e4026a1eca5b6f3433bc2793c695:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUyMzVhYjA5OGJhYjc5ZGE5MWZjYTY5OTE0NzNkNzU3MjhjN2QxZjdiYjIxZGJmZTczZmRlYzQ1YzQ2MDQ5NTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkxOTRkNGI3NGI5MmY0NGYyYWQ2ODk3ZGVhNzE5MTJmOTliYmM3ZWRhYjUwMDQyYmY2MTE2NjA1YzJmYzYxZmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIxYTc0MTVlYWIyYzljNTg3OWI4YmQxNTAyMWVjYzlmZWQ2NmU3ZTIyNmY0ODhkMjQ4ZWQyMGM1M2QxN2JmZDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVmMDgwOTAwMDc5YTQ1ZmJmOWQ4NjMxMTdlMzNiYjI4ZGYwNDg1YmI4NDg2YjdjMjQ3MmJjNGU3YmZmOTFmZGEifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/util/AppParams.java#L105-L107",
+          "version": "repo-lines-v1:sha256:20737ae6a3cb17bfb40685ca546bbd8891ec1da71f5b48c69af49247593fb279:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmU0NWVkNDc0ZmI1YzhmZTdjNTM2ZjIzOTM3MTdiOWMzYmY4MmQwODE2YmQ1NTQ5MWFlYzI1MjdhNDQ4NDExNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZWM4NTg4NTY4ODExYWI2OWU4ZjgyYzlmMTIwMzRkNTc2N2E1NTllMzg0NGVlNmFjMjgzYTk2NGZhZmRkMjEzOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTFkMWQ0NmNkZjlhMzBmNTZiMzkxMWRmMTMwMjAzY2M4YTk2Y2E5MjBjZDQ5YzRlNDhjMWZmYmJlYjY3OGY5ZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZGIwODZlNDRmNWNlNjA5YzYzMzc2YzE4YjZlNDgzZDBkZDJhMjliZDUzMmI3MDQ0OTFjNDI1ZTI2NDFmZTdiZCJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-25T07:03:17.397Z"
+  }
+}

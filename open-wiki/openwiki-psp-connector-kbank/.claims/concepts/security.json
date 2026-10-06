@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:fb0a035beb46cd830c56d7a5ad1591274df45fe26093eae7044b743d56579d32",
+  "claims": [
+    {
+      "id": "claim_526e8eb2305a41a3a940616799752542",
+      "statement": "The system authenticates inbound clients via an OWS1 HMAC-SHA256 signing scheme in ClientAuthorizationHandler, validating required X-OP-* headers (Accept, X-OP-Date, X-OP-Expires, X-OP-Authorization), matching region, service, type, and algorithm against static server configuration, then recomputing the signature from the canonical request and an access-key secret before allowing rc.next().",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/ows/AuthorizationV0.java#L40-L133",
+          "version": "repo-lines-v1:sha256:043eca84c2ecb90d94927e6c7dfb014ef68580a45c1e166f9de2b94d9f0d00d5:eyJzZWxlY3RlZExpbmVDb3VudCI6OTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcwZmE5NmQ2MmUxMjBkOWE4MTBkZWY2ZTI0MDdmYmYyYzU0ZDE1ZmU5YzlmZWI0ODA2YjI2YzY5Y2M5ZTIyZDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YjA0NDkxNDY5NzIyZTgzNjNhOTRlNDA0NDUzOGUwMTNhMmEyMTdlMzZiMWU1NjhiYTYwYWNiN2I0YzhmMmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ1ZDQ5NzNhM2NmZjc0NjI4YWJlMjJhOTI5MWY1ODE2YzAwMDEwYmFiYjI1MjE5MTQyMzgxNzMxMGI4Yjg4NjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgyYTcxZTc5OTY5Yzc2YTFmNjljN2MwYTgwM2MyNzVmOTljOTFmMDgyYTdjZjNkNDMwNzlhOWQwMTAyZTAxODQifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/Main.java#L60-L64",
+          "version": "repo-lines-v1:sha256:daf1b2315fa8babddc729c3e94bccc63e99b6ade992f52701ec8952cc7d84edf:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDk1NDc1YmM1OWEyMzMzM2YzNjYxZWY1MTQ0OTZiNGRmN2YxMzU0OTViNmE5NmZhMWM1NTU1ZjRhMGJmY2QzYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2RkNGExZjg1YzU0M2Q0ODMwNjlhNjYxMzhlOTMzNzU3ZjNhYmJhYTIxNjg3MmFjMzMyOGYzMTI0ZDFmZmQwZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTRiZjYyYzBhNDAwODMzOGJlYmFlMThmZmJkZWMxMDEzNjdmY2U5Njg4OWU1ZDI2ZDNkZTIxZjMyYjU4NzYyYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjU1NjUxMTRkNGYxZDEzYzMwYzgzOWU0ZDI0NDAwZTU1MjI4MGQ1NTE3MTY0MGMwNjVlZDA2NGI2MDE1ZGFmYSJ9"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/handler/common/ClientAuthorizationHandler.java#L33-L146",
+          "version": "repo-lines-v1:sha256:051aea64eaf5a87cfefffdd736c57fcf75ebc5e96b9840f299da8b36d3298445:eyJzZWxlY3RlZExpbmVDb3VudCI6MTE0LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJmNWY1ZmVjMGZhNDg5NzhlZGQ1MGU4NTkxN2E5YThkMDhlZmVhNDVhNTBhZWJkNGM5ODY3ZDlhZTk1ZWRiYTI3IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIzNjRhNzg1YTg0Njc1MGYzM2VlMDhiMjg5ZWQ1ODQxMjk5YTQ4ZWMyODhmMjU3ZmY2ZjQ4ZDZjOWFhMTE5YzI4IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI0MmQwNDhkNTU2MmE0NGFhOTEwYzA0ZWU1MWJmZjE2ZDVjZjI2Y2M2ZWE1ZGYyNjYyMTBhOGQxMGU4MGQ2NDQzIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI4ZmRlODNhZDA2YTdmNDc0Y2IwZTU2NDA0MjNkNjY1YmMwZDkyMzAzY2NiYzNhMmQxN2YyYzc2MmFhMmQ1ZDFmIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_8d23bddc94984f51bca561859202721c",
+      "statement": "Outbound KBank payloads are protected by AES-GCM encryption using a per-request UUID IV and a filesystem-based AES key, and signed with RSA/SHA-256 using the connector's private key; responses are decrypted and their signature verified with KBank's public key before the gateway inspects response body contents.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/kbank/KBankGateway.java#L338-L341",
+          "version": "repo-lines-v1:sha256:2ca6f2ef96e95f317ad8b80163cecb442c53084a335d5e9b82066380f7b0f2f4:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOGM4ZjVkODcwNGIxMmIwN2I5YmU0MDc0NzUxZjlmM2YxZjJhYmJiMWM0MGE4NTZkMjgyYzY5N2UzY2I3YmVlNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODA3NWU3NzhhYjVjOTk4NjU2ZTc0YTdkMDIzZTUzMzE4YzAyYTkxYzhkOTkzMWVkNGNiYjAzNDAwNTdhOGY5NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmQ2MzI5OGI0MDM5ZjRkMTFkYTBjZTliMWYyYzgyODc2MzhhMTdiZGUzZTA3MDlkMzY5NjNjNTUyMWY0OGM4OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTJlYjY5MTBkN2NiMDg1ODE3ZDdhOThlNjRhNGM1OTZmYjg0OTQxZmM0ZTA2YTM3MjYxZDkyZDBlYmFjZjAxMyJ9"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/kbank/KBankGateway.java#L468-L502",
+          "version": "repo-lines-v1:sha256:4f3ff9e833518e26a7589fd6232f45c4d1856f0d14a7209a750458c67fb795de:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhYmIxZDA3OTUzNTIwY2EwM2I4NTNmMGIxYWY3ZDc2ZTRkZTkyNDk4MDg2OWI5Mjc3NzU4NGIzYmIyZDIyOTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3OGU4NzI5Y2VjNGFhZTExOTY1N2U4OGJmYTY5MmY4NTBmOTM2ODhkYzE0YzU3MzRmYzQ2N2E4ZWU0MWYyMGQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk5OWJkZWZlZWFjYTYzNDBlMDI5MGRjODZlODg5Yzg5ZDVlMTg5YWE1YmE0NGI1ODViM2I3MDczNGY0YTYyZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNiY2M4MjJjZGJhNDM1YjdlYzQ1ODAwMGRlMzYzNzNiOGUzODRkYjRiMWI1YjY5NTlkY2YyMWZjY2ZmYTUyNTMifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/kbank/KBankSecurity.java#L113-L206",
+          "version": "repo-lines-v1:sha256:fd016a6d8d94eeba4e524a966aacd079b575c5a47d49b89d0bc7c38854afb08e:eyJzZWxlY3RlZExpbmVDb3VudCI6OTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzODI5NGU0NzE3N2I4Zjg5ZTg4NTFhZTY2ZDA0ZTc5MjY0MzlhYWVjZDI0NGM5YjA1ZDA0ZGM5ZTY3NDkyZTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3Y2RhODJkYTYwNjIzOGUwNWU2MjM5OTU2OWM1ZWUwMzk5MzQxOTY0OGFlNWQ0M2EyYmY4Y2Q2MzQ3ZjgyNjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJiMjZlNzI3NDkyOWE3OTQzMWYxNjkwMmIzNmU1NWY4MTE0NDJiNTA4YWJkN2UyMWQyYjVjM2I2MmVmMWYwODUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVjMDFmMTU1ZjBkZDE3YTBlODM0MDJkNGM0NDk4OGZjODVhNTA4OWJjNDc5YzlkZDVkZThmNjFkNDY0YWVjNjUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a01f4fdf505e4cf4b847b8f9faea635b",
+      "statement": "Encryption paths, RSA private and public keys, KBank partner credentials, and OWS1 client access keys are loaded from app.properties at startup and remain static for the process lifetime; there is no key rotation, vault integration, or dynamic reload mechanism.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/Main.java#L78-L89",
+          "version": "repo-lines-v1:sha256:3df16359b91de1578e93654d526cf247819c637498fea0d0a683767be7a7dce9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgzZmVlNGZiNGZlZjc2OWUwZjM2NTYxNzg1ZTgzZjdkM2Q2ZjMxZDZlZWY2ODk5NTE5M2I5YTFmYjUwMzdjZTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRlNWQzYjQzNzY2MmE5Yjg3ZjUzNzQ4NGIzMGZlNTY2ODMxMjlmODFjNDg3OWU3ODBjZDlkZGYyNTAyY2NkNzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY3ZDU4NzkyOGY1MzQ3ZjU2MzQ3MzQ2OWRiMDRjODFkYThiNGI0MDIxYWQ5MGI1Nzc3ZTNiYzgwMjFjNTU1NTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRlMGVlMzVjYThiNWIzOTE5ZWNkZTEzNWQxZmFjZGIxNTZkZmQzZTdjMTQ0YTcwNTNhZWQzOTBkMmI5MGE0N2MifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/kbank/KBankSecurity.java#L39-L42",
+          "version": "repo-lines-v1:sha256:a50f1fcc42b75d940c0921b9c3339786065b776d43e8a91a8835671cbc193e48:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDgyOWQwYmVlOWJmNDdhYjc0NTRkNzQ1NGUxNTdjOGU1ODE0YWFkZjQwOTFkMDQ2NThlZWNmMzdjY2YxYjE3MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmFmNGQ4N2FiNDc1NDg5ZTc0YWI0YTE1MzMzYjA3MTQwZmU1NmUxMzNlYzc4NGViNDgyM2E4MTU5OTI1MmMwNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTFkNGUzMmUzMDEzYTY1MTllODM5ZTAxNWY0NGUxMGM1NzljZDdhOWU1Mjg5MDY0OWI5MjI1Mzc5ZGYyMDA5MSJ9"
+        },
+        {
+          "resource": "repo://src/main/resources/app.properties#L35-L51",
+          "version": "repo-lines-v1:sha256:00b7b740ba91d2c5b50920df456aebb8f8741a446ccca6944f8c1e5e4b41d65c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVlZmU3YWUyZTk0ZGEwMDQ3ZjBlMzEzNGJlM2E0YjJhMjk4M2Y1MjE1YzM3NDYzOWZmNzhkYzBiYTNmZDgyYjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUxNmI1ZDA2NThlZjY3NGIzYzVhYTRlMWM3MzRiYTc5MTNjZTQ2MmJhNDhlNTBjZTk4MWQ1MTVlZmZiZWU3MzIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdkMWRkYTVkZjQ1ZjI2YzA0NmM1M2E4Njc0NjQyNTg0OGVmODQzNDM3OGI0NzY0YjE5ODIxODFmYzNiYTRmMTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA5M2M0ZGY3YTUwYTQyZGQyMjFiMjVjNjViNDRlNzVmZGRlMjJiYzdkNjQ2MGUwOThmM2NkZTVmNzMzYTM1MWEifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-25T07:01:46.974Z"
+  }
+}

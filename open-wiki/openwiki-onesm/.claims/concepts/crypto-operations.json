@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:b918052ab1cead00f0fd133c9de35fbe4fa58efcd73b98e9f4396024cfa26668",
+  "claims": [
+    {
+      "id": "claim_1b4b778ce7b94dfa888aa85b8863a28a",
+      "statement": "Crypto is a stateless static helper class wrapping the JCE (javax.crypto and java.security) for all cryptographic primitives; it holds no keys or state of its own, and callers supply keys either as javax.crypto.SecretKey objects or raw byte arrays.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/Crypto.java#L16-L37",
+          "version": "repo-lines-v1:sha256:296c75aca0ba83d4bf430f978a2a9e3033b13dd160a34dd6a9b798439614eeb4:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1N2MzZTdjNjQ2YmNkNmZhNjFkNDdlZTEyMjQxZjBmOWQ2MmE2NDBiODlhZDM1YzQ3MjA4M2I5MjkwMzM4NWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk3OGI1MDI2YWMyZDM5YWRhY2VjYzQ2OWYzMjM4Y2M3ODQxOTJkNGQ0NDU3YTczZGU5M2RjYWNhMjA0YzRlNTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIzYjkzYTY4NGU4ZjRkNWRiZjA2MGU5ODRkZGRjOGEzODkzZWI2MWNkMjMwNmE0NDMxNjNmZDI5YmZhZTA1ZjUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b3ba905f3d0a4737be26a1dac68b7d51",
+      "statement": "encryptAES(byte[], SecretKey) uses AES/CBC/PKCS5Padding with a JCE-generated random IV and prepends that IV to the ciphertext so the output is self-describing; decryptAES(byte[], SecretKey) reads the first cipher.getBlockSize() bytes back as the IV.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/Crypto.java#L39-L66",
+          "version": "repo-lines-v1:sha256:62e8b803deefd1c459dafee22a9727f0a0c1b54cf3f6b509bef5d7dadf48e708:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVjOTA2ZmFhNGNhYzI3MmZiMDU0OTdjNTQ4ZTU4M2M1ZDdlOGUzM2U0NzM3ZmQzMWNmMjAzMDNkMWZjNjZiNWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcwYTcyYjQ3ZjEyYzQyMmVhNWYxNzEzZTQxYzIzM2Q1Yjk1YTkzZmJmODYxYmYxNzI1MTA4MWQxNGQxNGE4NGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU0Y2Q0MzJmYjM0YTBiZWI5NzVlN2ZkMWVjMzcwYTljZDA4OTc0Y2Q4NDc2MDVmY2Q2YTBiZTQzYzliOGY0MTcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8a10a90619a94cce8688baf41dd89ddc",
+      "statement": "decryptAES(byte[], SecretKey) throws IllegalArgumentException(\"Ciphertext too small to contain IV\") when the input is null or shorter than the AES block size because no IV can be extracted.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/Crypto.java#L52-L57",
+          "version": "repo-lines-v1:sha256:abbbcb48c6785bde1ff572b00c2e882891207c38f58647056926273ea4079810:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTc3ZGRiOWVlMTdhNGM5MjRjOGVjMTA4YzQ5MGE4NmYyNDZiMGRkMTQ3OTc0ZmMzMThlZTM4OTliMzZiNTA3NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTZiMDQ0OTE0Njk3MjJlODM2M2E5NGU0MDQ0NTM4ZTAxM2EyYTIxN2UzNmIxZTU2OGJhNjBhY2I3YjRjOGYyZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTJkYjRiNjM4ZTBjMjY2ODYzODQzYjE2M2RkM2FkN2FmNDdjOTg4OWM4NTEzN2MxMWJlMGFjMzllZjhhNDI5YiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzdjZTFiZWM4Y2FkZTA1NmIzMTU3NWFjOGM4NDYzMGY2YTZkNTU0OTAyYWViYTA2MDMwMTQwNDBjNGZlOWI0NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_07704e3f668a4aed890d7ca96f5728b1",
+      "statement": "The raw-byte AES pair encryptAES/decryptAES(byte[], byte[] key, byte[] iv) routes through a shared private aes(...) helper that validates the key is exactly 16, 24, or 32 bytes, throwing Exception(\"Invalid key length ...\") otherwise, and requires the caller to supply and preserve the IV out-of-band (the ciphertext does not carry it).",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/Crypto.java#L68-L86",
+          "version": "repo-lines-v1:sha256:4a132d91493de4aada5fdb77d87960d887d7897139881e4e0735a550eb1918e6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc4MGVlZTFiMmIxNDU2NjE4ZThhYjQ0NzRmNDlhNTZhMmFhNGYyMjNjN2FlY2VhZThhOWVmYmEwOTlhMzNlMDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYzYmQwZjkwMGFmMjkzZTA3YTJkZTg5ZTEyYTQzOThkMjUxMzlkNzAxZjc5MzU3NTM5ZDIwNTI3NDJkNWY4MDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZiMjRmNDRjOTNhMTNhN2RjOWVmNzExYzhjOTFhM2JkMzVkMTI3MzYxM2NjMWM2YzhhMDEyYmQ1YzFmYjFjYjYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bfbe493b8a7845e8be86bd7c738d50db",
+      "statement": "hmacSha256 builds a SecretKeySpec(secretKey, \"HMACSHA256\") and computes an HMAC-SHA256 MAC over the data via Mac.getInstance(\"HMACSHA256\"), returning the raw bytes; a null data payload returns null rather than throwing.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/Crypto.java#L31-L37",
+          "version": "repo-lines-v1:sha256:ef31458cc5568ea6e456eb0d7c6498c738e79ab7bd811edb80550da6d35a79fd:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTY5NDIwNWIxZTcyMWFhZmIwMjkzMDA1N2QxMzdjNTEwM2U5ZDk2OWNkYzEwZjM1MDkzY2NiMzk3MTEwMGQ1OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmM4ZTMyN2IyMDZiNmU0MzU1ZDJiMGUzYmY5NDlkMzU4OTY4MjBkZjUyODVhZDExMTNiMjQwMjc3YTJhZDRlYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjNiOTNhNjg0ZThmNGQ1ZGJmMDYwZTk4NGRkZGM4YTM4OTNlYjYxY2QyMzA2YTQ0MzE2M2ZkMjliZmFlMDVmNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_051c4019c0bf4c6b8b6bd699eef6e9b8",
+      "statement": "encryptRSA and decryptRSA both delegate to a private rsa(...) helper using RSA/ECB/PKCS1Padding, selecting the cipher mode by key type: a PublicKey encrypts and a PrivateKey decrypts.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/Crypto.java#L88-L101",
+          "version": "repo-lines-v1:sha256:9801009b15a682f32ed5fed1a3d1d5897ade048457437b9b3f843b043f8bc8ad:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5Nzg5YTgxOGUyNmNjMGY2MzhjNjk0YTNiYTgxNjc1OTBjNzFiZDJiYzYzZGI4OGY1MjA4ODRkMmE0YWIwZmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZkNDM5MDcwNWY4NDIxZTIyYWIxYjQ4MDhjYTZmNTBjZTc0NzY3M2NlYmU2YmFlZDIxNWM4NjFmMjQ3MGM5YjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjljOTFjYTVkY2FjNjZjMzM3NTYyZDFmOTEwOGNjYWQ4NDFiYWMxNjNlMjc4ZTY4MjA2MWMwODM4NGRiY2ZkYjkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_106bcacccf6946498d98293564f75354",
+      "statement": "sha256Base64 hashes the input with SHA-256 and encodes the digest with Apache Commons Codec Base64.encodeBase64URLSafeString, producing a url-safe base64 string.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/Crypto.java#L25-L29",
+          "version": "repo-lines-v1:sha256:19b44e9ce3571183183884f9c32364e09150b705a1e4bd41868a8b6fb3de05f6:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2Q3YTU2MzM4ODIyNDViMzFiYTVhNTgzZTE0YmJhMDQ4OWI5MDI3ZGVkNTMwYTQ2ZGQ3NWI1Y2NlZmYwMWU1MSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDAwM2EyM2ZhN2M1OTZkNDFmNWFiNGZjOGRlYTAxN2U2MWM2NDZhMjQ5NzcwNWE5ZDIzYWI0YzNmZjkwYWVhMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2I4MTlkYjVkMTlhODAyYzM5M2MyYWIzZjY5YTVhYzc5MDYxNjU0MTFjYWY5NjYzNjEzYzNmMjE1ZDJmZmMzYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_5bb6f6dd046e406fbfe35ac2d6bd4dd6",
+      "statement": "The hex helpers printHexBinary/toHexString produce an uppercase hex string using the 0123456789ABCDEF alphabet, and parseHexBinary/decodeHexa reject odd-length input or any non-hex character with IllegalArgumentException.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/Crypto.java#L103-L143",
+          "version": "repo-lines-v1:sha256:8291b9ac6a60e4c0375e3da246758dd968d0739bdbb9cc29af3f52d1f66b0b68:eyJzZWxlY3RlZExpbmVDb3VudCI6NDEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhYTk1YmNiZDkzY2IzZjE2YmY1YmMxZWZhMjgwMmE3NTgwYTQxYTdmNDg1YTRjM2VlN2NlODg4YzAzMDhiMmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY1ZTRhNzk5NWNmNTZhNWFlNDUyZjNlZTIwNzI3ZTZjNTIwNmMwYjA1MjA4ODMzMDY2MTNmZTk4Y2QyZTI1YjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY2NTNhNjJiYWM2MmZjZjc0MTNjZjMzOTFjMmY3YWIxOThmZjRiNjZmNTU1N2JmN2I4ZTZkOWFlZDU3OWJiNTMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_09a29eb842814e41a651b05e6d44da14",
+      "statement": "HttpServerHandler selects the cryptographic primitive by the resolved key's algorithm string: HMACSHA256 -> hmacSha256, AES -> the implicit-IV encryptAES/decryptAES(SecretKey), and a key whose algorithm contains RSA -> encryptRSA; the /decryptions endpoint accepts only AES keys, rejecting others with 400 UNSUPPORTED_ALGORITHM.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServerHandler.java#L155-L199",
+          "version": "repo-lines-v1:sha256:6356f26458b07ff46e470c3ad16f0d533de624945983cc3241995f87550cdd19:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExNzAzZWRmZTE0MzU4NWM3NWM4ZjJkYWEzZjA1YWZiMmFiNTEwZTZkYWVhYzhmZDcxNTkyZGQwM2YxYWE1MDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhYjIwMjFlYmNlYWViY2JjMGM0N2FjYzUwNjhjMjYzNmY3YmYyZGZiZjA1YTNmNWQ0N2FjNzE0Y2Q1YzRkMjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhlOWE2MTE1MTdmODQyZWUxYWI3ODJlNjgxMDNlNTU1MzQwYzIzOTY1NTVlYjVlNmMyYTFiOGFjYzNkZDA2NmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU1ZWQxMWQ5OGI5YjNlZTUzZmI5Y2M5ZDkzNGYzOGI0ZDQzNmJiODliYjg1NDI0NGQwZWU1NGQ1YmUxYzQ2ZWQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_21baccc1a91446bc8bf07e97a9d1827d",
+      "statement": "sha256Base64 plus hmacSha256 constitute the HTTP request/response signing primitive used by HttpServerHandler.signRequest and signResponse, which build a string-to-sign from method, path/request-signature, status code, date header, content type, and the url-safe base64 SHA-256 of the body, then HMAC it and return a url-safe base64 signature.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServerHandler.java#L303-L319",
+          "version": "repo-lines-v1:sha256:3e24b23f4aa3b736158d465bd19df4217bd87fe0fab666fc6b7d01bf25db101a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmZTViMDFmNjc4MDNjZTE3YWZjMDA3NDhjMGY1MjJiZTIxZTIyMWIwZWJmNDU5N2U1ODlmMzUxYzhjOGVjOTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIyNGY4YWFmNjM3ODk4NmVmOTlhMjgxMTk4NDNlNGMzZDI2ZWFkZjAzNWQ0NjhkZjU5OGY5NTg3ZGZmNDk2ZTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_92dc0c44ed46413ab901c73ccb6b029c",
+      "statement": "The standalone src/test/java main() utilities (EncryptOnecommCards, DecryptTokenData, Decrypt, DecryptList, DecryptTVSP, GenerateKey, TestCrypto) reuse encryptAES, decryptAES, and hmacSha256 for card-vault seeding, token-data hashing, key provisioning, and round-trip benchmarks; they are not JUnit tests, and the Maven build skips tests (<skipTests>true</skipTests>).",
+      "evidence": [
+        {
+          "resource": "repo://src/test/java/DecryptTokenData.java#L32-L60",
+          "version": "repo-lines-v1:sha256:8cd3933670d253f9c45dad895506c7a8f34b464ccd6467c56865304fa15cbc2e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ1ZTI3MWZiMGEyM2IwZjFiZDExYjE3MzI4NWQxNDJiMzRlODMzMGM2MDQxNjUwZTRmYzZiZjA2MDE1MmYxZjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFhMWQ4ZDZiYjAyMTY1ZDViZjFiNTA5ZGVjZWRjNjQyNDY0YmM2ZTAwMGI0NzYzYTc0ZTIxNzNhNjViNDk3YTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBiNGFiOWE5MzJmMDRmZTVjZmIzYjYzY2FlYjY2MTYyOWFmZDEwZmQ4Y2MyOGJmMjA4ODFhMTQ3OGRhZTkwYjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVhOTFjM2EyMjkyOWJhMTQxNTMyODE2MmUyNGViOTIzMzQ5NmMyN2VmMTE2ZTU3OWExZTdlN2VmZDQyNTcyZjQifQ"
+        },
+        {
+          "resource": "repo://src/test/java/EncryptOnecommCards.java#L48-L49",
+          "version": "repo-lines-v1:sha256:f209687777332e0a320fe4cf2e6b98b5539553da38188d77e0b1b0aaf50f2a70:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNTcwYjA0ODJhM2M2NTk1OGUyMmM0ZGMwMTk4N2QwZTExZGQxOTJmMWZlOTkzZDVhYTgzOTg5MDJmZmIzNzRjOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjIyODYyNDM5MjExYWY0OGIxZjc2OTc3MGJlYWY1NjdlMjYwZWIxOWE3NmI5MmYwMmU2NzBkN2E4MGMyZTFlNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjg3ZTE1NzJkMjZmNjM3ZjI4NTM4N2U5MDVhMzBiYTc5N2ZkZjAzOTMwODAyYTk3OTY2ZTg1ZWJjOWJlODZhMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTUzYTI5NjBiZWIwZTRjYWIzZGYyMDA3MTcwNTJlMjhmMWRmNjI1ZjE0NWJkNjRmYjhmN2ViNDYzNjU1YzVlYSJ9"
+        },
+        {
+          "resource": "repo://src/test/java/GenerateKey.java#L17-L35",
+          "version": "repo-lines-v1:sha256:46363f2f38a9fa8d4361270fd52aff785341cc2d0786456d27b54546f25df82d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdhZWUxMTg4YmIzMjEzMTdhYzhmZDU3ZmY1MjkxMjIxNDc5MjlkNDE5N2NlOTExOWUwMzZiZDNiOTY5NjliNmEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRkMTE2NjA5OTA3NzUzMWNlYjgwOGRiYjljOTBiNjcwYWMzMGE0NDk2ZjY3ZmNiNDNlYmUwYTJiYzFhNThhZWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk4YTI1NGJiM2QzODE5NDI5MTQ5MWUzODgyYWMyY2RmZTBhYzJiZjRiMTYyMTk3MTVkODYyYzdlZmMwNjZiN2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg2MWFmMzEwMjM2YjZhZDNhMGFkZDc5NTQzZTM5ZTg5ZDA1OWIzNzdmNDg4MjBlMGZjYmIwY2QwYWMzOGU4MzMifQ"
+        },
+        {
+          "resource": "repo://src/test/java/TestCrypto.java#L20-L26",
+          "version": "repo-lines-v1:sha256:24e76d8f757abfa8e66218d41a228e62701831458ddfab54e0ccc743ea083c7f:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTAwYzBhYThlNWVkOWExMjNjODFjY2ZiMGRlOTY5OTg3M2VhZGJjMGMwMTZlNGIwMTcwNTA0MGQ5ZjBlOTYyMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzQyODBhYTNhNWRlNmQyZDc5NTNmMTgyNDgyOGVjMzFhNmQ3YzM3NDA1NGMyNzFkZmNkYjM1NWY0MTViMWMxNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGQ3NjY3NDYwZDU5ODNkOTNlMzI4NDNmNzkwNDIwZGExZWE2MTFjMmRmMjYwZTExZGM1MjEwMTdmODgyNDdkYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjIsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzc5NGQwMmE4MTIxOTQ0ZDE3NmQyNjVlOWJiOWNjNTlmNmFiODkwYmNhZGY4YWVmZGViZGJiYjRmMmVhODQ0NCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_ce36270110a949b0baba1a7fa8663cca",
+      "statement": "An earlier KeyDTO-based encrypt/decrypt dispatch that switched on a key type string exists only as commented-out dead code in Crypto.java; the live API is the explicit primitive methods.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/Crypto.java#L145-L161",
+          "version": "repo-lines-v1:sha256:81e86fc15f7c183043a3821229ceb43946ad9de8e1268e662b3545ef1084314f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2MzAwOWJiZTdkMGNmMGY3YzI4ZGMzYzU2YTI1ODE5MjAyYjlkYWQ1NWI1OGY1YzMyNzg3YThiOWY5OTA4NjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE0YmM5ZmIzY2VjYTc1NmYxNWEwMWVkMzM0Yjk2ODViZDkwYjQ2NjYzMjM4OTFiZDVhZDAzNzg4Yzc1YTI5NWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA0YzZlMThhYzRjOGI1NGRhZDZmNTcyN2NlY2M1MzI0ZWRjZWNiNDdiNzQ4YTdjNzZkYTUzMTUxNTdiNzA2MDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-24T11:53:15.318Z"
+  }
+}

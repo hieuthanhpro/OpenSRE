@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:869780519b3b92c5948e132f94ff529340b04ac73a8e60a67ec99f2d8ae97810",
+  "claims": [
+    {
+      "id": "claim_21bdaa2ff4384fb2afe4e9da9b56c02c",
+      "statement": "The inbound HTTP pipeline installs shared Vert.x Web stages in the order BodyHandler, ResponseTimeHandler, TimeoutHandler, RequestLoggingHandler, ClientAuthorizationHandler, then the instrument business route, with a route-wide ExceptionHandler failure handler and a last ResponseHandler, so requests are body-buffered, logged, authorized, routed, and finally responded to through shared handlers.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/psp/server/handler/common/ClientAuthorizationHandler.java#L35-L147",
+          "version": "repo-lines-v1:sha256:45f20901abdbf8d4f4e3fcd0b739161f7b815158b9f89b15dce05739bd7c3eff:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEzLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJmNWY1ZmVjMGZhNDg5NzhlZGQ1MGU4NTkxN2E5YThkMDhlZmVhNDVhNTBhZWJkNGM5ODY3ZDlhZTk1ZWRiYTI3IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0ODkzZjQwZTM3ODFlYjg5NmM4MmQwNDZhMDgwNjdhMTFlMzVjZGYyZjFkZmFmMjZmZWE5MGI4ZGI2Njc2NDEzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIyYTlkZGI2YjM5YjJiYmM1NGQyNTMzZjJhMzU4NGYwMGVjMGFmMzA1YjBmYWQyMjNlNWRjYjljZDY0MGY2ZTRkIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIxMGFmZmQ4NGNjNTAyNWNhMjA4NmY4NmZhYTkwNDkxM2I2MGQ2NWU5NjJiZDE4MWMyMTdjZGZmMDI4Mjc3NWU2In0"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/psp/server/handler/common/ExceptionHandler.java#L25-L113",
+          "version": "repo-lines-v1:sha256:7766637e9d88063e5277a17abc73491c907041dca6905549095a59048d667ab0:eyJzZWxlY3RlZExpbmVDb3VudCI6ODksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1ZjVmZWMwZmE0ODk3OGVkZDUwZTg1OTE3YTlhOGQwOGVmZWE0NWE1MGFlYmQ0Yzk4NjdkOWFlOTVlZGJhMjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJhMGM1YTJjZGQxODg0NTI1MGY5MmNlNjM3ZWEyMGY5MThhYjBiYjczMDVkODI2OTY3ZDhiNjFlYzcyOGM2NWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI5ODBkNjdlYmZiOTc3YjE2MjdiMTVkNDQ0MjJkM2EyMjVjYTg1NTQ2NzNkNDUwMzJmZjE3OGU3MDkwMWQ1YTUifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/psp/server/handler/common/ResponseHandler.java#L23-L72",
+          "version": "repo-lines-v1:sha256:8a33c34fecb3664d157b57526b82e3dc1a5dfa05ea6d8ba2c10667536c9f2295:eyJzZWxlY3RlZExpbmVDb3VudCI6NTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1ZjVmZWMwZmE0ODk3OGVkZDUwZTg1OTE3YTlhOGQwOGVmZWE0NWE1MGFlYmQ0Yzk4NjdkOWFlOTVlZGJhMjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ2MmM3MmE1NGU5MmQzMDU5NTYwZWQ5NDRkZjNiODk3ZmI0OTQwMmE3ZDExZDQ2NTc3Mjk5ZThmNGVmZjRhOTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI5ODBkNjdlYmZiOTc3YjE2MjdiMTVkNDQ0MjJkM2EyMjVjYTg1NTQ2NzNkNDUwMzJmZjE3OGU3MDkwMWQ1YTUifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/psp/server/vertical/PspVertical.java#L67-L77",
+          "version": "repo-lines-v1:sha256:4c259d24b5771ad0500f7326f8e680b1b0d21f444a7c03eaf718663cdf416df9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIzZGJhYjM0ODBjMzE3YzEyN2VkMmM5MDBjN2IyYWUwNDllM2ViNjI5MDkzNWQ1NmFjZmRhOTM2NmE3ZjRkNGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQwNDZmMzRhOGY3ZWI0ZWM4YzNkYjkzMjgyNGU3Y2Y1MWYwNTg5ODQzNzdiOTI3ZWFiMGJkZDljZWMyOGFlOTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZmNjNiZTFhM2UzYzFhMWJlZjFiZjhkYjExODQyMjBiOTMxZDM1ZWQ2MGIzNGMzM2VmZDk5NTFhNjFhNGY4ZTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBiMmRmODljZTNjOWM4MDkwYmRiZWQzYWNhNzc4NTk4MzU4ZGNmOGM3MTZkYWU3ZDAzZWYyNGM3NTUzOWIxNzgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_746da06d8e0744b7b0be0411513b80b5",
+      "statement": "Before any business route runs, the shared pipeline requires JSON Accept and Content-Type headers plus X-OP-Date, positive X-OP-Expires, and X-OP-Authorization; it extracts the client id into the routing context and verifies expiry and an HMAC signature reconstructed from method, path, query parameters, signed headers, and body bytes, rejecting failures with typed authorization or bad-request exceptions.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/psp/server/handler/common/ClientAuthorizationHandler.java#L35-L147",
+          "version": "repo-lines-v1:sha256:45f20901abdbf8d4f4e3fcd0b739161f7b815158b9f89b15dce05739bd7c3eff:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEzLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJmNWY1ZmVjMGZhNDg5NzhlZGQ1MGU4NTkxN2E5YThkMDhlZmVhNDVhNTBhZWJkNGM5ODY3ZDlhZTk1ZWRiYTI3IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0ODkzZjQwZTM3ODFlYjg5NmM4MmQwNDZhMDgwNjdhMTFlMzVjZGYyZjFkZmFmMjZmZWE5MGI4ZGI2Njc2NDEzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIyYTlkZGI2YjM5YjJiYmM1NGQyNTMzZjJhMzU4NGYwMGVjMGFmMzA1YjBmYWQyMjNlNWRjYjljZDY0MGY2ZTRkIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIxMGFmZmQ4NGNjNTAyNWNhMjA4NmY4NmZhYTkwNDkxM2I2MGQ2NWU5NjJiZDE4MWMyMTdjZGZmMDI4Mjc3NWU2In0"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/psp/server/handler/common/RequestLoggingHandler.java#L17-L29",
+          "version": "repo-lines-v1:sha256:292a13a2e9c42404e944e6d6f357abd558eecf1159b06deeeedd645afa0594ef:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1ZjVmZWMwZmE0ODk3OGVkZDUwZTg1OTE3YTlhOGQwOGVmZWE0NWE1MGFlYmQ0Yzk4NjdkOWFlOTVlZGJhMjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2NGE3ODVhODQ2NzUwZjMzZWUwOGIyODllZDU4NDEyOTlhNDhlYzI4OGYyNTdmZjZmNDhkNmM5YWExMTljMjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZkMzVkY2M4MWZkZjBmZWY2YzkwNmUxZTQ1MzQ0NDY2YzhhYWU2Yzk1YTkwMjg3NzRkYzZkNDMwY2NmNDZhYTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc5ZmRmNGI2NGIwMWU2N2UyMzI5ODEwZmEzZTUxNDc3NDdmMjVmODNlMTFkNWU0NDA4YmZmN2U1YTVlZTkyMjcifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/psp/server/vertical/PspVertical.java#L67-L77",
+          "version": "repo-lines-v1:sha256:4c259d24b5771ad0500f7326f8e680b1b0d21f444a7c03eaf718663cdf416df9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIzZGJhYjM0ODBjMzE3YzEyN2VkMmM5MDBjN2IyYWUwNDllM2ViNjI5MDkzNWQ1NmFjZmRhOTM2NmE3ZjRkNGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQwNDZmMzRhOGY3ZWI0ZWM4YzNkYjkzMjgyNGU3Y2Y1MWYwNTg5ODQzNzdiOTI3ZWFiMGJkZDljZWMyOGFlOTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZmNjNiZTFhM2UzYzFhMWJlZjFiZjhkYjExODQyMjBiOTMxZDM1ZWQ2MGIzNGMzM2VmZDk5NTFhNjFhNGY4ZTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBiMmRmODljZTNjOWM4MDkwYmRiZWQzYWNhNzc4NTk4MzU4ZGNmOGM3MTZkYWU3ZDAzZWYyNGM3NTUzOWIxNzgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bb136b56a53f4ab480babe429c16bd63",
+      "statement": "Failures anywhere in the router are normalized by ExceptionHandler into typed HTTP status mappings and a JSON error envelope, while successful work must stage response_code, response_desc, and response_data on the RoutingContext for ResponseHandler, which defaults missing staging values to HTTP 404 before emitting JSON.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/psp/server/handler/common/ExceptionHandler.java#L35-L83",
+          "version": "repo-lines-v1:sha256:cc1544334585f5433b4cebf2dc3c5755b03610941e7d750429ab443671d67a40:eyJzZWxlY3RlZExpbmVDb3VudCI6NDksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY5OWFlNGQ3ZmI0Y2ExODI2MGFjMzMxNWY0ODM5ODBiYTE4OTA5ZjM5YzhjYjJjNTVhYjJhYmJmY2Q1NmYxY2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU3NWJhMmQxMmQ1ZWQ4OTFmNThiMzc4OWIxZWZjM2FjYjk0MTk5M2Q5NTUxMTg3OWU5OWUzNThjZGYzNTQ2ZjMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI2NDljNzY1Yjk1MjgwOTc1YWUzZGIyZjcxMjIwYWY5ZjUxZThhNzI3OWEyMmZjMzIyZTUzZjU2OGQ4NDdmYzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE2OGFmYTE4NzkxNThjNTE0NzVhMjhlYTQ1MmEwZDRiNjY2YjFkODliOWY3MjcyMDBiYjM2NGQ3ZGM1MjQ1M2EifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/psp/server/handler/common/ResponseHandler.java#L25-L38",
+          "version": "repo-lines-v1:sha256:235a8081717aa127a0fcd9e5735c0d26df811423f6d5fda4dd213e55bceec4f3:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjExYzk5NDM4ZTkwZTJhODc5NzUyODc4NjRkYjNhZjI4YTFlZThlZWY0NDQyYjUwN2Y2NjUwM2Q3M2Q2ODFlMmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMwNWEyYTMzNjk2NjVmNmZiY2IxMDBiMjMwNDE3MDI1ZDk5NTQyMjE2Yjk2MzY3NjM3ZDA5Zjc5NWM1ZDBkODQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQzMjg1MzE3MTQ5YjQzMjNlNzQzYTdmZmIzODBhYTA4YjE4NTMyNTQ3MjhlMGZhNTc3ZWQwYTcxNzE3MTg3NjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk4YWE2NDE2ZGIyNDdiOGM3YjUyOTVjOWY2ZDRlODhiNGY4YmNmYWViODkzYmYwOGU5NjRhNmViMzE5NzNlN2EifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_623d30d050b842cbab34ed1f91fd4296",
+      "statement": "The only currently registered business route is POST {server.api.prefix}/instruments, and it runs only after the shared body, logging, timeout, and authorization stages because PspVertical registers that route after the common handlers and before the route-wide failure and final response handlers.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/psp/server/handler/instrument/InstrumentPostHandler.java#L33-L94",
+          "version": "repo-lines-v1:sha256:c585e14750e9749ae5ef3f8341fd15fb056defeba88d06d1a94d5e2a1b909c6b:eyJzZWxlY3RlZExpbmVDb3VudCI6NjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhjNmMwYWEzZDRkNmY3MDljMjc4YmQ1ODI2NTU4NTI1ODI0MzJiMmY4MWZiNWYzOTY2OGNhOGJjOWQ5MWM2NmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhNjMxNDVmNmYwODZlM2QzMjI1YmE2Zjc0MDNiNTAyMzQ3NWNiNGI3ZWFmZjA2MjJjZTgwZTcyMmVhZGM0YzIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg3YjM0Y2ExMDBiYmZiY2Y4NjE4MzEzMDRmZmNjZWYwOWVlNWUxNjdmMzUxMzY2NWQ1MzMxZTI5YjQ5YTA5ZjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImExMzQzMWYwZjRiMWRmMGFkNzk1YjEyYzRlZWE3ODBjODBhYzhmMzZkZjMwM2Q2N2IxYTUxZTU1ODEzOWZjNjgifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/psp/server/vertical/PspVertical.java#L74-L77",
+          "version": "repo-lines-v1:sha256:84f3d3ffec20b1c896cbbd89bcb916d1488e1a5c96192533dcd017295209e8ff:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWU5ODM0Mjc5NmIxNjI1YjQ3OGIwNDRhOTg3OWVhZWM1OTA5N2U3ZDNjMTEwODQxZTU3ZWU0Zjg3ZDIwNzcxNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDA0NmYzNGE4ZjdlYjRlYzhjM2RiOTMyODI0ZTdjZjUxZjA1ODk4NDM3N2I5MjdlYWIwYmRkOWNlYzI4YWU5NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGM5NzJiNjVlZjU4MTlmNzhkMjM5OTQ4ODk5ZjAyOTg5MDE5M2Y1MzZmOGZkNTQwZjFhZDdjMmJhMzU5OTYzZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGIyZGY4OWNlM2M5YzgwOTBiZGJlZDNhY2E3Nzg1OTgzNThkY2Y4YzcxNmRhZTdkMDNlZjI0Yzc1NTM5YjE3OCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_9194d8cb775f475f8bdbcdfa0c5257e2",
+      "statement": "Request logging emits only the configured OWS-related headers and a filtered request body through AppUtil.instrumentLogFilter, and the final response path applies the same filtering to response bodies before emitting them.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/psp/common/util/AppUtil.java#L100-L120",
+          "version": "repo-lines-v1:sha256:fc0ae71e897f7d90303909b452658f766da44fba2127939a20f6657d0c9dec27:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZlNDZiMmQxOWQzMjY2ZWY1NDBkMmM4YzcwODk4NGViZTFmODk0NDgxZjJkZGYxMmM4NjdkMGE3NWVkYWYwOWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk5OWJkZWZlZWFjYTYzNDBlMDI5MGRjODZlODg5Yzg5ZDVlMTg5YWE1YmE0NGI1ODViM2I3MDczNGY0YTYyZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY0NDlkYzQwNDE0NWNiMDM3ODVlODkwMWE2MTc1NmNmNDA0ZmI5ZDdjMmM4YjVhZWI0ZjBmODA5ODNlMDVjZTgifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/psp/server/handler/common/RequestLoggingHandler.java#L17-L33",
+          "version": "repo-lines-v1:sha256:bdeacb3fcdee31e67075b9f44f3dd7406cf2a88586bc359380ec8c37bd9c6c44:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1ZjVmZWMwZmE0ODk3OGVkZDUwZTg1OTE3YTlhOGQwOGVmZWE0NWE1MGFlYmQ0Yzk4NjdkOWFlOTVlZGJhMjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZkMzVkY2M4MWZkZjBmZWY2YzkwNmUxZTQ1MzQ0NDY2YzhhYWU2Yzk1YTkwMjg3NzRkYzZkNDMwY2NmNDZhYTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU3NGJmMWRiNTE5Yjk2MDI1YWM2YTk5OTI5YWM4NWEzN2EzZTAyMTJjYzZkMjEzZDcwZDQ5MTM1YjExNjljZTcifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/psp/server/handler/common/ResponseHandler.java#L49-L66",
+          "version": "repo-lines-v1:sha256:a36468ce37f4bc75481f95216c069a47aa2466b97a6f24bd7cfda8aa6160a78c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ0NjMyZDcwOWRhM2Q2OGNkMDZjNjcyMzE3Yzc0MzNkMjBkOGU1Y2MyOGQ1YzhlODAyMzQ3ODZlZWQ5MmNlNGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTU4Yzg5ZjEzYWZkODQyNDZhMWQwMTI4OGZmMmZhOGQ2NzFmYTQyMWMxZDhlMjFiNWM5MDEzMDlhMzhkNmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU1NDM4NmZlOTFlYzAyZWZlN2M2NDBjZDgxMzI1NzJhNzZjNmQ1YmU4MTNhZmMwNDQwYjg1OWNjNzk3OWM4NzUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a3e99fd295cd4958a7883bf6814cd166",
+      "statement": "Pipeline behavior is configured at startup from app.properties: Main wires apiPrefix, server host and port, keep-alive, connection timeout, idle timeout, and Vert.x pool settings into PspVertical, while the common TimeoutHandler uses the configured connection timeout and the HTTP listener applies keep-alive and idle timeout at the server level.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/psp/Main.java#L55-L69",
+          "version": "repo-lines-v1:sha256:a05678f5cb39f72db463d6f9f5f07a64110cf0f27e024b9cfb1cd30fde5b3eac:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ3ZTMzNTRkNWQzNjdkMTg2OGI3OWIwMDkyZDU1NDY4MzdiNThiNTdiMWVjMzRmYWZmMTFiM2UwODI1ZDFlN2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhYWNlOTNlNDM0MTMxMTc5ZTVhNjhkMzliYzM2NGI0MzU5MWI4ZDRkM2NmZDg0YzdmYzAzNDA2ZjU3MTgzYTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE5NjhhMThiNGNiMTJkZjZjOGQxZjM3NjllZWQ0MWZmNWY5ZGQzMmI2MmEyODcwNTZmMmFmNTg5NTU5NmEwMzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoyLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM3OTRkMDJhODEyMTk0NGQxNzZkMjY1ZTliYjljYzU5ZjZhYjg5MGJjYWRmOGFlZmRlYmRiYmI0ZjJlYTg0NDQifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/psp/server/vertical/PspVertical.java#L60-L89",
+          "version": "repo-lines-v1:sha256:d751182dd2c2e4e9db1fcce5a5e0a79d748294834c29152a84df6f5d8729da46:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVkYzJiMzExYWJlODc1NzJlOGE3Y2MwZDk5NmE2NTg0NDA3NmU1MjMyZDIxYjdhODU0NzVmOWI0MDU1Yjc0OTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5YzEzNTkwNjY1NjMyM2QxYzVlYTQxNjU0ZWU2NmFmYjU4NWFjZGNmYWVhY2ExMjFkNWUzMGJmMTkzZWVkZDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIyNzNiMDIwZmQwMjU4Yzk3ODA0MjI4ZjVkYTViNWViN2VmYmMyMDk1N2RmZjgzNTg3ZDIyNTU5MDc0MzkxOGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRlYmY4YTY2YjY3Yzk2ZWVlMzcwNjM5YmVlNzZiNjEwYzNlOTJlZGE3ZDQxYmYwNjg1NmJmNTJhNDQ0YWM2NWQifQ"
+        },
+        {
+          "resource": "repo://src/main/resources/app.properties#L9-L21",
+          "version": "repo-lines-v1:sha256:3c1e21de1bfa4331df4c5d599f78595bf2bd4aa44911d9228a566cde25447152:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3NmU5YzdiNTJlNjI2NzY2ZWE0NTExMDlhYTk5MmIwZTIwMmExMDUwODYwZmRjZjcyZDQzYTFhOTlhYjk0MzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM0Y2NmMGY1MmZjYzc2NzgzMWE4ZmY1Y2MwYzA2MDBkZTU5ZTE0ODc2ZjVlNWVjYWE4MjE0M2U0Y2U0ZTA3NzciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZjZWQ0M2M5OTFiNWJkNmViNzA4MjhhNjVlMWNiMjE5ZmZkNDJlYmZlMTI4ZGUyYjRkZjA3YTk4YzcwMTllNzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM5NmM0N2JlYTU2ZWUwNWMyODA4YTExNjM4NWRhNTA0M2ZmMzEzYmQ4OWJlZGZmNzRmMmRkZTMzY2Y2YWVhMjUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_86366c807ed9414c9aaf2e34d477ea50",
+      "statement": "On the instrument success path, a downstream HTTP 201 is copied into response_code, response_desc, and response_data before ResponseHandler runs, whereas other outcomes are failed and routed to ExceptionHandler rather than staged as a successful response.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/psp/server/handler/common/ResponseHandler.java#L23-L72",
+          "version": "repo-lines-v1:sha256:8a33c34fecb3664d157b57526b82e3dc1a5dfa05ea6d8ba2c10667536c9f2295:eyJzZWxlY3RlZExpbmVDb3VudCI6NTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1ZjVmZWMwZmE0ODk3OGVkZDUwZTg1OTE3YTlhOGQwOGVmZWE0NWE1MGFlYmQ0Yzk4NjdkOWFlOTVlZGJhMjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ2MmM3MmE1NGU5MmQzMDU5NTYwZWQ5NDRkZjNiODk3ZmI0OTQwMmE3ZDExZDQ2NTc3Mjk5ZThmNGVmZjRhOTAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI5ODBkNjdlYmZiOTc3YjE2MjdiMTVkNDQ0MjJkM2EyMjVjYTg1NTQ2NzNkNDUwMzJmZjE3OGU3MDkwMWQ1YTUifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/psp/server/handler/instrument/InstrumentPostHandler.java#L76-L94",
+          "version": "repo-lines-v1:sha256:143644da1728f37b463097cca59a6daa35d5333edb5444e65ba0f580526d0b5c:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJhMTM5N2UwYzVjODBhYmNkMTNhMzc1M2M4ZGViMWNhNWRjMzc5NTRmYjcxYTdmNzZjNTc4NzVhN2E2Y2NhMTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhNjMxNDVmNmYwODZlM2QzMjI1YmE2Zjc0MDNiNTAyMzQ3NWNiNGI3ZWFmZjA2MjJjZTgwZTcyMmVhZGM0YzIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZmYjM5NmE5ODJlNmRiZTMwOTc2YmMzMmFkNDRiMGJiNWU0YmJkZWY5MDA4NmY3M2Y5MTgwNzdkOGMxZDNkMzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImExMzQzMWYwZjRiMWRmMGFkNzk1YjEyYzRlZWE3ODBjODBhYzhmMzZkZjMwM2Q2N2IxYTUxZTU1ODEzOWZjNjgifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/psp/server/vertical/PspVertical.java#L74-L77",
+          "version": "repo-lines-v1:sha256:84f3d3ffec20b1c896cbbd89bcb916d1488e1a5c96192533dcd017295209e8ff:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWU5ODM0Mjc5NmIxNjI1YjQ3OGIwNDRhOTg3OWVhZWM1OTA5N2U3ZDNjMTEwODQxZTU3ZWU0Zjg3ZDIwNzcxNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDA0NmYzNGE4ZjdlYjRlYzhjM2RiOTMyODI0ZTdjZjUxZjA1ODk4NDM3N2I5MjdlYWIwYmRkOWNlYzI4YWU5NyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGM5NzJiNjVlZjU4MTlmNzhkMjM5OTQ4ODk5ZjAyOTg5MDE5M2Y1MzZmOGZkNTQwZjFhZDdjMmJhMzU5OTYzZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGIyZGY4OWNlM2M5YzgwOTBiZGJlZDNhY2E3Nzg1OTgzNThkY2Y4YzcxNmRhZTdkMDNlZjI0Yzc1NTM5YjE3OCJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-30T08:38:20.900Z"
+  }
+}

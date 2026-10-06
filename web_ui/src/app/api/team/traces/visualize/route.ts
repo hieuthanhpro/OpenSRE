@@ -30,6 +30,83 @@ function isDatabaseSpan(span: { operation: string; tags: Record<string, any> }):
   return dbVerbs.some((v) => opUpper.startsWith(v));
 }
 
+function extractRequestBody(tags: Record<string, any> = {}, logs: any[] = []): string {
+  const bodyKeys = [
+    'http.request.body',
+    'http.request_body',
+    'http.body',
+    'request.body',
+    'request_body',
+    'http.payload',
+    'request.payload',
+    'rpc.request.payload',
+    'http.request_payload',
+    'payload',
+  ];
+  for (const k of bodyKeys) {
+    if (tags[k] !== undefined && tags[k] !== null && String(tags[k]).trim() !== '') {
+      const val = tags[k];
+      return typeof val === 'string' ? val : JSON.stringify(val);
+    }
+  }
+
+  for (const logItem of logs) {
+    const fields = logItem.fields || [];
+    for (const f of fields) {
+      if (
+        f.key === 'http.request.body' ||
+        f.key === 'request.body' ||
+        f.key === 'request_body' ||
+        f.key === 'request' ||
+        f.key === 'payload'
+      ) {
+        if (f.value !== undefined && f.value !== null && String(f.value).trim() !== '') {
+          return typeof f.value === 'string' ? f.value : JSON.stringify(f.value);
+        }
+      }
+    }
+  }
+
+  return '';
+}
+
+function extractResponseBody(tags: Record<string, any> = {}, logs: any[] = []): string {
+  const bodyKeys = [
+    'http.response.body',
+    'http.response_body',
+    'response.body',
+    'response_body',
+    'http.response.payload',
+    'response.payload',
+    'rpc.response.payload',
+  ];
+  for (const k of bodyKeys) {
+    if (tags[k] !== undefined && tags[k] !== null && String(tags[k]).trim() !== '') {
+      const val = tags[k];
+      return typeof val === 'string' ? val : JSON.stringify(val);
+    }
+  }
+
+  for (const logItem of logs) {
+    const fields = logItem.fields || [];
+    for (const f of fields) {
+      if (
+        f.key === 'http.response.body' ||
+        f.key === 'response.body' ||
+        f.key === 'response_body' ||
+        f.key === 'response'
+      ) {
+        if (f.value !== undefined && f.value !== null && String(f.value).trim() !== '') {
+          return typeof f.value === 'string' ? f.value : JSON.stringify(f.value);
+        }
+      }
+    }
+  }
+
+  return '';
+}
+
+
 function generateMermaid(analysis: any): string {
   const lines: string[] = ['graph TD'];
   const client = analysis.client_node;
@@ -74,14 +151,42 @@ export async function GET(request: Request) {
     return NextResponse.json({ success: false, error: 'Missing trace_id parameter' }, { status: 400 });
   }
 
-  const jaegerBaseUrl = (process.env.JAEGER_URL || 'https://jaeger.opvn.vn').replace(/\/$/, '');
-  const url = `${jaegerBaseUrl}/api/traces/${encodeURIComponent(traceId)}`;
+  let configuredUrl = (process.env.JAEGER_URL || 'https://jaeger.opvn.vn').trim().replace(/\/$/, '');
+  if (!configuredUrl.startsWith('http://') && !configuredUrl.startsWith('https://')) {
+    configuredUrl = `http://${configuredUrl}`;
+  }
+
+  const jaegerCandidates = [configuredUrl];
+  if (configuredUrl.includes('127.0.0.1') || configuredUrl.includes('localhost')) {
+    jaegerCandidates.push(configuredUrl.replace('127.0.0.1', 'host.docker.internal').replace('localhost', 'host.docker.internal'));
+    jaegerCandidates.push(configuredUrl.replace('127.0.0.1', '10.38.131.121').replace('localhost', '10.38.131.121'));
+  }
+
+  let response: Response | null = null;
+  let lastFetchError: Error | null = null;
+
+  for (const candidateBase of jaegerCandidates) {
+    const candidateUrl = `${candidateBase}/api/traces/${encodeURIComponent(traceId)}`;
+    try {
+      const res = await fetch(candidateUrl, {
+        headers: { Accept: 'application/json' },
+        cache: 'no-store',
+        signal: AbortSignal.timeout(4000),
+      });
+      if (res.ok || res.status === 404) {
+        response = res;
+        break;
+      }
+      response = res;
+    } catch (err: any) {
+      lastFetchError = err;
+    }
+  }
 
   try {
-    const response = await fetch(url, {
-      headers: { Accept: 'application/json' },
-      cache: 'no-store',
-    });
+    if (!response) {
+      throw lastFetchError || new Error('Failed to connect to Jaeger');
+    }
 
     if (!response.ok) {
       if (response.status === 404) {
@@ -395,8 +500,8 @@ export async function GET(request: Request) {
       server_port: String(rootTags['server.port'] || rootTags['network.peer.port'] || ''),
       request_headers: rootTags['http.request.headers'] || '',
       response_headers: rootTags['http.response.headers'] || '',
-      request_body: rootTags['http.request.body'] || '',
-      response_body: rootTags['http.response.body'] || '',
+      request_body: extractRequestBody(rootTags, rootInfo.logs),
+      response_body: extractResponseBody(rootTags, rootInfo.logs),
       span_id: rootInfo.span_id,
       breakdown: computeSpanBreakdown(rootInfo.span_id),
       error_info: rootInfo.has_error ? extractErrorInfo(rootInfo) : null,
@@ -441,8 +546,8 @@ export async function GET(request: Request) {
         server_port: serverPort,
         request_headers: tags['http.request.headers'] || pTags['http.request.headers'] || '',
         response_headers: tags['http.response.headers'] || pTags['http.response.headers'] || '',
-        request_body: tags['http.request.body'] || pTags['http.request.body'] || '',
-        response_body: tags['http.response.body'] || pTags['http.response.body'] || '',
+        request_body: extractRequestBody(tags, info.logs) || extractRequestBody(pTags, parent.logs),
+        response_body: extractResponseBody(tags, info.logs) || extractResponseBody(pTags, parent.logs),
         span_id: sid,
         breakdown: computeSpanBreakdown(sid),
         error_info: hasErr ? (info.has_error ? extractErrorInfo(info) : extractErrorInfo(parent)) : null,

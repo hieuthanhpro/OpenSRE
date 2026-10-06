@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:563d51e6375e4ddc120bd1942449d45f42f912c8b7fd8fccdc698e96134f13e7",
+  "claims": [
+    {
+      "id": "claim_93cd356ca9e44092b8259b942546bc16",
+      "statement": "The onecommweb migration package intercepts legacy ONECOMM API requests through handlers Vpc (vpc.op), Vpcpost (vpcpost.op), Vpcdps (Vpcdps.op), Traveloka (traveloka.op), and Refund (refund.op), which are routed in Server.migration().",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/Server.java#L468-L489",
+          "version": "repo-lines-v1:sha256:a4258b6694ba0ed4952393458ec14fe87918b4393f5cb99148c102de78932908:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFjZjU3Nzk4NDkzZTI3NWI0NTg3NWU2NDJhNGFlMDI0M2Q4MjlhYWJhNjRiNDk5NzBkYmI1NDNmZGM1MWE3NjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEzMzhlMTRmODc2NGQ1MjJlZGY2Y2Q0MTk1OTM4MDI2M2M0ODQ5ODZlM2E0OTM0ZjM5YWMwZGI5MzVmN2UzYzEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZhZTVmZGQ4NTAwMDRiOWExMzNkN2Q1M2NjMDUxOTE0M2UyODg3MWM3MDQ2MzA3NTE0MzY0NTVkOGMwNmFkYWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNlMTAwMjQzNDY5ZjJkMDJkOGM0MTk2NTYwOWIwOTA5OWY4ZTFlYzY1OGFjNmM1MTkyNmFhODQyZTk2YmM3N2YifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/resources/migration/onecommweb/Vpc.java#L21-L28",
+          "version": "repo-lines-v1:sha256:e6162ad2e4054a402953189993dd2fbf54d2fc5f3a230ea1fc2f7a13d2e10f46:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWFmMjJjZjA3MzI1OTJjMjQ3MTQxY2JlNjFlZmExMTAxMjYxMmY1YTMxMjJiOWFmOWJiYWY1MmY1NzI0ZDE5NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTRhZmVjY2E1NjE4OWNlMTMzYjVkY2ZhZDg1YjE5NjYzYjg1NWY4ZDgwY2NiYTI5YWVjNGQyZGVlNWRlNjkxNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGY1MGM0ZmIwZDdlN2U5N2RhOGM5ODlmY2QwNmUwNmYxNzNlMjc2MzA3OTBmZTc1OTNjZjhmYzAwNGI2Y2FmNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjk3MGMxMmNkMThlODBiNjhkY2Q2MjM5OTUxYjU3ZmI0MTcyYWQzMzAwYTM2MDNiOTdhNTc4MDIyNmI1M2M3ZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_24006174b4904991a8ae8b8f5b64e778",
+      "statement": "Legacy VPC and Traveloka payment requests are translated to JSON via OnecommWebUtils.buildMigrationRequest() with gateway=ONECOMM and forwarded to the MSP /migration/paygate endpoint; a 302 response from MSP is passed through to the client as a redirect.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/resources/migration/onecommweb/OnecommWebUtils.java#L198-L206",
+          "version": "repo-lines-v1:sha256:6bc0af89d216e584d080d0182536ed719349ccc397f512a8f2f1340c3229a1df:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTIyZmUyN2UzZTIxMjk4YTFkYzIwMjM2NzQ3YmQ2MmIwMDlmNzI0YjYyOTdlMzFlZTg5M2UxNTBlODE1MWY2MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzgzYTg2NjRmMTEyZTczNDZjNmIwZTY4NjQxMWExZmI5MDhlODA4N2E5MjViZjJmNDIwZDgxOWIzZDJlYjk0NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzllYWNiNjliNzM0Y2Q1YzRjMTAxNTNiMTBjMmY2YzI3YWQxNjhhZWQ3ZDEzNmZkYTY1YWQ2NTZiZjE1NmU0MiJ9"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/resources/migration/onecommweb/Vpc.java#L60-L95",
+          "version": "repo-lines-v1:sha256:c248e390c452a2f8a1992dbcaebad7d9a554ac4f5dae952a09ae3fa08f62fd75:eyJzZWxlY3RlZExpbmVDb3VudCI6MzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgxODhjYjg0ZDFiYjM5Y2ExMTI2MmY3ZjdiNTU2MzBhODAyN2FjZjg0MzBjYmFmNzM3NDY2ZDVlMzdlZTM2NjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjliZDAzMzFiYzc0ZWU0MWM4ZjllNTRkOGE2N2EwODEzYzJkNTA1YmNhNDZhNDk3ZTUyM2M2M2U1ZDdjY2RkZmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc0OWQ3MjhmZDhkNDMzYjAxYzA1ODYzYzNmODE5ZTU4MjRlMDc2MjVhYWY0MGFmZWM1YjBjOThjZGRhMzc1MjEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bcb7899201f54080af4a76ad5926b45a",
+      "statement": "Refund.op posts a URL-encoded query string with GateWay=ONECOMM_REFUND to the MSP endpoint /vpc/merchant/{merchantId}/refunds/{merchTxnRef}, and returns the MSP body directly on HTTP 200 or 201 else builds a VPC-style error response.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/resources/migration/onecommweb/Refund.java#L133-L157",
+          "version": "repo-lines-v1:sha256:f574f75a066339201fa7bb22f0fa119bc3cc5f4dce74e6f3204ddece4cf9ebc0:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRlNzk5NzNmYzlhNDM2ZjY4NTY4Yjg0N2JlOTUxYmMwODY1ZGZmOGVhYTY2MjgyN2JiM2NmZjczYzMzMDUwZmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjUyNDM0NWEyNDU0YWEwOGQzYjNhMzc0NTMzNzE0ZTYzNGUzOTczYTYzMTQ1ZjdhYzQ3MmNlOGRhYTEyOTFjZjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE2NGE5NTE0ZjgyZjBhZmQ2YjUzZDkwNWZhZmNlMjQ1YmZjNDc3ZTI2ZDBlODhlYzgwOTU2OTFhMjA3ZTRiMDMifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/resources/migration/onecommweb/Refund.java#L62-L120",
+          "version": "repo-lines-v1:sha256:2cb7de6174ec7d1b03b2040bcdb228bfe5233cc96becd7cd587f77491e96a347:eyJzZWxlY3RlZExpbmVDb3VudCI6NTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlMDFkODBkNjRkZmZkYjQxM2ExNWQ2NWE2M2MzOWI1MjEzZjJiOTcyMDk3YWM1ZjZmN2IzYjRiYTY5M2Y5NWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YjA0NDkxNDY5NzIyZTgzNjNhOTRlNDA0NDUzOGUwMTNhMmEyMTdlMzZiMWU1NjhiYTYwYWNiN2I0YzhmMmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQyZjRiOWEwNmJmYzJhZTBiN2IyYmU1MzNjOGM3MTc0MWRmZmM4ZjdjOTg0OTc5YjA0ZjljNGJkZTEzMmY4NGMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVlMmI5ZTIxZmRjODZmYzJjMmVlNDQ3MjE4NWQ2NzY0NjdiZGQxY2JmMmUyNGI0ZGM2NDRhYjFhYmIzMzI1NDcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_eae3f614c9bd439280e9862686c819e1",
+      "statement": "Vpcdps.op (query dispute resolution) is a placeholder that proxies to the existing ONECOMM ClientRequest.queryDR service instead of the new MSP migration endpoint, returning a URL-encoded text response.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/resources/migration/onecommweb/Vpcdps.java#L23-L60",
+          "version": "repo-lines-v1:sha256:337717b335c1a1a54fbdd3566d2a5f214d51cbe30a4e2f83389259ab159992dc:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZmNjI4Zjg4Y2FhMDEyMWZiOWYyZDBkYTgxMGEzZTEwNWIzZGE2NzVmYTllOGFhMTYzNmE2YmYyMzI3NGI2NzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVkMWFhNDFkMTZmYmM1MDU0MjY5NDhlMDRhNmJmZDMyNDRhYjMwY2NmYTJhMmFmN2QwMDkzNDVhNjg3ZjIxMzUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE2ZWQ1ODhmYzlkYzU4ZGQ4NzRmZjQ0Y2I0MjllOTdjN2Y2ZjljMzE0ODE1NzY0MzgwZmI5ZjEyM2FjYjY0OTcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_ad16f0e0e60c4c2f81f2a396d1bb7e88",
+      "statement": "When the MSP call fails or returns a non-302 status, the handlers render a localized stop/error page via OnecommWebUtils.renderStopPage(), which detects locale from the vpc_Locale parameter or Accept-Language header and renders onecomm-web/stop.html with messages from Payment.properties or Payment_vi.properties.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/resources/migration/onecommweb/OnecommWebUtils.java#L110-L168",
+          "version": "repo-lines-v1:sha256:62108edfeed9d7cc1730c01b895d261bce72e8a0f4bd305150184b262fc0f3d4:eyJzZWxlY3RlZExpbmVDb3VudCI6NTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJjOWUzZGMyMGYyMjNhMTEwOGNiMjFjYmI4OGRhN2YxNTlhZjE3YTIwYzgwMjkzYzhhYmQxOTdiYTExM2I3NWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE1N2JmZGYyMWU2ZTJjNDQwOGU3YTA0ZTI1MWI0MjM1NjY3ZjQ4M2Y3MTljNGRiN2RmYzEzZDljZjBiYjk1MDIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE2MmRmNmNiYWYxMDg0Y2ExYTZiYjhlYjNiOGU5ZjBlOWNhZDA2NTdiMTJjZDNiOTA2ODUwNzJiMjcyN2VlZDcifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/resources/migration/onecommweb/OnecommWebUtils.java#L248-L270",
+          "version": "repo-lines-v1:sha256:880c48cffb4a67850a8e026d51b1773cb9555f53bbee261b7c462f8703ccfc22:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM2ZmE3YmVkMTUwZGVlNTUwMWFmZDNlNGUyOTY5MjcxMmVhODFhYzczNmVmMTcwNGI0Mzk4ZDg3Mzg5ZWVlMmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ4MTBhNjMwYTE1MWY3OGFhYmQ1ZDhmZWE0NmQzNmJlZDY3ODAxNTk3NTdhOTQ2ZjZiYzMzYTJkZTgyZTRiOGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY5MmUxNDZlYzM2NDRlN2Y3N2RmZjJhODBmY2M2ZDAxNzAwNzFmYjM4YzZhMGZmNzVmMTlkY2JiOWYxNjg0NzIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c467ea0e2852408fb9e6633400b82414",
+      "statement": "Bank confirmation flows route onecomm-pay/techresponse.op to TcbTransactionConfirm and sacombankfrontendconfirm.op/sacombankcancel.op to SacombankTransactionConfirm, which call ClientRequest.bankConfirm() with request_type TCB_CONFIRM, SACOMBANK_FRONTEND_CONFIRM, or SACOMBANK_CANCEL and redirect on success or render the stop page on failure.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/Server.java#L491-L494",
+          "version": "repo-lines-v1:sha256:74771c376d30b9a1e32f047bd7e49c14a30d1f7aa7191d10c8dca67afaad3356:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2U4NmU2MzI3MWEwN2I1NTJlZTFmNjFlOTYwODBlNWNmN2M2ZTU1MWQ3YmNjMThlNmY5MjVkMzExMzNhZjkxZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDc3ODFlNDBiZGU0NzZjZGU3YmI2NTk2ZDUwOGQ5MGFiMTM2YjJhMGJmMTgxMjU3NTBhMGY5N2QxOGQzYmZhNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmZhNTllNDczYzhlZTdlN2I1M2FjZmUwYjgwMGMwNDRkYzk5MjYxYjYzMTQxNzVkNDYwMDRhMTA4MjI0MjY3MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjIsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMzc5NGQwMmE4MTIxOTQ0ZDE3NmQyNjVlOWJiOWNjNTlmNmFiODkwYmNhZGY4YWVmZGViZGJiYjRmMmVhODQ0NCJ9"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/resources/migration/onecommweb/sacombank/SacombankTransactionConfirm.java#L17-L61",
+          "version": "repo-lines-v1:sha256:eece1b7bd421cdae9b7614158a4bb6723f344cb3c40f8b3f195876d2f7a65da2:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1ZjVmZWMwZmE0ODk3OGVkZDUwZTg1OTE3YTlhOGQwOGVmZWE0NWE1MGFlYmQ0Yzk4NjdkOWFlOTVlZGJhMjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjViNmY2YjFiYzg0NjBjNTFhMWY5ZDA3NzMxYjdhYzk2ZDVlMDlkYWQ1YTE4NWM2N2JjM2I1ZGQ5ZjEwODI5NTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUyYTY5OWZjMzRmNWY0NTNlNGRjMmU2OTRmMzIyOWRkMGQyNGQyYWU1MjMwMmY5N2EwZmVlZjdhMzQ3YjNkY2MifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/resources/migration/onecommweb/tcb/TcbTransactionConfirm.java#L17-L49",
+          "version": "repo-lines-v1:sha256:7e0bb303dbfae31a6f882b5e381b47c6bab95530b11b7798f730efaa7e863b71:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1ZjVmZWMwZmE0ODk3OGVkZDUwZTg1OTE3YTlhOGQwOGVmZWE0NWE1MGFlYmQ0Yzk4NjdkOWFlOTVlZGJhMjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI5YmRmNmI0NjYxNTFjODRjMjBlZTU5Zjg3ODY3YmRhYzMyNGNjYjkyNGQ4YjM3NGFhNDFmMjMxNjA3ZTg4ODAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9b328f8265af44ccb7c6b8297e3c49b3",
+      "statement": "OnecommWebUtils.extractParams() merges URL query parameters and form-body URL-encoded parameters into a single map, so legacy endpoints accept both GET and POST parameter passing.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/resources/migration/onecommweb/OnecommWebUtils.java#L283-L308",
+          "version": "repo-lines-v1:sha256:529a637ca0f962ab03fd7cd0e39de367e98a8fc309e56a3cacaac3149af3d6eb:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU4MWJhYjlmYjk5ZDBhMDJiM2Y1YmUxNzllNjNiODZhYzBmMzAxMDgyNGI4YTc1ZTYwZTQ3YzgwY2ZmMDQ0ZDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgyNTQwMmJiNTFkNjlmZTUyM2ZiNGQxYjhjODFkYWQ2YzkwYjllMGYxOWQ1NDkwOTQ3ZTZjNGMzZmFhZmYzN2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c7c8798510eb4f09bdf21dc95684b526",
+      "statement": "The template cache manager (StandardCacheManager) used by the Thymeleaf engine is exposed as server state and can be inspected at runtime via the /vpcpay/monitor_thymeleaf_cache JSON endpoint, which reports hit counts, sizes, and keys for the template and expression caches.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/Server.java#L106-L120",
+          "version": "repo-lines-v1:sha256:18beb6982aaba987b6b3387b398aa535afca3bcd75d2a82f88f764232ea0e281:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJmZjA5YTI2OGIxMmNlMjFkOTllMmNlNjVlYTMxZjdlYTI0ZTgzMzU0NDAwMzdmMzhiZGU4MzUxMDJkMmI3OTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBhZmFiM2EzZGU1MzUyZWYxMzk3NmRkZGFjZTI4MWY2ODRiM2I3ZTAzMDEzNTAzZGM0YjIzYjgxYjVhZGVlZDQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJjODEzOTBhNzYyZWM5MjFkNTg1M2U1N2U5N2Y5M2ZhZTVmNjViYjZiOTQ4MGI1N2JiODZmOWZjNTRhMDdkMTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImEzNTRmMmRlMTFjODc0YTY0OWI1M2ZmYzA4MmIyZDNlNzZmOWMxYzI4NDEwN2M3YjhlMmY5M2IyZjI2OTY0ZWYifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/Server.java#L469-L469",
+          "version": "repo-lines-v1:sha256:8906b7813c768cbc0ff99d384e77a9490362000891e80ef1b965132c29c0f228:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODkwNmI3ODEzYzc2OGNiYzBmZjk5ZDM4NGU3N2E5NDkwMzYyMDAwODkxZTgwZWYxYjk2NTEzMmMyOWMwZjIyOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODkwNmI3ODEzYzc2OGNiYzBmZjk5ZDM4NGU3N2E5NDkwMzYyMDAwODkxZTgwZWYxYjk2NTEzMmMyOWMwZjIyOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWVkYjk4Nzk1YzJhNmZiMDE0ODI4YTIzNDE3M2Q4YTk5ZjIzN2Q5YWVjM2MwMGY1NDMzODk3ZjU1ODJhYTZmZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTI0OTU2ZGMyNjk0MjZhMWE2ZGJlMTAyOGY5Yzc1MjQ0NDg2NGJkZWEwN2E1YjMwODU0MDc4YTI3NTlhNGIyMyJ9"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/resources/migration/vpcpay/MonitorThymeleafCache.java#L11-L19",
+          "version": "repo-lines-v1:sha256:69050505bcc2a3e8f74d53a45caf29ab428adaaf569e8ded6e913a82ff62a1be:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWQxZDQxMTkzMmMyZDk2MmZiZDAxNmEwNzQ4ODA5ZjJiMGU0MTQ1NzcwYTVhY2U4ZWJhMjkxZmI4NmE3Mzk0YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDQ3NTA4YTVkOWQ3YWU5NGEwM2Q4N2IyYmQ2NDNlODdjYmM4YzAzMjRiNjMwNTVlYTQzNDVlYjIzMmE3YWJiYiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTA4MzZjMTExMDYxNjAyNWM1ODU2MGRkZDRmOWQyMDJmOGU1YWYzZDVjOWMxY2EyZDRhMzQyODc5YThjZGExMSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_6400f6ce53cb41c08af12f86c7c7a172",
+      "statement": "HTML responses rendered by the onecommweb handlers set Cache-Control no-cache, no-store, must-revalidate, Pragma no-cache, and Expires 0 headers to prevent browsers from caching sensitive payment pages.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/resources/migration/onecommweb/OnecommWebUtils.java#L275-L282",
+          "version": "repo-lines-v1:sha256:cd5bac722cc701314cef259a46b674645f906bdeb20a288f11fe362a3e77a7ba:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWRmYTc3ZTFkOWM2OGFkMDRjZWRjYjQ1YmQ1NzkwZjY4ZTMzNzRkYjA3MmRiMjkxMTAzMzY1YjM5ZWExNDIwOSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGYzNDg1MDE1MzU5Yzg4ZTlmMjUxMzcxZDY3ODcwZWIwNmE1MmZlYjU5NWZlNDhiOTMxNjQ1YTEyMjQ1ZjUwMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmI2ZTcyZTBiMzg5YzFmY2ExMjFhODgzNTEzYzgwZjBiOGJkYmMxNDE5MzRhOTE2MjNiOTllYTk0ZTgzMzcwOSJ9"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/resources/migration/onecommweb/Vpc.java#L131-L140",
+          "version": "repo-lines-v1:sha256:1cca327a6e90b094419baaab79e50e0cb4ad9dd7130c21c511ce667695a28b81:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUxZWUzYTc3ZmRmYzQxMzI5ZjY3NjM3N2VmNDQ5MDhhMGE1NWIwYTY3MzIwNzNkMTE2MmQ4ZjZlMzlhZjY1ZDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRmMzQ4NTAxNTM1OWM4OGU5ZjI1MTM3MWQ2Nzg3MGViMDZhNTJmZWI1OTVmZTQ4YjkzMTY0NWExMjI0NWY1MDMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-22T08:58:44.659Z"
+  }
+}

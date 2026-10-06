@@ -66,15 +66,15 @@ export function NewInvestigationDrawer({
   return (
     <div className="fixed inset-0 z-50 flex justify-end">
       <div className="absolute inset-0 bg-slate-900/20" onClick={closeChat} />
-      <div className="relative flex h-full w-full max-w-2xl flex-col bg-white shadow-2xl">
+      <div className="relative flex h-full w-full max-w-2xl lg:max-w-3xl flex-col bg-white shadow-2xl">
         <div className="flex items-center justify-between border-b border-slate-200/70 px-6 py-4">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100/55 dark:bg-emerald-900/40">
               <Sparkles className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
             </div>
             <div>
-              <h2 className="font-semibold text-slate-900 dark:text-white">Chẩn đoán sự cố / New Investigation</h2>
-              <p className="text-xs text-slate-500 dark:text-slate-400">AI-powered incident investigation & database diagnostics</p>
+              <h2 className="font-semibold text-slate-900 dark:text-white">OneBot</h2>
+              <p className="text-xs text-slate-500 dark:text-slate-400">AI Agent by OnePAY</p>
             </div>
           </div>
           <div className="flex items-center gap-2">

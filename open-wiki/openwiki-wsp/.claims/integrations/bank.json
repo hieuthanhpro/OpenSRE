@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:6ca96cfcb2b7cf4d6c48061231b474662eb7994489d0feef021b0e0c21b7645e",
+  "claims": [
+    {
+      "id": "claim_537d7bca30b24759a4e943fe62beb366",
+      "statement": "The QRService class manages QR code operations, acting as a proxy to the MSP backend for creating, retrieving, and canceling QR codes associated with invoices and payments.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/resources/qr/QRService.java",
+          "version": "repo-file-v1:sha256:77c23e5d48ab822cd9894dc70eaec65b7067d8bbab562c870a7ee7f6800756db"
+        }
+      ]
+    },
+    {
+      "id": "claim_7cf5642bd2fa41e5a08252f380f4874e",
+      "statement": "WSP supports multiple QR payment types including standard QR, VietQR, and VRB QR, each with specific creation, cancellation, and retrieval endpoints routed through the MSP.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/Server.java#L203-L230",
+          "version": "repo-lines-v1:sha256:adca9082d069730422a6267fd18bc9af27fc3727c7d3049ed6b9f328c6b485be:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkMzgyNmRiMjA0NWI2MDRiMmYyZjBhNTAwYTBhOTc3NzI3NTRiMGRlMjE5Yzg3ZmRlYWRiNzMxMzZjZWViN2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJiODU1MDg3MDY4YWQzMTU1MzExODQzNGI2MGQxYWU5ZmU0M2VlYWQ0NTYxNTU1YmQ4MWEyYmNiNmQ1ODhlODgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU2NDRmMGIzMjczMTJmOTBjMjY3N2ZmZjdkNWRhZTRjNWJhOTQ1N2I0NWJhMzhjMTk3ZWE2ZGRiMzliZGNlNzgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFmMDBiOTA5MjMxNTNjZjNjNjQ2M2Q3YzI1MjAxOGVmNGFlNDU3Y2Q2ZjgyODgxNjkxMzE2YzQ3NzMwMjVjNTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6e25e3e6553244488683842ea8f6c392",
+      "statement": "Bank-specific configuration for card formats, validation rules, and authentication sites is stored in config.properties using a bank ID based naming convention.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/resources/config.properties#L14-L20",
+          "version": "repo-lines-v1:sha256:2a1f2567afa4cf85d35a85265455b173798740dd6141d3d0c277ab68a17addcd:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDk5NTMwYmEwMWY4MzUyYWZiNDMyMzMyMmFiYzhjZWFlOGY1YmM0MzU2MGYzYjhhOGVmMjBiNTJiN2E0N2IzMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGNjYjI2MmUwYjg3ZjgzM2U2OTUwYzg4ODI2MTJhMzcyMTJhYTJmOTY5YmVmZWUyZjU1ZTViN2U4YWJhYWMwNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWFlOWQ3ZjkxNDA3YTFiYTczMDAyZWIxNDMxNDhhMjQzMzYzMzRjNzcyMDExYjAxZDgxODdiZTdkZmU1Yzk4MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWJhZDBjZTYxNGU3ODQwMjg4MjM4ZmVjODI4MmJmZDljYmMzNjlmMTAxY2VkOGVhYTE4NTFjYzA2OWFiODQ5ZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_74f43ac69dfa448c8ef270d140dbedad",
+      "statement": "NAPAS integration enables domestic ATM card transactions and OTP authorization through a dedicated widget template and authorization service.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/wsp/resources/authorization/NapasAuthorization.java",
+          "version": "repo-file-v1:sha256:c5bb4c1d2a61dab7501b8264bf7a94f2b8c452d8dbe7aa38391692e081125c05"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-22T08:58:44.659Z"
+  }
+}

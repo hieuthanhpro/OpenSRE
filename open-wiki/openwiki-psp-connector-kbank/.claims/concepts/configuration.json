@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:6447046a64a914f61b21368c92e8425dce0cb15d1839d81a0251415b16512afe",
+  "claims": [
+    {
+      "id": "claim_4b8fc51787064746b032b4afc66ee098",
+      "statement": "The application loads configuration from a single classpath properties file, app.properties, into a shared java.util.Properties instance at startup.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/Main.java#L30-L35",
+          "version": "repo-lines-v1:sha256:31a86396bf3c7c7f0e397ddbf4939d5fc99a7dd3a85673da8c78634839266f49:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYTQzMTM4NzdiNmM3ZTRlODk3NDMwZWJhOWMwZjhmMzc1MzFjNzI2NmFmYmFlMDc4MTgwNzUwN2NlNWEzMzVjNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjE3MzFhZGRjYTkzMTU4ZTBjMmI3YzZlNmU5OGJjY2FhMTdkNWQ0OGM2YzFiMjdkNTllODdiZjZmOWRkMzczYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDRjOTMyMDIyYWM2MmIwZjA0ZDRmN2NhZmNmZDU2NjEyZWZhNmViYTFmMmNhYzRmODIwOTYwZTZmNzRmODg0OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDNmMWQ5MzMwMDc2ZTFiMTgzZjdkMTk2MWIyYjQ4YmZmOTcyYjUxYmZmOTkxOTk4ZjllZjFlNDg3ZmM5OGY5MSJ9"
+        },
+        {
+          "resource": "repo://src/main/resources/app.properties",
+          "version": "repo-file-v1:sha256:ad2b3615bafb7f96b0e9fb4365b6a8348ca5e5b2947ee74f726d3bf0339d4d0c"
+        }
+      ]
+    },
+    {
+      "id": "claim_c379300f7e65495492a96153349c3381",
+      "statement": "Vert.x server behavior is fully controlled by server.* properties including bind host/port, API prefix, worker/event loop pool sizes, blocked-thread check interval, and connection timeouts.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/Main.java#L91-L104",
+          "version": "repo-lines-v1:sha256:e3627596a9e6dabd3c7ee1769532b5277da5de4a3bfe6637d4d720f32c55c0f9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI5ZDk1YWM0OGNkNTEyODMzN2FlNjc0ODc1ZjVhY2YzNjdkNGE4ZmU0MTg3ODY3NzA0MTQ4YmZjNTZmZjNmOGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcyMDY5MTg0NTM3YmYwNjEyNGRmYzk4YzNlMmYzNzM2YzJhZTgwZjk0ZWRjMTFmODA5YWFkNDE1MGE1NTkwZGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNmOTQwMzE3ZWZhY2U1ZGI2NTE2MGM1YjkzYmNkZmVjYjI5Nzg1ZjdiMTU1OWJlM2MzYmIwMDdmYmJjNWI4OGIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMwZjZmNTc0ZGIzOTU4ZmFjOGQyYzQxMjMxMzYwYTAyNzA5ZjNlYjIxMzM4YzNiOTk2M2QzOTZmMmFjMjg2ZmUifQ"
+        },
+        {
+          "resource": "repo://src/main/resources/app.properties",
+          "version": "repo-file-v1:sha256:ad2b3615bafb7f96b0e9fb4365b6a8348ca5e5b2947ee74f726d3bf0339d4d0c"
+        }
+      ]
+    },
+    {
+      "id": "claim_0c7a36d40e2c439d9f04b5d24e7c1c8d",
+      "statement": "Database connectivity uses HikariCP with Oracle JDBC, configured from database.* properties, with a small default pool, Oracle validation query, and initialization fail-fast disabled.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/Main.java#L37-L54",
+          "version": "repo-lines-v1:sha256:257b968b042232e169a45d2009c2f9c129005ae97bb4a736a3c64b989188d2ca:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA5NmM5M2JlYWVlMjA2YzY5NzgwMDlhZGU2NGQxNDMwMDcwZjg4MGE2YWYwYTgyMGY0YWYwOWFkMjFmM2M0NDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZlMzYyYWM5N2U0MTA0YmZmMTQyYWUwN2IwYTYyMjg3YzFmNzliMDMwMDljNzE3ZjA2MTcyY2YxMDk5MDBlNzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM0NmFlMWI5NTc2NTUyZTM3Zjg0NjJjNGQwNDA0YTMyYzk5NjU4MDkxNTNkYzE2YjIzMzVkZDE3Mzg5MTRjMGEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY5YjFhYzgwMDk5NGExMzVmMmFiYWFlNDhjYWU1NmQ5YTk1YTk2ZWFmZjg3Y2NlMjRiNWJlMzJjMGI1YjI0YmMifQ"
+        },
+        {
+          "resource": "repo://src/main/resources/app.properties",
+          "version": "repo-file-v1:sha256:ad2b3615bafb7f96b0e9fb4365b6a8348ca5e5b2947ee74f726d3bf0339d4d0c"
+        }
+      ]
+    },
+    {
+      "id": "claim_01371307bbbc411c915e7488296b90b0",
+      "statement": "The single HikariDataSource created at startup is shared across authorization, payment, refund, capture, void, and KBank persistence services.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/Main.java#L66-L76",
+          "version": "repo-lines-v1:sha256:30e7ff402bf3ca782098dacbfd5943a7ae949dc9ee9d423220eb485f325c5e08:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg2MWExZGY3ODZhODc2OGJiZWNmMjM1NjFmY2IzZmZkYTBiOTUwN2YwYmVhNzRlOGNiOGZlMTQyYzg0ZGNhYWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUyNTgwM2JlODk4NDUyZjhmNGI5NGE5ODQ2MjYyYTg1MDUwYTg1MDNjYTRiYmJkNTlkNzc3ZjdjNGExNGYzNmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJkNjYzY2NkMjk2OTM3ZjQ4MWE5NmUzMTNhMDNhYjhhNjFiYWRmMGY4MWExOWQxODczMjBmZjViYzMyNDhhOWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhlMDBjYTIyNGI5YjAyZGIzOTYxYjJlOTdlZjQwZmI2MjgxOTMwN2QwNTVkYWNlNDk5NWVlNmY4MWU2N2FlNzUifQ"
+        },
+        {
+          "resource": "repo://src/main/resources/app.properties",
+          "version": "repo-file-v1:sha256:ad2b3615bafb7f96b0e9fb4365b6a8348ca5e5b2947ee74f726d3bf0339d4d0c"
+        }
+      ]
+    },
+    {
+      "id": "claim_5692f8b4804f4a71ba2de7f816d983ed",
+      "statement": "KBank gateway endpoint, token, partner metadata, RSA key material, and encryption file path are loaded from kbank.* properties and wired into KBankGateway and KBankSecurity at startup.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/Main.java#L78-L89",
+          "version": "repo-lines-v1:sha256:3df16359b91de1578e93654d526cf247819c637498fea0d0a683767be7a7dce9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgzZmVlNGZiNGZlZjc2OWUwZjM2NTYxNzg1ZTgzZjdkM2Q2ZjMxZDZlZWY2ODk5NTE5M2I5YTFmYjUwMzdjZTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRlNWQzYjQzNzY2MmE5Yjg3ZjUzNzQ4NGIzMGZlNTY2ODMxMjlmODFjNDg3OWU3ODBjZDlkZGYyNTAyY2NkNzgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY3ZDU4NzkyOGY1MzQ3ZjU2MzQ3MzQ2OWRiMDRjODFkYThiNGI0MDIxYWQ5MGI1Nzc3ZTNiYzgwMjFjNTU1NTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRlMGVlMzVjYThiNWIzOTE5ZWNkZTEzNWQxZmFjZGIxNTZkZmQzZTdjMTQ0YTcwNTNhZWQzOTBkMmI5MGE0N2MifQ"
+        },
+        {
+          "resource": "repo://src/main/resources/app.properties",
+          "version": "repo-file-v1:sha256:ad2b3615bafb7f96b0e9fb4365b6a8348ca5e5b2947ee74f726d3bf0339d4d0c"
+        }
+      ]
+    },
+    {
+      "id": "claim_4a5c80d09d084b238452aab3b6d6f0cc",
+      "statement": "MSP connection settings, credentials, region/service metadata, and request timeout are loaded from msp.* properties and exposed through Config getters with fallback defaults.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/Config.java#L46-L73",
+          "version": "repo-lines-v1:sha256:0465445eef497a9221b36b0ad9dc7d2b48ee98e7f0f4559d798c0e2b0e8a030c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlhNDNmNDM5MDcyM2Q4OGExMDg3YWJjNTg3MThlMjc1NDE0NDJjNjFlNWVjMDJmYzI0OTFmMDhlMzFlOTMyMjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI5ZDE1YTAxOGUxMjU5ZTExYTU4MzIwYjMwNWIxYmY5ZmZkNjA5ODA5NDBiOWEyYzU1NWE5MmIxODBjN2I0ZWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAyZmM2ZjI1YmFjNzllNWJkNTVmMTkzMTRmZmFjNjk5MjFjZjE4NDBjZTUxNTRjMjU4ODkxOGUxMDE3ZjhiYWUifQ"
+        },
+        {
+          "resource": "repo://src/main/resources/app.properties",
+          "version": "repo-file-v1:sha256:ad2b3615bafb7f96b0e9fb4365b6a8348ca5e5b2947ee74f726d3bf0339d4d0c"
+        }
+      ]
+    },
+    {
+      "id": "claim_6a385e0df02043bcb163282272e6aefc",
+      "statement": "Logging relies on the env:app variable and sys:log system property for app identification and log file routing; application code does not use environment variables for business configuration.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/resources/log4j2.xml#L1-L31",
+          "version": "repo-lines-v1:sha256:4484bdb30aa8bf5dd26728825c32d68db101741c87e6235a2ff88d9e08c143df:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBlYjY0MWRjY2YxMDYwY2Y4MjgzMTc3OGFiMDRiMjcwYjk3YjI0NzgwZDA4OTVkNWIwMGQ0ZWIyMTdmYzhhMWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIzM2QyMDMwZGQ1ZjA2ZmQyYTYzOGFlNmUxODc4MmQyNjczMTZlMWM2ZjVmMjliNzVmNWJlNTcyNjEyMjdjZGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjY5YzhkYmFmZmVjYzA2ZjdmODM2MmFlNDdiM2M2YzNiNmQ3ODdkOTFmOGY2MjhkMTBiODM0YTdkZDQzY2NiZDAifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-25T07:01:46.974Z"
+  }
+}

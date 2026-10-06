@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "pages": {
+    "/openwiki/architecture/configuration.md": {
+      "gitHead": "1b0034bec8e547ab660272d2ead7e1df785bdf5e",
+      "sourceFingerprint": "sha256:51f9dfc06274fbdb95b9a6af867285793c323c313d5ad43579e2929fb21361e1",
+      "pageVersion": "sha256:3b9e06b2357a5bee010b56180c2cea667c3a9b60584cd379185d93606f28f706",
+      "completedBy": "openwiki/0.5.2",
+      "completedRunId": "3a6299b1-f58d-4864-bdac-d139ca2b978e"
+    },
+    "/openwiki/architecture/dependencies.md": {
+      "gitHead": "1b0034bec8e547ab660272d2ead7e1df785bdf5e",
+      "sourceFingerprint": "sha256:51f9dfc06274fbdb95b9a6af867285793c323c313d5ad43579e2929fb21361e1",
+      "pageVersion": "sha256:3342f26ed04de74994cd0ce4dbb575a994a5b0662d20abbf1aed8804fa60ccbd",
+      "completedBy": "openwiki/0.5.2",
+      "completedRunId": "3a6299b1-f58d-4864-bdac-d139ca2b978e"
+    },
+    "/openwiki/architecture/overview.md": {
+      "gitHead": "1b0034bec8e547ab660272d2ead7e1df785bdf5e",
+      "sourceFingerprint": "sha256:51f9dfc06274fbdb95b9a6af867285793c323c313d5ad43579e2929fb21361e1",
+      "pageVersion": "sha256:694f9d434986d4efe4e982a363eeb8b40adcfaa1db806b6117a5f7dc78dfe939",
+      "completedBy": "openwiki/0.5.2",
+      "completedRunId": "3a6299b1-f58d-4864-bdac-d139ca2b978e"
+    },
+    "/openwiki/architecture/routing-and-requests.md": {
+      "gitHead": "1b0034bec8e547ab660272d2ead7e1df785bdf5e",
+      "sourceFingerprint": "sha256:51f9dfc06274fbdb95b9a6af867285793c323c313d5ad43579e2929fb21361e1",
+      "pageVersion": "sha256:22c365d3c0f2e101dfc0c807587a2c528fae3bfea6f3d869f29892d563a641b2",
+      "completedBy": "openwiki/0.5.2",
+      "completedRunId": "3a6299b1-f58d-4864-bdac-d139ca2b978e"
+    },
+    "/openwiki/architecture/templates.md": {
+      "gitHead": "1b0034bec8e547ab660272d2ead7e1df785bdf5e",
+      "sourceFingerprint": "sha256:51f9dfc06274fbdb95b9a6af867285793c323c313d5ad43579e2929fb21361e1",
+      "pageVersion": "sha256:563d51e6375e4ddc120bd1942449d45f42f912c8b7fd8fccdc698e96134f13e7",
+      "completedBy": "openwiki/0.5.2",
+      "completedRunId": "3a6299b1-f58d-4864-bdac-d139ca2b978e"
+    },
+    "/openwiki/architecture/util.md": {
+      "gitHead": "1b0034bec8e547ab660272d2ead7e1df785bdf5e",
+      "sourceFingerprint": "sha256:51f9dfc06274fbdb95b9a6af867285793c323c313d5ad43579e2929fb21361e1",
+      "pageVersion": "sha256:8a7df20347627a739ae4c6f3a719d061cdfe37e16c135a57345788d660a5d000",
+      "completedBy": "openwiki/0.5.2",
+      "completedRunId": "3a6299b1-f58d-4864-bdac-d139ca2b978e"
+    },
+    "/openwiki/concepts/authorization.md": {
+      "gitHead": "1b0034bec8e547ab660272d2ead7e1df785bdf5e",
+      "sourceFingerprint": "sha256:51f9dfc06274fbdb95b9a6af867285793c323c313d5ad43579e2929fb21361e1",
+      "pageVersion": "sha256:84a675369002eef6f3c6f0a28d0b7063c3e7f355fa69bdef4e60dddc05d4e7e2",
+      "completedBy": "openwiki/0.5.2",
+      "completedRunId": "3a6299b1-f58d-4864-bdac-d139ca2b978e"
+    },
+    "/openwiki/concepts/card-brands.md": {
+      "gitHead": "bead83ee391cf7719102baefe23e897cdd12d4f7",
+      "sourceFingerprint": "sha256:09d015a2429fc74133dc300cb997256e4c59351cf51440cf7497f90eb22c3477",
+      "pageVersion": "sha256:a86bbb039215b4294130557123a4f8b16df93db7b0194ff1b75c202f485b1f24",
+      "completedBy": "openwiki/0.5.2",
+      "completedRunId": "cc781b35-84cf-4cf5-b6ac-a991b89b8d5e"
+    },
+    "/openwiki/concepts/digital-wallets.md": {
+      "gitHead": "1b0034bec8e547ab660272d2ead7e1df785bdf5e",
+      "sourceFingerprint": "sha256:51f9dfc06274fbdb95b9a6af867285793c323c313d5ad43579e2929fb21361e1",
+      "pageVersion": "sha256:b80a38257799216b7d67213d52e7e6277d6deaba21462f57ae97adc037783cc2",
+      "completedBy": "openwiki/0.5.2",
+      "completedRunId": "3a6299b1-f58d-4864-bdac-d139ca2b978e"
+    },
+    "/openwiki/concepts/error-codes.md": {
+      "gitHead": "1b0034bec8e547ab660272d2ead7e1df785bdf5e",
+      "sourceFingerprint": "sha256:51f9dfc06274fbdb95b9a6af867285793c323c313d5ad43579e2929fb21361e1",
+      "pageVersion": "sha256:ee6a8f481f00607c12b59e8d87896a374b46e743d6b1617dad2a23d065726c2c",
+      "completedBy": "openwiki/0.5.2",
+      "completedRunId": "3a6299b1-f58d-4864-bdac-d139ca2b978e"
+    },
+    "/openwiki/concepts/instrument-cache.md": {
+      "gitHead": "1b0034bec8e547ab660272d2ead7e1df785bdf5e",
+      "sourceFingerprint": "sha256:51f9dfc06274fbdb95b9a6af867285793c323c313d5ad43579e2929fb21361e1",
+      "pageVersion": "sha256:1eab1dbdeb804c39d150ba6939297d013d8078462c3376b004d55c56e46431b4",
+      "completedBy": "openwiki/0.5.2",
+      "completedRunId": "3a6299b1-f58d-4864-bdac-d139ca2b978e"
+    },
+    "/openwiki/concepts/instrument.md": {
+      "gitHead": "1b0034bec8e547ab660272d2ead7e1df785bdf5e",
+      "sourceFingerprint": "sha256:51f9dfc06274fbdb95b9a6af867285793c323c313d5ad43579e2929fb21361e1",
+      "pageVersion": "sha256:ae12fc47e2732311bad64e17c479ec7142ef27feda869244dd1e0728bc80d8c6",
+      "completedBy": "openwiki/0.5.2",
+      "completedRunId": "3a6299b1-f58d-4864-bdac-d139ca2b978e"
+    },
+    "/openwiki/concepts/invoice-encrypt-card.md": {
+      "gitHead": "1b0034bec8e547ab660272d2ead7e1df785bdf5e",
+      "sourceFingerprint": "sha256:51f9dfc06274fbdb95b9a6af867285793c323c313d5ad43579e2929fb21361e1",
+      "pageVersion": "sha256:20a8a1f6dc9f8912e48d06e0ba7a4553275b0bf1b804093212be4b5880938b5e",
+      "completedBy": "openwiki/0.5.2",
+      "completedRunId": "3a6299b1-f58d-4864-bdac-d139ca2b978e"
+    },
+    "/openwiki/concepts/invoice-states.md": {
+      "gitHead": "1b0034bec8e547ab660272d2ead7e1df785bdf5e",
+      "sourceFingerprint": "sha256:51f9dfc06274fbdb95b9a6af867285793c323c313d5ad43579e2929fb21361e1",
+      "pageVersion": "sha256:a03fe27418258fc223a89324cf83027d54855dd1a429d5d39fb6d1bfd33c66d2",
+      "completedBy": "openwiki/0.5.2",
+      "completedRunId": "3a6299b1-f58d-4864-bdac-d139ca2b978e"
+    },
+    "/openwiki/concepts/payment-methods.md": {
+      "gitHead": "1b0034bec8e547ab660272d2ead7e1df785bdf5e",
+      "sourceFingerprint": "sha256:51f9dfc06274fbdb95b9a6af867285793c323c313d5ad43579e2929fb21361e1",
+      "pageVersion": "sha256:1f93be047f91f906a2850bd1587678b8f3bb5d7bf15df595357c3155dd029fbd",
+      "completedBy": "openwiki/0.5.2",
+      "completedRunId": "3a6299b1-f58d-4864-bdac-d139ca2b978e"
+    },
+    "/openwiki/integrations/apple-payment.md": {
+      "gitHead": "1b0034bec8e547ab660272d2ead7e1df785bdf5e",
+      "sourceFingerprint": "sha256:51f9dfc06274fbdb95b9a6af867285793c323c313d5ad43579e2929fb21361e1",
+      "pageVersion": "sha256:f9efb2c888971faff56eaaa6efc78a9411cef7cdccf63b2b7be3a7ff2f19fe7c",
+      "completedBy": "openwiki/0.5.2",
+      "completedRunId": "3a6299b1-f58d-4864-bdac-d139ca2b978e"
+    },
+    "/openwiki/integrations/authorization-napas.md": {
+      "gitHead": "1b0034bec8e547ab660272d2ead7e1df785bdf5e",
+      "sourceFingerprint": "sha256:51f9dfc06274fbdb95b9a6af867285793c323c313d5ad43579e2929fb21361e1",
+      "pageVersion": "sha256:c986b4cbf247ab5e29abf30f280de161ffbd67c324eba6853ef211acd0c781ec",
+      "completedBy": "openwiki/0.5.2",
+      "completedRunId": "3a6299b1-f58d-4864-bdac-d139ca2b978e"
+    },
+    "/openwiki/integrations/bank.md": {
+      "gitHead": "1b0034bec8e547ab660272d2ead7e1df785bdf5e",
+      "sourceFingerprint": "sha256:51f9dfc06274fbdb95b9a6af867285793c323c313d5ad43579e2929fb21361e1",
+      "pageVersion": "sha256:6ca96cfcb2b7cf4d6c48061231b474662eb7994489d0feef021b0e0c21b7645e",
+      "completedBy": "openwiki/0.5.2",
+      "completedRunId": "3a6299b1-f58d-4864-bdac-d139ca2b978e"
+    }
+  }
+}

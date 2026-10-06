@@ -1,0 +1,174 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:a3547344786ba472bddf9b5af803ba8156efba6afc2042d09c483c21de44eee1",
+  "claims": [
+    {
+      "id": "claim_a9d65bdb5581457d9b3ee332e2b1d6ab",
+      "statement": "SecureKS loads a JCEKS KeyStore from the classpath resource /keystore.jceks (src/main/resources/keystore.jceks) using the supplied master key, holding the unlocked store in a static field for the process lifetime.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/SecureKS.java#L27-L30",
+          "version": "repo-lines-v1:sha256:852697edb9b65ea340d74a22117de64bc4bf05e88d2dcfc4da8c70c1a9c596c0:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYWIxOWZkMTg4NzNhZjVmMjM3ZTFmNThhNGI3MjUwNjBmNzM0MTdkZTQ4NDZmM2FmYzVkYWZkYTc1NDA0ZjI0YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODJiZWNmNjBmMjU0ZWEzMGU1NmJkZjA4NzkxOTBkMjNiZTRjZjg0YTkxN2Y4M2EzZTU3OGRmMDE2MDZlOTJiZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTU3ZmM4YjQ0YjRiYzk1M2E4OTI1NTgwOTk3OGE0ZDdjMWU1ZDQwNjZmNDgxYmEwOTE5MTk2NzQyNzg5ZWMyNiJ9"
+        },
+        {
+          "resource": "repo://src/main/resources/keystore.jceks",
+          "version": "repo-file-v1:sha256:7fdf740866cb4b190b288ba2a046a182e330c097441bbd9ab1282d42ed4bfae4"
+        }
+      ]
+    },
+    {
+      "id": "claim_6825914c2f584e3791eb81e5f86727de",
+      "statement": "SecureKS.load builds two Guava LoadingCaches (keys and certificates) each bounded to maximumSize(1000) with expireAfterAccess(5, TimeUnit.MINUTES), loading entries lazily from the keystore with an empty password.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/SecureKS.java#L31-L61",
+          "version": "repo-lines-v1:sha256:294cd9dc2f7d924d9bf0a6b5bc68c6c81969f2674c2bbcf33475e9d8665757b0:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRkMDY5ODNhYjM1Y2U0M2JjOTM5Y2NjNjNlMzU1ZDdjZmYyNjExNWI2NTg4N2VhOWJhMDhlMWVkOTE1YjA2MTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxNWFhZGQ1ZDA4ZTJiN2UzYmM3YjcwODkwNWI1NDhmMzc1NWEyOTJmYzVlMzFjNGM0ZmUzMmFkMzJlNTMzZmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM0MWM0MGMyOTU4ZTg2YzZlZDZiODFiOGZiYTMwYzI0MGQ0YTZkYjIxYjczMzcyYzc4NzdkMTBlZjNjNzhiOTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAxMDlhNzZjMmZlNGYyNDMyNThhMDE2MTVhY2ZjYTYxOGE4ZmJhNTY4OTA0YjgzNzQ1ZDcwNTI0NmUwNGNhYzQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_270c95490d06458c8eef6c4be1146149",
+      "statement": "SecureKS.load registers the key cache as a JMX MBean com.onepay.onesm:type=Cache,name=KeyStore on the platform MBean server; registration is skipped if the name is already registered.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/SecureKS.java#L63-L63",
+          "version": "repo-lines-v1:sha256:301284e82dd69725fdb4ed1f33f7845c86a3fc3136551fbf7ccaab2b4ede3731:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMzAxMjg0ZTgyZGQ2OTcyNWZkYjRlZDFmMzNmNzg0NWM4NmEzZmMzMTM2NTUxZmJmN2NjYWFiMmI0ZWRlMzczMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzAxMjg0ZTgyZGQ2OTcyNWZkYjRlZDFmMzNmNzg0NWM4NmEzZmMzMTM2NTUxZmJmN2NjYWFiMmI0ZWRlMzczMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTQ5YzViNTVkZGI4MGM4MTRjNDBjMTVkMjkzMzdkMDM2YzdmOTM3NzQ2MzhmYTY2YTdkN2IyNWEzYWY1YTk3ZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzQyMjE1MWYzZjlkOTJmYTI4MGY2YWM3NTc0YWI2MGQ0MjQ3NjlkMWRhYjk5ZmJkODBhNDg5ZDYyNjgxMTBiYSJ9"
+        },
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/jmx/GuavaCacheMXBeanImpl.java#L107-L122",
+          "version": "repo-lines-v1:sha256:253591fcfe9a4c9dac3b03ec183e2ec29d9617c8ec2a9a7810e0330d1ae6125d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1NzIxZGY0YTcxYzQyZDJhZmFhOWNjYTVhMzMwMWU3ZDgxZTA1YmI5ZjhiYzk4ZjljYmE4ODAxNTY2NTYyOWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk5OWJkZWZlZWFjYTYzNDBlMDI5MGRjODZlODg5Yzg5ZDVlMTg5YWE1YmE0NGI1ODViM2I3MDczNGY0YTYyZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_227837bcd925431092e986e745e64f6e",
+      "statement": "SecureKS.load returns true on success and false (logging at SEVERE) on any failure, so callers must check the return value to gate server startup on successful keystore opening.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/SecureKS.java#L25-L69",
+          "version": "repo-lines-v1:sha256:51c0fb567f59fd2b7f330730fcbc02438b489beb9729e24ffef7d033828bda0b:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczMjdmZGQ3ZTkwZjAwYWQ5ZjM2YjkxYjhmMDg2YWZlMmRkZmVhMGMxY2Q4YTAwMTZlMTY3YjY4NjA4ZWRiNjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YjA0NDkxNDY5NzIyZTgzNjNhOTRlNDA0NDUzOGUwMTNhMmEyMTdlMzZiMWU1NjhiYTYwYWNiN2I0YzhmMmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRlZDYxNDc0MTIyMThmOTlhZmUwNjY3ZjA0MzkzMGQxY2NkMjliOTkyOTA3ZWFjNDM0YTFkNzI3NTM3MjBhNDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImRmYzliMTg3NTRhOTAzMjg3MDA2ZWQ0NTcyZDQxZjE3YjExMmY1YmJhMTEzNTBiY2MyMWVjNDE3YzNhZDlkMDQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a53f7a15aba6461bbe659a388acdaa00",
+      "statement": "When no master key is supplied at launch, Main registers a com.onepay.onesm:type=Console MBean and waits; ConsoleMXBeanImpl.setMasterKey later calls SecureKS.load and, on success, starts the HTTP servers and unregisters the console bean.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/Main.java#L21-L33",
+          "version": "repo-lines-v1:sha256:216ffed1640de286ca6cc0d98b97306176fd61739ad6ec02711f9314d60cd8fe:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5YWRiZjZlMjA4MjVkNTY0OWU1ZjVmMWY5Y2U1NjAxYzQ3Yzg3OTM4Zjc1Y2VjNGRiYTJiN2Y1ZTRmOTc1ODMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2NTQ4NWE5NGEzYzIwODhkMjczMWM5YmE5NjNkNzk4Mzk4YzQ1OTRhZTI2Nzc5ZmQ0MmRhOGEzZDFjZjdmYTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkyZDJmNTZlYmVlNDVmNDYxNzE0ZTkwY2MyZWM1NDk5OTNhOWE4NzQ3ZjM5ODdlZThjMDA3ZDlhMDgzZWQ4OWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM2OTQ2ZTEwMWU1ZTc4ZDkwYTUxMGM2OWYyNjZlZjc2NTQwZDMwOWIxYjgyMjY5NWI1MzE3MmVkMmNhYTAyNTkifQ"
+        },
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/jmx/ConsoleMXBeanImpl.java#L12-L20",
+          "version": "repo-lines-v1:sha256:ddf77daafebf8f2dee7e4fc9c3a8a746f8f63cfaa73b7708bbd40abfc4ea2de5:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDU5MTBjMDU0MTVkMmU0ZjBhODQ3YjI3Yjg0ODBiZmIxNGVhMTU4ZmMxYWRkZDIwN2MyY2EyMzUzZGM2MjAyNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYmVkN2I0YzQ5ZGE1MzI1YzRhYzFiNjA1MDE4MTNhOTMyYTNlYjNlNDJlOWNmZDM3Y2IzNmU0YTYxZDBlYjcwYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_874fd48dd1ba4b859bfd88be561290f4",
+      "statement": "getHttpClientKey(clientId) reads the alias http_client.<clientId> directly from the keystore (un-cached) with an empty password and returns the raw encoded key bytes; it is the per-client HMAC request-signing key used by HttpServerHandler.checkSignature.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/SecureKS.java#L84-L94",
+          "version": "repo-lines-v1:sha256:1de004b4c34532c7d21380f13641889a8dbd3824b700d6d719667128aafd6d92:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJmZGRkN2ZhYmVkNGQ0OGQ1MDFhMWIwZjg4NWFjOGM3NTJjMDE3ZDM3MGJhNTJlNDQwNjZjNjFlM2ZkNmRmZWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI5NjY3MDlmMjgwYjJkZGEzMzk3NDQwOGMzODNiZjMwOGIyZTcxOGM3YTc2YmVjY2Y4MjhjNjUxYjZlNWYxZjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU3Zjk5NTI0M2E2ZTJkMmRlMzM0YjMwNTYzZTg3MDgxZDI1NWQ4MDZjZDAwM2NhMDk1YWY5YzI0MWYxY2JjOWIifQ"
+        },
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServerHandler.java#L236-L247",
+          "version": "repo-lines-v1:sha256:9e10c4a8ad393742b9a717bc254c1c827c86953bd1bcde896ea65cd178efa8ea:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU0ODRlNTE1MTczZDI4YTEzZWIyZDk2OGU0ZTQ1N2JlNzE1ODc2MTg5YzYzODc5NzMzZTRkZTA3Mjg1YWVjZWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkYjMzOWMxN2Q0Y2M1NGU3MGM0ZmNmZWNiNjExYmI5ZTdkMzYzZjI1YjE4ZTA5MjNhMWQzMDZjYzk1OTI0ZTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY1YTc5OTNhMDExMGU5OWViNWQ3OGNkMmEzNWQyMzk3Y2JkMzY1YzNhOWQ5ZDRkZmVkYjRkM2VhNzc3ZGQwMDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFmMzE0N2E4MzA4YmY2MjNmZGI3NGE5NTM2ZDE1NmFmNGRiZjAyZTY1ZGFlM2Q3YTQ5ZWExODBiOWM2ZTFlODMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_adb8f4f37b6044e8bf84c03ce5c901c1",
+      "statement": "getClient(clientId, password) reads the alias client.<clientId> directly from the keystore with a caller-supplied password and returns raw encoded bytes; it is not referenced by any production source, so the client.* alias family is a dormant API.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/SecureKS.java#L72-L82",
+          "version": "repo-lines-v1:sha256:862828942b8a2214a54a5cf1c783a139775e8d300cb8ba1ba6e65ba503f7f8d4:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBmNjI5OTcxNGMyZWMwYzM4ODJlNTg3YmRkM2I2NmQ3M2ViNDA1ZGNjYWY3M2I0OGMxZTBjNjU0MzZmODI3NTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk5OWJkZWZlZWFjYTYzNDBlMDI5MGRjODZlODg5Yzg5ZDVlMTg5YWE1YmE0NGI1ODViM2I3MDczNGY0YTYyZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ2YmI5NjVkY2Q3MWFlN2IxOWU1ZDViYzQ0MWNjZGQ3NDAyY2MwYWY2ZTg2NjQ3OGU1M2IwYzAzYWJhZmRlYjUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1984266321c047889341adcc45454dc9",
+      "statement": "getKey(keyLabel) serves symmetric/private keys through the cached keysCache via ks.getKey(label, empty password); getPublicKey(alias) serves PublicKey through the certsCache via ks.getCertificate. Both are consumed by the /encryptions and /decryptions endpoints.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/SecureKS.java#L96-L114",
+          "version": "repo-lines-v1:sha256:8daca7f916df218596d3eddcd1222788481ffda06279c4d9b723dd6cb4a87894:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU1NmE5OTg1ZTQ2NjQ1YTFmMGY1NGU4OTEzN2E5NGRlYmM2ZTg0MzdmZmE3M2EzN2NjMjk3YmM1MzEyNTE4ZGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI5NjY3MDlmMjgwYjJkZGEzMzk3NDQwOGMzODNiZjMwOGIyZTcxOGM3YTc2YmVjY2Y4MjhjNjUxYjZlNWYxZjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServerHandler.java#L149-L152",
+          "version": "repo-lines-v1:sha256:5c3a7536e3810084ac1a45b98c24d47f8754faed4c0de14ed693a505d315bb27:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjVlZWY4ZTQwMzMwNmFkMmFmYTEyMmYwODBkMjM3NmFiMDY4OWI5NTAwOGQ1NDc5OTYwMTBiYzM2OWFlY2EzYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZWM4Y2ZmNGY4OTliMmIwZmU4ZGIyMjk4ZTZkY2E4YTI0ZGM0Zjk5YTI2MWM2ZWRmZTRhZjk5NjUyMDhiMGM2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDU4ZjZmNWU5OWVjZDI4YmFkYWNlNTQyMzg5NzIxMjk0YzA4OGE4YTI5NGE4Y2ExMzBkZWVmMzc5OTE1NzgwNyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2QwMmY3ZDJmNzUzYTliOWU3M2RjN2RlOWE3ZThkMzlkMjQzMmY1ZjlkODJjY2YyNTgzODgwZDdjZDA4ODEzOSJ9"
+        },
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServerHandler.java#L190-L190",
+          "version": "repo-lines-v1:sha256:3ae2ca15a18c00e7d9d921300bc79627072bc06fd5bd68287e84211f1ed8fb9e:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiM2FlMmNhMTVhMThjMDBlN2Q5ZDkyMTMwMGJjNzk2MjcwNzJiYzA2ZmQ1YmQ2ODI4N2U4NDIxMWYxZWQ4ZmI5ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2FlMmNhMTVhMThjMDBlN2Q5ZDkyMTMwMGJjNzk2MjcwNzJiYzA2ZmQ1YmQ2ODI4N2U4NDIxMWYxZWQ4ZmI5ZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWYxNTIxZjgzMjYzZjc0MTA2ZTBkYjk3OTEyMWMzOGRiMGZiZTc2MzlkN2JjN2ZmYzgyOTIxMGVlNzNhNDE2YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGIzYTMwYjIwYjMzMzQyZGRiNmUwYjk0MmMzNmUwYjE4N2M1MjNlZTY3Zjc3M2E2MWFiZDdkYmM0NTFiM2MyNSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_7ba38f2bd06b4713ad586eca5e5f83eb",
+      "statement": "The GuavaCacheMXBeanImpl exposes Guava CacheStats read-side (request/hit/miss/rate), load-side (load counts/times/penalty), eviction count, and size, plus operations cleanUp(), invalidateAll(), and refreshAll() which refreshes every resident key via cache.refresh(key).",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/jmx/GuavaCacheMXBean.java#L6-L21",
+          "version": "repo-lines-v1:sha256:9499c535796eca2c7e4d5b7e0e14f50b5ad6f2090093ec39cc18ae177389ec77:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMwYmJjNDc1OTBiMTBhZjAzZWQ4ZjA1MGFiMjVkZWNhZTIxYWJlMDkxNzU0Y2RjMTdiNWYzY2FlMjg2NTIwYmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk3ZTRmYzk2NWQwOTc5YzI4NTI0MDFlM2YzMGFlMTAxYzRmYTA5ZmJkOWI5MjNmY2QyZGJiMDU5MTRkYTM2NmEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQxMzIzZDVjMGU2M2Q1NmUxNjE0ODE3NjRlNWM2ZDdkYzE4ZGE1NmM4Y2VkOTA3MmU3ZjQ4YTc5OGQ4YzJhOTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM1ZDc5OWVjNjRkZmQ4YWFhMDE3NDFjMTMxNmYyMTdjNGY4MWEzOTFhMTE0MGFjZDhkYjJhOGU2ZjhkZTRkZjkifQ"
+        },
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/jmx/GuavaCacheMXBeanImpl.java#L24-L105",
+          "version": "repo-lines-v1:sha256:752ae16eccee2a8b6d8479bd6a49204f3cb2b6150356dd69b8d9f04d7801dd4a:eyJzZWxlY3RlZExpbmVDb3VudCI6ODIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVkYzJiMzExYWJlODc1NzJlOGE3Y2MwZDk5NmE2NTg0NDA3NmU1MjMyZDIxYjdhODU0NzVmOWI0MDU1Yjc0OTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA1ZWY0Y2E0ZDg0MTVmMzllY2YxYzE2NzYyNjIzMWNmNThhMTJiY2VhZmU4YWM1ZDg5ZmRlNzZkMTQyMjdjM2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhhZWZkNDM1ZmM2ODFjZmQwNTQ0ZDFmYTY0Y2NmM2JmN2M3NjAyZDhlN2EyMzIxMGZmM2JjNzFkODg3NmU3ZmYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_07915b8f420240859b6a5c9244c80513",
+      "statement": "Cache loaders catch underlying exceptions, log at SEVERE, and return null, so a miss on a missing alias yields a null entry; HTTP callers that check for null respond with 400 INVALID_KEY.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/SecureKS.java#L37-L60",
+          "version": "repo-lines-v1:sha256:5c614afa9ccbabbeaf0cc660b0c0ce63078999a7132ac4571b0224af1ee5e13a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI1OTM5MjczZmY1YzUzMzc3YTQyNjUxNjFkZWU5NTE0MDQxOGJkNTEyNGY5ZTFlMmVkNTRmYTllYTUzOWU5NmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhYjIwMjFlYmNlYWViY2JjMGM0N2FjYzUwNjhjMjYzNmY3YmYyZGZiZjA1YTNmNWQ0N2FjNzE0Y2Q1YzRkMjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI2MmJhNmM1ZTc2YjE0MmFiYjUwYTZiM2ZkNjI3YjFjOTA4ZGQ2NTJiM2FjNGU0ODEzMTI2MjJhZGM3MDYwNzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE2MGE5MmU1YWFhZjgxOWMzMTIwZmFjNDZlNWQ3NDMxYzczNGNkMGZlOTEzNTU1MTZjZWZiNzkxMmQxMTQyNDgifQ"
+        },
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServerHandler.java#L172-L173",
+          "version": "repo-lines-v1:sha256:f0f1554767f42337a45462679227ae952452e57575d3e3655521a7879f43780c:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNjEyNTIzMTMzOTEwNWRhYjNmOGE4MTQzOThkMGY3ODZjYmE3NDZjMmY0MjAwNGEzZDcwNDZjMzA3M2NmOTQ5MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzA0MTg5ZmE2NTk1ZmRhODllYTBlODliYjhjZWE3MTM2M2RhNjk4NWVjNDk4YmMyMGI1MzA2MGJiYTYxNjE1YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiN2YzYWE3YzM2MjA0ZWMxYjY4NzRkNDI4NzA4ODEzYzBkY2U0NDFiMjlmOGI1NmVjYTYzZjUyODBiNDU0ZGRhMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjRmYjU0NDI4ZTAwZjBlOGExZDVhOGI2ZDVmMzU3ZTI4OTU2NjFhNzQ5YzVlYjEzM2Q5MzAyMWViMTMxYzRhZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_620f9536ff1849bea8100f3c694d432a",
+      "statement": "After the keystore is unlocked with the master key, all production key reads use an empty per-entry password (cache loaders and getHttpClientKey pass empty char arrays), because JCEKS entries are protected by the keystore-level password.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/SecureKS.java#L39-L39",
+          "version": "repo-lines-v1:sha256:916b8dbb8467d14706a034330173d443b1fd03e501e1af8333726b68cdc91c4e:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOTE2YjhkYmI4NDY3ZDE0NzA2YTAzNDMzMDE3M2Q0NDNiMWZkMDNlNTAxZTFhZjgzMzM3MjZiNjhjZGM5MWM0ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTE2YjhkYmI4NDY3ZDE0NzA2YTAzNDMzMDE3M2Q0NDNiMWZkMDNlNTAxZTFhZjgzMzM3MjZiNjhjZGM5MWM0ZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTMzNjBkYzAwNGRjYThmMGEyOWQ0MWQ0M2M4NmU5NDkyMDU0MmQ3M2IwYzYwZjYzY2MyNzE2YzkxNDI5ZDNmMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWJmMjc5OTM5ZjQ0ZjY0ODYxNjY5YTM4YTYyNmE3NzdmZGVlMDhiNWEwODJiYWJjMWNlNzk1ZDJjZmM4YmVjMCJ9"
+        },
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/SecureKS.java#L86-L86",
+          "version": "repo-lines-v1:sha256:e5dbb921a46cba2c43f429621805b03d595badd5c6f0c031633624efd180cdf7:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTVkYmI5MjFhNDZjYmEyYzQzZjQyOTYyMTgwNWIwM2Q1OTViYWRkNWM2ZjBjMDMxNjMzNjI0ZWZkMTgwY2RmNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTVkYmI5MjFhNDZjYmEyYzQzZjQyOTYyMTgwNWIwM2Q1OTViYWRkNWM2ZjBjMDMxNjMzNjI0ZWZkMTgwY2RmNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDZiYjk2NWRjZDcxYWU3YjE5ZTVkNWJjNDQxY2NkZDc0MDJjYzBhZjZlODY2NDc4ZTUzYjBjMDNhYmFmZGViNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWIxNTY5Y2QxMzA1YzE2MThiZTE1ODNjZWNmODU3MGI5ZTQ1YjIxZDE1MmUwNDk1MzY5Y2M1ZTc5NGFlMTAwYiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_d65cb7879f79408398ccf0662f6a6df4",
+      "statement": "There is no JUnit test suite; the src/test/java utilities call SecureKS.load with hard-coded master keys and getKey with aliases such as onecredit.aes, tspvault.aes, onecredit.hmac, tsp.hmac, and aes256 for offline crypto operations.",
+      "evidence": [
+        {
+          "resource": "repo://src/test/java/Decrypt.java#L13-L14",
+          "version": "repo-lines-v1:sha256:b815a36232d6ec5e64e239b2ec4c5fc92feda326bc362f716a5db9c2336dba3a:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2E3YWIwOGQ3YmM2NzcxYjhiMGFlZjkxMTNmZjdjMDRiODQ3Y2UwMjI2MTc3MDk2OTNmZDFiYWQ4MzI4YzYwNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTI5NjJkNTEwNjE3YmFhMmRiNWU5NzlmMzM0MjFkMjBkZTYyNzA2ZTJhMjlkMGYxNGQ1MTQ1M2Q0NTY4NTc5MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjIwOTI5ZDZkMzY1YTQyMWVkYjBiMjM2NWExM2U0M2NkZDgzY2I1MjQ4YWNkYWY0ODY2Zjk3YjNlZDM5OWZjZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODBkYzQ2NzUwZTk0YjA4ZTQwNjg5ZjgzZDdjZWI0YWIzOWM1MmE5YjlkMTJiNzgzN2ZhNmFmMWI3NzA5MGM0OCJ9"
+        },
+        {
+          "resource": "repo://src/test/java/EncryptOnecommCards.java#L17-L19",
+          "version": "repo-lines-v1:sha256:09be3cce1d457e41d5fb9e4c0d8b520317e6ae356da42d34e54eab7e4c61761d:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2E3YWIwOGQ3YmM2NzcxYjhiMGFlZjkxMTNmZjdjMDRiODQ3Y2UwMjI2MTc3MDk2OTNmZDFiYWQ4MzI4YzYwNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODQxOWFhZGViMjdjNzE5MGFkZTNkN2YwMjM2Yjc1YTU5MjUxZDE0ZThjMmJmMTY5MGIyOGY4MjQ3YTE0YmU1NiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmM5ODJjZWJlZTgxODRlNzVkNzMxMWEyM2Y2Zjg4MjM1OGZlYzI5NjY0YTBlZjQ4MjdlZGI5MTFhMjcxZGUwNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNWM3ZjgwM2RmYTEwOTM1YmNjOTY5Y2RiMjlmNDVlMmE0YTdhODU4YmZmYTE0ZWJiMDE5MjUyOTNkZTI3Nzc5NiJ9"
+        },
+        {
+          "resource": "repo://src/test/java/TestCrypto.java#L12-L13",
+          "version": "repo-lines-v1:sha256:6308cf559844ea670e809a746a13022926f81e3130d5bd4b3196f421fc1d3df2:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjI1MjQ2MDlmMTVmOWRmMDc3NGRkNzU2ZDRkOTE2MTNlYWMwYjgyMDc5NDYyZmRkZmExNjhjMzExNTZlZWIxYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDhkOWUyZWNhMDY2NTljMTFiMGY5YWY4NWM2NTIzYzRmOGMzYzgxMDc3NTdhYzJmNWU0NjUxNmM1ZjkwMDVkNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYjg1YTFmNDA4ZTgwMzI5MGIyNWFlYTYzY2YzN2I0ZjYyMzBlYjY1MzlkNzMzYTJiZWU0MWJiNzRjYjUxNWQ5ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDJkNjhjMjdmYTlmMDBhYWU5NjgxNDQ5ZjM4MTFhM2ZjNzQxMzM5YzFlMmJkMGE4NWYxODY0ZGZhZDJmOGQ0YiJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-24T11:53:15.318Z"
+  }
+}

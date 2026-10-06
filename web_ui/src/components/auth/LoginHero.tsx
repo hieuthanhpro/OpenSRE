@@ -20,18 +20,18 @@ export function LoginHero() {
       }}
     >
       <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden>
-      <div
-        className="absolute top-0 right-0 w-[480px] h-[480px] rounded-full breath"
-        style={{
-          background: 'rgb(16 185 129 / 0.15)',
-          filter: 'blur(80px)',
-          transform: 'translate(30%, -20%)',
-        }}
-      />
-      <div
-        className="absolute bottom-0 left-0 w-64 h-64 rounded-full opacity-40"
-        style={{ background: 'rgb(16 185 129 / 0.1)', filter: 'blur(60px)' }}
-      />
+        <div
+          className="absolute top-0 right-0 w-[480px] h-[480px] rounded-full breath"
+          style={{
+            background: 'rgb(16 185 129 / 0.15)',
+            filter: 'blur(80px)',
+            transform: 'translate(30%, -20%)',
+          }}
+        />
+        <div
+          className="absolute bottom-0 left-0 w-64 h-64 rounded-full opacity-40"
+          style={{ background: 'rgb(16 185 129 / 0.1)', filter: 'blur(60px)' }}
+        />
       </div>
 
       <div className="relative w-full max-w-xl flex flex-col items-start gap-8">
@@ -58,13 +58,6 @@ export function LoginHero() {
             remembers every past investigation, and maps your entire service
             topology.
           </p>
-
-          <a
-            href="https://opensre.in"
-            className="text-sm text-emerald-700 hover:text-emerald-900 font-mono transition-colors"
-          >
-            Learn more at opensre.in →
-          </a>
         </div>
       </div>
     </div>

@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:cb4cba92130391ddd4d3d38bd79748a2f6d70f4a5efd1e4d8a882164e5cd7bee",
+  "claims": [
+    {
+      "id": "claim_b60e35bdd99a4cb48462a8d54f8206a7",
+      "statement": "The application processes the app.properties file using a TemplateProcessor to resolve placeholders (e.g., database credentials) from a secure backend at startup.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/tsp/vault/Main.java",
+          "version": "repo-file-v1:sha256:1d3c8b2f445364987c7d163004c514983c6cff992532257697158d8a485a656a"
+        },
+        {
+          "resource": "repo://src/main/resources/app.properties",
+          "version": "repo-file-v1:sha256:fcec8dedd993a235b6ab21d336707fdc1b771cbdb50e715d4a1a0638e4ba868b"
+        }
+      ]
+    },
+    {
+      "id": "claim_6c21d93cf4d7482385d7f327ae831dd3",
+      "statement": "The configuration specifies database connection pool settings for HikariCP, including URL, credentials, pool sizes, and timeouts.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/tsp/vault/Main.java",
+          "version": "repo-file-v1:sha256:1d3c8b2f445364987c7d163004c514983c6cff992532257697158d8a485a656a"
+        },
+        {
+          "resource": "repo://src/main/resources/app.properties",
+          "version": "repo-file-v1:sha256:fcec8dedd993a235b6ab21d336707fdc1b771cbdb50e715d4a1a0638e4ba868b"
+        }
+      ]
+    },
+    {
+      "id": "claim_cad52805021d476299a89767ffaa8062",
+      "statement": "Server configuration controls the Vert.x HTTP server, defining host, port, worker/event loop pool sizes, and connection timeouts.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/tsp/vault/server/TSPVaultServer.java",
+          "version": "repo-file-v1:sha256:0c7576a5ad6f9240bc11914150e36ff9085bccac896cebd97c44a093e5bd2446"
+        },
+        {
+          "resource": "repo://src/main/resources/app.properties",
+          "version": "repo-file-v1:sha256:fcec8dedd993a235b6ab21d336707fdc1b771cbdb50e715d4a1a0638e4ba868b"
+        }
+      ]
+    },
+    {
+      "id": "claim_0579fea0e7a24926a9e8800da7141d70",
+      "statement": "Cache configuration sets up a Google Guava cache for client keys with specified size and expiration time.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/tsp/vault/cache/ApplicationCache.java",
+          "version": "repo-file-v1:sha256:d6c50330115a5ddb795991086b603b177f7c708dc6e5a7ef25cdde98d5436079"
+        },
+        {
+          "resource": "repo://src/main/resources/app.properties",
+          "version": "repo-file-v1:sha256:fcec8dedd993a235b6ab21d336707fdc1b771cbdb50e715d4a1a0638e4ba868b"
+        }
+      ]
+    },
+    {
+      "id": "claim_3e2e2b8bf110495d815a1025e9378ac0",
+      "statement": "OneSM configuration provides connection details for the external security manager used for AES encryption and HMAC signing.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/tsp/vault/service/OneSMService.java",
+          "version": "repo-file-v1:sha256:4bebc875331c3d4daa1213e2da2e56bedf24ea64d4f3332eea67bfde06e3ccf0"
+        },
+        {
+          "resource": "repo://src/main/resources/app.properties",
+          "version": "repo-file-v1:sha256:fcec8dedd993a235b6ab21d336707fdc1b771cbdb50e715d4a1a0638e4ba868b"
+        }
+      ]
+    },
+    {
+      "id": "claim_318e4e8a5b5b437ab19d8a06683ababc",
+      "statement": "Token generation parameters, such as prefix/suffix lengths and expiration months, are defined in the configuration.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/tsp/vault/util/TokenGenerator.java",
+          "version": "repo-file-v1:sha256:ab77e2a04130988f8f93d41567c29149238a3fbb74291d416bf535080192bca4"
+        },
+        {
+          "resource": "repo://src/main/resources/app.properties",
+          "version": "repo-file-v1:sha256:fcec8dedd993a235b6ab21d336707fdc1b771cbdb50e715d4a1a0638e4ba868b"
+        }
+      ]
+    },
+    {
+      "id": "claim_4f4f28447ff04557a99c494cbb9fa1a5",
+      "statement": "Instrument processing configuration includes accepted types, masking patterns, and card BIN validation regular expressions.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/tsp/vault/util/AppUtil.java",
+          "version": "repo-file-v1:sha256:a8781c7b8f4d94c794351c16e0b649a99c44816302fe4f005c9820351c08af87"
+        },
+        {
+          "resource": "repo://src/main/resources/app.properties",
+          "version": "repo-file-v1:sha256:fcec8dedd993a235b6ab21d336707fdc1b771cbdb50e715d4a1a0638e4ba868b"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-25T07:02:32.401Z"
+  }
+}

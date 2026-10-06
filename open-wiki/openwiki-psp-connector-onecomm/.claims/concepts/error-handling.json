@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:4055cc567afc9740e415435c44ede4854bc3a05409abe50368d54a9e575a8616",
+  "claims": [
+    {
+      "id": "claim_72b660d219c9426199a2f4fe1f4b4555",
+      "statement": "The PSP Connector uses a centralized `ExceptionHandler` to catch exceptions and return structured JSON error responses.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/handler/common/ExceptionHandler.java",
+          "version": "repo-file-v1:sha256:9eacc46126cee497f52ca57ce7c52e13e5a83d27ca3abd71972c10b2a305e382"
+        }
+      ]
+    },
+    {
+      "id": "claim_6efedf1778394eefa81f770ad30a8f9d",
+      "statement": "`SystemError` defines a catalog of error constants with HTTP status codes, machine-readable codes, and human-readable messages.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/error/SystemError.java",
+          "version": "repo-file-v1:sha256:344930eee0d2454f7491bbfd6704cd796e3cc2e54bda6bf92de6ddc5e6333252"
+        }
+      ]
+    },
+    {
+      "id": "claim_ea1461d44eee4737828e0d3e64e89492",
+      "statement": "`SystemException` is the base class for application-specific exceptions, wrapping a `SystemError`.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/exception/SystemException.java",
+          "version": "repo-file-v1:sha256:b98c6059474165674f8ca718040c88cf68e6c5fa78a4559fabdd4a68a5c2946c"
+        }
+      ]
+    },
+    {
+      "id": "claim_b0e69cac87624df3b6fa33eca78fedf8",
+      "statement": "Specialized exceptions like `BadRequestException` and `AuthorizationException` extend `SystemException` for semantic error handling.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/exception/AuthorizationException.java",
+          "version": "repo-file-v1:sha256:6341d34bd0e9b26088e94eb7c86042a25855cf4e54e7719db09d7faef132c06a"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/exception/BadRequestException.java",
+          "version": "repo-file-v1:sha256:9b6e1a7949cb6be2bca91ac3ae65958cb216bfbfe1f1ea9a8294b6fda29f7c40"
+        }
+      ]
+    },
+    {
+      "id": "claim_bcf6242242e94fed96d0f548e51a31b1",
+      "statement": "The `ExceptionHandler` is registered as a failure handler on the Vert.x router to intercept unhandled errors from any route.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/vertical/PSPConnectorVertical.java#L142-L142",
+          "version": "repo-lines-v1:sha256:1bd80a67cae83ef847e76a3c0c110e8f3d78610d048a027b5d994bf1ed4324a1:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWJkODBhNjdjYWU4M2VmODQ3ZTc2YTNjMGMxMTBlOGYzZDc4NjEwZDA0OGEwMjdiNWQ5OTRiZjFlZDQzMjRhMSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMWJkODBhNjdjYWU4M2VmODQ3ZTc2YTNjMGMxMTBlOGYzZDc4NjEwZDA0OGEwMjdiNWQ5OTRiZjFlZDQzMjRhMSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmU1OWE4MTY4MGI5ODgyMGM2MjQzOTI1YWU4NDJiYWYzZTE5ZmU1NzViOGEwMWM0M2U2NDcyZGRmMzc4NDg1MyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzQ1Yjg5N2MyMjQxZjEzOGMxNWMxOWZiZDQwODc5MTYwMGE2YjIwODAxZWVlYzcwYWJjMWQwYWM4ODk3YjYwZSJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-23T03:50:02.660Z"
+  }
+}

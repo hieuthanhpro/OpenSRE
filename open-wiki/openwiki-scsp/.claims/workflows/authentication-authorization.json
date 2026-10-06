@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:8a13ff944d5655c024bd70b5d2e5421f36f87cca378238203ac27a16aead5c09",
+  "claims": [
+    {
+      "id": "claim_4336c77eeb0641faa6938dac1b10b09c",
+      "statement": "BasicAuthMiddleware extracts HTTP Basic credentials, delegates verification to AuthUseCase.Authenticate, stores username and the returned policy JSON string in the Gin context on success, and returns a generic 401 Unauthorized with WWW-Authenticate header on any failure while logging the specific cause internally.",
+      "evidence": [
+        {
+          "resource": "repo://internal/adapters/driving/rest/handler.go#L96-L123",
+          "version": "repo-lines-v1:sha256:1c062ab42b77eca2aecd07775cd2bb6cfafaca842fc852159641cff453c98cbd:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRjY2FmN2ViNzU4NjFkNTUyOWJjNTM3NmNjODczNWRkNWMwMTkxNTg5YTkyNDdhMGY3NjgwZmY5YWNlOTUwNDkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAzMDY3MTYzNTc1ZjljY2I3NzQ4ODkzNDI1NGZmNDY0YjJhMTgyYjM3N2RiY2MyMzNjZDMzMWI4ZGUyZThlZGUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBmNzQ5MWRjZGE1NzkxYTJhM2JjZTQ3MDk5OGVlODViMWMzNTc1NWVhOTkzOTQyYWVmZGU1YmJlMzNhZWJjNTkifQ"
+        },
+        {
+          "resource": "repo://internal/domain/usecase/auth_usecase.go#L58-L127",
+          "version": "repo-lines-v1:sha256:799440c610306c0d4b5c64e5322fa3a08335b394bb308037ed6eb949dd8b9d62:eyJzZWxlY3RlZExpbmVDb3VudCI6NzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZlOTI0MWE1MmJlMmU5Y2VmZTQ0NWZlYzhiZDQ2YTViY2M4YWU4OTg3ZmM2NWM3ZDJkYWEwZDVkM2I4OGVjZmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b9d127f4d7be4d39b4f32e48c108956f",
+      "statement": "AuthUseCase.Authenticate caches {Hash, Policy} under auth_creds_<username>, uses singleflight to collapse concurrent Postgres credential fetches, verifies passwords with constant-time Argon2id comparison, caches only successful storage fetches, and returns generic authentication-failed errors for mismatches or storage failures.",
+      "evidence": [
+        {
+          "resource": "repo://internal/domain/usecase/auth_usecase.go#L58-L126",
+          "version": "repo-lines-v1:sha256:9f9ad4d413e0cdb6db0014d8ef19fb38ae32300022af11b84b92a1c6221eba53:eyJzZWxlY3RlZExpbmVDb3VudCI6NjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZlOTI0MWE1MmJlMmU5Y2VmZTQ0NWZlYzhiZDQ2YTViY2M4YWU4OTg3ZmM2NWM3ZDJkYWEwZDVkM2I4OGVjZmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJlMTcyYWZlOTM3NGE1Mjg5MzYwNWM1NTcwZDU5MmY3NDA1OGQ4ZjcwYTEwZmQ5NjMzZWZiZDAxMDI4ZGZhOWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://internal/utils/crypto.go#L30-L51",
+          "version": "repo-lines-v1:sha256:8261028db7506186a313b62175be61bc44164ee8cef638921601998920c8d8e5:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU0ZDUyOGVhZjMzYzEwZmZjNzNmNThmNTcwMmJjNGFmYTE2MTQ0YmI3ODgwOTc1MGU0YzNkOWM4MWVhOTZlN2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImVhMDE2NDVjZmNkZDRlZjZmNDNjZTY4ZjU1ODRiYTc4ZmQ0NGU1YjM3MGE0NjY1Zjc3ZmNlMjMxOGIwZjRmYWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA2NTgxOGI2ZmRmZjczY2Q1MmVkYjQ2ZDgxMWE1YzJkNmVkYWYwMWZiOWM2YTY1NTI3Y2JlZDE2ZDE0NThhMWEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_33d74f8f70d1476e8e9d6a3d913e2c02",
+      "statement": "PostgresAdapter implements AuthStoragePort.GetUserCredentials by selecting s_hash_password and s_policy from scsp.tb_user_policy for the given username, returning sql.ErrNoRows when the row is absent.",
+      "evidence": [
+        {
+          "resource": "repo://internal/adapters/driven/postgres/storage.go#L47-L63",
+          "version": "repo-lines-v1:sha256:ee73dfd19c3f28aa09db5869c2ef85e5041368c5048ff8d2a142ab5b392f2a1a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI5ODJjZTkwOTdmNzBmNzM5YjQyOGNhNDFlMmFhOWE3YTZhNTM3NWI3OGNiZjdjNmZhOGQ4MGY2YTIwOWY2NWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjgwNjg3ZWE0NmNhNzY3NzQ4MmVkYTY1ODBhY2ZjZDFjOTYzNTY4MGE3NmRmODNmZTY2Mzc1NmIyMjZkNmM1ZjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg3ODk4YTUwOTVjYWNjYWI4NDZlZDBhMzlhNDQ5MTJlMjhmM2Q4MmNmYmY0OTAyOTJlMzE2ZmJkZmY5OGM4NmIifQ"
+        },
+        {
+          "resource": "repo://internal/domain/port/auth_storage.go#L5-L11",
+          "version": "repo-lines-v1:sha256:151dc018be09f0c29571f31cf3272049184bfa454a78b2b226f44d26983a9974:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmU5ZTg4OGFhZTEyM2VmNTlmZmY2NzhhZGU3MjJlZjc2YThiODFkNjBkMDJiMzQ0M2Y1YTFjZjNmZDQyOWU4OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmQwMDNiNWQ2NGRlYzllOWJiN2NiMDQ5Y2M2N2NjOTY0N2FmMjU2MmJkOTI2OTU3YjM5ZTA2ZDQwN2RlODM2YyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_412c5fcb10db4ee5a936c371a3e77636",
+      "statement": "PolicyMiddleware unmarshals the context policy JSON into {path, roles} entries, normalizes the request key-path to start with '/', and grants access only when some policy path is a prefix of the request path and its roles contain the route's required role; failures map to 401 (missing username), 403 (missing policy or insufficient permissions), or 500 (unparsable policy).",
+      "evidence": [
+        {
+          "resource": "repo://internal/adapters/driving/rest/handler.go#L125-L188",
+          "version": "repo-lines-v1:sha256:2b6fe1eba744b94cb9dfff139943452da8f4e993a9c145b143ba0519e36859c6:eyJzZWxlY3RlZExpbmVDb3VudCI6NjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJiOTcyNDVjN2I5NzYzNGVmZWQyOGEzNWI4M2EyNWU2N2M2YTA1MGM1YzVhMTRhMGEwY2I1MzJiNjdlOTViNGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUwNTMyNGY4NTRlMGRiNDA4M2IzYTdmNTVhYzU2NGI0NTM1MDBhODNhYWExOWQyOGYzODgyZDExMGRmZTkyNmUifQ"
+        },
+        {
+          "resource": "repo://internal/adapters/driving/rest/handler.go#L549-L583",
+          "version": "repo-lines-v1:sha256:b02eab7a84601d6c537171aa786ab21f76d8ac866b9fe992f254cef8b74b1aad:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZiYzU0MDgwNTQ0Njg0NmU4MmY3ZGEyOTczY2U5Zjk3ZjlhZDI0MDY3N2Y2Y2ExZTNiYTUwNTc1ZTJmY2MwMzkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYyOTY0MDc5YzNjNWM4MTUyMGVmMzNhMmI5ZDJlMTVhMWI4NGQ3MjgwZGI4NTkwZGNkNjU3NDdlM2UwMTJhNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5991750c8fea41249cba2840034e7346",
+      "statement": "Authentication credentials are cached in a Ristretto CachePort with a TTL of cache.ttl seconds (clamped to 300-86400s, defaulting to 5 minutes when non-positive) that main wires into NewAuthUseCase.",
+      "evidence": [
+        {
+          "resource": "repo://cmd/server/main.go#L69-L81",
+          "version": "repo-lines-v1:sha256:f87f4db1e7613ad4b415bb9f0af72dddeab454f389b02bab8f0308de97ed6cac:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjEzYzBhZWY5ZjU1OWNjODY1ZjU3ZjAxMmMxMmY4YjQwMGFiZjcyZjRmZmFiNjhmZTJkZDRhMDc3MjkzNWYyMWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk5ODI1NmQxOWE2NjNiNTlhMWYwMjhlNmRlNmFiYjVlOTgwZGM0NzQ5YWViZWFhODQ2ODhiN2U5NTI5MGYxNmIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE1ZDNmMzI5MjAxN2UwZThiMTAzYzQ0N2Q2NzIzNWNhYWJjYzVlYWIyNDA3MmUyOGMwZDQyZGFlNTMzNTUxYTYifQ"
+        },
+        {
+          "resource": "repo://internal/config/config.go#L149-L155",
+          "version": "repo-lines-v1:sha256:fdf29980ac971cf4f66f91711a1226cdf975d1232d784d604383e2c515f024e2:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNThhYjVkNDFmZmM2MjBmMWI3MGRjMjI5ODExMzg4YTk4OWJmNzNmM2JmMDAwYmViNWViNWNiNTIyNDBhYzk5YiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDFiYTQ3MTljODBiNmZlOTExYjA5MWE3YzA1MTI0YjY0ZWVlY2U5NjRlMDljMDU4ZWY4Zjk4MDVkYWNhNTQ2YiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWEzZTEwYjZkNTE3NGExMDUzMGE0Mjc5OTVhYzg3YjVmZDJiMGIxYjhjZmIyMDQ4NTBlN2IyNjc0Yzk1MmMyMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjIsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWY5ZmQxOTVmN2ZjYTAxYjdkNzc0ZWE4YWJlMDk4NjI1MDc5ODg5ZWQxYTdkNTQ5MTlmNDJiYzNhZDk3ZDA0NCJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-10-06T03:44:01.257Z"
+  }
+}

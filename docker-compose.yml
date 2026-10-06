@@ -269,6 +269,7 @@ services:
       - agent-sessions:/data/agent-sessions
       - ./awr:/app/awr
       - ./data:/app/data
+      - ./open-wiki:/app/open-wiki:ro
       - ./sre-agent/.claude/skills:/app/.claude/skills
       # Host AWS SSO creds + kubeconfig for direct AWS/EKS access (local dev).
       # ~/.aws is read-WRITE so the aws CLI can refresh expired SSO access tokens
@@ -309,9 +310,12 @@ services:
       dockerfile: Dockerfile
     container_name: opensre-web-ui
     restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
       - CONFIG_SERVICE_URL=http://config-service:8080
       - AGENT_SERVICE_URL=http://sre-agent:8000
+      - JAEGER_URL=${JAEGER_URL:-https://jaeger.opvn.vn}
       - WEB_UI_SSO_ORG_ID=${WEB_UI_SSO_ORG_ID:-local}
       - WEB_UI_PUBLIC_BASE_URL=${WEB_UI_PUBLIC_BASE_URL:-http://localhost:3002}
       - OPENSRE_VERSION=${OPENSRE_VERSION:-dev}
@@ -331,6 +335,7 @@ services:
         condition: service_healthy
     volumes:
       - ./awr:/app/awr:ro
+      - ./open-wiki:/app/open-wiki:ro
     mem_limit: 512m
     cpus: 1
     logging:

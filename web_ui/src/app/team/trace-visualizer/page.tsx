@@ -28,6 +28,17 @@ import {
 } from 'lucide-react';
 import { apiFetch } from '@/lib/apiClient';
 
+function formatJsonString(str: string): string {
+  if (!str) return '';
+  const trimmed = str.trim();
+  if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) {
+    try {
+      return JSON.stringify(JSON.parse(trimmed), null, 2);
+    } catch { }
+  }
+  return str;
+}
+
 interface DBQuery {
   operation: string;
   duration_us: number;
@@ -236,17 +247,17 @@ function ErrorCardView({ error, defaultOpen = false }: { error: TraceErrorItem |
 
   const statusBg =
     error.status_code && Number(error.status_code) >= 500
-      ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
+      ? 'bg-rose-50 text-rose-700 border-rose-200'
       : error.status_code && Number(error.status_code) >= 400
-      ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
-      : 'bg-red-500/20 text-red-300 border-red-500/40';
+        ? 'bg-amber-50 text-amber-700 border-amber-200'
+        : 'bg-red-50 text-red-700 border-red-200';
 
   return (
-    <div className="rounded-lg border border-red-500/30 bg-red-950/30 overflow-hidden transition-all duration-200">
+    <div className="rounded-lg border border-red-200 bg-white overflow-hidden shadow-sm transition-all duration-200">
       {/* Header bar - click to expand */}
       <div
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-between p-2.5 cursor-pointer hover:bg-red-900/25 select-none transition-colors"
+        className="flex items-center justify-between p-2.5 cursor-pointer hover:bg-red-50/50 select-none transition-colors"
       >
         <div className="flex items-center gap-2 min-w-0 pr-2">
           {error.status_code && (
@@ -255,60 +266,60 @@ function ErrorCardView({ error, defaultOpen = false }: { error: TraceErrorItem |
             </span>
           )}
           {error.method && (
-            <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold bg-slate-800 text-slate-300 shrink-0">
+            <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-semibold bg-slate-100 text-slate-700 border border-slate-200 shrink-0">
               {error.method}
             </span>
           )}
-          <span className="text-xs font-mono font-semibold text-slate-100 truncate" title={error.endpoint || error.operation}>
+          <span className="text-xs font-mono font-semibold text-slate-800 truncate" title={error.endpoint || error.operation}>
             {error.endpoint || error.operation}
           </span>
         </div>
         <div className="flex items-center gap-2 shrink-0">
           {error.duration_str && (
-            <span className="text-[10px] font-mono text-rose-400 font-medium">
+            <span className="text-[10px] font-mono text-rose-600 font-medium">
               {error.duration_str}
             </span>
           )}
-          {isOpen ? <ChevronDown className="w-3.5 h-3.5 text-slate-400" /> : <ChevronRight className="w-3.5 h-3.5 text-slate-400" />}
+          {isOpen ? <ChevronDown className="w-3.5 h-3.5 text-slate-500" /> : <ChevronRight className="w-3.5 h-3.5 text-slate-500" />}
         </div>
       </div>
 
       {/* Primary error message banner */}
       <div className="px-3 pb-2.5 pt-0.5">
-        <div className="text-xs font-semibold text-rose-300 flex items-start gap-1.5">
-          <AlertCircle className="w-3.5 h-3.5 text-rose-400 mt-0.5 shrink-0" />
+        <div className="text-xs font-semibold text-rose-700 flex items-start gap-1.5">
+          <AlertCircle className="w-3.5 h-3.5 text-rose-600 mt-0.5 shrink-0" />
           <span>{error.message}</span>
         </div>
         {error.details && (
-          <div className="mt-1.5 text-[11px] text-slate-300 font-sans leading-relaxed bg-black/40 p-2 rounded border border-white/5">
+          <div className="mt-1.5 text-[11px] text-slate-700 font-sans leading-relaxed bg-slate-50 p-2 rounded border border-slate-200">
             {error.details}
           </div>
         )}
         {error.full_url && error.full_url !== error.endpoint && (
-          <div className="mt-1 text-[10px] font-mono text-slate-400 truncate" title={error.full_url}>
-            Target: <span className="text-slate-300">{error.full_url}</span>
+          <div className="mt-1 text-[10px] font-mono text-slate-500 truncate" title={error.full_url}>
+            Target: <span className="text-slate-700">{error.full_url}</span>
           </div>
         )}
       </div>
 
       {/* Expanded details */}
       {isOpen && (
-        <div className="border-t border-red-500/20 bg-slate-950/80 p-3 space-y-3">
+        <div className="border-t border-slate-200 bg-slate-50/70 p-3 space-y-3">
           {/* Response body */}
           {error.response_body && (
             <div>
-              <div className="flex items-center justify-between text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">
+              <div className="flex items-center justify-between text-[10px] font-semibold text-slate-600 uppercase tracking-wider mb-1">
                 <span>Response Body</span>
                 <button
                   type="button"
                   onClick={(e) => handleCopy(formatPayload(error.response_body), 'resp', e)}
-                  className="flex items-center gap-1 text-[10px] text-slate-400 hover:text-white"
+                  className="flex items-center gap-1 text-[10px] text-slate-500 hover:text-slate-800"
                 >
-                  {copiedType === 'resp' ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                  {copiedType === 'resp' ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
                   {copiedType === 'resp' ? 'Copied' : 'Copy'}
                 </button>
               </div>
-              <pre className="max-h-48 overflow-y-auto rounded bg-slate-900/90 p-2 font-mono text-[10px] text-rose-200/90 whitespace-pre-wrap break-all border border-slate-800">
+              <pre className="max-h-48 overflow-y-auto rounded bg-slate-900 p-2 font-mono text-[10px] text-rose-300 whitespace-pre-wrap break-all border border-slate-800">
                 {formatPayload(error.response_body)}
               </pre>
             </div>
@@ -317,18 +328,18 @@ function ErrorCardView({ error, defaultOpen = false }: { error: TraceErrorItem |
           {/* Request body */}
           {error.request_body && (
             <div>
-              <div className="flex items-center justify-between text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1">
+              <div className="flex items-center justify-between text-[10px] font-semibold text-slate-600 uppercase tracking-wider mb-1">
                 <span>Request Payload</span>
                 <button
                   type="button"
                   onClick={(e) => handleCopy(formatPayload(error.request_body), 'req', e)}
-                  className="flex items-center gap-1 text-[10px] text-slate-400 hover:text-white"
+                  className="flex items-center gap-1 text-[10px] text-slate-500 hover:text-slate-800"
                 >
-                  {copiedType === 'req' ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                  {copiedType === 'req' ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
                   {copiedType === 'req' ? 'Copied' : 'Copy'}
                 </button>
               </div>
-              <pre className="max-h-48 overflow-y-auto rounded bg-slate-900/90 p-2 font-mono text-[10px] text-slate-300 whitespace-pre-wrap break-all border border-slate-800">
+              <pre className="max-h-48 overflow-y-auto rounded bg-slate-900 p-2 font-mono text-[10px] text-slate-200 whitespace-pre-wrap break-all border border-slate-800">
                 {formatPayload(error.request_body)}
               </pre>
             </div>
@@ -337,30 +348,30 @@ function ErrorCardView({ error, defaultOpen = false }: { error: TraceErrorItem |
           {/* Stack trace */}
           {error.stack_trace && (
             <div>
-              <div className="flex items-center justify-between text-[10px] font-semibold text-rose-400 uppercase tracking-wider mb-1">
+              <div className="flex items-center justify-between text-[10px] font-semibold text-rose-700 uppercase tracking-wider mb-1">
                 <span>Exception Stack Trace</span>
                 <button
                   type="button"
                   onClick={(e) => handleCopy(error.stack_trace!, 'stack', e)}
-                  className="flex items-center gap-1 text-[10px] text-slate-400 hover:text-white"
+                  className="flex items-center gap-1 text-[10px] text-slate-500 hover:text-slate-800"
                 >
-                  {copiedType === 'stack' ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                  {copiedType === 'stack' ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3" />}
                   {copiedType === 'stack' ? 'Copied' : 'Copy'}
                 </button>
               </div>
-              <pre className="max-h-56 overflow-y-auto rounded bg-slate-900/90 p-2 font-mono text-[10px] text-red-300 whitespace-pre-wrap break-all border border-red-950">
+              <pre className="max-h-56 overflow-y-auto rounded bg-slate-900 p-2 font-mono text-[10px] text-red-300 whitespace-pre-wrap break-all border border-slate-800">
                 {error.stack_trace}
               </pre>
             </div>
           )}
 
           {/* Meta & Span ID */}
-          <div className="flex items-center justify-between text-[10px] font-mono text-slate-500 pt-1 border-t border-slate-800/60">
-            <span>Span: <span className="text-slate-400">{error.span_id}</span></span>
+          <div className="flex items-center justify-between text-[10px] font-mono text-slate-500 pt-1 border-t border-slate-200">
+            <span>Span: <span className="text-slate-700 font-semibold">{error.span_id}</span></span>
             <button
               type="button"
               onClick={(e) => handleCopy(error.span_id, 'span', e)}
-              className="hover:text-slate-300"
+              className="hover:text-slate-800"
             >
               {copiedType === 'span' ? 'Copied ID' : 'Copy ID'}
             </button>
@@ -593,27 +604,27 @@ export default function TraceVisualizerPage() {
     <div
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
-      className="flex h-[calc(100vh-57px)] flex-col bg-slate-950 text-slate-100 font-sans select-none"
+      className="flex h-[calc(100vh-57px)] flex-col bg-slate-50 text-slate-800 font-sans select-none"
     >
       {/* Search & Top Action Bar */}
-      <div className="border-b border-slate-800 bg-slate-900/90 px-6 py-3.5 backdrop-blur z-20">
+      <div className="border-b border-slate-200/80 bg-white/95 px-6 py-3 backdrop-blur z-20 shadow-xs">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-sky-500/10 text-sky-400 border border-sky-500/20">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 text-slate-700 border border-slate-200">
               <GitFork className="h-5 w-5" />
             </div>
             <div>
-              <h1 className="text-base font-bold text-slate-100 flex items-center gap-2">
+              <h1 className="text-base font-bold text-slate-900 flex items-center gap-2">
                 Trace Flow Visualizer
-                <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-[11px] font-medium text-emerald-400 border border-emerald-500/20">
+                <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-semibold text-emerald-700 border border-emerald-200">
                   Live Jaeger
                 </span>
-                <span className="rounded-full bg-sky-500/10 px-2 py-0.5 text-[11px] font-medium text-sky-400 border border-sky-500/20 flex items-center gap-1">
+                <span className="rounded-full bg-sky-50 px-2 py-0.5 text-[11px] font-medium text-sky-700 border border-sky-200 flex items-center gap-1">
                   <Move className="h-3 w-3" /> Kéo thả Nodes
                 </span>
               </h1>
-              <p className="text-xs text-slate-400">
-                Kéo thả các node để sắp xếp topology theo ý muốn • Kéo thanh ngăn để chỉnh độ cao timeline
+              <p className="text-xs text-slate-500">
+                Kéo thả các node để sắp xếp topology theo ý muốn • Kéo thanh chia để chỉnh độ cao timeline
               </p>
             </div>
           </div>
@@ -627,14 +638,14 @@ export default function TraceVisualizerPage() {
                 onChange={(e) => setTraceIdInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleFetchTrace()}
                 placeholder="Nhập Trace ID (ví dụ: 3a18d4f3389d102caefe9db7488dd85e)..."
-                className="w-full rounded-lg border border-slate-700 bg-slate-950/80 px-3.5 py-2 pl-9 text-xs text-slate-100 placeholder-slate-500 focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 font-mono"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-3.5 py-2 pl-9 text-xs text-slate-900 placeholder-slate-400 focus:bg-white focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-200 font-mono transition"
               />
-              <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-500" />
+              <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
             </div>
             <button
               onClick={() => handleFetchTrace()}
               disabled={loading || !traceIdInput.trim()}
-              className="inline-flex items-center gap-1.5 rounded-lg bg-sky-600 px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-sky-500 disabled:opacity-50 transition"
+              className="inline-flex items-center gap-1.5 rounded-xl bg-slate-900 px-4 py-2 text-xs font-semibold text-white shadow-xs hover:bg-slate-800 disabled:opacity-50 transition"
             >
               {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
               Vẽ mô tả
@@ -646,53 +657,39 @@ export default function TraceVisualizerPage() {
             <div className="flex items-center gap-2">
               <button
                 onClick={resetAutoLayout}
-                className="inline-flex items-center gap-1.5 rounded-md border border-slate-700 bg-slate-800/80 px-2.5 py-1.5 text-xs text-slate-200 hover:bg-slate-700 hover:text-sky-300 transition"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs text-slate-700 hover:bg-slate-50 shadow-xs transition"
                 title="Tự động sắp xếp lại vị trí ban đầu"
               >
-                <LayoutGrid className="h-3.5 w-3.5" />
+                <LayoutGrid className="h-3.5 w-3.5 text-slate-500" />
                 Auto Layout
               </button>
               <button
                 onClick={() => setShowMermaidModal(true)}
-                className="inline-flex items-center gap-1.5 rounded-md border border-slate-700 bg-slate-800/80 px-2.5 py-1.5 text-xs text-slate-200 hover:bg-slate-700 transition"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs text-slate-700 hover:bg-slate-50 shadow-xs transition"
                 title="Xem Mermaid code"
               >
-                <Code2 className="h-3.5 w-3.5" />
+                <Code2 className="h-3.5 w-3.5 text-slate-500" />
                 Mermaid
               </button>
               <a
                 href={`/api/team/traces/visualize?trace_id=${analysis.trace_id}`}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1.5 rounded-md border border-slate-700 bg-slate-800/80 px-2.5 py-1.5 text-xs text-slate-200 hover:bg-slate-700 transition"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs text-slate-700 hover:bg-slate-50 shadow-xs transition"
                 title="Mở JSON raw"
               >
-                <ExternalLink className="h-3.5 w-3.5" />
+                <ExternalLink className="h-3.5 w-3.5 text-slate-500" />
                 Raw JSON
               </a>
             </div>
           )}
         </div>
-
-        {/* Sample chips */}
-        <div className="mt-2.5 flex items-center gap-2 text-xs text-slate-400">
-          <span className="text-[11px] text-slate-500">Mẫu thử nghiệm:</span>
-          {sampleTraces.map((s) => (
-            <button
-              key={s.id}
-              onClick={() => handleFetchTrace(s.id)}
-              className="rounded bg-slate-800/80 hover:bg-slate-700 px-2 py-0.5 text-[11px] text-sky-400 font-mono transition border border-slate-700/50"
-            >
-              {s.label}
-            </button>
-          ))}
-        </div>
       </div>
 
       {/* Error Banner */}
       {error && (
-        <div className="m-4 flex items-center gap-2.5 rounded-lg border border-red-500/30 bg-red-950/40 p-3 text-xs text-red-300">
-          <AlertTriangle className="h-4 w-4 text-red-400 shrink-0" />
+        <div className="m-4 flex items-center gap-2.5 rounded-xl border border-red-200 bg-red-50 p-3 text-xs text-red-700 shadow-xs">
+          <AlertTriangle className="h-4 w-4 text-red-600 shrink-0" />
           <span>{error}</span>
         </div>
       )}
@@ -701,12 +698,12 @@ export default function TraceVisualizerPage() {
       <div className="relative flex flex-1 overflow-hidden">
         {/* If no analysis loaded */}
         {!analysis && !loading && (
-          <div className="flex flex-1 flex-col items-center justify-center p-8 text-center">
-            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-sky-950/50 border border-sky-500/30 text-sky-400">
+          <div className="flex flex-1 flex-col items-center justify-center p-8 text-center bg-white/60">
+            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-sky-50 border border-sky-200 text-sky-600">
               <Activity className="h-7 w-7" />
             </div>
-            <h2 className="text-base font-semibold text-slate-200">Chưa có Trace nào được tải</h2>
-            <p className="mt-1 max-w-sm text-xs text-slate-400">
+            <h2 className="text-base font-semibold text-slate-800">Chưa có Trace nào được tải</h2>
+            <p className="mt-1 max-w-sm text-xs text-slate-500">
               Nhập Trace ID ở thanh tìm kiếm phía trên hoặc bấm vào các mẫu thử nghiệm để tự động dựng đồ thị topology và timeline tương tác.
             </p>
           </div>
@@ -714,9 +711,9 @@ export default function TraceVisualizerPage() {
 
         {/* Loading State */}
         {loading && (
-          <div className="flex flex-1 flex-col items-center justify-center gap-3">
-            <Loader2 className="h-8 w-8 animate-spin text-sky-400" />
-            <span className="text-xs text-slate-400">Đang truy vấn spans từ Jaeger API & dựng topology...</span>
+          <div className="flex flex-1 flex-col items-center justify-center gap-3 bg-white/60">
+            <Loader2 className="h-8 w-8 animate-spin text-slate-700" />
+            <span className="text-xs text-slate-500">Đang truy vấn spans từ Jaeger API & dựng topology...</span>
           </div>
         )}
 
@@ -724,26 +721,26 @@ export default function TraceVisualizerPage() {
         {analysis && !loading && (
           <div className="flex flex-1 flex-col overflow-hidden">
             {/* Trace Meta Header */}
-            <div className="flex items-center justify-between border-b border-slate-800 bg-slate-900/40 px-6 py-2 text-xs">
+            <div className="flex items-center justify-between border-b border-slate-200/80 bg-white px-6 py-2 text-xs">
               <div className="flex items-center gap-4 flex-wrap">
-                <span className="font-mono text-slate-400">
-                  ID: <strong className="text-slate-200">{analysis.trace_id}</strong>
+                <span className="font-mono text-slate-500">
+                  ID: <strong className="text-slate-800 font-semibold">{analysis.trace_id}</strong>
                 </span>
-                <span className="flex items-center gap-1 text-slate-400">
-                  <Clock className="h-3.5 w-3.5 text-sky-400" />
-                  Tổng thời gian: <strong className="text-sky-300 font-mono">{analysis.total_duration_str}</strong>
+                <span className="flex items-center gap-1 text-slate-500">
+                  <Clock className="h-3.5 w-3.5 text-sky-600" />
+                  Tổng thời gian: <strong className="text-sky-700 font-mono">{analysis.total_duration_str}</strong>
                 </span>
-                <span className="flex items-center gap-1 text-slate-400">
-                  <Layers className="h-3.5 w-3.5 text-indigo-400" />
-                  Spans: <strong className="text-slate-200">{analysis.span_count}</strong>
+                <span className="flex items-center gap-1 text-slate-500">
+                  <Layers className="h-3.5 w-3.5 text-indigo-600" />
+                  Spans: <strong className="text-slate-800">{analysis.span_count}</strong>
                 </span>
-                <span className="flex items-center gap-1 text-slate-400">
-                  <Server className="h-3.5 w-3.5 text-emerald-400" />
-                  Services: <strong className="text-slate-200">{Object.keys(analysis.services).length}</strong>
+                <span className="flex items-center gap-1 text-slate-500">
+                  <Server className="h-3.5 w-3.5 text-emerald-600" />
+                  Services: <strong className="text-slate-800">{Object.keys(analysis.services).length}</strong>
                 </span>
-                <span className="text-slate-500">🕒 {analysis.start_time_iso}</span>
+                <span className="text-slate-400">🕒 {analysis.start_time_iso}</span>
               </div>
-              <div className="text-[11px] text-slate-400 flex items-center gap-2">
+              <div className="text-[11px] text-slate-500 flex items-center gap-2">
                 <span>🖱️ <strong>Kéo thả node</strong> để di chuyển</span>
                 <span>•</span>
                 <span>Click Edge/Node để xem chi tiết</span>
@@ -755,27 +752,31 @@ export default function TraceVisualizerPage() {
               ref={viewportRef}
               onMouseDown={handleCanvasMouseDown}
               onWheel={handleWheel}
-              className="relative flex-1 cursor-grab active:cursor-grabbing overflow-hidden bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-slate-950"
+              style={{
+                backgroundImage: 'radial-gradient(#cbd5e1 1.2px, transparent 1.2px)',
+                backgroundSize: '18px 18px',
+              }}
+              className="relative flex-1 cursor-grab active:cursor-grabbing overflow-hidden bg-slate-100/60"
             >
               {/* Controls */}
-              <div className="absolute left-4 top-4 z-10 flex flex-col gap-1.5 rounded-lg border border-slate-800 bg-slate-900/90 p-1 shadow-lg backdrop-blur">
+              <div className="absolute left-4 top-4 z-10 flex flex-col gap-1.5 rounded-xl border border-slate-200/90 bg-white/95 p-1 shadow-md backdrop-blur">
                 <button
                   onClick={() => setScale((s) => Math.min(3.5, s * 1.2))}
-                  className="rounded p-1.5 text-slate-300 hover:bg-slate-800 hover:text-sky-400"
+                  className="rounded-lg p-1.5 text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition"
                   title="Phóng to"
                 >
                   <ZoomIn className="h-4 w-4" />
                 </button>
                 <button
                   onClick={() => setScale((s) => Math.max(0.25, s / 1.2))}
-                  className="rounded p-1.5 text-slate-300 hover:bg-slate-800 hover:text-sky-400"
+                  className="rounded-lg p-1.5 text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition"
                   title="Thu nhỏ"
                 >
                   <ZoomOut className="h-4 w-4" />
                 </button>
                 <button
                   onClick={resetAutoLayout}
-                  className="rounded p-1.5 text-slate-300 hover:bg-slate-800 hover:text-sky-400"
+                  className="rounded-lg p-1.5 text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition"
                   title="Tự động xếp lại vị trí"
                 >
                   <RotateCcw className="h-4 w-4" />
@@ -783,7 +784,7 @@ export default function TraceVisualizerPage() {
               </div>
 
               {/* Drag instruction chip */}
-              <div className="absolute right-4 top-4 z-10 rounded-md border border-slate-800 bg-slate-900/80 px-2.5 py-1 text-[11px] text-slate-400 backdrop-blur pointer-events-none">
+              <div className="absolute right-4 top-4 z-10 rounded-lg border border-slate-200 bg-white/95 px-3 py-1 text-[11px] font-medium text-slate-600 shadow-sm pointer-events-none">
                 💡 Nhấn giữ vào card để kéo thả vị trí
               </div>
 
@@ -821,7 +822,7 @@ export default function TraceVisualizerPage() {
                     markerHeight="6"
                     orient="auto-start-reverse"
                   >
-                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#38bdf8" />
+                    <path d="M 0 1 L 10 5 L 0 9 z" fill="#0284c7" />
                   </marker>
                 </defs>
 
@@ -845,12 +846,12 @@ export default function TraceVisualizerPage() {
 
                     const pathD = `M ${x1} ${y1} C ${cx1} ${cy1}, ${cx2} ${cy2}, ${x2} ${y2}`;
                     const isSelected = selectedEdge?.id === edge.id;
-                    const strokeColor = isSelected ? '#38bdf8' : edge.has_error ? '#ef4444' : '#64748b';
+                    const strokeColor = isSelected ? '#0284c7' : edge.has_error ? '#ef4444' : '#94a3b8';
                     const marker = isSelected
                       ? 'url(#react-arrow-selected)'
                       : edge.has_error
-                      ? 'url(#react-arrow-error)'
-                      : 'url(#react-arrow)';
+                        ? 'url(#react-arrow-error)'
+                        : 'url(#react-arrow)';
 
                     const midX = (x1 + 2 * ((cx1 + cx2) / 2) + x2) / 4;
                     const midY = (y1 + 2 * ((cy1 + cy2) / 2) + y2) / 4;
@@ -874,7 +875,7 @@ export default function TraceVisualizerPage() {
                           stroke={strokeColor}
                           strokeWidth={isSelected ? '3' : '2'}
                           markerEnd={marker}
-                          className="transition-all group-hover:stroke-sky-400 group-hover:stroke-[2.5]"
+                          className="transition-all group-hover:stroke-sky-600 group-hover:stroke-[2.5]"
                         />
                         {/* Label Pill */}
                         <g transform={`translate(${midX}, ${midY})`}>
@@ -884,10 +885,10 @@ export default function TraceVisualizerPage() {
                             width="116"
                             height="22"
                             rx="11"
-                            fill="#0f172a"
+                            fill="#ffffff"
                             stroke={strokeColor}
                             strokeWidth="1.2"
-                            className="group-hover:fill-slate-800 transition"
+                            className="group-hover:fill-slate-50 transition drop-shadow-xs"
                           />
                           <text
                             x="0"
@@ -895,7 +896,7 @@ export default function TraceVisualizerPage() {
                             textAnchor="middle"
                             fontSize="10"
                             fontFamily="monospace"
-                            fill={edge.has_error ? '#f87171' : '#f1f5f9'}
+                            fill={edge.has_error ? '#dc2626' : '#334155'}
                             fontWeight="600"
                           >
                             {edge.method} {edge.duration_str}
@@ -926,16 +927,16 @@ export default function TraceVisualizerPage() {
                         width={nodePositions['client_entry'].width}
                         height={nodePositions['client_entry'].height}
                         rx="10"
-                        fill="#1e1b4b"
-                        stroke={selectedClient ? '#38bdf8' : '#6366f1'}
+                        fill="#ffffff"
+                        stroke={selectedClient ? '#6366f1' : '#c7d2fe'}
                         strokeWidth={selectedClient || activeDraggingNodeId === 'client_entry' ? '2.5' : '1.5'}
-                        filter={activeDraggingNodeId === 'client_entry' ? 'drop-shadow(0 0 12px rgba(99, 102, 241, 0.8))' : undefined}
+                        filter="drop-shadow(0 2px 6px rgba(0,0,0,0.06))"
                         className="hover:stroke-indigo-400 transition"
                       />
-                      <text x="90" y="26" textAnchor="middle" fontSize="13" fontWeight="700" fill="#e0e7ff" pointerEvents="none">
+                      <text x="90" y="26" textAnchor="middle" fontSize="13" fontWeight="700" fill="#312e81" pointerEvents="none">
                         👤 Client
                       </text>
-                      <text x="90" y="46" textAnchor="middle" fontSize="11" fontFamily="monospace" fill="#a5b4fc" pointerEvents="none">
+                      <text x="90" y="46" textAnchor="middle" fontSize="11" fontFamily="monospace" fill="#4f46e5" pointerEvents="none">
                         {analysis.client_node.ip}
                       </text>
                     </g>
@@ -949,11 +950,11 @@ export default function TraceVisualizerPage() {
                     const isSelected = selectedService?.name === svc.name;
                     const isDragging = activeDraggingNodeId === svcName;
                     const borderColor = isSelected || isDragging
-                      ? '#38bdf8'
+                      ? '#0284c7'
                       : svc.has_error
-                      ? '#ef4444'
-                      : '#334155';
-                    const bgColor = svc.has_error ? '#2a0a0c' : '#1e293b';
+                        ? '#fca5a5'
+                        : '#e2e8f0';
+                    const bgColor = svc.has_error ? '#fef2f2' : '#ffffff';
 
                     return (
                       <g
@@ -975,13 +976,13 @@ export default function TraceVisualizerPage() {
                           fill={bgColor}
                           stroke={borderColor}
                           strokeWidth={isSelected || isDragging ? '2.5' : '1.5'}
-                          filter={isDragging ? 'drop-shadow(0 0 14px rgba(56, 189, 248, 0.8))' : undefined}
+                          filter="drop-shadow(0 2px 6px rgba(0,0,0,0.06))"
                           className="group-hover:stroke-sky-400 transition"
                         />
                         {/* Status dot */}
-                        <circle cx="20" cy="24" r="5" fill={svc.has_error ? '#ef4444' : '#22c55e'} pointerEvents="none" />
+                        <circle cx="20" cy="24" r="5" fill={svc.has_error ? '#ef4444' : '#10b981'} pointerEvents="none" />
                         {/* Title */}
-                        <text x="32" y="28" fontSize="13" fontWeight="700" fill="#f8fafc" pointerEvents="none">
+                        <text x="32" y="28" fontSize="13" fontWeight="700" fill={svc.has_error ? '#991b1b' : '#0f172a'} pointerEvents="none">
                           {svc.name.length > 14 ? svc.name.slice(0, 13) + '..' : svc.name}
                         </text>
                         {/* Duration */}
@@ -992,20 +993,20 @@ export default function TraceVisualizerPage() {
                           fontSize="11"
                           fontWeight="600"
                           fontFamily="monospace"
-                          fill={svc.has_error ? '#f87171' : '#38bdf8'}
+                          fill={svc.has_error ? '#dc2626' : '#0284c7'}
                           pointerEvents="none"
                         >
                           ⏱ {svc.max_duration_str}
                         </text>
                         {/* Separator */}
-                        <line x1="12" y1="42" x2={pos.width - 12} y2="42" stroke="rgba(255,255,255,0.08)" pointerEvents="none" />
+                        <line x1="12" y1="42" x2={pos.width - 12} y2="42" stroke="#f1f5f9" pointerEvents="none" />
                         {/* DB info / Spans info */}
                         {svc.db_summary.count > 0 ? (
-                          <text x="14" y="64" fontSize="10" fill="#fbbf24" pointerEvents="none">
+                          <text x="14" y="64" fontSize="10" fill="#d97706" fontWeight="500" pointerEvents="none">
                             🗄️ {svc.db_summary.count} DB calls ({svc.db_summary.slowest?.duration_str})
                           </text>
                         ) : (
-                          <text x="14" y="64" fontSize="10" fill="#94a3b8" pointerEvents="none">
+                          <text x="14" y="64" fontSize="10" fill="#64748b" pointerEvents="none">
                             Spans: {svc.span_count}
                           </text>
                         )}
@@ -1022,29 +1023,29 @@ export default function TraceVisualizerPage() {
                 e.preventDefault();
                 setIsResizingTimeline(true);
               }}
-              className="h-2 w-full cursor-row-resize bg-slate-900 border-t border-slate-800 hover:bg-sky-500/80 transition-colors flex items-center justify-center group z-20 select-none shrink-0"
+              className="h-2 w-full cursor-row-resize bg-slate-200 hover:bg-sky-400 border-t border-slate-300 transition-colors flex items-center justify-center group z-20 select-none shrink-0"
               title="Kéo lên / xuống để chỉnh độ cao timeline"
             >
-              <div className="h-1 w-14 rounded-full bg-slate-700 group-hover:bg-white transition-colors" />
+              <div className="h-1 w-14 rounded-full bg-slate-400 group-hover:bg-white transition-colors" />
             </div>
 
             {/* Bottom: Interactive Timeline Pane (Resizable) */}
             <div
               style={{ height: `${timelineHeight}px` }}
-              className="flex flex-col bg-slate-900/95 shrink-0 z-10 overflow-hidden"
+              className="flex flex-col bg-white shrink-0 z-10 overflow-hidden"
             >
-              <div className="flex items-center justify-between border-b border-slate-800 bg-slate-950/60 px-4 py-1.5 text-xs text-slate-400 font-semibold shrink-0">
+              <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50 px-4 py-1.5 text-xs text-slate-700 font-semibold shrink-0">
                 <span className="flex items-center gap-2">
-                  <Activity className="h-3.5 w-3.5 text-sky-400" />
+                  <Activity className="h-3.5 w-3.5 text-sky-600" />
                   TIMELINE & EXECUTION WATERFALL
                 </span>
-                <span className="text-[11px] text-slate-500 font-normal">
+                <span className="text-[11px] text-slate-400 font-normal">
                   Chỉ hiện 1 thanh đại diện cho DB call chậm nhất mỗi service
                 </span>
               </div>
 
               {/* Time Ruler */}
-              <div className="flex justify-between border-b border-slate-800/60 px-4 py-1 text-[10px] text-slate-500 font-mono shrink-0">
+              <div className="flex justify-between border-b border-slate-200/80 px-4 py-1 text-[10px] text-slate-400 font-mono shrink-0">
                 <span className="w-48 shrink-0">Service & Operation</span>
                 <div className="relative flex flex-1 justify-between">
                   <span>0ms</span>
@@ -1069,12 +1070,11 @@ export default function TraceVisualizerPage() {
                         if (svc) setSelectedService(svc);
                       }
                     }}
-                    className="flex h-6 items-center rounded hover:bg-slate-800/50 cursor-pointer transition text-xs"
+                    className="flex h-6 items-center rounded hover:bg-slate-50 cursor-pointer transition text-xs"
                   >
                     <div
-                      className={`w-48 truncate pr-2 text-[11px] ${
-                        item.is_db ? 'pl-4 text-amber-400' : 'text-slate-300 font-medium'
-                      }`}
+                      className={`w-48 truncate pr-2 text-[11px] ${item.is_db ? 'pl-4 text-amber-700 font-medium' : 'text-slate-700 font-medium'
+                        }`}
                       title={item.operation}
                     >
                       {item.is_db ? `🗄️ ${item.operation}` : `${item.service}: ${item.operation}`}
@@ -1096,13 +1096,12 @@ export default function TraceVisualizerPage() {
                         }}
                         onMouseLeave={() => setTooltip((t) => ({ ...t, visible: false }))}
                         style={{ left: `${item.start_pct}%`, width: `${item.width_pct}%` }}
-                        className={`absolute h-3.5 rounded text-[9px] text-white flex items-center px-1 font-mono truncate transition-transform hover:scale-y-125 ${
-                          item.is_db
-                            ? 'bg-amber-600 border border-amber-400'
+                        className={`absolute h-3.5 rounded text-[9px] text-white flex items-center px-1 font-mono truncate transition-transform hover:scale-y-125 ${item.is_db
+                            ? 'bg-amber-600 border border-amber-500'
                             : item.has_error
-                            ? 'bg-red-600 border border-red-400'
-                            : 'bg-sky-600'
-                        }`}
+                              ? 'bg-red-600 border border-red-500'
+                              : 'bg-sky-600'
+                          }`}
                       >
                         {item.duration_str}
                       </div>
@@ -1118,24 +1117,24 @@ export default function TraceVisualizerPage() {
         {tooltip.visible && (
           <div
             style={{ left: tooltip.x, top: tooltip.y }}
-            className="fixed z-50 pointer-events-none rounded-lg border border-slate-700 bg-slate-900/95 px-3 py-2 text-xs text-slate-100 shadow-xl backdrop-blur"
+            className="fixed z-50 pointer-events-none rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs text-slate-800 shadow-xl"
           >
-            <div className="font-semibold text-slate-100">{tooltip.title}</div>
-            <div className="text-[11px] text-slate-400">
-              Service: <span className="text-slate-200">{tooltip.service}</span>
+            <div className="font-semibold text-slate-900">{tooltip.title}</div>
+            <div className="text-[11px] text-slate-500">
+              Service: <span className="text-slate-800 font-medium">{tooltip.service}</span>
             </div>
-            <div className="text-[11px] text-slate-400">
-              Duration: <span className="font-mono text-sky-400">{tooltip.duration}</span> (Offset: {tooltip.offset})
+            <div className="text-[11px] text-slate-500">
+              Duration: <span className="font-mono text-sky-700 font-semibold">{tooltip.duration}</span> (Offset: {tooltip.offset})
             </div>
           </div>
         )}
 
         {/* Inspector Drawer (Right Panel) */}
         {(selectedEdge || selectedService || selectedClient) && (
-          <div className="w-[420px] border-l border-slate-800 bg-slate-900/95 flex flex-col shadow-2xl z-30 transition-transform">
+          <div className="w-[420px] border-l border-slate-200 bg-white flex flex-col shadow-2xl z-30 transition-transform">
             {/* Header */}
-            <div className="flex items-center justify-between border-b border-slate-800 px-4 py-3 bg-slate-950/40">
-              <span className="text-xs font-bold text-slate-200 uppercase tracking-wider flex items-center gap-2">
+            <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3 bg-slate-50">
+              <span className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
                 {selectedEdge && '🔗 Request Inspector'}
                 {selectedService && '📦 Service Inspector'}
                 {selectedClient && '👤 Client Details'}
@@ -1146,7 +1145,7 @@ export default function TraceVisualizerPage() {
                   setSelectedService(null);
                   setSelectedClient(null);
                 }}
-                className="rounded p-1 text-slate-400 hover:bg-slate-800 hover:text-slate-200"
+                className="rounded p-1 text-slate-400 hover:bg-slate-200 hover:text-slate-700 transition"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -1157,37 +1156,36 @@ export default function TraceVisualizerPage() {
               {/* EDGE DETAILS */}
               {selectedEdge && (
                 <>
-                  <div className="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
-                    <div className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Overview</div>
+                  <div className="rounded-xl border border-slate-200/90 bg-slate-50/70 p-3.5 space-y-2">
+                    <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Overview</div>
                     <div className="grid grid-cols-[80px_1fr] gap-1.5 text-xs">
                       <span className="text-slate-500">Flow:</span>
-                      <span className="font-semibold text-sky-400">
+                      <span className="font-semibold text-sky-700">
                         {selectedEdge.from} → {selectedEdge.to}
                       </span>
                       <span className="text-slate-500">Method:</span>
                       <span>
-                        <span className="rounded bg-sky-950 px-2 py-0.5 text-[11px] font-mono font-bold text-sky-400 border border-sky-800">
+                        <span className="rounded bg-sky-50 px-2 py-0.5 text-[11px] font-mono font-bold text-sky-700 border border-sky-200">
                           {selectedEdge.method}
                         </span>
                       </span>
                       <span className="text-slate-500">Endpoint:</span>
-                      <span className="font-mono text-slate-200 break-all">{selectedEdge.endpoint}</span>
+                      <span className="font-mono text-slate-800 break-all">{selectedEdge.endpoint}</span>
                       <span className="text-slate-500">Duration:</span>
-                      <span className="font-mono font-bold text-sky-400">{selectedEdge.duration_str}</span>
+                      <span className="font-mono font-bold text-sky-700">{selectedEdge.duration_str}</span>
                       <span className="text-slate-500">Status:</span>
                       <span>
                         <span
-                          className={`rounded px-2 py-0.5 text-[11px] font-mono font-bold border ${
-                            selectedEdge.status_code.startsWith('2')
-                              ? 'bg-emerald-950/80 text-emerald-400 border-emerald-800'
-                              : 'bg-red-950/80 text-red-400 border-red-800'
-                          }`}
+                          className={`rounded px-2 py-0.5 text-[11px] font-mono font-bold border ${selectedEdge.status_code.startsWith('2')
+                              ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                              : 'bg-rose-50 text-rose-700 border-rose-200'
+                            }`}
                         >
                           {selectedEdge.status_code}
                         </span>
                       </span>
                       <span className="text-slate-500">Server:</span>
-                      <span className="font-mono text-slate-300">
+                      <span className="font-mono text-slate-700">
                         {selectedEdge.server_address}
                         {selectedEdge.server_port ? `:${selectedEdge.server_port}` : ''}
                       </span>
@@ -1196,8 +1194,8 @@ export default function TraceVisualizerPage() {
 
                   {/* Breakdown */}
                   {selectedEdge.breakdown && selectedEdge.breakdown.length > 0 && (
-                    <div className="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
-                      <div className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+                    <div className="rounded-xl border border-slate-200/90 bg-slate-50/70 p-3.5 space-y-2">
+                      <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
                         ⏱ Response Time Breakdown Inside Call
                       </div>
                       <div className="space-y-2">
@@ -1209,12 +1207,12 @@ export default function TraceVisualizerPage() {
                           return (
                             <div key={idx} className="space-y-1 text-[11px]">
                               <div className="flex justify-between">
-                                <span className={isDb ? 'text-amber-400 font-medium' : 'text-sky-400 font-medium'}>
+                                <span className={isDb ? 'text-amber-700 font-semibold' : 'text-sky-700 font-semibold'}>
                                   {isDb ? '🗄️' : '🌐'} {b.name}
                                 </span>
-                                <span className="font-mono text-slate-200">{b.duration_str}</span>
+                                <span className="font-mono text-slate-800 font-bold">{b.duration_str}</span>
                               </div>
-                              <div className="h-1.5 w-full rounded-full bg-slate-800 overflow-hidden">
+                              <div className="h-1.5 w-full rounded-full bg-slate-200 overflow-hidden">
                                 <div
                                   style={{ width: `${pct}%` }}
                                   className={`h-full rounded-full ${isDb ? 'bg-amber-500' : 'bg-sky-500'}`}
@@ -1228,41 +1226,105 @@ export default function TraceVisualizerPage() {
                     </div>
                   )}
 
-                  {/* Headers */}
+                  {/* Request Headers */}
                   {selectedEdge.request_headers && (
-                    <div className="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-1.5">
-                      <div className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-                        📤 Request Headers
+                    <div className="rounded-xl border border-slate-200/90 bg-slate-50/70 p-3.5 space-y-1.5">
+                      <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider flex items-center justify-between">
+                        <span>📤 Request Headers</span>
+                        <button
+                          onClick={() => navigator.clipboard.writeText(selectedEdge.request_headers)}
+                          className="text-[10px] text-slate-500 hover:text-slate-800 font-mono flex items-center gap-1"
+                        >
+                          <Copy className="w-3 h-3" /> Copy
+                        </button>
                       </div>
-                      <pre className="max-h-36 overflow-y-auto rounded bg-slate-900 p-2 font-mono text-[10px] text-slate-300 whitespace-pre-wrap break-all">
+                      <pre className="max-h-36 overflow-y-auto rounded-lg bg-slate-900 p-2.5 font-mono text-[10px] text-slate-200 whitespace-pre-wrap break-all border border-slate-800">
                         {selectedEdge.request_headers}
                       </pre>
                     </div>
                   )}
 
-                  {/* Body */}
-                  {selectedEdge.response_body && (
-                    <div className="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-1.5">
-                      <div className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-                        📦 Response Body
+                  {/* Request Body */}
+                  <div className="rounded-xl border border-slate-200/90 bg-slate-50/70 p-3.5 space-y-1.5">
+                    <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider flex items-center justify-between">
+                      <span className="flex items-center gap-1.5">
+                        <span className="text-sky-600">📥</span> Request Body
+                      </span>
+                      {selectedEdge.request_body && (
+                        <button
+                          onClick={() => navigator.clipboard.writeText(selectedEdge.request_body)}
+                          className="text-[10px] text-slate-500 hover:text-slate-800 font-mono flex items-center gap-1"
+                        >
+                          <Copy className="w-3 h-3" /> Copy
+                        </button>
+                      )}
+                    </div>
+                    {selectedEdge.request_body ? (
+                      <pre className="max-h-52 overflow-y-auto rounded-lg bg-slate-900 p-2.5 font-mono text-[10px] text-sky-200 whitespace-pre-wrap break-all border border-slate-800">
+                        {formatJsonString(selectedEdge.request_body)}
+                      </pre>
+                    ) : (
+                      <div className="text-[10px] text-slate-400 italic p-2 rounded bg-white border border-slate-200 font-mono">
+                        (Không có dữ liệu Request Body trong span trace)
                       </div>
-                      <pre className="max-h-48 overflow-y-auto rounded bg-slate-900 p-2 font-mono text-[10px] text-slate-300 whitespace-pre-wrap break-all">
-                        {selectedEdge.response_body}
+                    )}
+                  </div>
+
+                  {/* Response Body */}
+                  <div className="rounded-xl border border-slate-200/90 bg-slate-50/70 p-3.5 space-y-1.5">
+                    <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider flex items-center justify-between">
+                      <span className="flex items-center gap-1.5">
+                        <span className="text-amber-600">📦</span> Response Body
+                      </span>
+                      {selectedEdge.response_body && (
+                        <button
+                          onClick={() => navigator.clipboard.writeText(selectedEdge.response_body)}
+                          className="text-[10px] text-slate-500 hover:text-slate-800 font-mono flex items-center gap-1"
+                        >
+                          <Copy className="w-3 h-3" /> Copy
+                        </button>
+                      )}
+                    </div>
+                    {selectedEdge.response_body ? (
+                      <pre className="max-h-52 overflow-y-auto rounded-lg bg-slate-900 p-2.5 font-mono text-[10px] text-emerald-200 whitespace-pre-wrap break-all border border-slate-800">
+                        {formatJsonString(selectedEdge.response_body)}
+                      </pre>
+                    ) : (
+                      <div className="text-[10px] text-slate-400 italic p-2 rounded bg-white border border-slate-200 font-mono">
+                        (Không có dữ liệu Response Body trong span trace)
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Response Headers */}
+                  {selectedEdge.response_headers && (
+                    <div className="rounded-xl border border-slate-200/90 bg-slate-50/70 p-3.5 space-y-1.5">
+                      <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider flex items-center justify-between">
+                        <span>📥 Response Headers</span>
+                        <button
+                          onClick={() => navigator.clipboard.writeText(selectedEdge.response_headers)}
+                          className="text-[10px] text-slate-500 hover:text-slate-800 font-mono flex items-center gap-1"
+                        >
+                          <Copy className="w-3 h-3" /> Copy
+                        </button>
+                      </div>
+                      <pre className="max-h-36 overflow-y-auto rounded-lg bg-slate-900 p-2.5 font-mono text-[10px] text-slate-200 whitespace-pre-wrap break-all border border-slate-800">
+                        {selectedEdge.response_headers}
                       </pre>
                     </div>
                   )}
 
                   {/* Edge Error Details if failed */}
                   {selectedEdge.has_error && (
-                    <div className="rounded-lg border border-red-500/30 bg-red-950/20 p-3 space-y-2">
-                      <div className="text-[11px] font-semibold text-red-400 uppercase tracking-wider flex items-center gap-1.5">
-                        <AlertTriangle className="w-3.5 h-3.5 text-red-400" />
+                    <div className="rounded-xl border border-red-200 bg-red-50/50 p-3.5 space-y-2">
+                      <div className="text-[11px] font-semibold text-red-700 uppercase tracking-wider flex items-center gap-1.5">
+                        <AlertTriangle className="w-3.5 h-3.5 text-red-600" />
                         <span>Call Error Details (Status: {selectedEdge.status_code})</span>
                       </div>
                       {selectedEdge.error_info ? (
                         <ErrorCardView error={selectedEdge.error_info} defaultOpen={true} />
                       ) : (
-                        <div className="text-xs text-rose-300 font-mono bg-red-950/50 p-2 rounded">
+                        <div className="text-xs text-rose-700 font-mono bg-white p-2 rounded border border-red-200">
                           HTTP Status {selectedEdge.status_code}
                         </div>
                       )}
@@ -1274,21 +1336,21 @@ export default function TraceVisualizerPage() {
               {/* SERVICE DETAILS */}
               {selectedService && (
                 <>
-                  <div className="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
-                    <div className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Service Overview</div>
+                  <div className="rounded-xl border border-slate-200/90 bg-slate-50/70 p-3.5 space-y-2">
+                    <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Service Overview</div>
                     <div className="grid grid-cols-[100px_1fr] gap-1.5 text-xs">
                       <span className="text-slate-500">Service:</span>
-                      <span className="font-bold text-slate-100">{selectedService.name}</span>
+                      <span className="font-bold text-slate-900">{selectedService.name}</span>
                       <span className="text-slate-500">Max Duration:</span>
-                      <span className="font-mono font-bold text-sky-400">{selectedService.max_duration_str}</span>
+                      <span className="font-mono font-bold text-sky-700">{selectedService.max_duration_str}</span>
                       <span className="text-slate-500">Total Active:</span>
-                      <span className="font-mono text-slate-200">{selectedService.total_time_str}</span>
+                      <span className="font-mono text-slate-800">{selectedService.total_time_str}</span>
                       <span className="text-slate-500">Total Spans:</span>
-                      <span className="font-mono text-slate-200">{selectedService.span_count}</span>
+                      <span className="font-mono text-slate-800">{selectedService.span_count}</span>
                       <span className="text-slate-500">DB Calls:</span>
-                      <span className="font-mono text-amber-400 font-semibold">{selectedService.db_summary.count}</span>
+                      <span className="font-mono text-amber-700 font-semibold">{selectedService.db_summary.count}</span>
                       <span className="text-slate-500">Servers/IPs:</span>
-                      <span className="font-mono text-slate-300 break-all">
+                      <span className="font-mono text-slate-700 break-all">
                         {selectedService.servers.join(', ') || 'Internal'}
                       </span>
                     </div>
@@ -1296,19 +1358,19 @@ export default function TraceVisualizerPage() {
 
                   {/* DB Calls */}
                   {selectedService.db_summary.count > 0 && (
-                    <div className="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
-                      <div className="text-[11px] font-semibold text-amber-400 uppercase tracking-wider flex items-center justify-between">
+                    <div className="rounded-xl border border-slate-200/90 bg-slate-50/70 p-3.5 space-y-2">
+                      <div className="text-[11px] font-semibold text-amber-700 uppercase tracking-wider flex items-center justify-between">
                         <span>🗄️ Database Queries ({selectedService.db_summary.count})</span>
-                        <span className="font-mono text-slate-400">{selectedService.db_summary.total_duration_str}</span>
+                        <span className="font-mono text-slate-600">{selectedService.db_summary.total_duration_str}</span>
                       </div>
                       <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
                         {selectedService.db_summary.calls.map((c, idx) => (
-                          <div key={idx} className="rounded border border-slate-800 bg-slate-900/80 p-2 space-y-1">
+                          <div key={idx} className="rounded-lg border border-slate-200 bg-white p-2.5 space-y-1 shadow-2xs">
                             <div className="flex justify-between items-center text-[11px]">
-                              <span className="font-semibold text-amber-400 truncate">{c.operation}</span>
-                              <span className="font-mono text-slate-200 font-bold ml-2 shrink-0">{c.duration_str}</span>
+                              <span className="font-semibold text-amber-700 truncate">{c.operation}</span>
+                              <span className="font-mono text-slate-800 font-bold ml-2 shrink-0">{c.duration_str}</span>
                             </div>
-                            <div className="font-mono text-[10px] text-slate-400 break-all bg-slate-950/60 p-1.5 rounded">
+                            <div className="font-mono text-[10px] text-slate-600 break-all bg-slate-50 p-2 rounded border border-slate-100">
                               {c.statement}
                             </div>
                           </div>
@@ -1319,13 +1381,13 @@ export default function TraceVisualizerPage() {
 
                   {/* Errors */}
                   {selectedService.has_error && (
-                    <div className="rounded-lg border border-red-500/30 bg-red-950/20 p-3 space-y-2.5">
-                      <div className="text-[11px] font-semibold text-red-400 uppercase tracking-wider flex items-center justify-between">
+                    <div className="rounded-xl border border-red-200 bg-red-50/50 p-3.5 space-y-2.5">
+                      <div className="text-[11px] font-semibold text-red-700 uppercase tracking-wider flex items-center justify-between">
                         <span className="flex items-center gap-1.5">
-                          <AlertTriangle className="w-3.5 h-3.5 text-red-400" />
+                          <AlertTriangle className="w-3.5 h-3.5 text-red-600" />
                           Errors ({selectedService.error_count})
                         </span>
-                        <span className="text-[10px] text-slate-400 font-sans">Click card to expand payload & stack</span>
+                        <span className="text-[10px] text-slate-500 font-sans">Click card to expand payload & stack</span>
                       </div>
                       <div className="space-y-2">
                         {selectedService.errors.map((err, idx) => (
@@ -1339,15 +1401,15 @@ export default function TraceVisualizerPage() {
 
               {/* CLIENT DETAILS */}
               {selectedClient && (
-                <div className="rounded-lg border border-slate-800 bg-slate-950/50 p-3 space-y-2">
-                  <div className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Client Request</div>
+                <div className="rounded-xl border border-slate-200/90 bg-slate-50/70 p-3.5 space-y-2">
+                  <div className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Client Request</div>
                   <div className="grid grid-cols-[90px_1fr] gap-1.5 text-xs">
                     <span className="text-slate-500">Client IP:</span>
-                    <span className="font-mono font-bold text-indigo-400">{selectedClient.ip}</span>
+                    <span className="font-mono font-bold text-indigo-700">{selectedClient.ip}</span>
                     <span className="text-slate-500">First Call:</span>
-                    <span className="font-mono text-slate-200">{selectedClient.endpoint}</span>
+                    <span className="font-mono text-slate-800">{selectedClient.endpoint}</span>
                     <span className="text-slate-500">Duration:</span>
-                    <span className="font-mono text-sky-400">{selectedClient.duration}</span>
+                    <span className="font-mono text-sky-700 font-semibold">{selectedClient.duration}</span>
                   </div>
                 </div>
               )}
@@ -1358,29 +1420,29 @@ export default function TraceVisualizerPage() {
 
       {/* Mermaid Code Modal */}
       {showMermaidModal && analysis?.mermaid && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-          <div className="w-full max-w-2xl rounded-xl border border-slate-800 bg-slate-900 shadow-2xl overflow-hidden">
-            <div className="flex items-center justify-between border-b border-slate-800 px-5 py-3.5 bg-slate-950/60">
-              <span className="font-semibold text-sm text-slate-100 flex items-center gap-2">
-                <Code2 className="h-4 w-4 text-sky-400" />
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4">
+          <div className="w-full max-w-2xl rounded-2xl border border-slate-200 bg-white shadow-2xl overflow-hidden">
+            <div className="flex items-center justify-between border-b border-slate-200 px-5 py-3.5 bg-slate-50">
+              <span className="font-semibold text-sm text-slate-900 flex items-center gap-2">
+                <Code2 className="h-4 w-4 text-slate-700" />
                 Mermaid Flowchart Code
               </span>
               <button
                 onClick={() => setShowMermaidModal(false)}
-                className="rounded p-1 text-slate-400 hover:text-slate-200"
+                className="rounded-lg p-1 text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition"
               >
                 <X className="h-4 w-4" />
               </button>
             </div>
             <div className="p-4">
-              <pre className="max-h-96 overflow-y-auto rounded-lg bg-slate-950 p-3.5 font-mono text-xs text-slate-300">
+              <pre className="max-h-96 overflow-y-auto rounded-xl bg-slate-900 p-3.5 font-mono text-xs text-slate-100">
                 {analysis.mermaid}
               </pre>
             </div>
-            <div className="flex justify-end gap-2 border-t border-slate-800 bg-slate-950/40 px-5 py-3">
+            <div className="flex justify-end gap-2 border-t border-slate-200 bg-slate-50 px-5 py-3">
               <button
                 onClick={handleCopyMermaid}
-                className="inline-flex items-center gap-1.5 rounded-lg bg-sky-600 px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-sky-500 transition"
+                className="inline-flex items-center gap-1.5 rounded-xl bg-slate-900 px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-slate-800 transition"
               >
                 {copiedMermaid ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
                 {copiedMermaid ? 'Đã sao chép' : 'Sao chép Markdown'}

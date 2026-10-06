@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:2cecd9afaddc06a8ede5a70b743f919935153f4c04ebc505e2d977b28b8bd0d0",
+  "claims": [
+    {
+      "id": "claim_4ba17ecbbbdf4f33a2cb492fcc29812d",
+      "statement": "The NapasGateway class handles OAuth2 authentication (login and refresh) and transaction querying for the NAPAS payment gateway, managing token lifecycles per merchant (CAIC).",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/onecomm/NapasGateway.java#L160-L194",
+          "version": "repo-lines-v1:sha256:4957ce2db3afe0dbfdd1747174535cc624deb87f36b6ec70ba834a4d9844aebb:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk1YWE4YjAzZjk0ZDA0ZDYwMTRmOGM1OTVhMGM4NDVjMGVmYmNhMzUxNWM3OWJhY2NmNjc2ZjZiMThkNWZmODciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ5YWIzZThjYWY3MjA0ZmZlYmJlMTljMjQ3ZTkyNDY4MzQ1ZjU1N2VkZGQyNGU1YTQwZTRmZmY5Y2FkZDRjNjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIwNmRjM2JiYmU3MTU0MGM1MzUzOTc4NzcxMTNkNzZmYWRkMzdlOTE2MWQzNGJiMWRiZmE1MWMxYjU4ZDk3NDkifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/onecomm/NapasGateway.java#L41-L107",
+          "version": "repo-lines-v1:sha256:0152a23a0bc81114e096e5a1cc60f2a0686f8556206eb0f4053f68a77eb311ae:eyJzZWxlY3RlZExpbmVDb3VudCI6NjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY4MWJjZTc3YjQ0NjViODA1Nzg5YmExYTZmZDQyNTEyNjg4NTdhMDRjYjhlNmYwNjAyYjA0MjZlYjgzODBhNjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjljOGNlNzkzZDFjZDczYTUyNzRkYzFiZDczYzk2MzMxZDNkYzQ5MjE2NDQ3MWRkNWViMzdlZDhmYmVkZDExYzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjllM2I2ZjQzMGRmNDBlZjY1NTk3ZDRiOTg4ZjkwZGRiMjE2NWUxNzc3YzJiMzc4MGIyYWI5OGFlYjNmOGFiOTMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a00f55fabe304e54a31760e69ea1eaf1",
+      "statement": "NapasGateway maps NAPAS-specific gateway codes to internal status codes using regex pattern matching on predefined error code strings.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/onecomm/NapasGateway.java#L274-L312",
+          "version": "repo-lines-v1:sha256:ae3658654dd95774af895e38f98f2b4dea2535f0218119f35ef17cd84956e487:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2NDU3NGU3ODIwNGM1MWI4ZmQzMmJmNWFlZDI1YzAzMGVlOTk2MTc0ZWVhMDcxNmIzMjMyY2Q2Yjg0YjBmY2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ5YWIzZThjYWY3MjA0ZmZlYmJlMTljMjQ3ZTkyNDY4MzQ1ZjU1N2VkZGQyNGU1YTQwZTRmZmY5Y2FkZDRjNjMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjdjNTEwODVkMGQyMTcwZDA5MWZjZDk0NGM1ODZmZmMzYmRkNTQ1MTEyNGJhYWIyOGZkYWEwMDgzNGQyZDkzZDUifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/onecomm/NapasGateway.java#L29-L36",
+          "version": "repo-lines-v1:sha256:53d281ae0579c8fa2ad80c85bd28f28d6d8f99364e35385021c248cac045f2d6:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDBhZTAyNDY1YTUyNDA0NTE4NzFmYTFiMTU5ZjcyYmI1NjAzYzRhMjNlYTg5MDY2MThlMzIyOTNiZjQ4YTc3MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYWVkY2E0ZGFkM2E3YmRmYTI4NGNiMTk2ZDUxMTNjYTM3NzJjZjFkZGFjODA4OGNhNmNkYjk5YjBlOTgyYzM4YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMTM1OWJiODU1NDk4MGE2MTA2YzY3ZDcxMDU0OGJmNzhhYWU4ZDVhYjc5MGNiOTc2ZTIyNTZlNGZiYTFjOWI1OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYThhYTJmZTI5YmM5OTVkZDAzZTZmMDc1Njk2NjE5ZWM2YTc1NzA4YThjOTAzYTcwYWY0NzlkYzYwYWFiZmEyNiJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-23T03:50:02.660Z"
+  }
+}

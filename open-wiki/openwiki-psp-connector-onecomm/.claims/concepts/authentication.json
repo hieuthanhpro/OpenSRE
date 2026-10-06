@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:04ca1995d475e81e0557fd4da95b29903c8277b23786fc2c5f1aa95d47e23b54",
+  "claims": [
+    {
+      "id": "claim_37dcb05d04f4409eb004bfcebec1c0bc",
+      "statement": "ClientAuthorizationHandler is registered as a global handler for every route in PSPConnectorVertical, so every incoming API request is authenticated before reaching business handlers.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/vertical/PSPConnectorVertical.java#L102-L102",
+          "version": "repo-lines-v1:sha256:84ab076b90cfd27d98a0ffc6afce4c6329299b2955b7f81ecbc31c26d97f2edc:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODRhYjA3NmI5MGNmZDI3ZDk4YTBmZmM2YWZjZTRjNjMyOTI5OWIyOTU1YjdmODFlY2JjMzFjMjZkOTdmMmVkYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODRhYjA3NmI5MGNmZDI3ZDk4YTBmZmM2YWZjZTRjNjMyOTI5OWIyOTU1YjdmODFlY2JjMzFjMjZkOTdmMmVkYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzk5MmRlNDU3YjU4M2UxZGJiNDk5MDBjNDIyMzc5YTE2NmEwZjU1MjliZmM5ZTA5NjYyODFiZmRlMTAzOTcxMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZjMwN2EyMDFiZjI1MTZjZmI1YmNhNjg3NmMzMWM0NDc2MGQ0ZTBlOGY5NjExOWY2NmQ2MGQwYjA4MGMyNzI0OCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_0f021792313d4bf7a3555c188d246a9d",
+      "statement": "The handler rejects requests when the Accept or Content-Type header is not application/json, raising BadRequestException(INVALID_ACCEPT_HEADER) or BadRequestException(UNSUPPORTED_CONTENT_TYPE) respectively.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/handler/common/ClientAuthorizationHandler.java#L41-L51",
+          "version": "repo-lines-v1:sha256:4b396184d7a5c0218994461ae28d39b7bfb69dacfcde0fcc44cba1eb67c02fd5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkMzUwNjY4MzBlNTkwYWIxODlhOTM2MzliZGQ4NWYzYTgxODgyNWU2YjViYWJkNGI0YWQ1ZjMyZWYyNmJiMDIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YjA0NDkxNDY5NzIyZTgzNjNhOTRlNDA0NDUzOGUwMTNhMmEyMTdlMzZiMWU1NjhiYTYwYWNiN2I0YzhmMmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY5ZjM3ODEzNzBjYTM5MzQ4OWY4ZGQ2ZjAyMzAxMjVhMzQxM2UxNzFjZjcwNTVkNGJkZjZiMzM0Nzk0OWViYzUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZjNmJiZDQyMTkzNWZkZTJjMTNlOGRkNjNiMTRiYzQ3NGY5ZGZiYTQyYzQ3Yjc3ZGZhNWY1YWM3ZTc5ODgwZTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a496ea286f0540a6aaa2a7ceac952cd4",
+      "statement": "The handler requires the X-OP-Date, X-OP-Expires (positive integer), and X-OP-Authorization headers to be present, otherwise it throws BadRequestException with INVALID_X_OP_DATE, INVALID_X_OP_EXPIRES, or INVALID_X_OP_AUTHORIZATION respectively.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/handler/common/ClientAuthorizationHandler.java#L53-L69",
+          "version": "repo-lines-v1:sha256:e7ab89491b3aeff49a71f64538e9fafbe98804384137b027e1cddaa477d5eecd:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjViNDYxOTEyMjUxMDI2ODg5ZjRhMTUyYzA3MjJiYTNkYWFmODNkMGE1NGFhODU1OGU4NDVlYWNhZjYxMDY5YTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YjA0NDkxNDY5NzIyZTgzNjNhOTRlNDA0NDUzOGUwMTNhMmEyMTdlMzZiMWU1NjhiYTYwYWNiN2I0YzhmMmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU2NjY1YjRjMzFmMjE1ZDkwNzgzNDQ4NDIyYjdjNjM5ODgyZWUwNjk4MzYzYmU5NDM3ZmQ5NGQ1OGNiNDEyZTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZkMTc5M2NlNDg2YTIzMGY0YTk1MDNjZjhiNTdjOWExZjcxNTQ2NTYwZTUxZjU2MmNmMTY2MWZmODRhMWFiNmQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_dd350bf1a35a42b48a7afbbad46ddfcb",
+      "statement": "The Client ID is extracted from the X-OP-Authorization header using the regex pattern SIGNATURE_HEADER_CHANNEL_ID_EXTRACT_REGEX (Credential=([^/|?]+)/), and an empty or missing Client ID causes AuthorizationException(INVALID_ACCESS_KEY).",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/util/AppConstants.java#L12-L12",
+          "version": "repo-lines-v1:sha256:e229d52e8cc6f5e2dcebd88094f19b4f64f0302fc7f804500d20f7fd2b29f875:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZTIyOWQ1MmU4Y2M2ZjVlMmRjZWJkODgwOTRmMTliNGY2NGYwMzAyZmM3ZjgwNDUwMGQyMGY3ZmQyYjI5Zjg3NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTIyOWQ1MmU4Y2M2ZjVlMmRjZWJkODgwOTRmMTliNGY2NGYwMzAyZmM3ZjgwNDUwMGQyMGY3ZmQyYjI5Zjg3NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWE3MjRjZDZiOWUwNmE5NjQ0MTFhOTlhZjlkMzFkOGUxZDQ0NGI3MDEwNDY0YzIxZTdkNTI2ZGQ5OTY5OTJhZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzVjOWI2YjA4OTQzOTg3MGUwMDE4ZjBmNzRkNDAzYzAzNGE0MTE5Y2YzNjA4M2M1MjliZDMyZmRhODYxZTVmMCJ9"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/handler/common/ClientAuthorizationHandler.java#L71-L77",
+          "version": "repo-lines-v1:sha256:14a12450f9c6a426ad79b328b30af280484f0c75ad0c96e8ed7e22505a2ab692:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTdkYzMxZGU5ZTY1MjgzZGMwODg4MWY0MTMxOTkyNmE2Y2E2ODc1MjE5ODNlMTRiNGY3YTUzNjZhZWU3MDZhYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTZiMDQ0OTE0Njk3MjJlODM2M2E5NGU0MDQ0NTM4ZTAxM2EyYTIxN2UzNmIxZTU2OGJhNjBhY2I3YjRjOGYyZSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODQ5YTU2ODYyMWIxYmMxODJlMDdlODJkZTA5NWYwZGMzMTAyMjlhMmIwODgxMjI1MzAxYzI1OTc1M2JhNDJhZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTc1NDYwNTJjNDdlZTQyNDE4ZGUzM2VjOTZmMTYzZWRmMGE3MmFhNjIyZDdkMTY5Y2RmZjlkMzQxMTNkNGI0ZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_83ef5c945bfa413a9bc62ad5d2157185",
+      "statement": "The parsed OWS1 request is validated for expiration (OPERATION_EXPIRED), region (INVALID_SERVICE_REGION), service name (INVALID_SERVICE_NAME), authorization terminator type (INVALID_AUTHORIZATION_SERVICE_NAME), and algorithm (INVALID_AUTHORIZATION_ALGORITHM), each raising AuthorizationException against the server-configured expected values.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/handler/common/ClientAuthorizationHandler.java#L79-L109",
+          "version": "repo-lines-v1:sha256:1286aa1b022f96cb1bee4024741f54fe5108d3da37c08253eeb8b5b01a082dda:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhMGM3MzZkZWVlNzIwMTk4MTk4ODNhNGI2ZjI5MjkxZmI5YjEzYWY0MWIyNWExNGZjM2U5MjFmNGIyMDBlNjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YjA0NDkxNDY5NzIyZTgzNjNhOTRlNDA0NDUzOGUwMTNhMmEyMTdlMzZiMWU1NjhiYTYwYWNiN2I0YzhmMmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJkNzYxNjlhZmI4YWQ4YzZhYTgwMWRhMmJjYzVkYTdkY2M5OTllODQzNzAwMzlhZGQ3NGJiYzNlMzRjZjk4OWEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJkZmUwNDE5MjUwMzgzN2QzYzlmZTNiYTEyOWMwNTA5NzllYmU1ZjkwOGUwMTRhYTBmNDhmYmJkZGI5OGJiOWEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b67cebbfb55a464bbd7e0df6520fc637",
+      "statement": "The server-side expected service name, region, authorization type, and algorithm are configured in app.properties (service.name, service.region, service.authorization.type, service.authorization.algorithm) and injected into ClientAuthorizationHandler static fields in Main.main.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/Main.java#L99-L103",
+          "version": "repo-lines-v1:sha256:daf1b2315fa8babddc729c3e94bccc63e99b6ade992f52701ec8952cc7d84edf:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDk1NDc1YmM1OWEyMzMzM2YzNjYxZWY1MTQ0OTZiNGRmN2YxMzU0OTViNmE5NmZhMWM1NTU1ZjRhMGJmY2QzYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2RkNGExZjg1YzU0M2Q0ODMwNjlhNjYxMzhlOTMzNzU3ZjNhYmJhYTIxNjg3MmFjMzMyOGYzMTI0ZDFmZmQwZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOGRiMGQyMzJmNWI1ZjU5YTZlMjg5NDYyMDRkNzE1MjBiNGRjM2NkMjNiMGJmZTgwNmZlZDZlNTczMjBjZTQ1YSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYjNhYTgzZTMwOTMzNTE0N2Q1ZTZiNGQyMTYwNGZkMDUwNzI3MWQwODUyNjQ2ODAwMTA3ODgyM2YyZThiNGUwMiJ9"
+        },
+        {
+          "resource": "repo://src/main/resources/app.properties#L4-L7",
+          "version": "repo-lines-v1:sha256:1fa3fbc33528dc061e836419a790a61f453553dd37db799185908ca020f5f3ed:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzgwM2ZmYzBhN2FlOWI0NGRlY2Q3YTcxMTBkZGZjYTFlZTc5MWRhYmQ0ZmJjZjM4YWY4ODM5MWZjNzg1YjdlZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTRjYTJlZTBkMmRiYTIxZjRhYWI0ODU1MmU3MmQ0NjUyYzQwMWM3MTNiOTM0NzRkNDE1ZTdiMTQzZGI1NzMwYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNzk1Mzk3MzI0Y2QzZTRjYWUyZjYzZDZjYjZmYzA5MjI2MWRhNjA1ZTg0NThiN2I4NmIzMDk0Y2I2MDYxNzgxMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDc1ZGRmMTZkNzI5NGVkNmM1ODUyZDZiNzNlZDg1ZTIyY2I5YThkNmQwZDNkM2I0M2E5NjMyMDRlYTRhYTZjNCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_ebab39193e27496d842da0b411cbae1f",
+      "statement": "The secret per-client Access Key is looked up at runtime from the properties map using the key 'access_key.' + clientId; app.properties defines access_key entries for clients such as TSP, WSP, MSP, and MSP_EXTEND, with values templated for deployment config.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/handler/common/ClientAuthorizationHandler.java#L118-L118",
+          "version": "repo-lines-v1:sha256:fa377c83ebb1711111dbb52c78ccbf17e1434ab7deae3082fdfac90abafb0feb:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmEzNzdjODNlYmIxNzExMTExZGJiNTJjNzhjY2JmMTdlMTQzNGFiN2RlYWUzMDgyZmRmYWM5MGFiYWZiMGZlYiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmEzNzdjODNlYmIxNzExMTExZGJiNTJjNzhjY2JmMTdlMTQzNGFiN2RlYWUzMDgyZmRmYWM5MGFiYWZiMGZlYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTI2NDFkMmQyNjg4OTVmZDU5OGFhMWVlNDk4MTNlZDc0NjQzMDM1YWRkNGUxZGU3ODNhMTIxNzZkZDczMzg5NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzUwOWNlZWY3ODA5M2QyZjJlMmE0YzA2ZWViOTBkNDMxOTZhMDkwYWE4NzlmZDk5ODc5OTczZjUwZWVlMjY4ZSJ9"
+        },
+        {
+          "resource": "repo://src/main/resources/app.properties#L48-L51",
+          "version": "repo-lines-v1:sha256:e027f27d2a7fff907e24cf0456cf2a48cd081405c2ea52dfc15f9f899256de65:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDY5M2FjNTE1N2QyNmNlYTliNzk2YjRiMWIwMjM4ZTcwOTFhODU0OWE0MTNmOGUxYTk2YzBkYmJlODFiY2I0MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMjM1MmY0MjE1MTgwMjVjNGViZjEzMzA0ZWUyNWZkYzFjZjlmYTRmYjMzOTU2MjlhM2M0Zjk1YTc1M2QwMDNmOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZmMyY2FiYmM4MmEzY2FhOTFmZDRiNTZhZjczNmQ4MjIxMDhkZWE1NDE0MTFkZWNlY2QxZjRjZmY5NmEwN2ZmZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNzdhNWY3M2NkN2I0MGVhOWY3OTdjNTE4N2I3NDc1ZTI5OGNjZDZmMTFkZWYwNTIxODY3MTFkNzg1YmI3YWFiOCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_ead1cf22b8304ca1be716ea7ce432ec2",
+      "statement": "Signature verification reconstructs a server-side vn.onepay.ows.Authorization using the Client ID, Access Key, request region and service, HTTP method, request path, query parameters, signed headers (subset of request headers named in the client's signed-headers list), request body bytes, request timestamp, and expiry; the recomputed signature must equal the client's signature or AuthorizationException(INVALID_SERVICE_SIGNATURE) is thrown.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/handler/common/ClientAuthorizationHandler.java#L111-L144",
+          "version": "repo-lines-v1:sha256:8bba28732e88afb8543d5a61e56e88745b37eed0e95ee6ca773befd56ba366ed:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjljYzliNjQ4N2EyMmM1OTI0M2IyNzkyOTAxM2FkNWQ4ODMxMmIzZmI0YmMzYjc4YjNkMzQ0YjUxYmRkZTExYmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU2YjA0NDkxNDY5NzIyZTgzNjNhOTRlNDA0NDUzOGUwMTNhMmEyMTdlMzZiMWU1NjhiYTYwYWNiN2I0YzhmMmUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjYWFjNmUyMmUxZDk4MDQwMmRhNjViZGMyZTg4MjUzZTdhNzNiNmQ1YmQ5MDcwZjkxNzMyYzE0N2M4MTA3YmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI3NGI5OWQ1YzA4NzliMGM1Nzg0MmMxM2E0NTZjYjk5NGRlNTNiYzA1NzViMmZlZTZiYmI3YTM3ZjM3ODlhZTMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_12747f605dbc4f4397b564a377062134",
+      "statement": "On successful authentication the handler stores the extracted Client ID in the RoutingContext under the CLIENT_ID param before calling rc.next(), leaving the client identifier available to downstream handlers.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/util/AppParams.java#L14-L14",
+          "version": "repo-lines-v1:sha256:7c88f740c4e6123e8f3467586645cced61ea9188d172d9143063372f6611c1f4:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2M4OGY3NDBjNGU2MTIzZThmMzQ2NzU4NjY0NWNjZWQ2MWVhOTE4OGQxNzJkOTE0MzA2MzM3MmY2NjExYzFmNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiN2M4OGY3NDBjNGU2MTIzZThmMzQ2NzU4NjY0NWNjZWQ2MWVhOTE4OGQxNzJkOTE0MzA2MzM3MmY2NjExYzFmNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmI5MTE2MmM4ZWIwYmRiM2NkMDkwOTQyNTMyYTNjZDhjNTliZDY4MTYwZmM0NGVkYjgxZGYxMDI0MzZhN2MwYSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDFlMzU3YTQ3NmMxZjQ1OGZiZGNkM2U4YTAzNTllNmEwMzczYTM5OTZiMWQzNmY4ZWY4MGU0YmUyOGFjODZhMCJ9"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/handler/common/ClientAuthorizationHandler.java#L71-L73",
+          "version": "repo-lines-v1:sha256:6b1ffc5c8266e56b3d69767fb98c9d16be3a4336b73985a9f5010c02042e9ecf:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMTdkYzMxZGU5ZTY1MjgzZGMwODg4MWY0MTMxOTkyNmE2Y2E2ODc1MjE5ODNlMTRiNGY3YTUzNjZhZWU3MDZhYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDZmZDlmODAyYTMyYmVmYTFiOThhN2U3ODgxYTNmM2M3NDQwMmNhY2IwMDZkYjE4NmJkNzQ3YWVhNzU4NDYxMiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODQ5YTU2ODYyMWIxYmMxODJlMDdlODJkZTA5NWYwZGMzMTAyMjlhMmIwODgxMjI1MzAxYzI1OTc1M2JhNDJhZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTMyNzM0NDZlZDhiYWUyZmU0ZDk1YTM4ZDAzOGEyODZjNDYyNGEyNjMzZGM2NTYzY2VhMzJlNjk0ZjliOTA4YiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_cf27b9a8ec554ca2b0a3aabe2625131b",
+      "statement": "The expected authorization type and algorithm for this service are ows1_request and OWS1-HMAC-SHA256 respectively, and the algorithm is enforced as an exact case-insensitive match against the client-provided value.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/server/handler/common/ClientAuthorizationHandler.java#L105-L108",
+          "version": "repo-lines-v1:sha256:9d984c404a6231b4e09892ce7373e9d5916ae7cf203ab5f26b6e1f4c437e91a3:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2ZhYTgzMGVkMmIxNjhhOTg1MWIzMmJmYWQ0NjJjMmVkMjVmMDZiZGZjYzE3YWFmYTIwN2JlZjViZmE0OTc0MyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDNhNDdkZjg5N2IwODJjMmQ5OWY3NzZiNTYyZTZkNDhiOTI3YTY4MWNkNDhkM2ZiNTQ3NTEwOGZiMjg5YTkwNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZWEzMzkxNDJiNjg2ZjRkNWQwNGY2MTI0ZWJhNTYzMDU1MjYyMDIzNTlhNjg0OTM3MWUwN2EzMTY5ZDdkNzk2MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMDcxYmFkYmU3ZThkMDM1YjM3NWE0Zjc2YTgxYzFiNTBhMGI5ZTA3ZTI0ODQwNmE5NmJiYWYzM2U5Nzk0NzVjNCJ9"
+        },
+        {
+          "resource": "repo://src/main/resources/app.properties#L6-L7",
+          "version": "repo-lines-v1:sha256:05506e2f3491ae479b691b6397aabe4765665504731a23a2921aa79fb0298747:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDM4YmMyNzE3ZDE5ZDQzY2U5ODkwOGQzMjc0MjM4YzMxZWU0ZTdmNDU5NGZkOGZjNTM0YmMwNDc2MGU2YjY2MCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMTRjYTJlZTBkMmRiYTIxZjRhYWI0ODU1MmU3MmQ0NjUyYzQwMWM3MTNiOTM0NzRkNDE1ZTdiMTQzZGI1NzMwYiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjZiMjI2ZjM4MzI2ZjRmZThkNTYxYmNhNWRiNDhmOTQxYzhjZDhhZTAxYTZmMGI2OWFkMjk4OTVhZDEyZWY4ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDc1ZGRmMTZkNzI5NGVkNmM1ODUyZDZiNzNlZDg1ZTIyY2I5YThkNmQwZDNkM2I0M2E5NjMyMDRlYTRhYTZjNCJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-23T03:50:02.660Z"
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:736e9887a616f4de8a77d8db741452b92931e3fa1ecadf335a9ec684d7544064",
+  "claims": [
+    {
+      "id": "claim_a569670558324043bd5c34147c339614",
+      "statement": "The project contains a single unit test class, OnecommGatewayTest, located under src/test, which exercises two OnecommGateway methods: getBankVersion and getFailedReason (both the bank-less and bank-specific overloads).",
+      "evidence": [
+        {
+          "resource": "repo://src/test/java/vn/onepay/pspconnector/provider/onecomm/OnecommGatewayTest.java#L10-L69",
+          "version": "repo-lines-v1:sha256:844fe42cc627576524afb1363945e031a74d2d2e834188868ace0c1d0b79bf89:eyJzZWxlY3RlZExpbmVDb3VudCI6NjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgyZGRmMzA3YmIzYzVjNzQ0NTdmNDYwOGU2ZDFmNWVjMjE2NTE5YmVlM2MzYWI3NzgzZDg0Y2I4NTE2NjcyZDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE5NTc1NjI2NDEzNzBjNWMwOTZiMjVmNTYzNjRiZGM3MmY0NzMxMDdmYmYyN2Y5ZDcwYzM1MTlhYzJlZTI4YzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5ceb44b7fb4c4bc49f767926fe3eb49d",
+      "statement": "getBankVersion selects bank version 2 for SHB (bank ID 12) when the instrument is an shb_account, when the instrument is a card with both month and year provided, or when the client passed a bank_version of '2'; otherwise it returns '1' for SHB and null for all other banks.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/onecomm/OnecommGateway.java#L1645-L1657",
+          "version": "repo-lines-v1:sha256:98509b21c872536086e3453676104cbd4cf3aac9c0d853ad2754a97f7048c181:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA3YzM1NDdlNTJmYTM5ZGM2MzM5Y2Q3Zjc4M2YxMjhhMDQzNGQ2ZDkyYmJmNTFmMmIyMjI1ZWE1MDlhN2ZiNzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIyMTQwYWEzNmM4ZWJhMWM5M2E2YzcyZWY2Mzk3Y2I3Zjg2ZjQyNmQ2OGU2ZGYwOTQwMDM4NzY3NzBjMDdjMTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjI1YTdkMWQ5ZjE1YWJlOTA2MmVkMmQxNzEwZWY0OWU1ODAzMTFlNzc0M2ViY2QzYjVlZWFkMjMwMGYwMTJkMGIifQ"
+        },
+        {
+          "resource": "repo://src/test/java/vn/onepay/pspconnector/provider/onecomm/OnecommGatewayTest.java#L11-L29",
+          "version": "repo-lines-v1:sha256:305f8a3b526946b3184350548255290756f87807a5bc2e9ebe00c50e18b17d54:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRjZjA5ZWIwYzU3NDRmYjk3MzMxYjk4ZmYzZmJmMDVhNjAyYmEzZjdmNjdlNWRhNWJlOTA5NTAzM2Y2MjU4MjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ4OTlmMDAwZTA4YWY0ZTc5ZDVjOGRkYTI1Zjk3YjdlY2RmNmRhYTM4NzIzOGYyMDUwNTE5OWJiZWE5N2M2NWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjUzMzQ1ZjliY2QzZmE2NmMwNDkzMTVkYzZiOGE3M2E5ZmQxYmY0NjFmZjRkMTQ4NGI2MmY4ZjU4N2NkYTRlY2QifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8c8779f8b51d46668232c98695045114",
+      "statement": "getFailedReason maps Onecomm transaction response codes to reason JsonObject fields (name/message/details/information_link) by reading onecomm.status.<code>.code and onecomm.status.<code>.desc properties from Main.p; when no mapping exists it falls back to the default reason name ONECOMM_RESPONSE_CODE_NOT_MAP.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/onecomm/OnecommGateway.java#L1669-L1689",
+          "version": "repo-lines-v1:sha256:9e7554e2b326175fd5dd36f196ffd7b5d79fe46db47a9fabaf78d93700415e10:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVmODkyMDJjNDJiZjNjNTUyMDU2NzQyZThhMjkxYjkzZTZhNzVhYzdkOThhOGVkMzM3ZWUwNWQzMTlhMmYyOGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJkZDZmNjdmNGZkNDRhMGYwMDQ2NDM5NmYyMjI4MjgxY2U5Nzg5M2UyNjM2YjZiNWQ1OWIyOTQ0NDY1NjMxMzIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMzYWU0ZjNlODAxYTQ1ZWNlZDQ4YjgzZTBmZjYxYTdjYjUyNmM1ZTE0Yzc0NzNkYmFiOGMyNzVkNWYyYTJkZDAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a389cdcaf6cd49e38a1f02d2c8a55e83",
+      "statement": "The bank-aware overload getFailedReason(code, bankId) looks up onecomm.status.<code>.bank.<bankId>.code and .desc properties first, so a bank-specific mapping (for example SHB bank 12 overriding code 24 to ONECOMM_INVALID_TOKEN_INFO) takes precedence over the generic mapping; unmapped bank-specific codes also fall back to ONECOMM_RESPONSE_CODE_NOT_MAP.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/onecomm/OnecommGateway.java#L1691-L1711",
+          "version": "repo-lines-v1:sha256:b1a900b224e4f4e503a68d106683d24ed6896cc38477b8ea056880acefc8535b:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI5YWZmZWFjODc1NTg5OTRkZDhhOTZkYTY1YmU5YTk2ZmU4MWY4YTIxNzFkYmY2NDcyZDM4NTU4MjBkMzFjODMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBkOTI0ODBkMDdmMjY5ODg1NTc3YjZiYzkzOWQxY2JlMGFmZjQzOGUxZTI2NWU3NmYzZWJjNDM0MTExMmQ3M2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNmNDRlMmIxYTA4MGE2MzAzZTkxZTY5YmEzNDg2ZDY3OGVlZmQ4M2Y1YWYxYmNhNDNhY2YyN2U5MjNmMmY4NGMifQ"
+        },
+        {
+          "resource": "repo://src/main/resources/app.properties#L115-L116",
+          "version": "repo-lines-v1:sha256:d9d0d2b8d7a84067d874e9c56b29cd471d386ca3d4e8df4c1a497299d0aa8fa7:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmU1YmMzM2I3YmNlNWE4MzE3ZTA2YzgyOWYzZWJkN2VmYTY5MzI5ZmNmOTJkY2I1OWViNzhkMjcyZTBjNjlhZiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmIyYzU0ZDA3MmU0ZjIxY2M1MDg0NTg5MDU5MGZkYjlmN2VmNzIyNWY0OGMxYWE2ZDI3N2JjMTgxNGRmZmQ4MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNDc4MmJiZGMzMTNmZjAwYjlkMWViMmE3OGQzMzJjY2FlZjNjYmYyNTBhOWEzNmYyMTZiZGJhYWY1OTM2MmE0NiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDQxMjMwYTAxOTRiYTBhOWQ3OTgwZWMxNjliNjYwMDkyMmM1ODAyZjE0Yjk4YzhlNmI5ODkxNzhiNzU0YWJkZiJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_4b7db5eb78524f6f9c4a946b29ec23bb",
+      "statement": "The status-code to failure-reason vocabulary is defined in app.properties: codes 1, 3, 4, 5, 6, 7, 9-14, 21-26, 98, 99, 253, 254 map to distinct ONECOMM_* reason names, and code 100 (or any unmapped code) resolves to ONECOMM_RESPONSE_CODE_NOT_MAP, as exercised by testGetFailedReason_WithoutBank.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/resources/app.properties#L67-L134",
+          "version": "repo-lines-v1:sha256:3b185d95be219d23397b063fc8f26fb705245bfc1f6f163873e4f965875003c0:eyJzZWxlY3RlZExpbmVDb3VudCI6NjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExYjAzMzI1ZGNkZDdmOWZkZWFjMTZhNzNlNzcxYmQ5ZTFhMzY2ZjlhN2MxMDIwZGUyMWZiZjUyMzk5MDNiMWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3MjVkZmY2MjQ1NzkzYTA1ZTYzMjMxNTA4NDU3MWZmNWRmMDA5ODJiZTFiYzgxZjM1ZmJjNDRlZTk1ZDZjOWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRmZDk4YzlhYmY5MTI5ZWRjOTQ5Nzg3NTExNDI5NWNkZWU3Zjg0MDEwNzJmYjg0YjdhYmU4ZDVlNmZmNTE1YTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYyYzQ2ZDdlZGUxNzhjNmY5NmYxNzU4OWY5NjM5ZjQxMTZiMWYxYTExY2UwYjdmNDZiOTllNjg4ZTc5ZjczOGUifQ"
+        },
+        {
+          "resource": "repo://src/test/java/vn/onepay/pspconnector/provider/onecomm/OnecommGatewayTest.java#L41-L69",
+          "version": "repo-lines-v1:sha256:ad4d2bb20be4f26299460fcaf950ac3cfa189ae2a8752fe8487bb24a5506bf0c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRjZjA5ZWIwYzU3NDRmYjk3MzMxYjk4ZmYzZmJmMDVhNjAyYmEzZjdmNjdlNWRhNWJlOTA5NTAzM2Y2MjU4MjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI0OWJmZTliOGRiNzUxNGYzZjhhNzg5MDcyZDU5ZmVmYzY4ZmNmODI3ZTZhZGMzZjhhY2IyZDJjYmM0YjA0ZmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_1fc51b5c28a04a5890c04af76f7e123a",
+      "statement": "Maven test execution is disabled by default because the pom sets <skipTests>true</skipTests> as a property, so the suite only runs when explicitly re-enabled (for example with -DskipTests=false).",
+      "evidence": [
+        {
+          "resource": "repo://pom.xml#L13-L14",
+          "version": "repo-lines-v1:sha256:cbab7316d44c9e6bbc74f87290f2784fb7f7c15bfcfffa93185615bb026c5d17:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMThlOTllZmZiOTY2ZjhjOWI2NzRmODU4YTQxYzJlMTE5ZTVhMWY3ZTI5NTFmNmJmMWVkMTIxZGM5ZWEzMDc3NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDU0Y2FlNGY0YWY2NjI5NmZmOTIzNmMzYjg0MDgxNjJiZmI1MmY3ZGY3ZDRmOTBjMGVmN2U0Yzg2NmYwNDJlMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjA1NDhlZWE4N2RjNTI4N2EzZGY5NzE2Y2ZiNmJmOGU0ZWQ3N2Y3ZGFlMjhlMTEwYTI5NjZhMDMwNzI2YjU2MSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDRlY2U3MDE2YjhiYWI0YTI5NDlhZTZkNDYwMjE2OWY4MjBhYWVhN2FiYjQ4ZmE0ZTQ1YWE4YzAyMGIwZjdmOSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_73599acf67f74041b4880d60db847c0b",
+      "statement": "The tests under testGetFailedReason load app.properties by calling p.load(Main.class.getClassLoader().getResourceAsStream(\"app.properties\")), meaning they rely on the properties resource being available on the test classpath and on Main.p being populated before exercising the mapping logic.",
+      "evidence": [
+        {
+          "resource": "repo://src/test/java/vn/onepay/pspconnector/provider/onecomm/OnecommGatewayTest.java#L32-L33",
+          "version": "repo-lines-v1:sha256:8e08258d87966e6fb1d86279c162e3c984c43de9d7113d12cefd5f9121833a18:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNWM4NDk5NmJhM2NjNzJlODAzYzc2ZGE5YmY2MmE2NmFhYTNiMWZmNDJhNjM1OWFjMGFiYWQ4NDA4YTMyOGQ5NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjE3MzFhZGRjYTkzMTU4ZTBjMmI3YzZlNmU5OGJjY2FhMTdkNWQ0OGM2YzFiMjdkNTllODdiZjZmOWRkMzczYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZThlYWYzZTFkYjI4NGY2YTZmZDRlMDY2YWUyZmI2NTRhZTY4ZmRmY2YzZTdlNGRjYTRjMmRkMjE0YTQ5YjlkMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOWY4ZWMwMzhkMTJiMWJjYjA3ODFjZDk4NGU5NmZkNGM3MDdiODg5N2RiZDgxOGE3NDg1MjhkNzY0YWQzZDhiZCJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-23T03:50:02.660Z"
+  }
+}

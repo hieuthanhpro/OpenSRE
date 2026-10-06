@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:bb2907d96fed1665d18c97e89d1c292ed0bca76316060037b743f38ab42aa3a8",
+  "claims": [
+    {
+      "id": "claim_4ba30d7ed17945d186d4a6154b95a7e3",
+      "statement": "PSP-Connector exposes a provider SPI via two abstract classes, PaymentServiceProvider and RefundServiceProvider, whose default method bodies throw RuntimeException('METHOD_NOT_SUPPORTED'), making each method opt-in so a gateway implementation only overrides the operations it supports.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/PaymentServiceProvider.java",
+          "version": "repo-file-v1:sha256:6b61f0b68dd7ad67033a45f032f98d1885c44e08e8ea94c5b13754eb52754e89"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/RefundServiceProvider.java",
+          "version": "repo-file-v1:sha256:c67346406c1342f608f091b1667e53a8a41796a1db00235bf71029f9d03be061"
+        }
+      ]
+    },
+    {
+      "id": "claim_60cc1ebf6b3744159111bb564928e7db",
+      "statement": "At bootstrap, Main instantiates OnecommPaymentServiceProvider (with PSP id and a dedicated verify-card merchant) and OnecommRefundServiceProvider and injects them into handler classes via static fields, so the HTTP handler layer is provider-agnostic and never references Onecomm directly.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/Main.java#L105-L131",
+          "version": "repo-lines-v1:sha256:44f7aa91f826941f36b15f5d01b9c63b0be738aa266cb0fcd72a439ffab94c56:eyJzZWxlY3RlZExpbmVDb3VudCI6MjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliYzU5OTRhODY3Y2MxNjMwNzUzOTQyZjRmYmM5Zjk3NmZkZDgxODc3OWY4MDQxZDU4MzI1NmRjN2UwYWJlMmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJkNjYzY2NkMjk2OTM3ZjQ4MWE5NmUzMTNhMDNhYjhhNjFiYWRmMGY4MWExOWQxODczMjBmZjViYzMyNDhhOWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjAyN2M0MGQ1OTZlYzBiYWM5NDk0ZjkyZDYyMGZhOTdhNGI0OGQxM2UwZmY1YTEzYTQ2YzE2ZjljOGRmZWRjZWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3622a6c7c74f4d7dbe2b4081cc4fe5cc",
+      "statement": "OnecommPaymentServiceProvider.paymentPurchase inserts an initial payment record via PaymentService.insert, then for domestic transactions runs an FSP-Go fraud check (Fraud.checkFraud) before calling OnecommGateway.verifyCard, which builds signed request parameters and calls the Onecomm payment service.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/onecomm/OnecommGateway.java#L48-L100",
+          "version": "repo-lines-v1:sha256:64c2e8cc27b2e0522440278be7928640eb8f5229d28c8eda419af42d9e4f4b90:eyJzZWxlY3RlZExpbmVDb3VudCI6NTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgyNThmZDNlZWI3YmFkMDc1OGUyOTE3MmY3ZDBlZWE5NzI1ZDNkOTgwNjg2MjNmNzY0ZGMyZjA4ODFjMjc5YTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFjNjU5YzRhNTQ3MjM1ODdlMDIxYjhjMWUzZWU5NDhhYjRkMjQyMzJiNjg2OTc3YWEyYzIzYzVmZmI2YjJmMDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU2MWFlNWJmM2EzNWRlYzMyMmY2OGNmOGExMmU0N2Y0MGIxZGMzNWI5YzQyNTA3ODM4NWQ4YzFjN2NkM2U2ODgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcwM2NhMzVlMTFiNDYwMGZjMDI4OGYwM2Y0NWIyMTk2ZGJjNGFjNTNjYjQ0YWJkZWYzM2I1NTZmODY2NDFjZTMifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/onecomm/OnecommPaymentServiceProvider.java#L191-L335",
+          "version": "repo-lines-v1:sha256:a25b71c855af2fa45919146d8479f36b3dd206cbe8c6593077ec12a067cb44ff:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQ1LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI2ZmFmNGU2ODg1ZDA2N2JjYWYxMzg4Y2FmZWJiN2FjOWViOTZjM2VlNDhhMjM3OWJmMTdkYTA2OGZkMzQ1MzlmIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0ODkzZjQwZTM3ODFlYjg5NmM4MmQwNDZhMDgwNjdhMTFlMzVjZGYyZjFkZmFmMjZmZWE5MGI4ZGI2Njc2NDEzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI1NmEwOGQ1NDBlNmUxMzQwMzU3NWUyZmM2N2RkM2Y1OGU1ZDRkOWFlNjYxMzA0NjQ1YTIxMWNkNTA3NDM5NDFhIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIxM2Y5NmE4OTllM2MwZDRmYTYyZTdjMzJhOGE4OThiMWIzNDM2YTM1NTA0MDk2ZTIwYzFhNzk3ZTVhOTk1ZDViIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_f1f36182665d49f9862032c0b7465af5",
+      "statement": "When a Onecomm payment response is in AUTHORIZATION_REQUIRED state, the provider creates an authorization record (AuthorizationService.insert) carrying the PSP authorization id and OTP approval URL, and includes it in the returned payment data.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/onecomm/OnecommPaymentServiceProvider.java#L518-L551",
+          "version": "repo-lines-v1:sha256:b815c52d67c6e36e4cd221848268bc0a0d77552e4add3036edb658a9e89eb78a:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4ZDdiNTNhZDZmNDlkYzdkMGM5NWRkZjkyNjgwMjdhZmMyYmE3OWZhZDRkZmVkNDZiMjY3ZDdlZmU3MWIyYTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ4ZjMyMTA2ZGY1OWFhNzkxYWVjNTdiOGU5ZTU3MWQ3ZmQwYzgwZjAzNjMwM2U3NmU1ZjFmNGY1YzA0YmU1MTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZmNWE1ZDE5YzFiNmVjMzQzYzA3ZDNhYzcxZWFhMmUzYzhmOGQwNWViYTQzODU2MDIxZTczOWVkMTkyMTc2ODkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_124bd668e27b44bab7724a1edcc12594",
+      "statement": "OnecommPaymentServiceProvider.applePayNapasPaymentPurchase handles Apple Pay purchases routed through NAPAS, always executing a domestic fraud check and passing Apple Pay specific fields (payment_method, payment_data_decrypt, create_token, bank_id) to OnecommGateway.verifyCard, then recording paygate=applepay_napas in the txn extension data.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/onecomm/OnecommPaymentServiceProvider.java#L344-L504",
+          "version": "repo-lines-v1:sha256:26f8e5e50d12942bdeb41d4d1de3d79ad9fd781a606081227bb9e4f761ed1462:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYxLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI0NjdlYjliODg3OTc5OGVkYjZmZWQ1YmYzZmY2MzlhNTE5ZmVkMGNjNjljMWFmYjdjYTVlMjEwZGJkMmE4YzQzIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0ODkzZjQwZTM3ODFlYjg5NmM4MmQwNDZhMDgwNjdhMTFlMzVjZGYyZjFkZmFmMjZmZWE5MGI4ZGI2Njc2NDEzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI1NmEwOGQ1NDBlNmUxMzQwMzU3NWUyZmM2N2RkM2Y1OGU1ZDRkOWFlNjYxMzA0NjQ1YTIxMWNkNTA3NDM5NDFhIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJjZjE2YjU0M2EwZjFiY2VkMGJjNjI2NjQyYWZkZjRmZDI5NmFiMGIxY2JkNWVkN2NlYTRmZmJmZjNlYTMyNDdhIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_fa292d7c9c92474da32a056d3537d310",
+      "statement": "The standard refund flow in OnecommRefundServiceProvider.paymentRefund decides auto vs manual via RefundRule.isManual, which encodes bank-specific rules: BIDV auto within 180 days, MBBank auto only when mbbank_txn_info.bank_request_id exists, AnBinhBank auto only same-day and full amount, NAPAS banks auto within 300 days, and VNPTMoney/VietinBank auto within 90 days.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/rulerefund/RefundRule.java#L25-L129",
+          "version": "repo-lines-v1:sha256:227079856e80ae40345e26b4fbcfda93ee90f57b20550a738eed5312666fc7e6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA1LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJkMzk0NGYxM2Y2NTg4ZGRiZDc1MDFmZGI2MjJmN2RiZjBjNDVjYzBhOTZhNjdlY2ZiZTMzNzgwZGQ2ZDk3MTAxIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0ODkzZjQwZTM3ODFlYjg5NmM4MmQwNDZhMDgwNjdhMTFlMzVjZGYyZjFkZmFmMjZmZWE5MGI4ZGI2Njc2NDEzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJmMDdkNTU0NGEwNjYzMjJmMDZjODMzMjg1NjgyODE5MmVhMTgwZmMxNzg1MDY4OTFkZDAzZjBkOTkzZTVmMzE1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MSwiZm9sbG93aW5nQ29udGV4dEhhc2giOiI0MTJjYTM0NWNjZjc1YmY5YzA4MDZiY2U2OTViZThkZTgwOGI3OTk4NDI1MWE3YTU0ZDIwMmNmNjEwMWRkNDUxIn0"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/onecomm/OnecommRefundServiceProvider.java#L42-L156",
+          "version": "repo-lines-v1:sha256:93ad2666af6cb4f82697b9a0259c25ebdfd05c4d0c6ba83afcd8e1d706d60c10:eyJzZWxlY3RlZExpbmVDb3VudCI6MTE1LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJlZGMyYjMxMWFiZTg3NTcyZThhN2NjMGQ5OTZhNjU4NDQwNzZlNTIzMmQyMWI3YTg1NDc1ZjliNDA1NWI3NDkyIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0ODkzZjQwZTM3ODFlYjg5NmM4MmQwNDZhMDgwNjdhMTFlMzVjZGYyZjFkZmFmMjZmZWE5MGI4ZGI2Njc2NDEzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIzOWNjNWZjZTE1ZTNmMGY2NDM0M2IyN2ZlZjM1M2I4ZWYwZGRjNmZmNTUwNmVjMTg2Mzg5ZDhhZDQ2ZDI0MDJjIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJlNmQ2NmFlYzdjNzE0NTdiMjM2Yzc4NTM3ZGViNGYxMjRhZWU2YzNjYWFjYWZjN2QzZDdmYWM2NDQ3YzFmZmQ2In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_f8bcda3a5a3546279a9fdd77ecb95008",
+      "statement": "Auto refunds insert a PENDING refund record in RefundDB, call OnecommGateway.refundExtend, and map Onecomm response codes 200 to FAILED (bank declined), 300 to PENDING, and 400 to APPROVED before updating the refund record; manual refunds skip the gateway call and instead write an approved record to both OnecommDB (status 400) and RefundDB with process_type=manual.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/onecomm/OnecommRefundServiceProvider.java#L357-L439",
+          "version": "repo-lines-v1:sha256:2787ba81f817ff4409e6da8dd245f40a429683804a54c606b321785d78745a0d:eyJzZWxlY3RlZExpbmVDb3VudCI6ODMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI1ODQ3MTRkMDhjYmIwN2ZlM2FlOTdiOTQ1MjgyNDhmYWY0NWMxMmU2YTc3NDdlMjU5YmExNGZiMTc4ZmNjMTkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjM2OTQ2ZTEwMWU1ZTc4ZDkwYTUxMGM2OWYyNjZlZjc2NTQwZDMwOWIxYjgyMjY5NWI1MzE3MmVkMmNhYTAyNTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc4ZDhjN2U2ZjNkYWNkYWY2OGI4NjRiZjA1ZjhhOTJjZmNhZWZkMTU5ODZjYzRiYjliNjRlOWQyZDhkZWYyZWMifQ"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/onecomm/OnecommRefundServiceProvider.java#L96-L155",
+          "version": "repo-lines-v1:sha256:9a9f471b7a9472b63781918e2428c27749e5ba38f9f89889dc5030280e033985:eyJzZWxlY3RlZExpbmVDb3VudCI6NjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyNTY2ZjA2NmY1MmEwMmI0YzY5MWQwYmEzMzY5MDBiZmJjMDZiNzFmOGVmODBjMmQ3YWI0ODM1OTUyOWMyYzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5YzEzNTkwNjY1NjMyM2QxYzVlYTQxNjU0ZWU2NmFmYjU4NWFjZGNmYWVhY2ExMjFkNWUzMGJmMTkzZWVkZDciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE1YzY4MzhiMjI4NDZkZTY2NGI0NzAyNjE2YWNjNjU5Y2I4YmM5MTdlMTYxNDAzMTUxMDM4YTRiM2Y5OWI2YzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJkNzJkZTU5ZGRiZDY4NGUzNDIyNDgxMDBjOTQ0MzZjYjYyYmFhNDI5M2M5MmIyODYwODMzNmNhYWFhNjg1MWIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b03bdbae41864350bf199c53dc2f1737",
+      "statement": "OnecommRefundServiceProvider.updateRefund lets an MSP transition a pending refund to approved or failed, enforcing a strict state machine: refunds already in a terminal state (approved/failed) cannot be changed, approval requires an existing Onecomm refund transaction log, a refund already approved upstream (status 400) cannot be failed, and successful transitions move the Onecomm log to 400 (approved) or 200 (failed).",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/onecomm/OnecommRefundServiceProvider.java#L238-L354",
+          "version": "repo-lines-v1:sha256:ef51f27f7428a81df95c3abc95a4784a084d879265a65d4ae2f2551d194355a6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTE3LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJlZGMyYjMxMWFiZTg3NTcyZThhN2NjMGQ5OTZhNjU4NDQwNzZlNTIzMmQyMWI3YTg1NDc1ZjliNDA1NWI3NDkyIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI0ODkzZjQwZTM3ODFlYjg5NmM4MmQwNDZhMDgwNjdhMTFlMzVjZGYyZjFkZmFmMjZmZWE5MGI4ZGI2Njc2NDEzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJhMmNjMGQ0NGRkZTM5MTAxOGE0NTljMDZiMDkwZWVlYzhkZjUwNDE4ODI5NzMyMDJkMGE3NjVmYzkzNTY0Y2E2IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIzNTA4ZTFiOTcxNGY0YmIyZjEwMjExY2FmNGZkOWM0Nzc1MTFiZTUzYTUzOTBjMTc1ZDQ0ZGIyNGMzNjljYWM3In0"
+        }
+      ]
+    },
+    {
+      "id": "claim_40c3dd9fd8c04014bcf0b4c091d1b3ec",
+      "statement": "OnecommPaymentServiceProvider.query resolves the reference to a payment via PspConnectorDB, cross-checks the transaction in Payment2DB, and for NAPAS-eligible banks (matching the napas.bank property) queries the NAPAS gateway via NapasGateway.query for real-time status; unsupported banks return vpc_DRExists=NA.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/provider/onecomm/OnecommPaymentServiceProvider.java#L815-L866",
+          "version": "repo-lines-v1:sha256:7eef80108a852ea25e87e672e23fb6235fdebe5a1d27367b462f5d79f14e7727:eyJzZWxlY3RlZExpbmVDb3VudCI6NTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVkYzJiMzExYWJlODc1NzJlOGE3Y2MwZDk5NmE2NTg0NDA3NmU1MjMyZDIxYjdhODU0NzVmOWI0MDU1Yjc0OTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEyY2MwZDQ0ZGRlMzkxMDE4YTQ1OWMwNmIwOTBlZWVjOGRmNTA0MTg4Mjk3MzIwMmQwYTc2NWZjOTM1NjRjYTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhkZjAwZWQwZDlmMDc5MTYwMTYwNTZkNDY5NDc1NDRiY2E0NWEwOGY3MmQ1OTRiMzhkNTQ2YjhkMmQyMTRkYWQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_28740731b69a42b293a1e5416bad4c87",
+      "statement": "Provider and refund behavior is driven by app.properties configuration: onepay.psp.id sets the provider id, verify_card.* supplies the dedicated verification merchant credentials, refund.bank.<bankId> sets each bank's refund process type (auto/manual), and napas.bank lists NAPAS-eligible bank ids as a regex.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/Main.java#L105-L107",
+          "version": "repo-lines-v1:sha256:fef6bd9fe7284f9b55ebea07c258d10efb851d68b7b56c43658a03a2acaa8be0:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWJjNTk5NGE4NjdjYzE2MzA3NTM5NDJmNGZiYzlmOTc2ZmRkODE4Nzc5ZjgwNDFkNTgzMjU2ZGM3ZTBhYmUyYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2U0YjYyNzI0ZDExZGRiYTAxZWE5ZmI3NTQxODUwYjgyNGE0MjA2ZmRlOGQzMjc5ZjlmODJiMTA0MmI2MWJiNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMmQ2NjNjY2QyOTY5MzdmNDgxYTk2ZTMxM2EwM2FiOGE2MWJhZGYwZjgxYTE5ZDE4NzMyMGZmNWJjMzI0OGE5ZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDY0MDQ1NWI5MDAzMzkxMWZkYzcyNWVkNDU0YWNlZWQyODJhMDViNGUzN2E0MTFhNGQ4YWMwY2M0N2RhZThkYyJ9"
+        },
+        {
+          "resource": "repo://src/main/java/vn/onepay/pspconnector/common/rulerefund/RefundRule.java#L26-L27",
+          "version": "repo-lines-v1:sha256:ee1061328ae5ff2460b041b940356f13815c40286cfff5e80fcc2de2aabe8d89:eyJzZWxlY3RlZExpbmVDb3VudCI6MiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMmJlYWY5OWZjODUyNjM1ZDk2NWRkODBhYTM3ODlmMzdlYzM1ODBlMmI0NDg3NjllMmFjYWIxZTIyODdmODYzNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZjE1NWEyYmJkNTAyYjkwZjgwN2E1M2UxYTM0YzNhZGMxZGIxZTAyZmEzZDdlOTU5NmU0M2YyMmU0ZGEyYTNmNyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNWY5YjU3OWZmZTgzOWQ3N2E3YmJlNDQ4NGYzMzA1OTFkNzJkMGFmNGU5NGY4Mzc2MjU5MDFhOThhYTA5M2MzNiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZmRmNTdmZmZhMDM5OGExNmVkZmM3MWI5ZTU2NDE2OWEyZjQxMzk4MzczYzgwYmU4NTk1MmY1OTc0MTZjOTg2ZCJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-23T03:50:02.660Z"
+  }
+}

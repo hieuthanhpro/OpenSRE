@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Send, Square, Paperclip, FileText, Database, Folder, X } from 'lucide-react';
 import { clsx } from 'clsx';
 
@@ -44,6 +44,7 @@ export default function ConversationComposer({
   const [showAttachMenu, setShowAttachMenu] = useState(false);
   const [customFilePath, setCustomFilePath] = useState('');
   const [queueError, setQueueError] = useState<string | null>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     setValue(initialValue);
@@ -52,6 +53,17 @@ export default function ConversationComposer({
   useEffect(() => {
     setAttachments(initialAttachments || []);
   }, [initialAttachments]);
+
+  // Auto-resize textarea as text grows or shrinks
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      const scrollHeight = textareaRef.current.scrollHeight;
+      // Min height ~46px, max height ~240px before scrolling
+      const targetHeight = Math.min(Math.max(scrollHeight, 46), 240);
+      textareaRef.current.style.height = `${targetHeight}px`;
+    }
+  }, [value]);
   if (disabled && !busy) {
     return (
       <div
@@ -240,9 +252,10 @@ export default function ConversationComposer({
         </div>
 
         <textarea
+          ref={textareaRef}
           data-testid="conversation-composer-input"
-          className="flex-1 resize-none rounded-xl border border-slate-200/80 dark:border-stone-700 bg-white dark:bg-stone-900 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-400/50 placeholder:text-slate-400 disabled:opacity-60 text-stone-900 dark:text-white"
-          rows={2}
+          className="flex-1 resize-none rounded-xl border border-slate-200/80 dark:border-stone-700 bg-white dark:bg-stone-900 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-400/50 placeholder:text-slate-400 disabled:opacity-60 text-stone-900 dark:text-white transition-[height] duration-100 ease-out overflow-y-auto leading-relaxed"
+          rows={1}
           placeholder={placeholder}
           value={value}
           onChange={(e) => setValue(e.target.value)}

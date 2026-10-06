@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:8847f7c20733445a4e620df7547ab0fe6f0379822df53630dba47169f91768d5",
+  "claims": [
+    {
+      "id": "claim_a97d2b0187784250bffe5fdf496dfc72",
+      "statement": "HttpServerHandler.checkSignature is a mandatory authentication gate: processRequest calls it before any endpoint routing, and any failure — unparseable Authorization header, unknown clientId, null client key, or signature mismatch — short-circuits to 401 UNAUTHORIZED_ACCESS with error name UNAUTHORIZED_ACCESS.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServerHandler.java#L136-L214",
+          "version": "repo-lines-v1:sha256:8b1c5f6ddfd32be5c32926a0db1324ecdc7ac258886952b10ba69464cad35a55:eyJzZWxlY3RlZExpbmVDb3VudCI6NzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYzMjIwZDI1ZDBmMDA5MjM1NjViYWMyMGFkNTY0ODEzYzg3MzEzYmVmZGE0MDk2MWUxYmY4ZjE2NTM2Mjg4YjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1MjJjNDJjZDE5YzZkMDNkODA4YzQ1MjcyMDU1MjgyNWI3ZWExYzViNDkxYjIxODUxMWNhYzc0MTVjZjlkOWIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk5OWJkZWZlZWFjYTYzNDBlMDI5MGRjODZlODg5Yzg5ZDVlMTg5YWE1YmE0NGI1ODViM2I3MDczNGY0YTYyZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlkMmU2ZTBiZGZhY2Q0MGI1ZmEyODQ0YThhZThmZDljYTIzMjY0YjRkOTNhNmY2NmIyYzBkNTkwMmY3Y2Q5YjgifQ"
+        },
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServerHandler.java#L222-L254",
+          "version": "repo-lines-v1:sha256:b731600282fcdd5a18a5c94d81924b5182d72577d9ef43eecb19527ec6cffdbf:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVmZDM4ZTdlYjk0YjU4YzlkYzliNWM1YmEwYWNjNzc1NzQ0NWY0ZThkMjUyYmZhMWE1YWNiNDE5ZDFlODg1YmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk5OWJkZWZlZWFjYTYzNDBlMDI5MGRjODZlODg5Yzg5ZDVlMTg5YWE1YmE0NGI1ODViM2I3MDczNGY0YTYyZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ2MTU2YTdjNDc0YWIxYTY5NmMyM2M0ZTFiYzJmZThiYTU0ZGQ2ODdhMWFlYmNjNjIzYzJkZjQ5YzM2NjVhYTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_917ec42f66ab4aea8fb7244ab554ac85",
+      "statement": "The Authorization (or X-Authorization fallback) header is parsed by the pattern '^[^ ]+ +([^:]+):(.+)$', where group 1 is the clientId and group 2 is the client-supplied signature; the leading scheme token is consumed by the regex but otherwise ignored.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServerHandler.java#L232-L239",
+          "version": "repo-lines-v1:sha256:3458017b839e4b2fa79bdafd1a9f260f4e40eda14ce11e0ed7baa1cbe4aae463:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiN2ZkNWFjNWFmYjUyNDNiY2Q3ODQ4NzFjOThhZWQ5MjM4ZDlhNGE3MzA4ODY4NDI0NTEzNzVjMGI0ZmVjMTFjYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTZlNzFiNzMzNjA5NjMwNTQ3NDFkY2FiODViZDYzNDhhYjAwZWUwNWU0OGNiMzAwMTk2MDgzZTE0NjFjZGRhOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNTkwODA4ODM2Y2U4N2I3OWQwNzQyNGRkZmQxMmU4MDk0OTVhODEzNGZkMjkyNTY0NTQ5NjY0NzA1NTM3YTg5NCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDBjZGNhM2UyNmZiOWM0YjBiZWQxYWE1NmRjYzdkNjUxNTBmNTczNmQ1ZWI0ZGJkMTUyYWZmM2U2YjRkYzZhZSJ9"
+        },
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServerHandler.java#L45-L45",
+          "version": "repo-lines-v1:sha256:bf172f7f447fd6a28b1a4da0b77cf1b12a2104733bf2fad84f3c6baebfb1d774:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYmYxNzJmN2Y0NDdmZDZhMjhiMWE0ZGEwYjc3Y2YxYjEyYTIxMDQ3MzNiZjJmYWQ4NGYzYzZiYWViZmIxZDc3NCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmYxNzJmN2Y0NDdmZDZhMjhiMWE0ZGEwYjc3Y2YxYjEyYTIxMDQ3MzNiZjJmYWQ4NGYzYzZiYWViZmIxZDc3NCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjJlMzFkODBjMmQwMDI0NjM0OWMzMDIxNGU1ZWRmNWRmZTljMDM1ZWVjZWM3OTBmNmViZTM4OTUzNDg0ZTMwNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNTc5ZTZiNjZlYzQyYWMyNjQ3ODFhM2NkMTVkODBiNDZkMDY4YjYxNzlmZDE2OTA0MmVlYjAzMTViYzM1OWU0OCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_153b3cc8ee974a18808c40637b3895f5",
+      "statement": "Client signing keys are resolved by SecureKS.getHttpClientKey(clientId), which reads the http_client.<clientId> JCEKS keystore alias directly (not through the cache) with an empty password and returns the raw encoded bytes; a null result fails authentication.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/SecureKS.java#L84-L94",
+          "version": "repo-lines-v1:sha256:1de004b4c34532c7d21380f13641889a8dbd3824b700d6d719667128aafd6d92:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJmZGRkN2ZhYmVkNGQ0OGQ1MDFhMWIwZjg4NWFjOGM3NTJjMDE3ZDM3MGJhNTJlNDQwNjZjNjFlM2ZkNmRmZWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImI5NjY3MDlmMjgwYjJkZGEzMzk3NDQwOGMzODNiZjMwOGIyZTcxOGM3YTc2YmVjY2Y4MjhjNjUxYjZlNWYxZjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU3Zjk5NTI0M2E2ZTJkMmRlMzM0YjMwNTYzZTg3MDgxZDI1NWQ4MDZjZDAwM2NhMDk1YWY5YzI0MWYxY2JjOWIifQ"
+        },
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServerHandler.java#L240-L248",
+          "version": "repo-lines-v1:sha256:d0a5dceee2149e2894216facdac57850cac7e3e59a95da414ee19daac03aeb8d:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGFjNTAxMGU2YzFhM2I5NzFhMjllNTllZTY4OTZjODQ5MTM1OTI1ODNmOGYxOGU1M2RlNGZiZTExY2JjNmIzNiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMGM2NDc5Y2MyMzA0NDBmZDQxZTgyMjQyMTg2Nzk2OTg1NTlkMjg5M2JkNjdiNDM4MGFmYWI4MTFiMzhhNTVhYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYWUxOGEyOTQ5NTA5M2Q5NDZhM2IxY2U1Y2UxOTVkM2U4MjAxZGI0NDE5Y2I1YzBlMWNlNjQ2NDdmYTIzMzk4ZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYTIyNjc4ZjQ2ZTljN2U1NDgyZDgzY2E2MzAxOTg3OWVhNmI5MTQyZmQ1OWE0Mzg4MDBkNjAyNmYzYjA4ZTRjZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_1c1f175ff438494fabcdb755065a34e0",
+      "statement": "signRequest builds the request string-to-sign from five newline-separated fields — HTTP method, request path (raw URI including query string), date header, content type, and SHA-256 of the UTF-8 body encoded as url-safe base64 (empty string when the body is empty) — and HMAC-SHA256s it with the client key, returning an unpadded url-safe base64 signature.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/Crypto.java#L25-L37",
+          "version": "repo-lines-v1:sha256:582378ae04e87ea8148bf6d6c9f47c19c29ea6fb09ade7527b347e8e33fc8dc5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNkN2E1NjMzODgyMjQ1YjMxYmE1YTU4M2UxNGJiYTA0ODliOTAyN2RlZDUzMGE0NmRkNzViNWNjZWZmMDFlNTEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQwMDNhMjNmYTdjNTk2ZDQxZjVhYjRmYzhkZWEwMTdlNjFjNjQ2YTI0OTc3MDVhOWQyM2FiNGMzZmY5MGFlYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIzYjkzYTY4NGU4ZjRkNWRiZjA2MGU5ODRkZGRjOGEzODkzZWI2MWNkMjMwNmE0NDMxNjNmZDI5YmZhZTA1ZjUifQ"
+        },
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServerHandler.java#L303-L310",
+          "version": "repo-lines-v1:sha256:0ac484076cb54989f0eb6940f36f27792b68a49cd92096a65e41af3d9bc82f0a:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2ZlNWIwMWY2NzgwM2NlMTdhZmMwMDc0OGMwZjUyMmJlMjFlMjIxYjBlYmY0NTk3ZTU4OWYzNTFjOGM4ZWM5NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjI0ZjhhYWY2Mzc4OTg2ZWY5OWEyODExOTg0M2U0YzNkMjZlYWRmMDM1ZDQ2OGRmNTk4Zjk1ODdkZmY0OTZlNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjBlYmI2ODk3MDRkMTkzOWNiNDFmMmZmN2I1ZDEwMmI1OTliOTY1MDE4MDFlMGFiMTMwMTZhZjZjYjllNmEzZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_5f869b8a6e7b47b59001aa3ea7f59c29",
+      "statement": "Request authentication succeeds only on exact case-sensitive string equality between the recomputed signRequest output and the client-supplied signature (requestSignature.equals(clientSig)).",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServerHandler.java#L242-L247",
+          "version": "repo-lines-v1:sha256:6e83ad17466b3e5d666ea0aa2dffe09b59cfcf6392c97a9952c4e7c5c98e0faf:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzZkNDgyZmFmMjljZjY4YzQyYmQ3YTEyNmM4ZTg4OGMwNTFjZTU5MjUzYTUxODFlYzRkYmYwYjkxNzIwNmNhOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOGRiMzM5YzE3ZDRjYzU0ZTcwYzRmY2ZlY2I2MTFiYjllN2QzNjNmMjViMThlMDkyM2ExZDMwNmNjOTU5MjRlNSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNGM5NDc1YzgwYmQ4NDg1YjkxYTFlYTA1MGJhYWY0ZTU3OTNmNGJiYTFjYTJlYjcyOGU2ZWJjZWY4ZjZlMGFmZCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMWYzMTQ3YTgzMDhiZjYyM2ZkYjc0YTk1MzZkMTU2YWY0ZGJmMDJlNjVkYWUzZDdhNDllYTE4MGI5YzZlMWU4MyJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_d0e2a124d75447e686ad9a313366b5f8",
+      "statement": "Every response is emitted through writeResponse, which sets Content-Type application/json, X-Date in RFC-1123 GMT, and — only when a client key was resolved — an X-Secure-Hash header; signResponse builds its string-to-sign from the request signature, HTTP status code, response date, response content type, and response body SHA-256 and HMACs it with the same client key.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServerHandler.java#L256-L280",
+          "version": "repo-lines-v1:sha256:2e5aa4310a452d688323bb08d08be3d881f8e32154e16d1f0b02b545a4bbbfdf:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlOTRiY2VlZTY0NWUzZWU3YzFiMmQ4M2MwNWY0NmZhN2I4ZTE4OWRhYmJmMDE4NzJjNjRmYTA2NDM5OGZlMDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjYwMWU5NmNkMjQ0NWU3NjRjOTg3YmVjOGQ2MDM1OTZjMTNlNjY1YTMzMDU1MTA2MzFhMWFkZjI4OWU2OTJkZjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMxYmFhMzcxMDVkZjExNGIwMTU2ZjI3MWY0ZDQ0MzAxOTNkMGUzZTQ5YzEyZTM0ODYwYzZkZTFhYTRjYTE0YzEifQ"
+        },
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServerHandler.java#L312-L319",
+          "version": "repo-lines-v1:sha256:08c558761d22baf950b6fe388626713037466f9a9a9b2c0e4052d7a09560d16f:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWY2NDRhZGYzYjNiM2E0ZGJhNzQ0YjAxOTA1YmJmZDZkMWE3ZjM5YTVhNzZkNGE2YzBhYWJjYTExY2U2MjI1ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWM4YWY4ZWQ4NmEyNWRkNTg5YmU4ZTAyYjlhNTkyZTlhODYwNzQxNGU0N2FjNmRlYzkwMDQzZTFlYWI4YTRiNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_b22d35bb68064f948db498b9adc535e0",
+      "statement": "The response signature is cryptographically bound to the originating request: line one of the response string-to-sign is the recomputed request signature produced by checkSignature, so a response can only be verified with knowledge of both the shared client secret and that request's signature.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServerHandler.java#L312-L319",
+          "version": "repo-lines-v1:sha256:08c558761d22baf950b6fe388626713037466f9a9a9b2c0e4052d7a09560d16f:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWY2NDRhZGYzYjNiM2E0ZGJhNzQ0YjAxOTA1YmJmZDZkMWE3ZjM5YTVhNzZkNGE2YzBhYWJjYTExY2U2MjI1ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWM4YWY4ZWQ4NmEyNWRkNTg5YmU4ZTAyYjlhNTkyZTlhODYwNzQxNGU0N2FjNmRlYzkwMDQzZTFlYWI4YTRiNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjEsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNDEyY2EzNDVjY2Y3NWJmOWMwODA2YmNlNjk1YmU4ZGU4MDhiNzk5ODQyNTFhN2E1NGQyMDJjZjYxMDFkZDQ1MSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_eab3c66b331f44038399151547ec8bc8",
+      "statement": "The request date header (X-Date or Date fallback) is included in the request string-to-sign but is not parsed or checked for freshness — the implementation treats it as an opaque value and provides no replay-window protection; parseRFC1123Date exists but is unused in the auth path.",
+      "evidence": [
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServerHandler.java#L303-L310",
+          "version": "repo-lines-v1:sha256:0ac484076cb54989f0eb6940f36f27792b68a49cd92096a65e41af3d9bc82f0a:eyJzZWxlY3RlZExpbmVDb3VudCI6OCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiY2ZlNWIwMWY2NzgwM2NlMTdhZmMwMDc0OGMwZjUyMmJlMjFlMjIxYjBlYmY0NTk3ZTU4OWYzNTFjOGM4ZWM5NSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMjI0ZjhhYWY2Mzc4OTg2ZWY5OWEyODExOTg0M2U0YzNkMjZlYWRmMDM1ZDQ2OGRmNTk4Zjk1ODdkZmY0OTZlNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjBlYmI2ODk3MDRkMTkzOWNiNDFmMmZmN2I1ZDEwMmI1OTliOTY1MDE4MDFlMGFiMTMwMTZhZjZjYjllNmEzZCJ9"
+        },
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServerHandler.java#L57-L63",
+          "version": "repo-lines-v1:sha256:ff105cdbf1e9853a13e04e5302067bad47129f55f86834ed0f5c53d2dc1c6b6d:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODZjNzZmNzdiODkyZTY5OWI1NDE5MGE5MDIyYjE0ZGZhOTY0MzAyMTM2ZTBjYmIyYTZiMDI1MTRjNjhjZGFlNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDg5M2Y0MGUzNzgxZWI4OTZjODJkMDQ2YTA4MDY3YTExZTM1Y2RmMmYxZGZhZjI2ZmVhOTBiOGRiNjY3NjQxMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMGQ4YmRlOGU4YWI2YTMwMjdjMDJjMjI3YzA5NTg0ZmM2MzZjOTFiMTU3YWRlNjg3OWY1OWNmMTlhM2Q5MmRjYyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTcwM2YzYmQyYTE3MTEyMWExNzFiY2UxMzVhMjcwNmY2MjgxMzMwZjNlOGI2NDNmNjQyYTZjNjU5YjZkZWJlYSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_5b1717a3ce944cc69bfcd05d80bd030b",
+      "statement": "There is no JUnit coverage for the signing path: the Maven build sets skipTests true and the src/test/java sources are standalone main() utilities, so the string-to-sign layout in signRequest and signResponse is the only specification of the wire format.",
+      "evidence": [
+        {
+          "resource": "repo://pom.xml#L15-L15",
+          "version": "repo-lines-v1:sha256:054cae4f4af66296ff9236c3b8408162bfb52f7df7d4f90c0ef7e4c866f042e0:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDU0Y2FlNGY0YWY2NjI5NmZmOTIzNmMzYjg0MDgxNjJiZmI1MmY3ZGY3ZDRmOTBjMGVmN2U0Yzg2NmYwNDJlMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMDU0Y2FlNGY0YWY2NjI5NmZmOTIzNmMzYjg0MDgxNjJiZmI1MmY3ZGY3ZDRmOTBjMGVmN2U0Yzg2NmYwNDJlMCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzQwNjJiMTE5ZTJiMGRhNzYyNjVhZDFmOTQyOGRjNzRmZWU0YWEzZWExYjdkMmYzZDM2MDcxOGMzMTFiZmJiZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOGVmN2E3MGU1MDc0ZGE5YzA1MTQwMWY3NmFhZTY3NDQ0Y2YxZDI3NDlmNjA2Y2E4MzM1YTAxOTBlOTZkODFkYiJ9"
+        },
+        {
+          "resource": "repo://src/main/java/com/onepay/onesm/http/HttpServerHandler.java#L303-L319",
+          "version": "repo-lines-v1:sha256:3e24b23f4aa3b736158d465bd19df4217bd87fe0fab666fc6b7d01bf25db101a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmZTViMDFmNjc4MDNjZTE3YWZjMDA3NDhjMGY1MjJiZTIxZTIyMWIwZWJmNDU5N2U1ODlmMzUxYzhjOGVjOTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIyNGY4YWFmNjM3ODk4NmVmOTlhMjgxMTk4NDNlNGMzZDI2ZWFkZjAzNWQ0NjhkZjU5OGY5NTg3ZGZmNDk2ZTQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://src/test/java/TestCrypto.java#L10-L27",
+          "version": "repo-lines-v1:sha256:f057282da5154c6ddaf14b6971f1038395b61119b02f0eeed5a275d1d09d0f6e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVkOGIzMjg5MzVhM2JlZTczYmFjNTE1ZjRmZGRhNWUwMTRhNmZhY2EyZjFlMjFhNzNhZmY3MGNlZWFkYjJmZTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcyYzQ5YzlhNzA0NDA5MGZkZGUxZGY5NzNhOTg2YmEwMzAwMjU0NzE3YzM3ZDNhYTA1NDkxMzA3NmFmOGZhMDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.5.2",
+    "at": "2026-09-24T11:53:15.318Z"
+  }
+}
