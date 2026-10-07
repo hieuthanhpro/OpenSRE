@@ -3,6 +3,71 @@
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import type { Components } from 'react-markdown';
+import { MermaidBlock } from '@/components/openwiki/MermaidBlock';
+
+const MERMAID_START = /^\s*(sequenceDiagram|flowchart(\s+[A-Za-z]+)?|graph(\s+[A-Za-z]+)?|stateDiagram(-v2)?|classDiagram|erDiagram|gantt|pie|gitGraph)\s*$/m;
+
+function isMermaidCode(code: string): boolean {
+  if (!code) return false;
+  return MERMAID_START.test(code.trim());
+}
+
+/**
+ * Preprocess markdown content to auto-fence raw Mermaid diagram blocks if the LLM
+ * emitted them without triple-backtick markdown fencing.
+ */
+function preprocessMermaidInMarkdown(text: string): string {
+  if (!text) return '';
+  const lines = text.split('\n');
+  const result: string[] = [];
+  let inFencedBlock = false;
+  let inAutoMermaid = false;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const trimmed = line.trim();
+
+    if (trimmed.startsWith('```')) {
+      if (inAutoMermaid) {
+        result.push('```');
+        inAutoMermaid = false;
+      }
+      inFencedBlock = !inFencedBlock;
+      result.push(line);
+      continue;
+    }
+
+    if (!inFencedBlock && !inAutoMermaid && MERMAID_START.test(trimmed)) {
+      result.push('```mermaid');
+      result.push(line);
+      inAutoMermaid = true;
+      continue;
+    }
+
+    if (inAutoMermaid) {
+      if (
+        trimmed.startsWith('#') ||
+        trimmed.startsWith('> ') ||
+        trimmed.startsWith('- ') ||
+        trimmed.startsWith('* ') ||
+        trimmed.startsWith('1. ')
+      ) {
+        result.push('```');
+        inAutoMermaid = false;
+        result.push(line);
+        continue;
+      }
+    }
+
+    result.push(line);
+  }
+
+  if (inAutoMermaid) {
+    result.push('```');
+  }
+
+  return result.join('\n');
+}
 
 const components: Components = {
   h1: ({ children }) => (
@@ -28,22 +93,38 @@ const components: Components = {
     <strong className="font-semibold text-stone-900 dark:text-white">{children}</strong>
   ),
   em: ({ children }) => <em className="italic text-stone-600 dark:text-stone-400">{children}</em>,
-  code: ({ children, className }) => {
-    const isBlock = className?.includes('language-');
-    if (isBlock) {
+  code: ({ children, className, ...props }: any) => {
+    const match = /language-(\w+)/.exec(className || '');
+    const lang = match ? match[1].toLowerCase() : '';
+    const codeString = String(children).replace(/\n$/, '');
+
+    // Render Mermaid diagrams directly using interactive MermaidBlock
+    if (lang === 'mermaid' || isMermaidCode(codeString)) {
       return (
-        <code className="block bg-stone-100 dark:bg-stone-700 rounded p-3 text-xs font-mono text-stone-800 dark:text-stone-200 overflow-x-auto mb-2">
-          {children}
-        </code>
+        <div className="my-3 not-prose w-full">
+          <MermaidBlock code={codeString} />
+        </div>
       );
     }
+
+    const isBlock = Boolean(className?.includes('language-') || String(children).includes('\n'));
+    if (isBlock) {
+      return (
+        <div className="my-2 rounded-lg bg-stone-100 dark:bg-stone-800 p-3 overflow-x-auto border border-stone-200 dark:border-stone-700">
+          <code className="text-xs font-mono text-stone-800 dark:text-stone-200 whitespace-pre">
+            {children}
+          </code>
+        </div>
+      );
+    }
+
     return (
-      <code className="bg-stone-100 dark:bg-stone-700 rounded px-1 py-0.5 text-xs font-mono text-stone-800 dark:text-stone-200">
+      <code className="bg-stone-100 dark:bg-stone-700 rounded px-1.5 py-0.5 text-xs font-mono text-stone-800 dark:text-stone-200">
         {children}
       </code>
     );
   },
-  pre: ({ children }) => <pre className="mb-2">{children}</pre>,
+  pre: ({ children }: any) => <>{children}</>,
   blockquote: ({ children }) => (
     <blockquote className="border-l-2 border-stone-300 dark:border-stone-600 pl-3 text-sm text-stone-600 dark:text-stone-400 italic mb-2">
       {children}
@@ -68,9 +149,10 @@ const components: Components = {
 };
 
 export function MarkdownContent({ content }: { content: string }) {
+  const processedContent = preprocessMermaidInMarkdown(content);
   return (
     <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
-      {content}
+      {processedContent}
     </ReactMarkdown>
   );
 }

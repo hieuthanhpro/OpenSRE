@@ -22,12 +22,12 @@ sequenceDiagram
     participant T as TVSP Vault
     C->>W: POST {prefix}/invoices (JSON or Form) - headers X-OP-* or vpc_SecureHash
     W->>W: Util.logRequest, metricsMiddleware, Validation.validateRequest (validation.yaml)
-    W->>W: Instrument filter vs invoice accept_instruments (type;swift_code;brand;currency)
+    W->>W: Instrument filter vs invoice accept_instruments (type#59;swift_code#59;brand#59;currency)
     W->>W: Bank profile via config.properties card-format.bank.<id>, auth-site.bank.<id>
     W->>M: POST /msp/api/v1/invoices
     M->>M: Invoices.create / Invoices.vpcCreate
     M->>M: checkOWSAuthorization / checkVpcAuthorization / checkHttpSignature
-    M->>M: type map "ewallet"->"ESP", "eshop"->"ESHOP"; isValidInstallment
+    M->>M: type map "ewallet"->"ESP", "eshop"->"ESHOP", isValidInstallment
     M->>T: validate token if tokenId present (state must be APPROVED)
     T-->>M: token status
     M->>M: InvoiceDB.createInvoice / DB.createInvoice -> state NOT_PAID
@@ -81,7 +81,7 @@ sequenceDiagram
     end
     P->>P: payment_update via PKG_PAYMENT.payment_update
     P-->>M: approved / authorization_required / failed + links.approval
-    M->>M: update invoice PAID / UNPAID; notifications PAYMENT_APPROVED / PAYMENT_FAILED
+    M->>M: update invoice PAID / UNPAID, notifications PAYMENT_APPROVED / PAYMENT_FAILED
     M-->>W: payment result
     W-->>C: response
 ```
@@ -107,7 +107,7 @@ sequenceDiagram
     T->>O: encryptAES / encryptHMAC / decrypt for token data
     O-->>T: Base64url crypto result
     T-->>M: transaction processed
-    M->>M: update payment + invoice state; token sequence number bump (anti-replay)
+    M->>M: update payment + invoice state, token sequence number bump (anti-replay)
     M-->>W: payment result
     W-->>C: response
 ```
@@ -139,10 +139,10 @@ sequenceDiagram
     else s_card_type = Napas
         W->>M: PUT /merchants/{m}/invoices/{i}/applepay-napas/payments/{paymentId}
     end
-    W->>ONE: OneSMHttpClient.encryptToBase64String (PAN -> HASH; handler onecredit.hmac)
+    W->>ONE: OneSMHttpClient.encryptToBase64String (PAN -> HASH, handler onecredit.hmac)
     ONE-->>W: encrypted HASH
     W->>M: instrument type applepay / applepay_napas + dw_data
-    M->>S: ScspApplePayKeyStore - GET /key/msp/merchants/{merchantId}/applepay/{publicKeyHashHex} (HTTP Basic; Ristretto cache TTL 3600s in front)
+    M->>S: ScspApplePayKeyStore - GET /key/msp/merchants/{merchantId}/applepay/{publicKeyHashHex} (HTTP Basic, Ristretto cache TTL 3600s in front)
     S-->>M: {value: {certificate, private_key}, version} / 404
     M->>M: CachingApplePayKeyStore wrap - resolve ApplePayKey, verify keyMatchesCert
     M->>OC: Onecomm payment path
@@ -167,10 +167,11 @@ sequenceDiagram
     participant T as TVSP
     participant OC as psp-connector-onecomm
     participant OCA as psp-connector-onecomm-apple
-    C->>W: payment created -> AUTHORIZATION_REQUIRED + links.approval (aut;D;<merchantId>;<merchTxnRef>)
+    participant G as Onecomm gateway
+    C->>W: payment created -> AUTHORIZATION_REQUIRED + links.approval (aut#59;D#59;<merchantId>#59;<merchTxnRef>)
     W-->>C: redirect to 3DS page / NAPAS OTP (napas_template.html)
     C->>W: POST/GET {prefix}/authorizations/:authorization_id (vpc_3DSstatus, vpc_TxnResponseCode, vpc_Otp)
-    W->>W: AuthorizationService.update - guard on final states approved/failed/canceled/expired; check expire_time
+    W->>W: AuthorizationService.update - guard on final states approved/failed/canceled/expired, check expire_time
     alt token instrument
         W->>T: PATCH authorization result to TSP vault
         T->>T: token sequence update
@@ -243,7 +244,7 @@ sequenceDiagram
     M-->>W: QR image/data
     W-->>C: QR response
     C->>C: customer scans and pays at bank app
-    M->>M: process payment via connector (NapasQR / MoMoQR mentioned; class wiring not fully documented)
+    M->>M: process payment via connector (NapasQR / MoMoQR mentioned, class wiring not fully documented)
     M->>M: update invoice state from payment result
     opt VietQR cancel
         C->>W: PATCH /invoices/:invoice_id/payments_vietqr/:payment_id
@@ -269,7 +270,7 @@ sequenceDiagram
     participant G as Gateway
     C->>W: refund request
     W->>M: Refunds.create / Refunds.vpcCreate (paymentId + amount)
-    M->>M: payment APPROVED/PAID; amount <= paid - refunded
+    M->>M: payment APPROVED/PAID, amount <= paid - refunded
     M->>M: RefundDTO state CREATED -> DB.createRefund
     M->>P: RSPConnector.createRefund / createRefund2 / BillRspConnector.createRefund
     P->>P: RefundRule.isManual(bankId, paymentTime, amount)

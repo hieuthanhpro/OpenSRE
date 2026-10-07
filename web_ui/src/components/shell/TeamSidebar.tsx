@@ -51,7 +51,7 @@ export function TeamSidebar({ collapsed, onToggle }: Props) {
 
   return (
     <aside
-      className="relative sticky top-[57px] h-[calc(100dvh-57px)] shrink-0 border-r border-slate-200/60 bg-white/40 px-3 py-6 pb-28 backdrop-blur transition-[width] duration-300 ease-out"
+      className="sticky top-[57px] z-30 h-[calc(100dvh-57px)] shrink-0 border-r border-slate-200/60 bg-white/40 px-3 py-6 pb-28 backdrop-blur transition-[width] duration-300 ease-out"
       style={{ width }}
     >
       <div className="mb-6 flex items-center justify-between px-3">
@@ -86,6 +86,16 @@ export function TeamSidebar({ collapsed, onToggle }: Props) {
               key={item.name}
               href={item.href}
               title={collapsed ? item.name : undefined}
+              onClick={(e) => {
+                if (e.button !== 0 || e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
+                if (pathname === item.href) return;
+                const target = item.href;
+                setTimeout(() => {
+                  if (window.location.pathname !== target) {
+                    window.location.href = target;
+                  }
+                }, 200);
+              }}
               className={clsx(
                 'relative flex items-center gap-3 rounded-xl px-3 py-2 text-left transition-colors',
                 isActive

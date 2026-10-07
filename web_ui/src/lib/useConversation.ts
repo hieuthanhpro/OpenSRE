@@ -152,6 +152,9 @@ export function useConversation(runId: string | undefined) {
     let cancelled = false;
     const tick = () => load(() => cancelled);
     tick();
+    if (status !== 'running' && status !== 'idle') {
+      return () => { cancelled = true; };
+    }
     const intervalMs = status === 'running' ? 1500 : 4000;
     const timer = setInterval(tick, intervalMs);
     return () => { cancelled = true; clearInterval(timer); };

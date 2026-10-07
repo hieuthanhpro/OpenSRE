@@ -73,7 +73,7 @@ sequenceDiagram
     PG-->>UC: port.ErrVersionConflict
     UC-->>REST: port.ErrVersionConflict
     REST-->>Client: 409 Conflict
-    Note over Cache: No cache invalidation occurs on conflict; stale entry may remain until TTL expiry
+    Note over Cache: No cache invalidation occurs on conflict - stale entry may remain until TTL expiry
 ```
 
 Caption: A failed optimistic version check returns `409 Conflict` and never invalidates or refreshes the cache entry.

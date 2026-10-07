@@ -14,13 +14,13 @@ Companion: [`/openwiki/workflows/cross-service-flows.md`](/openwiki/workflows/cr
 
 ```mermaid
 flowchart TB
-    WSP -->|OneSMHttpClient.encryptToBase64String (PAN -> HASH)| ONESM[OneSM]
+    WSP -->|"OneSMHttpClient.encryptToBase64String (PAN -> HASH)"| ONESM[OneSM]
     MSP -->|encrypt instrument| ONESM
     TVSP[TVSP Vault] -->|encryptAES / encryptHMAC / decrypt| ONESM
-    ONESM -->|JCEKS /keystore.jceks| KS[(Keystore aliases<br/>http_client.clientId, one credit.hmac, tspvault.aes, tspvault.hmac)]
+    ONESM -->|JCEKS /keystore.jceks| KS[("Keystore aliases<br/>http_client.clientId, one credit.hmac, tspvault.aes, tspvault.hmac")]
     SCSP[SCSP] -->|EncryptionPort| VAULT[(Vault transit)]
-    SCSP -->|storage| PG[(Postgres scsp.tb_kv_store)]
-    MSP -.->|ScspApplePayKeyStore GET /key/msp/merchants/.../applepay/...| SCSP
+    SCSP -->|storage| PG[("Postgres scsp.tb_kv_store")]
+    MSP -.->|"ScspApplePayKeyStore GET /key/msp/merchants/.../applepay/..."| SCSP
     OC[psp-connector-onecomm] -->|HMACSHA256 vpc_SecureHash| G1[Onecomm gateway]
     KB[psp-connector-kbank] -->|AES-GCM + RSA signature| G2[KBank API]
 ```
