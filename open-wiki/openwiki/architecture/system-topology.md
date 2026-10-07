@@ -98,7 +98,7 @@ flowchart LR
     P -->|PKG_PAYMENT.*| D1[(Connector Oracle)]
     M -->|DB.createInvoice / createPayment| D2[(MSP Oracle)]
     M -.->|encrypt instrument| O[OneSM]
-    M -.->|ScspApplePayKeyStore GET /key/msp/merchants/.../applepay/{hash}| S[SCSP]
+    M -.->|"ScspApplePayKeyStore GET /key/msp/merchants/.../applepay/{hash}"| S[SCSP]
     M -.->|token ops| T[TVSP Vault]
     T -.->|encryptAES / encryptHMAC| O
     P -.->|checkFraud| F[FSP-Go]
@@ -120,7 +120,7 @@ sequenceDiagram
     WSP->>MSP: internal call with client credentials
     MSP->>PSP: OWS1 signature, headers required: X-OP-Date, X-OP-Expires, X-OP-Authorization
     PSP->>PSP: Recompute HMAC from access_key.<clientId>
-    PSP->>ONESM: (only KBank-style keys are local; OneSM used by WSP, MSP, TVSP)
+    PSP->>ONESM: (only KBank-style keys are local - OneSM used by WSP, MSP, TVSP)
     ONESM-->>PSP: X-Secure-Hash signed response
 ```
 

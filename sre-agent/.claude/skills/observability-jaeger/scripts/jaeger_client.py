@@ -40,6 +40,32 @@ def _normalize_jaeger_url(raw_url: str) -> str:
     return url
 
 
+def _load_dotenv_if_exists() -> None:
+    """Load .env file from working dir or ancestors if JAEGER_* env vars are missing."""
+    if os.environ.get("JAEGER_URL") or os.environ.get("JAEGER_BASE_URL"):
+        return
+    cur = os.path.abspath(os.getcwd())
+    while True:
+        env_path = os.path.join(cur, ".env")
+        if os.path.isfile(env_path):
+            try:
+                with open(env_path, "r", encoding="utf-8") as f:
+                    for line in f:
+                        line = line.strip()
+                        if line and not line.startswith("#") and "=" in line:
+                            k, v = line.split("=", 1)
+                            k, v = k.strip(), v.strip().strip('"').strip("'")
+                            if k.startswith("JAEGER_") and k not in os.environ:
+                                os.environ[k] = v
+            except Exception:
+                pass
+            break
+        parent = os.path.dirname(cur)
+        if parent == cur:
+            break
+        cur = parent
+
+
 def get_api_url() -> str:
     """Get Jaeger API URL from environment.
 
@@ -53,6 +79,8 @@ def get_api_url() -> str:
     global _RESOLVED_JAEGER_URL
     if _RESOLVED_JAEGER_URL:
         return _RESOLVED_JAEGER_URL
+
+    _load_dotenv_if_exists()
 
     # Proxy mode (production)
     base_url = os.environ.get("JAEGER_BASE_URL")

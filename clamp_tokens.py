@@ -130,19 +130,16 @@ class ClampTokensCallback(CustomLogger):
                 trim_tool_descriptions(tools, max_len=120)
                 print(f"✂️ [LITELLM] Trimmed tool descriptions for {len(tools)} tools", flush=True)
 
-            # 2.4 Inject Single-Execution, Fast Completion & Visible Output Rule
-            EFFICIENCY_RULE = (
-                "\n\n[SYSTEM EFFICIENCY & OUTPUT RULES]:"
-                "\n1. Conclude investigations within 1-2 focused queries. Do not run repetitive or guessing queries."
-                "\n2. CRITICAL FOR REASONING MODELS: The <think> block is strictly for brief internal scratchpad only. "
-                "You MUST output your complete final report (Verdict, Event Summary Table, Recommendations) OUTSIDE the <think> tag in regular markdown text. "
-                "Never put tables, headers, or final answers inside <think>."
+            # 2.4 Visible Output Rule for Reasoning Models (No early thinking cutoff; allow thorough reasoning)
+            OUTPUT_RULE = (
+                "\n\n[SYSTEM OUTPUT RULE]:"
+                "\nFor reasoning models: Ensure your final complete response (Verdict, Findings, Summary) is output outside the <think> tag in standard markdown so it is clearly rendered and visible to the user."
             )
             system = data.get("system")
             if isinstance(system, list):
-                system.append({"type": "text", "text": EFFICIENCY_RULE})
+                system.append({"type": "text", "text": OUTPUT_RULE})
             elif isinstance(system, str):
-                data["system"] = system + EFFICIENCY_RULE
+                data["system"] = system + OUTPUT_RULE
 
             # 2.45 Stop sequences to prevent model from hallucinating <system-reminder> training artifacts
             stop = data.get("stop")
@@ -225,8 +222,8 @@ class ClampTokensCallback(CustomLogger):
             max_model_len = 131072  # 128k context window for modern LLM models
             headroom = 1000
             
-            avail_tokens = max(2048, max_model_len - est_input_tokens - headroom)
-            target_max = min(4096, avail_tokens)
+            avail_tokens = max(4096, max_model_len - est_input_tokens - headroom)
+            target_max = min(8192, avail_tokens)
             
             data["max_tokens"] = target_max
             if "max_completion_tokens" in data:

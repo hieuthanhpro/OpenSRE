@@ -1,18 +1,23 @@
 ---
 name: observability-jaeger
 description: |
-  Jaeger distributed tracing analysis for microservices (https://jaeger.opvn.vn). Use this skill for:
-  - Investigating request latency, tracing errors across services, finding slow spans, or understanding service dependencies.
-  - Tra cứu distributed traces, kiểm tra trace request, trace flow qua Jaeger.
-  - Tìm kiếm và phân tích các request / endpoint chậm, độ trễ cao (slow traces, latency percentiles, bottleneck).
-  - Tra cứu danh sách microservice, endpoint / operation có trên hệ thống Jaeger.
-  - Phân tích lỗi theo trace ID, tìm span bị lỗi (tags error=true).
-  - Trực quan hóa luồng request từ Trace ID thành sơ đồ Node-based Topology Graph và Interactive Timeline (vẽ diagram, visualize trace, vẽ flow trace, sơ đồ luồng request).
-  - Các câu hỏi như: "tra cứu trace", "kiểm tra Jaeger", "xem trace service [tên]", "danh sách service trên jaeger", "tìm span chậm", "độ trễ service", "trace dịch vụ", "trace id [abc]", "vẽ diagram trace", "visualize trace".
+  Jaeger distributed tracing analysis for microservices. Use this skill ONLY for:
+  - Investigating request latency, tracing runtime errors across services, finding slow spans, or inspecting live service dependencies.
+  - Querying distributed traces, inspecting trace spans, analyzing error spans (tags error=true).
+  - Finding and analyzing slow requests and latency bottlenecks (slow traces, percentiles).
+  - Visualizing actual runtime request flows from specific Trace IDs into Node-based Topology Graphs or Sequence Diagrams.
+  - User queries explicitly requesting real traces: "trace ID [abc]", "lấy trace thật", "real trace flow", "check Jaeger", "inspect trace", "slow traces", "error traces".
+  - NOTE: For general architectural flows or design specifications (e.g. "draw payment flow", "draw refund flow"), do NOT use this skill; use `openwiki` instead.
 allowed-tools: Bash(*)
 ---
 
 # Jaeger Tracing Analysis
+
+## 🚨 CRITICAL ROUTING RULE — When to Use Jaeger Tracing vs. OpenWiki
+- **DO NOT AUTOMATICALLY FETCH TRACES:** When the user asks general architectural questions like *"draw payment flow"*, *"vẽ luồng thanh toán"*, *"draw refund flow WSP → MSP"*, *"draw sequence diagram"*, **YOU MUST USE `openwiki`**. Never automatically call Jaeger to pull runtime traces.
+- **ONLY USE JAEGER UPON EXPLICIT USER INSTRUCTION:**
+  - When the user explicitly asks for live traces: *"theo trace thật"*, *"get real trace"*, *"trace ID: ..."*, *"Jaeger trace"*, *"find latest error trace"*, *"draw actual trace flow"*.
+  - When the user provides a specific `Trace ID` to investigate runtime errors or live latency.
 
 ## 🚨 CRITICAL RULE — Connection Failures & Error Reporting
 **If any script returns a connection failure, network timeout, 404, or Connection Refused:**
@@ -21,7 +26,7 @@ allowed-tools: Bash(*)
 3. **Report the exact connection error message directly to the user.**
 
 ## Configuration
-- Jaeger Query API is configured at `https://jaeger.opvn.vn` (or `JAEGER_URL` in environment).
+- Jaeger Query API is configured via `JAEGER_URL` in `.env` (defaults to `http://127.0.0.1:16686` if present in `.env`).
 - Scripts use `python3 .claude/skills/observability-jaeger/scripts/...`.
 - No authentication required for internal Jaeger queries.
 

@@ -1,7 +1,8 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useConversation } from '@/lib/useConversation';
 import { useAgentStream } from '@/lib/useAgentStream';
 import { timelineToTurns, mergeTurns } from '@/lib/agentTimeline';
@@ -96,8 +97,10 @@ export default function AgentRunDetailPage() {
     } catch { /* ignore */ }
   };
 
+  const settledRef = useRef(false);
   useEffect(() => {
-    if (!stream.isStreaming && stream.timeline.length && stream.runStatus !== 'running') {
+    if (!stream.isStreaming && stream.timeline.length && stream.runStatus !== 'running' && !settledRef.current) {
+      settledRef.current = true;
       settle();
     }
   }, [stream.isStreaming, stream.runStatus, stream.timeline.length, settle]);
@@ -160,14 +163,22 @@ export default function AgentRunDetailPage() {
       }
     >
       <div className="py-8">
-        <button
-          type="button"
-          onClick={() => router.push('/team/agent-runs')}
+        <Link
+          href="/team/agent-runs"
+          onClick={(e) => {
+            if (e.button !== 0 || e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
+            const target = '/team/agent-runs';
+            setTimeout(() => {
+              if (window.location.pathname !== target) {
+                window.location.href = target;
+              }
+            }, 200);
+          }}
           className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700 mb-5 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to investigations
-        </button>
+        </Link>
 
         <header className="mb-6 min-w-0">
           <div className="flex flex-wrap items-start gap-3 mb-2">

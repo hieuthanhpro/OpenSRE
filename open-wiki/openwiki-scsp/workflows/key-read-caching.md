@@ -101,7 +101,7 @@ sequenceDiagram
         UC->>Cache: Get(ctx, path::key)
         Cache-->>UC: not found
         UC->>SF: Do(path::key, fn)
-        Note over SF: Only one goroutine per cacheKey runs fn; others wait
+        Note over SF: Only one goroutine per cacheKey runs fn, others wait
         SF->>PG: Find(ctx, path, key)
         PG-->>SF: KeyData with ciphertext
         SF->>Vault: Decrypt(ctx, s_value)
