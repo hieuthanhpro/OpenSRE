@@ -25,20 +25,24 @@ import {
   Move,
   GripHorizontal,
 } from 'lucide-react';
-import { DocMetadata, CategoryInfo, ServiceInfo } from './types';
+import { DocMetadata, CategoryInfo, ServiceInfo, DatabaseInstanceInfo } from './types';
 
 interface WikiTopologyGraphProps {
   services: ServiceInfo[];
+  dbInstances?: DatabaseInstanceInfo[];
   selectedServiceId: string;
   onSelectService: (serviceId: string) => void;
   onSelectDoc: (serviceId: string, docPath: string) => void;
+  onSelectDbInstance?: (id: string) => void;
 }
 
 export function WikiTopologyGraph({
   services,
+  dbInstances = [],
   selectedServiceId,
   onSelectService,
   onSelectDoc,
+  onSelectDbInstance,
 }: WikiTopologyGraphProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [zoom, setZoom] = useState<number>(0.9);
@@ -94,6 +98,14 @@ export function WikiTopologyGraph({
       pos['ext-banks'] = { x: 840, y: 100 };
       pos['ext-onecomm'] = { x: 80, y: 520 };
       pos['ext-db'] = { x: 840, y: 520 };
+
+      // Database instances
+      dbInstances.forEach((db, dbIdx) => {
+        pos[`db-${db.id}`] = {
+          x: 820 + (dbIdx % 2) * 170,
+          y: 440 + Math.floor(dbIdx / 2) * 90,
+        };
+      });
     } else if (currentService) {
       // Single Service deep dive
       const centerNodeX = 540;
@@ -358,6 +370,39 @@ export function WikiTopologyGraph({
                     );
                   });
                 })}
+
+                {/* Connecting lines from services to Database instances */}
+                {dbInstances.map((db) => {
+                  const dbPos = nodePositions[`db-${db.id}`];
+                  if (!dbPos) return null;
+
+                  return services.map((svc) => {
+                    const isLinked =
+                      db.id === 'prod_112'
+                        ? svc.id.includes('msp') || svc.id.includes('wsp') || svc.id.includes('tvsp')
+                        : db.id === 'prod_118'
+                        ? svc.id.includes('msp') || svc.id.includes('onesm')
+                        : false;
+
+                    if (!isLinked) return null;
+                    const svcPos = nodePositions[svc.id];
+                    if (!svcPos) return null;
+
+                    return (
+                      <line
+                        key={`edge-${svc.id}-db-${db.id}`}
+                        x1={svcPos.x + 130}
+                        y1={svcPos.y + 45}
+                        x2={dbPos.x + 75}
+                        y2={dbPos.y + 25}
+                        stroke="#10b981"
+                        strokeWidth="2"
+                        strokeDasharray="4,4"
+                        strokeOpacity="0.6"
+                      />
+                    );
+                  });
+                })}
               </>
             )}
 
@@ -507,6 +552,42 @@ export function WikiTopologyGraph({
                       <GripHorizontal className="w-3 h-3 text-slate-400" />
                       <Icon className="w-4 h-4" />
                       <span>{ext.label}</span>
+                    </div>
+                  );
+                })}
+
+                {/* Database Instance Nodes */}
+                {dbInstances.map((db) => {
+                  const nodeId = `db-${db.id}`;
+                  const pos = nodePositions[nodeId] || { x: 800, y: 440 };
+                  const isDragging = activeDraggingNodeId === nodeId;
+
+                  return (
+                    <div
+                      key={nodeId}
+                      onMouseDown={(e) => handleNodeMouseDown(e, nodeId)}
+                      onClick={() => {
+                        if (onSelectDbInstance) onSelectDbInstance(db.id);
+                      }}
+                      style={{
+                        transform: `translate(${pos.x}px, ${pos.y}px)`,
+                        cursor: isDragging ? 'grabbing' : 'grab',
+                      }}
+                      className={`node-draggable absolute p-3 rounded-xl border shadow-xs text-xs select-none bg-emerald-50/95 border-emerald-300 text-slate-800 hover:border-emerald-500 hover:shadow-md transition group min-w-[150px] ${
+                        isDragging ? 'ring-2 ring-emerald-600 scale-105 z-30' : 'z-10'
+                      }`}
+                    >
+                      <div className="flex items-center gap-1.5 mb-1">
+                        <GripHorizontal className="w-3 h-3 text-emerald-400" />
+                        <Database className="w-3.5 h-3.5 text-emerald-700" />
+                        <span className="font-bold text-emerald-950 font-mono">
+                          {db.rawName.toUpperCase()}
+                        </span>
+                      </div>
+                      <div className="text-[10px] text-slate-600 flex items-center justify-between gap-2">
+                        <span>{db.schemas.length > 0 ? `${db.schemas.length} schemas` : `${db.categories.length} mục`}</span>
+                        <span className="font-mono text-emerald-800 font-semibold">{db.totalDocs} docs</span>
+                      </div>
                     </div>
                   );
                 })}

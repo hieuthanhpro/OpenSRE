@@ -89,6 +89,20 @@ Optional chat bots:
    - **Scripts**: `.claude/skills/database-oracle-awr/scripts/parse_awr.py`.
    - **Rules**: Default to analyzing the newest `.html` file in `/app/awr/orcl/` if no AWR file path is provided in the user prompt.
 
+### OpenWiki Knowledge Base & Architecture Skills:
+3. **`openwiki`** (System Architecture, Microservices, DB Schemas & Flow Tracing):
+   - **Use Cases**: System architecture questions, cross-service interaction flows (e.g. WSP -> MSP -> PSP), finding APIs called, DB tables modified (`TB_*`), stored packages/procedures (`PKG_*`), and third-party partner connections (Apple Pay, NAPAS, Banks).
+   - **Scripts**:
+     - `query_flow.py --topic "TOPIC"`: End-to-end flow extraction (APIs + DB tables + Partners + Mermaid sequence diagram).
+     - `query_api.py --query "ENDPOINT"`: Discover API endpoints, methods, and service handlers.
+     - `query_db.py --table "TB_..." / --package "PKG_..." / --query "..."`: Search Oracle DB schemas, tables, and stored procedures across prod_112, prod_114, prod_118, prod_124.
+     - `generate_diagram.py --query "..." --type sequence|flowchart|state`: Generate Mermaid diagrams from documentation.
+     - `get_wiki_doc.py --service ... --path ...`: Read specific markdown documentation across services and databases.
+     - `list_services.py`: Inventory of microservices and databases.
+   - **Rules**: For questions like "Khi khách thanh toán X thì gọi API nào, lưu vào DB bảng gì, và gọi sang đối tác ra sao", always structure answers into 5 sections: 1. Overview, 2. APIs called, 3. Database tables & packages, 4. Partners & Gateways, 5. Mermaid sequence diagram. Never invoke live Jaeger tracing unless the user explicitly requests live runtime traces.
+   - **Mermaid Syntax Rules**: Always put each statement/arrow on its own line (never merge arrows or alt/else blocks onto the same line). Use alphanumeric participant IDs. Never put inline comments `%%` after message `:` colons. Use `<br/>` for line breaks inside notes.
+
 ## Contributing
 
 See `CONTRIBUTING.md` for guidelines. Please open an issue before starting major work.
+

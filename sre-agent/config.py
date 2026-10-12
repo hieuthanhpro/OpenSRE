@@ -83,10 +83,14 @@ class ModelConfig:
 
     Only the model name is expressible through the Claude Agent SDK.
     Sampling parameters (temperature, top_p) and response limits (max_tokens)
-    have no SDK equivalent and are deliberately absent.
+    are supported via environment variables.
     """
 
     name: str = "claude-sonnet-4-6"
+    temperature: Optional[float] = None
+    max_tokens: Optional[int] = None
+    top_p: Optional[float] = None
+
 
 
 @dataclass
@@ -183,7 +187,12 @@ def _parse_agents(raw_agents: dict) -> dict[str, AgentConfig]:
             prompt=PromptConfig(system=prompt_data.get("system", "")),
             tools=_coerce_tools(cfg.get("tools", {})),
             skills=cfg.get("skills", {}),
-            model=ModelConfig(name=model_data.get("name", "claude-sonnet-4-6")),
+            model=ModelConfig(
+                name=model_data.get("name", "claude-sonnet-4-6"),
+                temperature=model_data.get("temperature"),
+                max_tokens=model_data.get("max_tokens"),
+                top_p=model_data.get("top_p"),
+            ),
             max_turns=cfg.get("max_turns"),
             sub_agents=cfg.get("sub_agents", {}),
         )

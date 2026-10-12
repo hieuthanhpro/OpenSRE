@@ -113,6 +113,7 @@ function extractMermaids(content: string): Array<{ index: number; code: string; 
     else if (code.startsWith('graph') || code.startsWith('flowchart')) title = `Architecture Flow #${index}`;
     else if (code.startsWith('classDiagram')) title = `Class Diagram #${index}`;
     else if (code.startsWith('stateDiagram')) title = `State Diagram #${index}`;
+    else if (code.startsWith('erDiagram')) title = `ER Diagram #${index}`;
 
     mermaids.push({
       index,
@@ -146,12 +147,13 @@ function extractHeadings(content: string): Array<{ level: number; text: string; 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const service = searchParams.get('service');
-    const docPath = searchParams.get('path');
+    const service = searchParams.get('service') || '';
+    const docPath = searchParams.get('path') || '';
+    const layerParam = searchParams.get('layer'); // 'service' | 'database'
 
-    if (!service || !docPath) {
+    if (!docPath && !service) {
       return NextResponse.json(
-        { error: 'Cần cung cấp tham số "service" và "path"' },
+        { error: 'Cần cung cấp tham số "service" hoặc "path"' },
         { status: 400 }
       );
     }
@@ -162,9 +164,43 @@ export async function GET(request: Request) {
     }
 
     const wikiDir = resolveOpenWikiDir();
-    const fullFilePath = path.join(wikiDir, service, docPath);
 
-    if (!fs.existsSync(fullFilePath) || !fs.statSync(fullFilePath).isFile()) {
+    // Find candidate paths
+    const candidatePaths: string[] = [];
+
+    // Direct path relative to wikiDir
+    if (docPath.startsWith('service/') || docPath.startsWith('database/')) {
+      candidatePaths.push(path.join(wikiDir, docPath));
+    }
+
+    // Database candidates
+    if (layerParam === 'database' || service.startsWith('prod_')) {
+      candidatePaths.push(path.join(wikiDir, 'database', service, 'openwiki', docPath));
+      candidatePaths.push(path.join(wikiDir, 'database', service, docPath));
+    }
+
+    // Service candidates
+    if (layerParam === 'service' || !service.startsWith('prod_')) {
+      candidatePaths.push(path.join(wikiDir, 'service', service, docPath));
+      candidatePaths.push(path.join(wikiDir, service, docPath));
+    }
+
+    // Catch-all fallbacks
+    candidatePaths.push(path.join(wikiDir, 'database', service, 'openwiki', docPath));
+    candidatePaths.push(path.join(wikiDir, 'database', service, docPath));
+    candidatePaths.push(path.join(wikiDir, 'service', service, docPath));
+    candidatePaths.push(path.join(wikiDir, service, docPath));
+    candidatePaths.push(path.join(wikiDir, docPath));
+
+    let fullFilePath = '';
+    for (const cand of candidatePaths) {
+      if (fs.existsSync(cand) && fs.statSync(cand).isFile()) {
+        fullFilePath = cand;
+        break;
+      }
+    }
+
+    if (!fullFilePath) {
       return NextResponse.json(
         { error: `Tài liệu không tồn tại: ${service}/${docPath}` },
         { status: 404 }
@@ -180,14 +216,18 @@ export async function GET(request: Request) {
     const words = body.trim().split(/\s+/).length;
     const readingTimeMinutes = Math.max(1, Math.ceil(words / 200));
 
+    const isDb = fullFilePath.includes('/database/') || service.startsWith('prod_');
+    const layer = isDb ? 'database' : 'service';
+
     return NextResponse.json({
       success: true,
       service,
       path: docPath,
+      layer,
       frontmatter,
       title: frontmatter.title || headings.find((h) => h.level === 1)?.text || path.basename(docPath, '.md'),
       description: frontmatter.description || '',
-      type: frontmatter.type || 'document',
+      type: frontmatter.type || (isDb ? 'database-schema' : 'document'),
       tags: frontmatter.tags || [],
       sources: frontmatter.sources || [],
       content: body,

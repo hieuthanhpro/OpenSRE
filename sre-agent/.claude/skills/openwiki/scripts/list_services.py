@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-"""List all documented services and their structure in OpenWiki.
+"""List all documented services and databases in OpenWiki.
 
 Usage:
-    python list_services.py [--json]
+    python list_services.py [--type microservice|database] [--json]
 
 Examples:
     python list_services.py
+    python list_services.py --type microservice
+    python list_services.py --type database
     python list_services.py --json
 """
 
@@ -20,7 +22,8 @@ from openwiki_common import find_wiki_root, get_service_directories, parse_front
 
 
 def main():
-    parser = argparse.ArgumentParser(description="List services documented in OpenWiki")
+    parser = argparse.ArgumentParser(description="List services and databases documented in OpenWiki")
+    parser.add_argument("--type", choices=["microservice", "database"], help="Filter by type")
     parser.add_argument("--json", action="store_true", help="Output as JSON")
     args = parser.parse_args()
 
@@ -31,22 +34,36 @@ def main():
         sys.exit(1)
 
     services_data = []
-    service_dirs = get_service_directories(wiki_root)
+    service_items = get_service_directories(wiki_root)
 
-    for svc_dir in service_dirs:
-        svc_name = svc_dir.name
-        docs = list(svc_dir.rglob("*.md"))
+    for item in service_items:
+        svc_path = item["path"]
+        svc_id = item["id"]
+        svc_name = item["name"]
+        svc_type = item["type"]
+
+        if args.type and svc_type != args.type:
+            continue
+
+        docs = list(svc_path.rglob("*.md"))
         categories = set()
         for doc in docs:
-            rel = doc.relative_to(svc_dir)
-            if len(rel.parts) > 1:
-                categories.add(rel.parts[0])
+            try:
+                rel = doc.relative_to(svc_path)
+                if len(rel.parts) > 1:
+                    categories.add(rel.parts[0])
+            except Exception:
+                continue
 
-        # Try to read index.md or quickstart.md for overview
+        # Try to read index.md or quickstart.md or schema overview
         overview = ""
-        index_file = svc_dir / "index.md"
+        index_file = svc_path / "index.md"
         if not index_file.is_file():
-            index_file = svc_dir / "quickstart.md"
+            index_file = svc_path / "quickstart.md"
+        if not index_file.is_file():
+            candidates = list(svc_path.glob("*.md"))
+            if candidates:
+                index_file = candidates[0]
 
         if index_file.is_file():
             try:
@@ -62,8 +79,9 @@ def main():
                 pass
 
         services_data.append({
-            "service_id": svc_name,
-            "display_name": svc_name.replace("openwiki-", ""),
+            "service_id": svc_id,
+            "display_name": svc_name,
+            "type": svc_type,
             "document_count": len(docs),
             "categories": sorted(list(categories)),
             "overview": overview,
@@ -73,15 +91,31 @@ def main():
         print(json.dumps(services_data, indent=2, ensure_ascii=False))
         return
 
-    print("\n📚 OpenWiki Documented Microservices:\n")
-    print(f"{'Service ID':<35} {'Docs':<6} {'Categories':<35}")
-    print("-" * 80)
-    for s in services_data:
-        cats = ", ".join(s["categories"][:4])
-        print(f"{s['service_id']:<35} {s['document_count']:<6} {cats:<35}")
-        if s["overview"]:
-            print(f"   ↳ {s['overview'][:100]}...")
-    print()
+    # Split microservices and databases
+    microservices = [s for s in services_data if s["type"] == "microservice"]
+    databases = [s for s in services_data if s["type"] == "database"]
+
+    if microservices:
+        print("\n🚀 OpenWiki Documented Microservices:\n")
+        print(f"{'Service ID':<35} {'Docs':<6} {'Categories':<35}")
+        print("-" * 80)
+        for s in microservices:
+            cats = ", ".join(s["categories"][:4])
+            print(f"{s['service_id']:<35} {s['document_count']:<6} {cats:<35}")
+            if s["overview"]:
+                print(f"   ↳ {s['overview'][:100]}...")
+        print()
+
+    if databases:
+        print("\n🗄️  OpenWiki Documented Databases:\n")
+        print(f"{'Database ID':<35} {'Docs':<6} {'Categories':<35}")
+        print("-" * 80)
+        for s in databases:
+            cats = ", ".join(s["categories"][:4])
+            print(f"{s['service_id']:<35} {s['document_count']:<6} {cats:<35}")
+            if s["overview"]:
+                print(f"   ↳ {s['overview'][:100]}...")
+        print()
 
 
 if __name__ == "__main__":

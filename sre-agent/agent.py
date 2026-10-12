@@ -1227,20 +1227,23 @@ class InteractiveAgentSession:
 
             # Apply model settings globally via environment variables
             # Note: These apply to all subagents (Claude SDK limitation)
-            if root_config.model.temperature is not None:
-                os.environ["LLM_TEMPERATURE"] = str(root_config.model.temperature)
-                print(f"🔧 [AGENT] Temperature: {root_config.model.temperature}")
+            model_temp = getattr(root_config.model, "temperature", None)
+            if model_temp is not None:
+                os.environ["LLM_TEMPERATURE"] = str(model_temp)
+                print(f"🔧 [AGENT] Temperature: {model_temp}")
 
             max_tok = 2048
-            if root_config.model.max_tokens is not None:
-                max_tok = min(root_config.model.max_tokens, 2048)
+            model_max_tokens = getattr(root_config.model, "max_tokens", None)
+            if model_max_tokens is not None:
+                max_tok = min(model_max_tokens, 2048)
             os.environ["LLM_MAX_TOKENS"] = str(max_tok)
             os.environ["CLAUDE_CODE_MAX_OUTPUT_TOKENS"] = "8192"
             print(f"🔧 [AGENT] Max tokens capped to: {max_tok}")
 
-            if root_config.model.top_p is not None:
-                os.environ["LLM_TOP_P"] = str(root_config.model.top_p)
-                print(f"🔧 [AGENT] Top-p: {root_config.model.top_p}")
+            model_top_p = getattr(root_config.model, "top_p", None)
+            if model_top_p is not None:
+                os.environ["LLM_TOP_P"] = str(model_top_p)
+                print(f"🔧 [AGENT] Top-p: {model_top_p}")
 
         if system_prompt:
             # Use direct system prompt to avoid 15.5k token claude_code preset overhead (required for local 16k models)

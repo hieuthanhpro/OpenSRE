@@ -1,45 +1,14 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
-
-interface DocMetadata {
-  id: string;
-  path: string;
-  relativePath: string;
-  title: string;
-  description: string;
-  type: string;
-  tags: string[];
-  sources: Array<{ id: string; resource: string }>;
-  hasMermaid: boolean;
-  mermaidCount: number;
-  headings: Array<{ level: number; text: string; slug: string }>;
-  verified?: Array<{ by: string; at: string }>;
-  generated?: { by: string; at: string };
-  sizeBytes: number;
-  lastModified: string;
-}
-
-interface CategoryInfo {
-  id: string;
-  name: string;
-  docCount: number;
-  docs: DocMetadata[];
-}
-
-interface ServiceInfo {
-  id: string;
-  name: string;
-  rawName: string;
-  description: string;
-  path: string;
-  categories: CategoryInfo[];
-  totalDocs: number;
-  totalMermaid: number;
-  hasQuickstart: boolean;
-  tags: string[];
-  dependencies: Array<{ name: string; type: 'internal' | 'external' | 'db' }>;
-}
+import {
+  DocMetadata,
+  CategoryInfo,
+  ServiceInfo,
+  DatabaseInstanceInfo,
+  DatabaseSchemaInfo,
+  WikiLayer,
+} from '@/components/openwiki/types';
 
 function resolveOpenWikiDir(): string {
   const possiblePaths = [
@@ -171,16 +140,25 @@ function formatServiceName(dirName: string): { name: string; cleanId: string } {
     clean = clean.replace(/^openwiki-/, '');
   }
 
-  const upper = clean.toUpperCase();
-  if (clean === 'msp') {
+  if (clean === 'openwiki') {
+    return { name: 'Toàn cảnh Hệ thống (System Overview)', cleanId: 'openwiki' };
+  } else if (clean === 'msp') {
     return { name: 'MSP (Merchant Service Provider)', cleanId: clean };
   } else if (clean === 'wsp') {
     return { name: 'WSP (Web Service Provider)', cleanId: clean };
+  } else if (clean === 'onesm') {
+    return { name: 'OneSM (Security Manager & Crypto)', cleanId: clean };
+  } else if (clean === 'tvsp') {
+    return { name: 'TVSP (Token Vault Service Provider)', cleanId: clean };
+  } else if (clean === 'scsp') {
+    return { name: 'SCSP (Smart Card Service Provider)', cleanId: clean };
   } else if (clean.includes('psp-connector')) {
-    return { name: 'PSP Connector (' + clean.replace('psp-connector-', '').toUpperCase() + ')', cleanId: clean };
+    return {
+      name: 'PSP Connector (' + clean.replace('psp-connector-', '').toUpperCase() + ')',
+      cleanId: clean,
+    };
   }
 
-  // Capitalize hyphenated words
   const title = clean
     .split('-')
     .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
@@ -188,234 +166,487 @@ function formatServiceName(dirName: string): { name: string; cleanId: string } {
   return { name: title, cleanId: clean };
 }
 
-export async function GET(request: Request) {
+function formatDatabaseInstance(dirName: string): { name: string; description: string } {
+  const map: Record<string, { name: string; description: string }> = {
+    prod_112: {
+      name: 'Prod 112 (Core Gateway & Portals DB)',
+      description:
+        'Oracle prod_112: Cổng thanh toán core, Payout, Invoicing, Fraud, Monitoring & Merchant Portals (~600 objects, 24 schemas)',
+    },
+    prod_114: {
+      name: 'Prod 114 (Reporting & Accounting DB)',
+      description:
+        'Oracle prod_114: PL/SQL packages cho Merchant Portal, Accounting, OneData, OneCrypto, OneFraud, OneCredit, OneCDR, OneFin',
+    },
+    prod_118: {
+      name: 'Prod 118 (Core PL/SQL Schemas & Settlement DB)',
+      description:
+        'Oracle prod_118: 9 schemas cốt lõi (DISPUTE, IPN, ONECDR, ONEDATA, ONEFIN, ONEFRAUD, ONEMON, ONEPARTNER, ONEREPORT) & phụ thuộc chéo',
+    },
+    prod_124: {
+      name: 'Prod 124 (Billing & Portal PL/SQL DB)',
+      description:
+        'Oracle prod_124: PL/SQL procedures & packages cho ONEBILL, ONEMON, ONEPORTAL, MERCHANTPORTAL, PAYCOLLECT',
+    },
+  };
+
+  return (
+    map[dirName] || {
+      name: dirName.replace(/_/g, ' ').toUpperCase(),
+      description: `Oracle Database Instance ${dirName}`,
+    }
+  );
+}
+
+const CATEGORY_NAMES_MAP: Record<string, string> = {
+  architecture: 'Kiến trúc (Architecture)',
+  concepts: 'Khái niệm & Mô hình (Concepts)',
+  integrations: 'Tích hợp kết nối (Integrations)',
+  operations: 'Vận hành & Cấu hình (Operations)',
+  workflows: 'Luồng nghiệp vụ (Workflows)',
+  testing: 'Kiểm thử (Testing)',
+  schemas: 'Cấu trúc Schemas (Schemas)',
+  functions: 'Hàm & Thủ tục (Functions & Procedures)',
+  reference: 'Tham chiếu & Mã khoá (Reference)',
+  database: 'Tài liệu Gói PL/SQL (PL/SQL Packages)',
+  overview: 'Tổng quan & Phương pháp luận (Overview)',
+};
+
+// Scan a single markdown file into DocMetadata
+function scanMarkdownDoc(
+  filePath: string,
+  relativePath: string,
+  id: string,
+  categoryType: string,
+  layer: WikiLayer,
+  databaseInstance?: string
+): DocMetadata | null {
   try {
-    const wikiDir = resolveOpenWikiDir();
-    if (!fs.existsSync(wikiDir)) {
-      return NextResponse.json(
-        { error: `Thư mục open-wiki không tồn tại tại: ${wikiDir}`, services: [], wikiDir },
-        { status: 404 }
-      );
+    const stat = fs.statSync(filePath);
+    const content = fs.readFileSync(filePath, 'utf-8');
+    const { frontmatter, body } = parseYamlFrontmatter(content);
+    const mermaidCount = countMermaidDiagrams(content);
+    const headings = extractHeadings(body);
+
+    let title = frontmatter.title;
+    if (!title) {
+      const h1 = headings.find((h) => h.level === 1);
+      title = h1 ? h1.text : path.basename(filePath, '.md').replace(/[-_]/g, ' ');
     }
 
-    const entries = fs.readdirSync(wikiDir, { withFileTypes: true });
-    // Filter directories, ignore hidden dirs (.git, .cache, etc.)
-    const serviceDirs = entries
+    return {
+      id,
+      path: relativePath,
+      relativePath,
+      title,
+      description: frontmatter.description || '',
+      type: frontmatter.type || categoryType,
+      tags: Array.isArray(frontmatter.tags) ? frontmatter.tags : [],
+      sources: Array.isArray(frontmatter.sources) ? frontmatter.sources : [],
+      hasMermaid: mermaidCount > 0,
+      mermaidCount,
+      layer,
+      databaseInstance,
+    };
+  } catch (err) {
+    console.error(`Failed reading doc ${filePath}:`, err);
+    return null;
+  }
+}
+
+// 1. Scan Service Layer
+function scanServices(serviceRoot: string): ServiceInfo[] {
+  if (!fs.existsSync(serviceRoot) || !fs.statSync(serviceRoot).isDirectory()) {
+    return [];
+  }
+
+  const entries = fs.readdirSync(serviceRoot, { withFileTypes: true });
+  const serviceDirs = entries
+    .filter(
+      (e) =>
+        e.isDirectory() &&
+        !e.name.startsWith('.') &&
+        e.name !== 'database' &&
+        e.name !== 'service'
+    )
+    .map((e) => e.name)
+    .sort();
+
+  const services: ServiceInfo[] = [];
+
+  for (const sDir of serviceDirs) {
+    const servicePath = path.join(serviceRoot, sDir);
+    const { name, cleanId } = formatServiceName(sDir);
+
+    let serviceDescription = '';
+    const quickstartPath = path.join(servicePath, 'quickstart.md');
+    const sysOverviewPath = path.join(servicePath, 'system-overview.md');
+    const indexPath = path.join(servicePath, 'index.md');
+
+    for (const testPath of [quickstartPath, sysOverviewPath, indexPath]) {
+      if (fs.existsSync(testPath)) {
+        try {
+          const content = fs.readFileSync(testPath, 'utf-8');
+          const { frontmatter } = parseYamlFrontmatter(content);
+          if (frontmatter.description) {
+            serviceDescription = frontmatter.description;
+            break;
+          }
+        } catch {}
+      }
+    }
+
+    if (!serviceDescription) {
+      serviceDescription = `Tài liệu kỹ thuật và kiến trúc cho dịch vụ ${name}`;
+    }
+
+    const categories: CategoryInfo[] = [];
+    let totalDocs = 0;
+    let totalMermaid = 0;
+    const allTags = new Set<string>();
+    const dependenciesSet = new Map<string, 'internal' | 'external' | 'db'>();
+
+    // Scan root-level markdown files (e.g. quickstart.md, system-overview.md, index.md)
+    const rootDocs: DocMetadata[] = [];
+    const rootFiles = fs.readdirSync(servicePath, { withFileTypes: true });
+    for (const rf of rootFiles) {
+      if (
+        rf.isFile() &&
+        rf.name.endsWith('.md') &&
+        !['INSTRUCTIONS.md', 'CLAUDE.md', 'AGENTS.md'].includes(rf.name)
+      ) {
+        const filePath = path.join(servicePath, rf.name);
+        const doc = scanMarkdownDoc(filePath, rf.name, rf.name.replace('.md', ''), 'overview', 'service');
+        if (doc) {
+          rootDocs.push(doc);
+          totalDocs++;
+          totalMermaid += doc.mermaidCount;
+          doc.tags.forEach((t) => allTags.add(t));
+        }
+      }
+    }
+
+    if (rootDocs.length > 0) {
+      categories.push({
+        id: 'overview',
+        name: CATEGORY_NAMES_MAP['overview'] || 'Tổng quan',
+        docCount: rootDocs.length,
+        docs: rootDocs,
+      });
+    }
+
+    // Scan subdirectories (architecture, concepts, workflows, etc.)
+    const subDirs = rootFiles
       .filter((e) => e.isDirectory() && !e.name.startsWith('.'))
       .map((e) => e.name)
       .sort();
 
-    const services: ServiceInfo[] = [];
-
-    for (const sDir of serviceDirs) {
-      const servicePath = path.join(wikiDir, sDir);
-      const { name, cleanId } = formatServiceName(sDir);
-
-      let serviceDescription = '';
-      let quickstartPath = path.join(servicePath, 'quickstart.md');
-      let hasQuickstart = false;
-
-      if (fs.existsSync(quickstartPath)) {
-        hasQuickstart = true;
-        try {
-          const qsContent = fs.readFileSync(quickstartPath, 'utf-8');
-          const { frontmatter } = parseYamlFrontmatter(qsContent);
-          if (frontmatter.description) {
-            serviceDescription = frontmatter.description;
-          }
-        } catch {}
+    for (const catName of subDirs) {
+      const catPath = path.join(servicePath, catName);
+      let catFiles: string[] = [];
+      try {
+        catFiles = fs.readdirSync(catPath).filter((f) => f.endsWith('.md')).sort();
+      } catch {
+        continue;
       }
 
-      if (!serviceDescription) {
-        // Try index.md
-        const indexPath = path.join(servicePath, 'index.md');
-        if (fs.existsSync(indexPath)) {
-          try {
-            const idxContent = fs.readFileSync(indexPath, 'utf-8');
-            const lines = idxContent.split('\n').filter((l) => l.trim() && !l.startsWith('#') && !l.startsWith('-'));
-            if (lines.length > 0) serviceDescription = lines[0].trim();
-          } catch {}
+      const docs: DocMetadata[] = [];
+
+      for (const file of catFiles) {
+        const filePath = path.join(catPath, file);
+        const relPath = `${catName}/${file}`;
+        const doc = scanMarkdownDoc(filePath, relPath, `${catName}/${file.replace('.md', '')}`, catName, 'service');
+
+        if (doc) {
+          docs.push(doc);
+          totalDocs++;
+          totalMermaid += doc.mermaidCount;
+          doc.tags.forEach((t) => allTags.add(t));
+
+          // Detect dependencies
+          if (catName === 'integrations') {
+            if (file.includes('napas')) dependenciesSet.set('NAPAS Gateway', 'external');
+            if (file.includes('bank')) dependenciesSet.set('Banking System', 'external');
+            if (file.includes('apple')) dependenciesSet.set('Apple Pay', 'external');
+            if (file.includes('onecomm')) dependenciesSet.set('OneComm Core', 'external');
+            if (file.includes('fraud')) dependenciesSet.set('Fraud Service Provider (FSP)', 'external');
+          }
+          if (doc.description.includes('Database') || doc.description.includes('Oracle')) {
+            dependenciesSet.set('Oracle Database', 'db');
+          }
         }
       }
 
-      if (!serviceDescription) {
-        serviceDescription = `Tài liệu kỹ thuật và kiến trúc cho dịch vụ ${name}`;
-      }
-
-      // Scan categories
-      const subEntries = fs.readdirSync(servicePath, { withFileTypes: true });
-      const categoryDirs = subEntries
-        .filter((e) => e.isDirectory() && !e.name.startsWith('.'))
-        .map((e) => e.name)
-        .sort();
-
-      const categories: CategoryInfo[] = [];
-      let totalDocs = 0;
-      let totalMermaid = 0;
-      const allTags = new Set<string>();
-      const dependenciesSet = new Map<string, 'internal' | 'external' | 'db'>();
-
-      // Check root level quickstart or standalone files
-      const rootDocs: DocMetadata[] = [];
-      if (hasQuickstart) {
-        try {
-          const content = fs.readFileSync(quickstartPath, 'utf-8');
-          const stat = fs.statSync(quickstartPath);
-          const { frontmatter, body } = parseYamlFrontmatter(content);
-          const mermaidCount = countMermaidDiagrams(content);
-          const headings = extractHeadings(body);
-
-          if (frontmatter.tags && Array.isArray(frontmatter.tags)) {
-            frontmatter.tags.forEach((t: string) => allTags.add(t));
-          }
-
-          rootDocs.push({
-            id: 'quickstart',
-            path: 'quickstart.md',
-            relativePath: `${sDir}/quickstart.md`,
-            title: frontmatter.title || 'Quickstart',
-            description: frontmatter.description || 'Tổng quan nhanh về dịch vụ và điều hướng tác vụ.',
-            type: frontmatter.type || 'guide',
-            tags: frontmatter.tags || [],
-            sources: frontmatter.sources || [],
-            hasMermaid: mermaidCount > 0,
-            mermaidCount,
-            headings,
-            verified: frontmatter.verified,
-            generated: frontmatter.generated,
-            sizeBytes: stat.size,
-            lastModified: stat.mtime.toISOString(),
-          });
-          totalDocs++;
-          totalMermaid += mermaidCount;
-        } catch {}
-      }
-
-      if (rootDocs.length > 0) {
+      if (docs.length > 0) {
         categories.push({
-          id: 'overview',
-          name: 'Tổng quan (Overview)',
-          docCount: rootDocs.length,
-          docs: rootDocs,
+          id: catName,
+          name: CATEGORY_NAMES_MAP[catName] || catName.charAt(0).toUpperCase() + catName.slice(1),
+          docCount: docs.length,
+          docs,
         });
       }
+    }
 
-      for (const catName of categoryDirs) {
-        const catPath = path.join(servicePath, catName);
-        const files = fs
-          .readdirSync(catPath)
-          .filter((f) => f.endsWith('.md'))
-          .sort();
+    // Default dependency heuristics
+    if (sDir.includes('msp')) {
+      dependenciesSet.set('Oracle prod_112', 'db');
+      dependenciesSet.set('TVSP Vault', 'internal');
+      dependenciesSet.set('OneSM Crypto', 'internal');
+    }
+    if (sDir.includes('wsp')) {
+      dependenciesSet.set('MSP Core Engine', 'internal');
+      dependenciesSet.set('OneSM Crypto', 'internal');
+    }
 
-        const docs: DocMetadata[] = [];
+    const dependencies: Array<{ name: string; type: 'internal' | 'external' | 'db' }> = [];
+    dependenciesSet.forEach((type, depName) => {
+      dependencies.push({ name: depName, type });
+    });
 
-        for (const file of files) {
-          const filePath = path.join(catPath, file);
-          try {
-            const stat = fs.statSync(filePath);
-            const content = fs.readFileSync(filePath, 'utf-8');
-            const { frontmatter, body } = parseYamlFrontmatter(content);
-            const mermaidCount = countMermaidDiagrams(content);
-            const headings = extractHeadings(body);
+    services.push({
+      id: sDir,
+      name,
+      rawName: sDir,
+      description: serviceDescription,
+      categories,
+      totalDocs,
+      totalMermaid,
+      tags: Array.from(allTags),
+      dependencies,
+      layer: 'service',
+    });
+  }
 
-            let title = frontmatter.title;
-            if (!title) {
-              const h1 = headings.find((h) => h.level === 1);
-              title = h1 ? h1.text : file.replace('.md', '').replace(/[-_]/g, ' ');
-            }
+  return services;
+}
 
-            if (frontmatter.tags && Array.isArray(frontmatter.tags)) {
-              frontmatter.tags.forEach((t: string) => allTags.add(t));
-            }
+// 2. Scan Database Layer
+function scanDatabases(dbRoot: string): DatabaseInstanceInfo[] {
+  if (!fs.existsSync(dbRoot) || !fs.statSync(dbRoot).isDirectory()) {
+    return [];
+  }
 
-            // Detect dependencies from integrations & concepts
-            if (catName === 'integrations') {
-              if (file.includes('napas')) dependenciesSet.set('NAPAS Gateway', 'external');
-              if (file.includes('bank')) dependenciesSet.set('Banking System', 'external');
-              if (file.includes('apple')) dependenciesSet.set('Apple Pay', 'external');
-              if (file.includes('onecomm')) dependenciesSet.set('OneComm Core', 'external');
-              if (file.includes('fraud')) dependenciesSet.set('Fraud Service Provider (FSP)', 'external');
-            }
-            if (content.includes('Database') || content.includes('Oracle') || content.includes('Postgres')) {
-              dependenciesSet.set('Database Storage', 'db');
-            }
-            if (content.includes('PSPConnector') || content.includes('PSP Connector')) {
-              dependenciesSet.set('PSP Connector', 'internal');
-            }
-            if (content.includes('MSP') && sDir !== 'openwiki-msp') {
-              dependenciesSet.set('MSP Core Engine', 'internal');
-            }
+  const entries = fs.readdirSync(dbRoot, { withFileTypes: true });
+  const dbDirs = entries
+    .filter((e) => e.isDirectory() && !e.name.startsWith('.'))
+    .map((e) => e.name)
+    .sort();
 
-            docs.push({
-              id: `${catName}/${file.replace('.md', '')}`,
-              path: `${catName}/${file}`,
-              relativePath: `${sDir}/${catName}/${file}`,
-              title,
-              description: frontmatter.description || '',
-              type: frontmatter.type || catName,
-              tags: frontmatter.tags || [],
-              sources: frontmatter.sources || [],
-              hasMermaid: mermaidCount > 0,
-              mermaidCount,
-              headings,
-              verified: frontmatter.verified,
-              generated: frontmatter.generated,
-              sizeBytes: stat.size,
-              lastModified: stat.mtime.toISOString(),
-            });
+  const instances: DatabaseInstanceInfo[] = [];
 
-            totalDocs++;
-            totalMermaid += mermaidCount;
-          } catch {}
+  for (const dbDir of dbDirs) {
+    const rawPath = path.join(dbRoot, dbDir);
+    // If there's an inner `openwiki` folder, that is the root of the wiki docs
+    const instWikiDir = fs.existsSync(path.join(rawPath, 'openwiki'))
+      ? path.join(rawPath, 'openwiki')
+      : rawPath;
+
+    const { name, description } = formatDatabaseInstance(dbDir);
+
+    const categories: CategoryInfo[] = [];
+    let totalDocs = 0;
+    let totalMermaid = 0;
+    const allTags = new Set<string>();
+
+    // 1. Root files in instWikiDir (e.g. index.md, cross-schema-dependencies.md, methodology.md)
+    const rootFiles = fs.readdirSync(instWikiDir, { withFileTypes: true });
+    const rootDocs: DocMetadata[] = [];
+
+    for (const rf of rootFiles) {
+      if (
+        rf.isFile() &&
+        rf.name.endsWith('.md') &&
+        !['INSTRUCTIONS.md', 'CLAUDE.md', 'AGENTS.md'].includes(rf.name)
+      ) {
+        const filePath = path.join(instWikiDir, rf.name);
+        const doc = scanMarkdownDoc(
+          filePath,
+          rf.name,
+          `${dbDir}/${rf.name.replace('.md', '')}`,
+          'overview',
+          'database',
+          dbDir
+        );
+        if (doc) {
+          rootDocs.push(doc);
+          totalDocs++;
+          totalMermaid += doc.mermaidCount;
+          doc.tags.forEach((t) => allTags.add(t));
         }
+      }
+    }
 
-        if (docs.length > 0) {
-          const catDisplayName =
-            {
-              architecture: 'Kiến trúc (Architecture)',
-              concepts: 'Khái niệm & Mô hình (Concepts)',
-              integrations: 'Tích hợp kết nối (Integrations)',
-              operations: 'Vận hành & Cấu hình (Operations)',
-              workflows: 'Luồng nghiệp vụ (Workflows)',
-              testing: 'Kiểm thử (Testing)',
-            }[catName] || catName.charAt(0).toUpperCase() + catName.slice(1);
+    if (rootDocs.length > 0) {
+      categories.push({
+        id: 'overview',
+        name: CATEGORY_NAMES_MAP['overview'] || 'Tổng quan',
+        docCount: rootDocs.length,
+        docs: rootDocs,
+      });
+    }
 
-          categories.push({
-            id: catName,
-            name: catDisplayName,
-            docCount: docs.length,
-            docs,
-          });
+    // 2. Subdirectories in instWikiDir (architecture, schemas, functions, database, workflows, reference)
+    const subDirs = rootFiles
+      .filter((e) => e.isDirectory() && !e.name.startsWith('.') && e.name !== '.claims')
+      .map((e) => e.name)
+      .sort();
+
+    for (const catName of subDirs) {
+      const catPath = path.join(instWikiDir, catName);
+      let catFiles: string[] = [];
+      try {
+        catFiles = fs.readdirSync(catPath).filter((f) => f.endsWith('.md')).sort();
+      } catch {
+        continue;
+      }
+
+      const docs: DocMetadata[] = [];
+
+      for (const file of catFiles) {
+        const filePath = path.join(catPath, file);
+        const relPath = `${catName}/${file}`;
+        const doc = scanMarkdownDoc(
+          filePath,
+          relPath,
+          `${dbDir}/${catName}/${file.replace('.md', '')}`,
+          catName,
+          'database',
+          dbDir
+        );
+        if (doc) {
+          docs.push(doc);
+          totalDocs++;
+          totalMermaid += doc.mermaidCount;
+          doc.tags.forEach((t) => allTags.add(t));
         }
       }
 
-      // Convert dependencies
-      const dependencies: Array<{ name: string; type: 'internal' | 'external' | 'db' }> = [];
-      dependenciesSet.forEach((type, depName) => {
-        dependencies.push({ name: depName, type });
-      });
-
-      services.push({
-        id: sDir,
-        name,
-        rawName: sDir,
-        description: serviceDescription,
-        path: servicePath,
-        categories,
-        totalDocs,
-        totalMermaid,
-        hasQuickstart,
-        tags: Array.from(allTags),
-        dependencies,
-      });
+      if (docs.length > 0) {
+        categories.push({
+          id: catName,
+          name: CATEGORY_NAMES_MAP[catName] || catName.charAt(0).toUpperCase() + catName.slice(1),
+          docCount: docs.length,
+          docs,
+        });
+      }
     }
+
+    // Build Schema Inventory for this DB instance
+    const schemas: DatabaseSchemaInfo[] = [];
+    const schemaMap: Record<string, { docs: DocMetadata[]; tags: Set<string> }> = {};
+
+    // Group docs by schema where identifiable
+    categories.forEach((cat) => {
+      cat.docs.forEach((doc) => {
+        // e.g. msp-schema.md, msp-functions.md -> MSP
+        const base = path.basename(doc.path, '.md').toLowerCase();
+        let schemaKey = '';
+        if (base.includes('msp')) schemaKey = 'MSP';
+        else if (base.includes('payment2')) schemaKey = 'PAYMENT2';
+        else if (base.includes('onecredit')) schemaKey = 'ONECREDIT';
+        else if (base.includes('onefraud')) schemaKey = 'ONEFRAUD';
+        else if (base.includes('onemon')) schemaKey = 'ONEMON';
+        else if (base.includes('onepayout')) schemaKey = 'ONEPAYOUT';
+        else if (base.includes('oneportal')) schemaKey = 'ONEPORTAL';
+        else if (base.includes('onedata')) schemaKey = 'ONEDATA';
+        else if (base.includes('onefin')) schemaKey = 'ONEFIN';
+        else if (base.includes('onecdr')) schemaKey = 'ONECDR';
+        else if (base.includes('dispute')) schemaKey = 'DISPUTE';
+        else if (base.includes('ipn')) schemaKey = 'IPN';
+        else if (base.includes('invoice')) schemaKey = 'ONEINVOICE';
+        else if (base.includes('onepartner')) schemaKey = 'ONEPARTNER';
+        else if (base.includes('merchantportal')) schemaKey = 'MERCHANTPORTAL';
+        else if (base.includes('onebill')) schemaKey = 'ONEBILL';
+        else if (base.includes('paycollect')) schemaKey = 'PAYCOLLECT';
+
+        if (schemaKey) {
+          if (!schemaMap[schemaKey]) {
+            schemaMap[schemaKey] = { docs: [], tags: new Set() };
+          }
+          schemaMap[schemaKey].docs.push(doc);
+          doc.tags.forEach((t) => schemaMap[schemaKey].tags.add(t));
+        }
+      });
+    });
+
+    Object.entries(schemaMap).forEach(([schemaName, data]) => {
+      let schemaMermaid = 0;
+      data.docs.forEach((d) => (schemaMermaid += d.mermaidCount));
+
+      schemas.push({
+        id: schemaName.toLowerCase(),
+        name: schemaName,
+        instanceId: dbDir,
+        categories: [
+          {
+            id: 'docs',
+            name: `Tài liệu schema ${schemaName}`,
+            docCount: data.docs.length,
+            docs: data.docs,
+          },
+        ],
+        totalDocs: data.docs.length,
+        totalMermaid: schemaMermaid,
+        tags: Array.from(data.tags),
+      });
+    });
+
+    instances.push({
+      id: dbDir,
+      name,
+      rawName: dbDir,
+      description,
+      path: instWikiDir,
+      schemas,
+      categories,
+      totalDocs,
+      totalMermaid,
+      tags: Array.from(allTags),
+    });
+  }
+
+  return instances;
+}
+
+export async function GET() {
+  try {
+    const wikiDir = resolveOpenWikiDir();
+    if (!fs.existsSync(wikiDir)) {
+      return NextResponse.json(
+        { error: `Thư mục open-wiki không tồn tại tại: ${wikiDir}`, services: [], dbInstances: [], wikiDir },
+        { status: 404 }
+      );
+    }
+
+    // Determine roots
+    const serviceRoot = fs.existsSync(path.join(wikiDir, 'service'))
+      ? path.join(wikiDir, 'service')
+      : wikiDir;
+    const databaseRoot = path.join(wikiDir, 'database');
+
+    const services = scanServices(serviceRoot);
+    const dbInstances = scanDatabases(databaseRoot);
 
     return NextResponse.json({
       success: true,
       wikiDir,
       totalServices: services.length,
+      totalDatabases: dbInstances.length,
       scannedAt: new Date().toISOString(),
+      // Backward compatible arrays
       services,
+      dbInstances,
+      // Layer-oriented format
+      layers: {
+        service: {
+          totalServices: services.length,
+          services,
+        },
+        database: {
+          totalInstances: dbInstances.length,
+          instances: dbInstances,
+        },
+      },
     });
   } catch (error: any) {
     console.error('Error scanning open-wiki directory:', error);

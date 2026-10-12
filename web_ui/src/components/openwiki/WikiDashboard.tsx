@@ -15,13 +15,17 @@ import {
   CheckCircle2,
   Database,
   Cpu,
+  Table,
+  Boxes,
 } from 'lucide-react';
-import { ServiceInfo, DocMetadata, OpenWikiTab } from './types';
+import { ServiceInfo, DatabaseInstanceInfo, DocMetadata, OpenWikiTab } from './types';
 import { WikiDocCard } from './WikiDocCard';
 
 interface WikiDashboardProps {
   services: ServiceInfo[];
+  dbInstances?: DatabaseInstanceInfo[];
   onSelectService: (serviceId: string) => void;
+  onSelectDbInstance?: (instanceId: string) => void;
   onSelectTab: (tab: OpenWikiTab) => void;
   onOpenDoc: (serviceId: string, docPath: string) => void;
   onSelectTag?: (tag: string) => void;
@@ -29,12 +33,14 @@ interface WikiDashboardProps {
 
 export function WikiDashboard({
   services,
+  dbInstances = [],
   onSelectService,
+  onSelectDbInstance,
   onSelectTab,
   onOpenDoc,
   onSelectTag,
 }: WikiDashboardProps) {
-  // Aggregate system-wide stats
+  // Aggregate system-wide stats across both service and database layers
   const totalStats = useMemo(() => {
     let docs = 0;
     let mermaids = 0;
@@ -46,18 +52,34 @@ export function WikiDashboard({
       s.categories.forEach((c) => catSet.add(c.id));
     });
 
+    let dbDocs = 0;
+    let dbMermaids = 0;
+    let totalSchemas = 0;
+
+    dbInstances.forEach((db) => {
+      dbDocs += db.totalDocs;
+      dbMermaids += db.totalMermaid;
+      totalSchemas += db.schemas.length;
+      db.categories.forEach((c) => catSet.add(c.id));
+    });
+
     return {
       serviceCount: services.length,
-      docCount: docs,
-      mermaidCount: mermaids,
+      databaseCount: dbInstances.length,
+      totalSchemas,
+      docCount: docs + dbDocs,
+      serviceDocs: docs,
+      databaseDocs: dbDocs,
+      mermaidCount: mermaids + dbMermaids,
       categoryCount: catSet.size,
     };
-  }, [services]);
+  }, [services, dbInstances]);
 
-  // Featured / Core Workflows (workflows, architecture, or docs with diagrams)
+  // Featured / Core Workflows (workflows, architecture, or docs with diagrams from both layers)
   const featuredDocs = useMemo(() => {
-    const list: Array<{ service: ServiceInfo; doc: DocMetadata }> = [];
+    const list: Array<{ sourceId: string; sourceName: string; doc: DocMetadata }> = [];
 
+    // Service docs
     services.forEach((s) => {
       s.categories.forEach((c) => {
         c.docs.forEach((d) => {
@@ -66,7 +88,24 @@ export function WikiDashboard({
             d.type.toLowerCase() === 'architecture' ||
             d.mermaidCount > 0
           ) {
-            list.push({ service: s, doc: d });
+            list.push({ sourceId: s.id, sourceName: s.name, doc: d });
+          }
+        });
+      });
+    });
+
+    // Database docs
+    dbInstances.forEach((db) => {
+      db.categories.forEach((c) => {
+        c.docs.forEach((d) => {
+          if (
+            d.type.toLowerCase() === 'workflow' ||
+            d.type.toLowerCase() === 'architecture' ||
+            d.path.includes('overview') ||
+            d.path.includes('dependencies') ||
+            d.mermaidCount > 0
+          ) {
+            list.push({ sourceId: db.id, sourceName: db.name, doc: d });
           }
         });
       });
@@ -76,96 +115,122 @@ export function WikiDashboard({
     return list
       .sort((a, b) => b.doc.mermaidCount - a.doc.mermaidCount)
       .slice(0, 6);
-  }, [services]);
+  }, [services, dbInstances]);
 
   // Top tags frequency
   const popularTags = useMemo(() => {
     const counts: Record<string, number> = {};
-    services.forEach((s) => {
-      s.categories.forEach((c) => {
-        c.docs.forEach((d) => {
-          d.tags?.forEach((t) => {
-            const clean = t.trim().toLowerCase();
-            if (clean) counts[clean] = (counts[clean] || 0) + 1;
-          });
-        });
+    const countTags = (d: DocMetadata) => {
+      d.tags?.forEach((t) => {
+        const clean = t.trim().toLowerCase();
+        if (clean) counts[clean] = (counts[clean] || 0) + 1;
       });
-    });
+    };
+
+    services.forEach((s) => s.categories.forEach((c) => c.docs.forEach(countTags)));
+    dbInstances.forEach((db) => db.categories.forEach((c) => c.docs.forEach(countTags)));
 
     return Object.entries(counts)
       .sort((a, b) => b[1] - a[1])
       .slice(0, 16);
-  }, [services]);
+  }, [services, dbInstances]);
 
   return (
     <div className="space-y-8 animate-fadeIn">
       {/* 1. Metric Overview Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-3.5 sm:gap-4">
         {/* Services Card */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/80 flex items-center gap-4 shadow-xs hover:border-slate-300 transition">
-          <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 shrink-0">
-            <Server className="w-6 h-6" />
+        <div
+          onClick={() => onSelectTab('explorer')}
+          className="p-4 rounded-2xl bg-white border border-slate-200/80 flex items-center gap-3.5 shadow-xs hover:border-slate-350 cursor-pointer transition"
+        >
+          <div className="w-11 h-11 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 shrink-0">
+            <Server className="w-5 h-5" />
           </div>
-          <div>
+          <div className="min-w-0">
             <div className="text-2xl font-bold tracking-tight text-slate-900">
               {totalStats.serviceCount}
             </div>
-            <div className="text-xs text-slate-500 font-medium mt-0.5">Dịch vụ tích hợp</div>
+            <div className="text-xs text-slate-500 font-medium truncate">Dịch vụ microservices</div>
           </div>
         </div>
 
-        {/* Docs Card */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/80 flex items-center gap-4 shadow-xs hover:border-slate-300 transition">
-          <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 shrink-0">
-            <FileText className="w-6 h-6" />
+        {/* Database Instances Card */}
+        <div
+          onClick={() => onSelectTab('database')}
+          className="p-4 rounded-2xl bg-white border border-slate-200/80 flex items-center gap-3.5 shadow-xs hover:border-emerald-300 cursor-pointer transition"
+        >
+          <div className="w-11 h-11 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 shrink-0">
+            <Database className="w-5 h-5" />
           </div>
-          <div>
+          <div className="min-w-0">
+            <div className="text-2xl font-bold tracking-tight text-slate-900">
+              {totalStats.databaseCount}
+            </div>
+            <div className="text-xs text-slate-500 font-medium truncate">Oracle DB instances</div>
+          </div>
+        </div>
+
+        {/* Technical Docs Card */}
+        <div className="p-4 rounded-2xl bg-white border border-slate-200/80 flex items-center gap-3.5 shadow-xs hover:border-slate-300 transition">
+          <div className="w-11 h-11 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shrink-0">
+            <FileText className="w-5 h-5" />
+          </div>
+          <div className="min-w-0">
             <div className="text-2xl font-bold tracking-tight text-slate-900">
               {totalStats.docCount}
             </div>
-            <div className="text-xs text-slate-500 font-medium mt-0.5">Tài liệu kỹ thuật</div>
+            <div className="text-xs text-slate-500 font-medium truncate">
+              Tài liệu kỹ thuật ({totalStats.serviceDocs} svc / {totalStats.databaseDocs} db)
+            </div>
           </div>
         </div>
 
         {/* Diagrams Card */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/80 flex items-center gap-4 shadow-xs hover:border-slate-300 transition">
-          <div className="w-12 h-12 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 shrink-0">
-            <Workflow className="w-6 h-6" />
+        <div className="p-4 rounded-2xl bg-white border border-slate-200/80 flex items-center gap-3.5 shadow-xs hover:border-slate-300 transition">
+          <div className="w-11 h-11 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 shrink-0">
+            <Workflow className="w-5 h-5" />
           </div>
-          <div>
+          <div className="min-w-0">
             <div className="text-2xl font-bold tracking-tight text-slate-900">
               {totalStats.mermaidCount}
             </div>
-            <div className="text-xs text-slate-500 font-medium mt-0.5">Sơ đồ Mermaid</div>
+            <div className="text-xs text-slate-500 font-medium truncate">Sơ đồ Mermaid</div>
           </div>
         </div>
 
-        {/* Categories Card */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-white border border-slate-200/80 flex items-center gap-4 shadow-xs hover:border-slate-300 transition">
-          <div className="w-12 h-12 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 shrink-0">
-            <Folder className="w-6 h-6" />
+        {/* Categories / Schemas Card */}
+        <div className="p-4 rounded-2xl bg-white border border-slate-200/80 flex items-center gap-3.5 shadow-xs hover:border-slate-300 transition col-span-2 lg:col-span-1">
+          <div className="w-11 h-11 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 shrink-0">
+            <Boxes className="w-5 h-5" />
           </div>
-          <div>
+          <div className="min-w-0">
             <div className="text-2xl font-bold tracking-tight text-slate-900">
-              {totalStats.categoryCount}
+              {totalStats.totalSchemas > 0 ? totalStats.totalSchemas : totalStats.categoryCount}
             </div>
-            <div className="text-xs text-slate-500 font-medium mt-0.5">Danh mục hệ thống</div>
+            <div className="text-xs text-slate-500 font-medium truncate">
+              {totalStats.totalSchemas > 0 ? 'Schemas & Packages' : 'Danh mục hệ thống'}
+            </div>
           </div>
         </div>
       </div>
 
-      {/* 2. Services Grid */}
+      {/* 2. Service Layer Section */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Server className="w-4 h-4 text-slate-700" />
+            <Server className="w-4 h-4 text-blue-600" />
             <h2 className="text-base font-bold text-slate-900 tracking-tight">
-              Danh sách dịch vụ ({services.length})
+              Tầng Dịch vụ (Service Layer — {services.length})
             </h2>
           </div>
-          <span className="text-xs text-slate-500">
-            Nhấn vào dịch vụ để khám phá toàn bộ tài liệu
-          </span>
+          <button
+            onClick={() => onSelectTab('explorer')}
+            className="text-xs text-blue-600 hover:text-blue-700 font-semibold flex items-center gap-1"
+          >
+            <span>Khám phá toàn bộ dịch vụ</span>
+            <ArrowRight className="w-3 h-3" />
+          </button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -181,23 +246,18 @@ export function WikiDashboard({
               <div>
                 {/* Header */}
                 <div className="flex items-start justify-between gap-3 mb-2">
-                  <div className="w-9 h-9 rounded-xl bg-slate-100 group-hover:bg-emerald-50 border border-slate-200 group-hover:border-emerald-200 flex items-center justify-center text-slate-600 group-hover:text-emerald-700 transition-colors shrink-0">
+                  <div className="w-9 h-9 rounded-xl bg-slate-100 group-hover:bg-blue-50 border border-slate-200 group-hover:border-blue-200 flex items-center justify-center text-slate-600 group-hover:text-blue-700 transition-colors shrink-0">
                     <Cpu className="w-4 h-4" />
                   </div>
                   <div className="flex items-center gap-1.5 flex-wrap justify-end">
                     <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
                       {svc.totalDocs} docs
                     </span>
-                    {svc.totalMermaid > 0 && (
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 border border-amber-200">
-                        ⚡ {svc.totalMermaid}
-                      </span>
-                    )}
                   </div>
                 </div>
 
                 {/* Service Name & Description */}
-                <h3 className="text-sm font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">
+                <h3 className="text-sm font-bold text-slate-900 group-hover:text-blue-700 transition-colors">
                   {svc.name}
                 </h3>
                 <p className="text-xs text-slate-500 mt-1 line-clamp-2 leading-relaxed">
@@ -221,7 +281,74 @@ export function WikiDashboard({
         </div>
       </div>
 
-      {/* 3. Split Section: Featured Workflows & Popular Tags */}
+      {/* 3. Database Layer Section (NEW) */}
+      {dbInstances.length > 0 && (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Database className="w-4 h-4 text-emerald-600" />
+              <h2 className="text-base font-bold text-slate-900 tracking-tight">
+                Tầng Cơ sở Dữ liệu (Database Layer — {dbInstances.length} Oracle Instances)
+              </h2>
+            </div>
+            <button
+              onClick={() => onSelectTab('database')}
+              className="text-xs text-emerald-700 hover:text-emerald-800 font-semibold flex items-center gap-1"
+            >
+              <span>Xem chi tiết DB & Schemas</span>
+              <ArrowRight className="w-3 h-3" />
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {dbInstances.map((db) => (
+              <div
+                key={db.id}
+                onClick={() => {
+                  if (onSelectDbInstance) onSelectDbInstance(db.id);
+                  onSelectTab('database');
+                }}
+                className="group p-5 rounded-2xl bg-white hover:bg-slate-50/70 border border-slate-200/90 hover:border-emerald-300 transition-all duration-200 cursor-pointer flex flex-col justify-between shadow-xs hover:shadow-md"
+              >
+                <div>
+                  <div className="flex items-start justify-between gap-3 mb-2">
+                    <div className="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-700 shrink-0">
+                      <Database className="w-4 h-4" />
+                    </div>
+                    <div className="flex items-center gap-1 flex-wrap justify-end">
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 font-semibold">
+                        {db.rawName.toUpperCase()}
+                      </span>
+                      <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
+                        {db.totalDocs} docs
+                      </span>
+                    </div>
+                  </div>
+
+                  <h3 className="text-sm font-bold text-slate-900 group-hover:text-emerald-700 transition-colors">
+                    {db.name.split('(')[0]}
+                  </h3>
+                  <p className="text-xs text-slate-500 mt-1 line-clamp-3 leading-relaxed">
+                    {db.description}
+                  </p>
+                </div>
+
+                <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+                  <div className="text-[11px] text-slate-500 font-medium">
+                    {db.schemas.length > 0 ? `${db.schemas.length} schemas` : `${db.categories.length} danh mục`}
+                  </div>
+                  <div className="flex items-center gap-1 text-xs text-emerald-700 font-semibold">
+                    <span>Xem DB</span>
+                    <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 4. Split Section: Featured Workflows & Popular Tags */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
         {/* Featured / Core Workflows (2 cols on lg) */}
         <div className="lg:col-span-2 space-y-4">
@@ -246,8 +373,8 @@ export function WikiDashboard({
               <WikiDocCard
                 key={idx}
                 doc={item.doc}
-                serviceName={item.service.name}
-                onClick={() => onOpenDoc(item.service.id, item.doc.path)}
+                serviceName={item.sourceName.split('(')[0]}
+                onClick={() => onOpenDoc(item.sourceId, item.doc.path)}
               />
             ))}
           </div>
@@ -269,7 +396,7 @@ export function WikiDashboard({
               </span>
             </div>
             <p className="text-xs text-slate-500 leading-relaxed">
-              Trực quan hoá tương tác và sơ đồ phụ thuộc đa dịch vụ với đồ hoạ động có thể zoom/pan.
+              Trực quan hoá tương tác và sơ đồ phụ thuộc giữa các Services và Database Instances (Prod 112, 114, 118, 124).
             </p>
             <div className="mt-3 flex items-center gap-1 text-xs text-emerald-700 font-semibold">
               <span>Mở đồ thị toàn cảnh</span>

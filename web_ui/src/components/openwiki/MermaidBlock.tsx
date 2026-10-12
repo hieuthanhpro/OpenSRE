@@ -40,6 +40,55 @@ export function MermaidBlock({ code, title }: MermaidBlockProps) {
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const dragStartRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 
+  // Auto-sanitize common LLM formatting flaws before sending to Mermaid
+  const sanitizeMermaidCode = (raw: string): string => {
+    if (!raw) return '';
+    let text = raw.trim();
+    // Strip markdown fences
+    text = text.replace(/^```(?:mermaid)?\s*\n?/i, '').replace(/\n?```\s*$/i, '');
+
+    const lines = text.split(/\r?\n/);
+    const out: string[] = [];
+
+    for (let line of lines) {
+      let l = line.trimEnd();
+      if (!l.trim()) {
+        out.push('');
+        continue;
+      }
+
+      // 1. Strip trailing comments on diagram lines (e.g. "P->>F: msg %% comment")
+      if (!l.trim().startsWith('%%')) {
+        l = l.replace(/\s+%%.*$/, '');
+      }
+
+      // 2. Fix unclosed <br> to <br/>
+      l = l.replace(/<br>(?!<\/br>)/gi, '<br/>');
+
+      // 3. Split alt/else/opt/loop/par/critical with statement on same line
+      // e.g. "alt Fraud        P-->>M: 400 FRAUD" -> "alt Fraud\n        P-->>M: 400 FRAUD"
+      const keywordSplit = l.match(/^(\s*(?:alt|else|opt|loop|par|critical|break)\b[^\n:]*?)\s{2,}([A-Za-z0-9_].*)$/);
+      if (keywordSplit) {
+        out.push(keywordSplit[1]);
+        l = '        ' + keywordSplit[2];
+      }
+
+      // 4. Split multiple sequence arrows merged on the same line
+      // e.g. "FR-->>MSP: fee applied    MSP->>FSM: encrypt data"
+      const arrowParts = l.trim().split(/\s{2,}(?=[A-Za-z0-9_]+\s*[-.]{1,2}(?:>>?|>)\s*[A-Za-z0-9_]+:)/);
+      if (arrowParts.length > 1) {
+        for (const p of arrowParts) {
+          out.push('    ' + p.trim());
+        }
+        continue;
+      }
+
+      out.push(l);
+    }
+
+    return out.join('\n');
+  };
+
   // Render Mermaid diagram
   useEffect(() => {
     let isMounted = true;
@@ -79,17 +128,38 @@ export function MermaidBlock({ code, title }: MermaidBlockProps) {
           state: {
             useMaxWidth: false,
           },
+          suppressErrorRendering: true,
           securityLevel: 'loose',
           fontFamily: 'Inter, system-ui, sans-serif',
         });
 
         const id = `mmd-${Math.random().toString(36).substring(2, 9)}`;
-        const cleanCode = code.trim();
-        const { svg } = await mermaid.render(id, cleanCode);
+        const cleanCode = sanitizeMermaidCode(code);
+
+        // Pre-validate with parse() so invalid syntax gives a readable parse error instead of crashing DOM
+        try {
+          await mermaid.parse(cleanCode);
+        } catch (parseErr: any) {
+          throw new Error(parseErr?.message || 'Lỗi cú pháp Mermaid diagram');
+        }
+
+        // Render with dedicated temporary container to avoid DOM collision across concurrent diagrams
+        const tempContainer = document.createElement('div');
+        tempContainer.id = `wrapper-${id}`;
+        tempContainer.style.display = 'none';
+        document.body.appendChild(tempContainer);
+
+        let svgResult = '';
+        try {
+          const { svg } = await mermaid.render(id, cleanCode, tempContainer);
+          svgResult = svg;
+        } finally {
+          tempContainer.remove();
+        }
 
         if (isMounted) {
           // Remove any inline max-width from the svg tag to let it render at true native resolution
-          let processedSvg = svg.replace(/max-width:\s*[^;"]+;?/gi, 'max-width: none;');
+          let processedSvg = svgResult.replace(/max-width:\s*[^;"]+;?/gi, 'max-width: none;');
           
           // Parse natural viewBox dimensions
           const viewBoxMatch = /viewBox="([^"]+)"/i.exec(processedSvg);

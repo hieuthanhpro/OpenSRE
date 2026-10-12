@@ -6,6 +6,7 @@ __pycache__/
 .pytest_cache/
 *.egg-info/
 .ruff_cache/
+*.zip
 
 # Conductor workspace files
 .context/
@@ -130,3 +131,4 @@ charts/opensre/charts/*.tgz
 
 # Local git worktrees (SDD / feature isolation)
 .worktrees/
+open-wiki/

@@ -6,12 +6,15 @@ import { WikiTopologyGraph } from '@/components/openwiki/WikiTopologyGraph';
 import { WikiPageHeader } from '@/components/openwiki/WikiPageHeader';
 import { WikiDashboard } from '@/components/openwiki/WikiDashboard';
 import { WikiExplorer } from '@/components/openwiki/WikiExplorer';
+import { WikiDatabaseExplorer } from '@/components/openwiki/WikiDatabaseExplorer';
 import { WikiDocSlideOver } from '@/components/openwiki/WikiDocSlideOver';
-import { ServiceInfo, DocDetail, OpenWikiTab } from '@/components/openwiki/types';
+import { ServiceInfo, DatabaseInstanceInfo, DocDetail, OpenWikiTab } from '@/components/openwiki/types';
 
 export default function OpenWikiPage() {
   const [services, setServices] = useState<ServiceInfo[]>([]);
+  const [dbInstances, setDbInstances] = useState<DatabaseInstanceInfo[]>([]);
   const [selectedServiceId, setSelectedServiceId] = useState<string>('openwiki-msp');
+  const [selectedDbInstanceId, setSelectedDbInstanceId] = useState<string>('prod_112');
   const [activeTab, setActiveTab] = useState<OpenWikiTab>('dashboard');
 
   // Loading & error states
@@ -52,12 +55,22 @@ export default function OpenWikiPage() {
       }
 
       setServices(data.services || []);
+      const loadedDbs: DatabaseInstanceInfo[] = data.dbInstances || data.layers?.database?.instances || [];
+      setDbInstances(loadedDbs);
 
       // If no service selected or previously selected service deleted, select first available
       if (data.services && data.services.length > 0) {
         const exists = data.services.some((s: ServiceInfo) => s.id === selectedServiceId);
         if (!exists && selectedServiceId !== 'all') {
           setSelectedServiceId(data.services[0].id);
+        }
+      }
+
+      // If no DB selected or previously selected DB deleted, select first available
+      if (loadedDbs.length > 0) {
+        const dbExists = loadedDbs.some((db) => db.id === selectedDbInstanceId);
+        if (!dbExists && selectedDbInstanceId !== 'all') {
+          setSelectedDbInstanceId(loadedDbs[0].id);
         }
       }
     } catch (err: any) {
@@ -67,7 +80,7 @@ export default function OpenWikiPage() {
       setIsLoadingList(false);
       setIsRescanning(false);
     }
-  }, [selectedServiceId]);
+  }, [selectedServiceId, selectedDbInstanceId]);
 
   useEffect(() => {
     loadServices();
@@ -103,13 +116,20 @@ export default function OpenWikiPage() {
   // Open a document in SlideOver
   const handleOpenDoc = useCallback(
     (serviceId: string, docPath: string) => {
-      // If serviceId is 'all', try to find which service owns this docPath
+      // If serviceId is 'all', check which service or database instance owns this docPath
       let targetServiceId = serviceId;
       if (targetServiceId === 'all') {
-        const owner = services.find((s) =>
+        const svcOwner = services.find((s) =>
           s.categories.some((c) => c.docs.some((d) => d.path === docPath))
         );
-        if (owner) targetServiceId = owner.id;
+        if (svcOwner) {
+          targetServiceId = svcOwner.id;
+        } else {
+          const dbOwner = dbInstances.find((db) =>
+            db.categories.some((c) => c.docs.some((d) => d.path === docPath))
+          );
+          if (dbOwner) targetServiceId = dbOwner.id;
+        }
       }
 
       setSlideOverState({
@@ -120,7 +140,7 @@ export default function OpenWikiPage() {
 
       loadDocDetail(targetServiceId, docPath);
     },
-    [services, loadDocDetail]
+    [services, dbInstances, loadDocDetail]
   );
 
   // Close SlideOver
@@ -136,19 +156,25 @@ export default function OpenWikiPage() {
     [handleOpenDoc, slideOverState.serviceId]
   );
 
-  // Current service name for slideover header
+  // Current service / db name for slideover header
   const currentSlideOverServiceName = useMemo(() => {
     const svc = services.find((s) => s.id === slideOverState.serviceId);
-    return svc ? svc.name : slideOverState.serviceId;
-  }, [services, slideOverState.serviceId]);
+    if (svc) return svc.name;
+    const db = dbInstances.find((d) => d.id === slideOverState.serviceId);
+    if (db) return db.name;
+    return slideOverState.serviceId;
+  }, [services, dbInstances, slideOverState.serviceId]);
 
   return (
     <div className="min-h-screen bg-slate-50/70 text-slate-900 flex flex-col font-sans selection:bg-emerald-100 selection:text-emerald-800">
       {/* 1. Sticky Header Bar */}
       <WikiPageHeader
         services={services}
+        dbInstances={dbInstances}
         selectedServiceId={selectedServiceId}
+        selectedDbInstanceId={selectedDbInstanceId}
         onSelectService={(id) => setSelectedServiceId(id)}
+        onSelectDbInstance={(id) => setSelectedDbInstanceId(id)}
         activeTab={activeTab}
         onSelectTab={(tab) => setActiveTab(tab)}
         isRescanning={isRescanning}
@@ -185,14 +211,16 @@ export default function OpenWikiPage() {
             {activeTab === 'dashboard' && (
               <WikiDashboard
                 services={services}
+                dbInstances={dbInstances}
                 onSelectService={(sId) => setSelectedServiceId(sId)}
+                onSelectDbInstance={(dbId) => setSelectedDbInstanceId(dbId)}
                 onSelectTab={setActiveTab}
                 onOpenDoc={handleOpenDoc}
                 onSelectTag={(tag) => setSelectedTagFilter(tag)}
               />
             )}
 
-            {/* TAB 2: EXPLORER WITH SERVICE TABS & CATEGORY CHIPS */}
+            {/* TAB 2: EXPLORER (SERVICE LAYER) */}
             {activeTab === 'explorer' && (
               <WikiExplorer
                 services={services}
@@ -204,14 +232,29 @@ export default function OpenWikiPage() {
               />
             )}
 
-            {/* TAB 3: TOPOLOGY GRAPH CANVAS */}
+            {/* TAB 3: DATABASE EXPLORER (DATABASE LAYER) */}
+            {activeTab === 'database' && (
+              <WikiDatabaseExplorer
+                instances={dbInstances}
+                selectedInstanceId={selectedDbInstanceId}
+                onSelectInstance={(dbId) => setSelectedDbInstanceId(dbId)}
+                onOpenDoc={handleOpenDoc}
+              />
+            )}
+
+            {/* TAB 4: TOPOLOGY GRAPH CANVAS */}
             {activeTab === 'graph' && (
               <div className="space-y-4">
                 <WikiTopologyGraph
                   services={services}
+                  dbInstances={dbInstances}
                   selectedServiceId={selectedServiceId}
                   onSelectService={(sId) => setSelectedServiceId(sId)}
                   onSelectDoc={handleOpenDoc}
+                  onSelectDbInstance={(dbId) => {
+                    setSelectedDbInstanceId(dbId);
+                    setActiveTab('database');
+                  }}
                 />
               </div>
             )}

@@ -30,6 +30,7 @@ sys.path.insert(0, str(Path(__file__).parent.resolve()))
 from openwiki_common import (
     find_wiki_root,
     trace_service_flow,
+    query_system_flow,
     find_diagrams_by_topic,
     extract_mermaid_diagrams,
     read_doc_content,
@@ -63,6 +64,22 @@ def cmd_trace_flow(args, wiki_root):
     for doc in result["matching_docs"]:
         print(f"  • [{doc['service_display']}] {doc['title']} ({doc['service']}/{doc['path']})")
 
+    if result.get("apis"):
+        print(f"\n🌐 Documented APIs between services ({len(result['apis'])}):")
+        for api in result["apis"][:15]:
+            caller_info = f" ({api.get('caller')} → {api.get('receiver')})" if api.get('caller') else ""
+            print(f"  • {api['method']} {api['path']}{caller_info} [{api['service']}]")
+
+    if result.get("db_tables") or result.get("db_packages"):
+        print(f"\n🗄️ Database Tables & Packages:")
+        if result.get("db_tables"):
+            print(f"  • Tables: {', '.join(result['db_tables'][:12])}")
+        if result.get("db_packages"):
+            print(f"  • Packages: {', '.join(result['db_packages'][:8])}")
+
+    if result.get("partners"):
+        print(f"\n🤝 Partners / Gateways: {', '.join(result['partners'])}")
+
     if result["relevant_diagrams"]:
         print(f"\n📊 Found {len(result['relevant_diagrams'])} relevant diagrams:\n")
         for idx, diag in enumerate(result["relevant_diagrams"], 1):
@@ -75,48 +92,78 @@ def cmd_trace_flow(args, wiki_root):
 
     if result["flow_steps"]:
         print(f"\n📋 Extracted {len(result['flow_steps'])} interaction steps:")
-        for idx, step in enumerate(result["flow_steps"], 1):
+        for idx, step in enumerate(result["flow_steps"][:25], 1):
             arrow = "←" if step["is_response"] else "→"
             step_type = "response" if step["is_response"] else "request"
             print(f"  {idx}. {step['from']} {arrow} {step['to']}: {step['message']} [{step_type}]")
 
 
 def cmd_topic_search(args, wiki_root):
-    """Find diagrams by topic."""
-    results = find_diagrams_by_topic(
-        query=args.topic,
+    """Comprehensive flow search by topic across services, APIs, databases, and partners."""
+    result = query_system_flow(
+        topic=args.topic,
         wiki_root=wiki_root,
         service_filter=args.service,
-        diagram_type=args.diagram_type,
         limit=args.limit,
     )
 
     if args.json:
-        print(json.dumps(results, indent=2, ensure_ascii=False))
+        print(json.dumps(result, indent=2, ensure_ascii=False))
         return
 
-    if not results:
-        print(f"No diagrams found for topic: '{args.topic}'")
+    if not result["matched_docs"] and not result["diagrams"]:
+        print(f"No flows or documentation found for topic: '{args.topic}'")
         return
 
-    print(f"\n📊 Found {len(results)} diagrams matching: '{args.topic}'\n")
-    for idx, item in enumerate(results, 1):
-        diag = item["diagram"]
-        src = item["source_doc"]
-        print(f"── {idx}. {diag['title']} ({diag['type']}) ──")
-        print(f"   Source: [{src['service_display']}] {src['title']}")
-        print(f"   Path: {src['service']}/{src['path']}")
-        if src["tags"]:
-            print(f"   Tags: {', '.join(src['tags'])}")
+    print(f"\n🔄 System Flow & Architecture for Topic: '{args.topic}'\n")
 
-        if diag.get("participants"):
-            p_names = [p["alias"] for p in diag["participants"]]
-            print(f"   Participants: {', '.join(p_names)}")
+    if result["matched_docs"]:
+        print(f"📄 Matched Documentation ({len(result['matched_docs'])}):")
+        for doc in result["matched_docs"][:6]:
+            print(f"  • [{doc['service_display']}] {doc['title']} ({doc['service']}/{doc['path']})")
+        print()
 
-        # Show full diagram code
-        print(f"\n```mermaid")
-        print(diag["code"])
+    if result["apis"]:
+        print(f"🌐 APIs Invoked ({len(result['apis'])}):")
+        for ep in result["apis"][:15]:
+            caller_info = f" ({ep.get('caller')} → {ep.get('receiver')})" if ep.get('caller') else ""
+            print(f"  • {ep['method']:<6} {ep['path']:<45}{caller_info} [{ep['service']}]")
+        print()
+
+    if result["db_tables"] or result["db_packages"]:
+        print(f"🗄️ Database Tables & Stored Procedures:")
+        if result["db_tables"]:
+            print(f"  • Tables: {', '.join(result['db_tables'][:15])}")
+        if result["db_packages"]:
+            print(f"  • Packages: {', '.join(result['db_packages'][:10])}")
+        print()
+
+    if result["partners"]:
+        print(f"🤝 External Partners / Acquirers:")
+        print(f"  • {', '.join(result['partners'])}")
+        print()
+
+    if result["diagrams"]:
+        print(f"📊 Mermaid Sequence / Architecture Diagrams ({len(result['diagrams'])}):\n")
+        for idx, diag in enumerate(result["diagrams"][:3], 1):
+            print(f"── Diagram {idx}: {diag['title']} ({diag['type']}) ──")
+            print(f"   Source: {diag['source']}")
+            print(f"```mermaid")
+            print(diag["code"])
+            print(f"```\n")
+
+    elif result.get("generated_diagram"):
+        print(f"📊 Generated Sequence Diagram:\n")
+        print(f"```mermaid")
+        print(result["generated_diagram"])
         print(f"```\n")
+
+    if result["flow_steps"]:
+        print(f"📋 Step-by-Step Flow Interactions ({len(result['flow_steps'])}):")
+        for idx, step in enumerate(result["flow_steps"][:20], 1):
+            arrow = "←" if step["is_response"] else "→"
+            print(f"  {idx}. {step['from']} {arrow} {step['to']}: {step['message']}")
+        print()
 
 
 def cmd_list_diagrams(args, wiki_root):

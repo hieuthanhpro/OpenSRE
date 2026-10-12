@@ -619,12 +619,9 @@ export default function TraceVisualizerPage() {
                 <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[11px] font-semibold text-emerald-700 border border-emerald-200">
                   Live Jaeger
                 </span>
-                <span className="rounded-full bg-sky-50 px-2 py-0.5 text-[11px] font-medium text-sky-700 border border-sky-200 flex items-center gap-1">
-                  <Move className="h-3 w-3" /> Kéo thả Nodes
-                </span>
               </h1>
               <p className="text-xs text-slate-500">
-                Kéo thả các node để sắp xếp topology theo ý muốn • Kéo thanh chia để chỉnh độ cao timeline
+                Sơ đồ topology luồng phân tán và phân tích span timeline
               </p>
             </div>
           </div>

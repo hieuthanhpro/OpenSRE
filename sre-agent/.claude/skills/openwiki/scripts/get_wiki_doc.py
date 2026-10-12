@@ -16,41 +16,38 @@ from pathlib import Path
 
 # Add script directory to sys.path so openwiki_common can be imported directly
 sys.path.insert(0, str(Path(__file__).parent.resolve()))
-from openwiki_common import find_wiki_root, parse_frontmatter
+from openwiki_common import find_wiki_root, parse_frontmatter, resolve_doc_path
 
 
 def main():
     parser = argparse.ArgumentParser(description="Fetch and read OpenWiki documentation")
-    parser.add_argument("--service", help="Service directory name (e.g. openwiki-psp-connector-onecomm)")
-    parser.add_argument("--path", help="Relative path within the service (e.g. workflows/purchase.md)")
+    parser.add_argument("--service", help="Service directory name (e.g. openwiki-psp-connector-onecomm, db-prod-112)")
+    parser.add_argument("--path", help="Relative path within the service (e.g. workflows/purchase.md, schemas/msp-schema.md)")
     parser.add_argument("--file", help="Direct path to the markdown file")
     parser.add_argument("--max-chars", type=int, default=15000, help="Maximum characters to print (default: 15000)")
 
     args = parser.parse_args()
 
+    try:
+        wiki_root = find_wiki_root()
+    except Exception as e:
+        print(f"Error finding wiki root: {e}", file=sys.stderr)
+        sys.exit(1)
+
     target_file: Path | None = None
 
     if args.file:
-        target_file = Path(args.file)
-        if not target_file.is_file():
-            # Try resolving relative to wiki root
-            try:
-                target_file = find_wiki_root() / args.file
-            except Exception:
-                pass
+        target_file = resolve_doc_path(wiki_root, None, args.file)
     elif args.service and args.path:
-        try:
-            wiki_root = find_wiki_root()
-            target_file = wiki_root / args.service / args.path
-        except Exception as e:
-            print(f"Error finding wiki root: {e}", file=sys.stderr)
-            sys.exit(1)
+        target_file = resolve_doc_path(wiki_root, args.service, args.path)
+    elif args.path and not args.service:
+        target_file = resolve_doc_path(wiki_root, None, args.path)
     else:
         print("Error: Specify either --service and --path, or --file", file=sys.stderr)
         sys.exit(1)
 
     if not target_file or not target_file.is_file():
-        print(f"Document not found at: {target_file}", file=sys.stderr)
+        print(f"Document not found for service='{args.service}' path='{args.path or args.file}'", file=sys.stderr)
         sys.exit(1)
 
     try:

@@ -821,11 +821,22 @@ async def agent_background_task(
         except Exception as e:
             logger.warning(f"[BG] Failed to load team config (continuing without): {e}")
 
-    session = await _start_interactive_session(
-        thread_id, team_config, resume_session_id
-    )
-    logger.info(f"[BG] Session started for thread {thread_id}")
-    _active_sessions[thread_id] = session
+    try:
+        session = await _start_interactive_session(
+            thread_id, team_config, resume_session_id
+        )
+        logger.info(f"[BG] Session started for thread {thread_id}")
+        _active_sessions[thread_id] = session
+    except Exception as e:
+        logger.error(
+            f"[BG] Failed to start interactive session for thread {thread_id}: {e}",
+            exc_info=True,
+        )
+        if thread_id in _response_queues:
+            await _response_queues[thread_id].put(
+                {"error": f"Failed to start agent session: {e}"}
+            )
+        return
 
     message_queue = _message_queues[thread_id]
     response_queue = _response_queues[thread_id]

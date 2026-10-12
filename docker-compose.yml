@@ -42,6 +42,7 @@ services:
       retries: 10
     networks:
       - app_network
+      - default  # Needs host access for port publishing
 
   # ─────────────────────────────────────────────────────────────────────────────
   # Config Service — team config, tokens, audit logging
